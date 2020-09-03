@@ -1,0 +1,22 @@
+{
+  "name": "kee-diary-vue-electron",
+  "version": "0.1.0",
+  "description": "A diary app that use kdbx to encrypt your diary",
+  "repository": "",
+  "author": "canwdev <c2097@live.com>",
+  "license": "MIT",
+  "main": "src/electron-starter.js",
+  "scripts": {
+    "dev": "node start-dev.js",
+    "dev:frontend": "cross-env PORT=5001 yarn --cwd './frontend' serve",
+    "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:5001 electron .",
+    "build:frontend": "cross-env yarn --cwd './frontend' build",
+    "build:electron-dir": "electron-builder --dir",
+    "build:electron": "electron-builder",
+    "build:electron-ia32": "electron-builder --ia32"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "electron": "^10.1.1"
+  }
+}
