@@ -1,4 +1,15 @@
 module.exports = {
   publicPath: './',
-  outputDir: '../build'
+  outputDir: '../build',
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'manual',
+      rtlSupport: false
+    }
+  },
+
+  transpileDependencies: [
+    'quasar'
+  ]
 }

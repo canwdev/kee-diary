@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A diary app that use kdbx to encrypt your diary",
   "repository": "",
+  "private": true,
   "author": "canwdev <c2097@live.com>",
   "license": "MIT",
   "main": "src/electron-starter.js",

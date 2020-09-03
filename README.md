@@ -6,7 +6,7 @@
 
 ## Screenshots · 截图
 
-
+暂无
 
 ## TechStack · 技术栈
 
@@ -48,6 +48,7 @@
 ```sh
 # 安装依赖
 yarn install
+yarn install --cwd "./frontend"
 
 # 开发模式 
 yarn run dev
