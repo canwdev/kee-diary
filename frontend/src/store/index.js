@@ -1,16 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {getSettingsLS, setSettingsLS} from "@/utils/settings"
-
+const pkg = require('@/../package.json')
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     settings: getSettingsLS() || {
       isDarkMode: false,
-    }
+    },
+    pkg
   },
   getters: {
+    pkg: state => state.pkg,
     isDarkMode: state => state.settings.isDarkMode,
   },
   mutations: {

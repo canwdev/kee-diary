@@ -1,13 +1,11 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <DefaultHeader
-        title="KeeDiary"
+        :title="pkg.name"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
     />
     <q-page-container>
-      <q-page>
-        <router-view/>
-      </q-page>
+      <router-view/>
     </q-page-container>
     <DefaultDrawer v-model="leftDrawerOpen"/>
   </q-layout>
@@ -26,6 +24,11 @@ export default {
   data() {
     return {
       leftDrawerOpen: false
+    }
+  },
+  computed: {
+    pkg() {
+      return this.$store.getters.pkg
     }
   }
 }
