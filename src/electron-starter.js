@@ -1,4 +1,4 @@
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+// process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, dialog} = require('electron')
 const path = require('path')
@@ -17,10 +17,10 @@ function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
+    width: 800,
+    height: 600,
     webPreferences: {
-      nodeIntegration: false,
+      enableRemoteModule: true,
       preload: path.join(__dirname, 'electron', 'preload.js')
     },
     icon: __dirname + './assets/img/favicon.png'
@@ -64,19 +64,8 @@ function createWindow() {
     mainWindow = null
   })
 
-  // React 开发者工具
   if (isDev) {
-
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-
-    // Devtools 可能导致 electron 无法启动，暂时关闭...
-    // const {default: installExtension, REACT_DEVELOPER_TOOLS} = require('electron-devtools-installer')
-    // installExtension(REACT_DEVELOPER_TOOLS).then(name => {
-    //   console.log('Added extension', name)
-    // }).catch(e => {
-    //   console.log(e)
-    // })
+  // 开发者工具
 
   } else {
     mainWindow.setMenuBarVisibility(false)
@@ -101,7 +90,7 @@ if (!gotTheLock) {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.on('ready', createWindow)
+  app.whenReady().then(createWindow)
 
   // Quit when all windows are closed.
   app.on('window-all-closed', function () {
