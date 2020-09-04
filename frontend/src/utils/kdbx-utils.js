@@ -1,7 +1,9 @@
 import kdbxweb from "kdbxweb"
 import store from '@/store'
 import router from '@/router'
-import getIcon from "../assets/db-icons"
+import Icons from "../assets/db-icons"
+
+const icons = new Icons()
 
 /**
  * 打开 KDBX 数据库
@@ -47,10 +49,10 @@ export function closeKdbx() {
 
 /**
  * 递归遍历数据库 groups
- * usage: deepWalkGroup(db.groups)
+ * usage: getGroupTree(db.groups)
  * return: customized group list
  */
-export function deepWalkGroup(node, counter = 0) {
+export function getGroupTree(node, counter = 0) {
   const list = []
   if (!node || node.length === 0) return list
 
@@ -58,15 +60,50 @@ export function deepWalkGroup(node, counter = 0) {
     const children = group.groups
 
     list.push({
-      img: getIcon(group.icon),
+      img: icons.getByIndex(group.icon),
       uuid: group.uuid,
       name: group.name,
       index: counter,
-      children: deepWalkGroup(children, counter + 1),
+      children: getGroupTree(children, counter + 1),
       id: group.uuid.id,
       _group: group
     })
   })
+  return list
+}
+
+/**
+ * 获取某群组的条目列表
+ * @param db 数据库实例
+ * @param uuid 必须是 uuid 对象，而不是字符串
+ * @return {[]}
+ */
+export function getGroupEntries(db, uuid) {
+  const list = []
+  if (db && uuid) {
+    const group = db.getGroup(uuid)
+    // console.log('getGroup', group)
+
+    if (group) {
+      for (let i = group.entries.length - 1; i >= 0; i--) {
+        let entry = group.entries[i]
+        list.push({
+          uuid: entry.uuid,
+          iconImg: icons.getByIndex(entry.icon),
+          title: entry.fields.Title,
+          url: entry.fields.URL,
+          bgColor: entry.bgColor,
+          fgColor: entry.fgColor,
+          creationTime: entry.times.creationTime,
+          lastModTime: entry.times.lastModTime,
+          _entry: entry
+        })
+      }
+    }
+
+  }
+  // console.log('getGroupEntries', list)
+
   return list
 }
 
