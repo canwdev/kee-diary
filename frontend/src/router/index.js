@@ -2,6 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
 import Default from "@/layout/Default"
+import store from '@/store'
+
+const validateUnlock = (to, from, next) => {
+  if (store.getters.isUnlocked) {
+    next()
+  } else {
+    router.replace({name: 'Login'})
+  }
+}
 
 Vue.use(VueRouter)
 
@@ -22,6 +31,7 @@ Vue.use(VueRouter)
       {
         path: 'list',
         name: 'DbListView',
+        beforeEnter: validateUnlock,
         component: () => import('@/views/DbListView.vue')
       }
     ]

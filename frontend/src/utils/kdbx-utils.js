@@ -1,5 +1,6 @@
 import kdbxweb from "kdbxweb"
 import store from '@/store'
+import router from '@/router'
 import getIcon from "../assets/db-icons"
 
 /**
@@ -39,6 +40,9 @@ export function openKdbx(db) {
 export function closeKdbx() {
   store.commit('setDatabase', null)
   store.commit('setIsUnlocked', false)
+  router.replace({
+    name: 'Login'
+  })
 }
 
 /**

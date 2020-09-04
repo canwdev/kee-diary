@@ -1,3 +1,4 @@
+// KDBX Icon from:
 // https://github.com/keepassxreboot/keepassxc/tree/develop/share/icons/database
 const fs = require('fs')
 const path = require('path')
