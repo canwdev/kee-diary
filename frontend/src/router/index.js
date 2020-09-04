@@ -18,6 +18,11 @@ Vue.use(VueRouter)
         path: 'login',
         name: 'Login',
         component: Login
+      },
+      {
+        path: 'list',
+        name: 'DbListView',
+        component: () => import('@/views/DbListView.vue')
       }
     ]
   },

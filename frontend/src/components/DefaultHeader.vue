@@ -14,26 +14,26 @@
         <!--<q-avatar>
           <img src="./assets/logo.png">
         </q-avatar>-->
-        {{ title }}
+        {{ title }} {{ isUnlocked ? '(已解锁)':''}}
       </q-toolbar-title>
 
-      <q-btn flat round dense icon="search">
-        <q-tooltip>
-          Search
-        </q-tooltip>
-      </q-btn>
-
-      <q-btn flat round dense icon="save">
-        <q-tooltip>
-          Save
-        </q-tooltip>
-      </q-btn>
-
-      <q-btn flat round dense icon="eject">
-        <q-tooltip>
-          Eject
-        </q-tooltip>
-      </q-btn>
+      <template v-if="isUnlocked">
+        <q-btn flat round dense icon="search">
+          <q-tooltip>
+            Search
+          </q-tooltip>
+        </q-btn>
+        <q-btn flat round dense icon="save">
+          <q-tooltip>
+            Save
+          </q-tooltip>
+        </q-btn>
+        <q-btn flat round dense icon="eject" @click="closeKdbx">
+          <q-tooltip>
+            Eject
+          </q-tooltip>
+        </q-btn>
+      </template>
 
     </q-toolbar>
   </q-header>
@@ -41,6 +41,7 @@
 
 <script>
 import store from "@/store"
+import {closeKdbx} from "../utils/kdbx-utils"
 
 export default {
   name: "DefaultHeader",
@@ -52,8 +53,14 @@ export default {
   },
   computed: {
     isDarkMode: {
-      get: () => store.getters.isDarkMode,
+      get: () => store.getters.isDarkMode
     },
+    isUnlocked: {
+      get: () => store.getters.isUnlocked
+    }
+  },
+  methods: {
+    closeKdbx
   }
 }
 </script>

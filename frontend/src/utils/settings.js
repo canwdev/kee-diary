@@ -1,9 +1,19 @@
-const LS_KEY = 'KEE_DIARY_VUE_SETTINGS'
+/**
+ * 将设置保存到 LocalStorage
+ * 用法： const settings = new LocalStorageSettings('KEE_DIARY_VUE_SETTINGS')
+ * @param key 存储对象键值
+ * @constructor
+ */
+function LocalStorageSettings(key = 'TEST_SETTINGS') {
+  this.key = key
 
-export function getSettingsLS() {
-  return JSON.parse(localStorage.getItem(LS_KEY))
+  this.get = function () {
+    return JSON.parse(localStorage.getItem(this.key))
+  }
+
+  this.set = function (obj = {}) {
+    localStorage.setItem(this.key, JSON.stringify(obj))
+  }
 }
 
-export function setSettingsLS(obj = {}) {
-  localStorage.setItem(LS_KEY, JSON.stringify(obj))
-}
+export default LocalStorageSettings

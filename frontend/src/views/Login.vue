@@ -2,6 +2,30 @@
   <q-page
       class="row justify-center items-center"
   >
+    <q-inner-loading class="_loading" :showing="isLoading">
+        <q-spinner-gears
+            color="primary"
+            size="5em"
+        />
+    </q-inner-loading>
+
+    <q-dialog v-model="isShowAlertDialog">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="error"/>
+          <span class="text-h6">{{ alertDialog.title }}</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          {{ alertDialog.content }}
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <div class="column q-pa-lg">
       <div class="row">
         <q-card class="shadow-10" style="width:400px;">
@@ -47,6 +71,9 @@
                       outline icon="attachment"/>
                 </template>
               </q-input>
+
+              <q-checkbox v-model="form.isSaveHistory" label="Save history"/>
+
             </q-card-section>
 
             <q-card-actions class="q-px-lg">
@@ -69,16 +96,34 @@
 </template>
 
 <script>
+import {decryptKdbx, openKdbx} from "../utils/kdbx-utils"
+import LocalStorageSettings from "@/utils/settings"
+import {isProd} from "../utils/is"
+const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
+
+const {
+  dbPath = '',
+  keyPath = '',
+  password = '',
+  isSaveHistory = false,
+} = settingsLogin.get() || {}
 
 export default {
   name: 'Login',
   data() {
     return {
+      isLoading: false,
+      isShowAlertDialog: false,
+      alertDialog: {
+        title: 'Alert',
+        content: 'Content'
+      },
       form: {
-        dbPath: '',
-        keyPath: '',
-        password: '',
-      }
+        dbPath: dbPath,
+        keyPath: keyPath,
+        password: isProd ? '' : password,
+        isSaveHistory: isSaveHistory
+      },
     }
   },
   computed: {
@@ -99,8 +144,8 @@ export default {
         this.form[name] = results[0]
       }
     },
-    handleUnlock() {
-      const {dbPath, password, keyPath} = this.form
+    async handleUnlock() {
+      const {dbPath, password, keyPath, isSaveHistory} = this.form
       if (!dbPath) {
         this.errorToast('数据库路径不能为空')
         return
@@ -109,7 +154,35 @@ export default {
         this.errorToast('密码或密钥路径不能为空')
         return
       }
-      alert('OK!')
+      if (isSaveHistory) {
+        const formCopy = {...this.form}
+        if (isProd) {
+          delete formCopy.password
+        }
+        settingsLogin.set(formCopy)
+      } else {
+        settingsLogin.set(null)
+      }
+
+      try {
+        this.isLoading = true
+        const db = await decryptKdbx(dbPath, password, keyPath)
+
+        openKdbx(db)
+        await this.$router.replace({
+          name: 'DbListView'
+        })
+
+      } catch (e) {
+        console.error(e)
+        this.isShowAlertDialog = true
+        this.alertDialog = {
+          title: e.code,
+          content: e.message
+        }
+      } finally {
+        this.isLoading = false
+      }
     },
     errorToast(msg) {
       this.$q.notify({
@@ -123,5 +196,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
+._loading {
+  z-index 10
+}
 </style>
