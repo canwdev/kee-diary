@@ -14,7 +14,7 @@
         <!--<q-avatar>
           <img src="./assets/logo.png">
         </q-avatar>-->
-        {{ title }} {{ isUnlocked ? '(已解锁)':''}}
+        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(已解锁)':''}}</span>
       </q-toolbar-title>
 
       <template v-if="isUnlocked">

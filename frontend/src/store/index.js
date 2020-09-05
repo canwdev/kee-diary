@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import LocalStorageSettings from "@/utils/settings"
+
 const pkg = require('@/../package.json')
 Vue.use(Vuex)
 
@@ -10,20 +11,33 @@ export default new Vuex.Store({
   state: {
     settings: settings.get() || {
       isDarkMode: false,
+      isListView: true // 是列表视图还是日历视图
     },
     pkg,
     database: null,
-    isUnlocked: false
+    isUnlocked: false,
+    currentGroupUuid: null, // 当前选中的群组 UUID 对象
+    currentEntry: null, // 当前打开的条目对象
   },
   getters: {
     isDarkMode: state => state.settings.isDarkMode,
+    isListView: state => state.settings.isListView,
     pkg: state => state.pkg,
     database: state => state.database,
     isUnlocked: state => state.isUnlocked,
+    currentGroupUuid: state => state.currentGroupUuid,
+    currentEntry: state => state.currentEntry,
+    isEntryOpen: state => {
+      return Boolean(state.currentEntry)
+    },
   },
   mutations: {
     setIsDarkMode: (state, val) => {
       state.settings.isDarkMode = val
+      settings.set(state.settings)
+    },
+    setIsListView: (state, val) => {
+      state.settings.isListView = val
       settings.set(state.settings)
     },
     updateSettings(state, kv) {
@@ -37,9 +51,13 @@ export default new Vuex.Store({
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
     },
+    setCurrentGroupUuid: (state, val) => {
+      state.currentGroupUuid = val
+    },
+    setCurrentEntry: (state, val) => {
+      state.currentEntry = val
+    },
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {}
 })

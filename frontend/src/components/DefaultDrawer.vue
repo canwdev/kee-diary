@@ -7,17 +7,29 @@
   >
     <q-scroll-area class="fit">
       <q-list>
-        <q-item-label header>Menu</q-item-label>
+        <q-item-label header>Navigation</q-item-label>
 
-        <q-item clickable tag="a" to="/">
-          <q-item-section avatar>
-            <q-icon name="home"/>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Home</q-item-label>
-            <q-item-label caption>Login</q-item-label>
-          </q-item-section>
-        </q-item>
+        <template v-if="isUnlocked">
+          <q-item clickable tag="a" to="/home">
+            <q-item-section avatar>
+              <q-icon name="home"/>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Home</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+        <template v-else>
+          <q-item clickable tag="a" to="/login">
+            <q-item-section avatar>
+              <q-icon name="login"/>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Login</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+
 
         <q-item clickable tag="a" to="/about">
           <q-item-section avatar>
@@ -43,10 +55,11 @@
 
         <q-item clickable tag="a" @click="toggleFullscreen">
           <q-item-section avatar>
-            <q-icon name="open_in_full"/>
+            <q-icon name="note"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>Toggle fullscreen</q-item-label>
+            <q-item-label>Test</q-item-label>
+            <q-item-label caption>Info</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -79,6 +92,9 @@ export default {
       get: () => store.getters.isDarkMode,
       set: val => store.commit('setIsDarkMode', val)
     },
+    isUnlocked: {
+      get: () => store.getters.isUnlocked
+    }
   },
   watch: {
     isDarkMode: {

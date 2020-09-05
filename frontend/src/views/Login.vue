@@ -170,7 +170,7 @@ export default {
 
         openKdbx(db)
         await this.$router.replace({
-          name: 'DbListView'
+          name: 'Home'
         })
 
       } catch (e) {

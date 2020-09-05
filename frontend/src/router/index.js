@@ -29,16 +29,27 @@ Vue.use(VueRouter)
         component: Login
       },
       {
-        path: 'list',
-        name: 'DbListView',
+        path: 'home',
+        name: 'Home',
         beforeEnter: validateUnlock,
-        component: () => import('@/views/DbListView.vue')
+        component: () => import('@/views/Home/index.vue')
+      },
+      {
+        path: 'detail',
+        name: 'Detail',
+        beforeEnter: validateUnlock,
+        component: () => import('@/views/Detail.vue')
+      },
+      {
+        path: '/about',
+        name: 'About',
+        component: () => import('@/views/About.vue')
       }
     ]
   },
   {
-    path: '/about',
-    component: () => import('@/views/About.vue')
+    path: '*',
+    component: () => import('@/views/404.vue')
   }
 ]
 

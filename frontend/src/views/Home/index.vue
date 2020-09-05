@@ -27,9 +27,13 @@
               selection="multiple"
               :selected-rows-label="getSelectedString"
               :selected.sync="selected"
+              @row-click="handleRowClick"
           >
             <template v-slot:body-cell-star="props">
-              <q-td :props="props">
+              <q-td
+                  :props="props"
+                  @click.stop="handleIconClick(props.row)"
+              >
                 <img class="icon-img" :src="props.value"/>
               </q-td>
             </template>
@@ -45,7 +49,7 @@
 
 <script>
 import store from "@/store"
-import {getGroupTree, getGroupEntries} from "../utils/kdbx-utils"
+import {getGroupTree, getGroupEntries} from "../../utils/kdbx-utils"
 import {formatDateLite} from "@/utils"
 
 export default {
@@ -118,7 +122,7 @@ export default {
         }
         const groutUUIDObject = this.groupUUIDMap[nv]
         this.entryList = getGroupEntries(this.database, groutUUIDObject)
-        console.log(this.entryList)
+        // console.log(this.entryList)
       },
       immediate: true
     }
@@ -126,6 +130,15 @@ export default {
   methods: {
     getSelectedString () {
       return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''}`
+    },
+    handleRowClick(evt, row) {
+      store.commit('setCurrentEntry', row._entry)
+      this.$router.push({
+        name: 'Detail'
+      })
+    },
+    handleIconClick(row) {
+      console.log(row)
     }
   }
 }
