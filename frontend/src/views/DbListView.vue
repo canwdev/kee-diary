@@ -5,7 +5,6 @@
     >
       <template v-slot:before>
         <div class="q-pa-md">
-          <q-btn color="primary" @click="handleLog">log</q-btn>
           <q-tree
               :nodes="groupTree"
               node-key="id"
@@ -21,26 +20,18 @@
       <template v-slot:after>
         <div class="q-pa-md">
           <q-table
-              :title="selectedGroup"
               :data="entryList"
               :columns="entryTableColumns"
-              row-key="name"
+              row-key="id"
+              :pagination.sync="pagination"
+              selection="multiple"
+              :selected-rows-label="getSelectedString"
+              :selected.sync="selected"
           >
-            <template v-slot:body="props">
-              <q-tr :props="props">
-                <q-td key="star" :props="props">
-                  <img class="icon-img" :src="props.row.iconImg"/>
-                </q-td>
-                <q-td key="title" :props="props">
-                  {{ props.row.title }}
-                </q-td>
-                <q-td key="creationTime" :props="props">
-                  {{ formatDateLite(props.row.creationTime) }}
-                </q-td>
-                <q-td key="lastModTime" :props="props">
-                  {{ formatDateLite(props.row.lastModTime) }}
-                </q-td>
-              </q-tr>
+            <template v-slot:body-cell-star="props">
+              <q-td :props="props">
+                <img class="icon-img" :src="props.value"/>
+              </q-td>
             </template>
           </q-table>
         </div>
@@ -66,25 +57,15 @@ export default {
       selectedGroup: null,
       entryList: [],
       entryTableColumns: Object.freeze([
-        // {
-        //   name: 'name',
-        //   required: true,
-        //   label: 'Dessert (100g serving)',
-        //   align: 'left',
-        //   field: row => row.name,
-        //   format: val => `${val}`,
-        //   sortable: true
-        //   sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-        // },
         {name: 'star', align: 'center', label: '★', field: 'iconImg'},
         {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
-        {
-          name: 'creationTime', align: 'center', label: 'Created', field: 'creationTime', sortable: true
-        },
-        {
-          name: 'lastModTime', align: 'center', label: 'Modified', field: 'lastModTime', sortable: true
-        },
-      ])
+        {name: 'creationTime', align: 'center', label: 'Created', field: 'creationTime', format: val => formatDateLite(val), sortable: true},
+        {name: 'lastModTime', align: 'center', label: 'Modified', field: 'lastModTime', format: val => formatDateLite(val), sortable: true},
+      ]),
+      pagination: {
+        rowsPerPage: 10
+      },
+      selected: []
     }
   },
   computed: {
@@ -137,14 +118,14 @@ export default {
         }
         const groutUUIDObject = this.groupUUIDMap[nv]
         this.entryList = getGroupEntries(this.database, groutUUIDObject)
+        console.log(this.entryList)
       },
       immediate: true
     }
   },
   methods: {
-    formatDateLite,
-    handleLog() {
-      console.log(this.database)
+    getSelectedString () {
+      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''}`
     }
   }
 }

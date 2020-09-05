@@ -88,6 +88,7 @@ export function getGroupEntries(db, uuid) {
       for (let i = group.entries.length - 1; i >= 0; i--) {
         let entry = group.entries[i]
         list.push({
+          id: entry.uuid.id,
           uuid: entry.uuid,
           iconImg: icons.getByIndex(entry.icon),
           title: entry.fields.Title,
