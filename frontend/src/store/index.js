@@ -16,6 +16,7 @@ export default new Vuex.Store({
     pkg,
     database: null,
     isUnlocked: false,
+    isNotSave: false, // 有未保存的变更
     currentGroupUuid: null, // 当前选中的群组 UUID 对象
     currentEntry: null, // 当前打开的条目对象
   },
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     pkg: state => state.pkg,
     database: state => state.database,
     isUnlocked: state => state.isUnlocked,
+    isNotSave: state => state.isNotSave,
     currentGroupUuid: state => state.currentGroupUuid,
     currentEntry: state => state.currentEntry,
     isEntryOpen: state => {
@@ -50,6 +52,15 @@ export default new Vuex.Store({
     },
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
+    },
+    setIsNotSave: (state, val = true) => {
+      if (state.isNotSave === val) {
+        return
+      }
+      if (val) {
+        window.electronAPI.setShowExitPrompt(val)
+      }
+      state.isNotSave = val
     },
     setCurrentGroupUuid: (state, val) => {
       state.currentGroupUuid = val

@@ -1,6 +1,6 @@
 const iconMap = require('./icon-map.json')
 
-export default function Icons() {
+function Icons() {
   // 让 Webpack 自动打包图片
   this.map = iconMap.map(item => require('./icons/' + item))
 
@@ -8,3 +8,5 @@ export default function Icons() {
     return this.map[index]
   }
 }
+
+export default new Icons()

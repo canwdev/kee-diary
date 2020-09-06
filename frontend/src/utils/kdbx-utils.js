@@ -1,9 +1,12 @@
 import kdbxweb from "kdbxweb"
 import store from '@/store'
 import router from '@/router'
-import Icons from "../assets/db-icons"
+import icons from "@/assets/db-icons"
+import LocalStorageSettings from "./settings"
 
-const icons = new Icons()
+const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
+import {notifyError, notifySuccess} from '@/utils'
+
 
 /**
  * 打开 KDBX 数据库
@@ -44,6 +47,33 @@ export function closeKdbx() {
   store.commit('setIsUnlocked', false)
   router.replace({
     name: 'Login'
+  })
+}
+
+export function saveKdbx() {
+  const {dbPath} = settingsLogin.get() || {}
+  const db = store.getters.database
+
+  return new Promise((resolve, reject) => {
+    if (  dbPath &&   db) {
+      const electronAPI = window.electronAPI
+
+      db.save().then(dataAsArrayBuffer => {
+        try {
+          electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
+          store.commit('setIsNotSave', false)
+          notifySuccess('保存成功')
+          return resolve()
+        } catch (e) {
+          notifyError(e)
+          return reject(e)
+        }
+      })
+    } else {
+      const errMsg = '数据库实例不存在'
+      notifyError(errMsg)
+      return reject(errMsg)
+    }
   })
 }
 

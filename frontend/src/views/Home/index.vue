@@ -34,7 +34,9 @@
                   :props="props"
                   @click.stop="handleIconClick(props.row)"
               >
-                <img class="icon-img" :src="props.value"/>
+                <q-avatar size="32px" square>
+                  <img :src="props.value">
+                </q-avatar>
               </q-td>
             </template>
           </q-table>
@@ -63,8 +65,22 @@ export default {
       entryTableColumns: Object.freeze([
         {name: 'star', align: 'center', label: '★', field: 'iconImg'},
         {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
-        {name: 'creationTime', align: 'center', label: 'Created', field: 'creationTime', format: val => formatDateLite(val), sortable: true},
-        {name: 'lastModTime', align: 'center', label: 'Modified', field: 'lastModTime', format: val => formatDateLite(val), sortable: true},
+        {
+          name: 'creationTime',
+          align: 'center',
+          label: 'Created',
+          field: 'creationTime',
+          format: val => formatDateLite(val),
+          sortable: true
+        },
+        {
+          name: 'lastModTime',
+          align: 'center',
+          label: 'Modified',
+          field: 'lastModTime',
+          format: val => formatDateLite(val),
+          sortable: true
+        },
       ]),
       pagination: {
         rowsPerPage: 10
@@ -128,7 +144,7 @@ export default {
     }
   },
   methods: {
-    getSelectedString () {
+    getSelectedString() {
       return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''}`
     },
     handleRowClick(evt, row) {
@@ -145,7 +161,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
->>> .q-tree__img, .icon-img {
-  height 32px
-}
 </style>

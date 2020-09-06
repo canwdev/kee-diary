@@ -13,7 +13,7 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="error"/>
-          <span class="text-h6">{{ alertDialog.title }}</span>
+          <span class="text-h6">{{ alertDialog.title || 'Error' }}</span>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -99,6 +99,7 @@
 import {decryptKdbx, openKdbx} from "../utils/kdbx-utils"
 import LocalStorageSettings from "@/utils/settings"
 import {isProd} from "../utils/is"
+import {notifyError} from "@/utils"
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 
 const {
@@ -147,11 +148,11 @@ export default {
     async handleUnlock() {
       const {dbPath, password, keyPath, isSaveHistory} = this.form
       if (!dbPath) {
-        this.errorToast('数据库路径不能为空')
+        notifyError('数据库路径不能为空')
         return
       }
       if (!password && !keyPath) {
-        this.errorToast('密码或密钥路径不能为空')
+        notifyError('密码或密钥路径不能为空')
         return
       }
       if (isSaveHistory) {
@@ -184,14 +185,6 @@ export default {
         this.isLoading = false
       }
     },
-    errorToast(msg) {
-      this.$q.notify({
-        message: msg,
-        color: 'negative',
-        position: 'top',
-        timeout: 500
-      })
-    }
   }
 }
 </script>

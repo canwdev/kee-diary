@@ -3,35 +3,41 @@
     <q-toolbar class="home-header" :class="{'_dark': isDarkMode}">
       <q-btn
           flat
-          dense
           round
           @click="$emit('onMenuClick')"
           aria-label="Menu"
           icon="menu"
       />
 
+      <q-btn
+          v-show="isShowBack"
+          flat
+          round
+          @click="$emit('onBackClick')"
+          aria-label="Back"
+          icon="arrow_back"
+      />
+
       <q-toolbar-title class="main-title">
-        <!--<q-avatar>
-          <img src="./assets/logo.png">
-        </q-avatar>-->
-        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(已解锁)':''}}</span>
+        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(已解锁)' : '' }}</span>
       </q-toolbar-title>
 
       <template v-if="isUnlocked">
-        <q-btn flat round dense icon="search">
+        <q-btn flat round icon="search">
           <q-tooltip>
             Search
           </q-tooltip>
         </q-btn>
-        <q-btn flat round dense icon="save">
-          <q-tooltip>
-            Save
-          </q-tooltip>
+        <q-btn
+            @click="saveKdbx"
+            :disable="!isNotSave"
+            flat round icon="save">
+          <q-tooltip>Save</q-tooltip>
         </q-btn>
-        <q-btn flat round dense icon="eject" @click="closeKdbx">
-          <q-tooltip>
-            Eject
-          </q-tooltip>
+        <q-btn
+            @click="closeKdbx"
+            flat round icon="eject">
+          <q-tooltip>Eject</q-tooltip>
         </q-btn>
       </template>
 
@@ -41,7 +47,7 @@
 
 <script>
 import store from "@/store"
-import {closeKdbx} from "../utils/kdbx-utils"
+import {closeKdbx, saveKdbx} from "../utils/kdbx-utils"
 
 export default {
   name: "DefaultHeader",
@@ -57,10 +63,18 @@ export default {
     },
     isUnlocked: {
       get: () => store.getters.isUnlocked
+    },
+    isNotSave: {
+      get: () => store.getters.isNotSave
+    },
+    isShowBack() {
+      const r = this.$route.name
+      return r !== 'Home' && r !== 'Login'
     }
   },
   methods: {
-    closeKdbx
+    closeKdbx,
+    saveKdbx
   }
 }
 </script>

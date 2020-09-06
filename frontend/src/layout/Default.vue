@@ -3,6 +3,7 @@
     <DefaultHeader
         :title="pkg.name"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
+        @onBackClick="handleBack"
     />
     <q-page-container>
       <router-view/>
@@ -29,6 +30,13 @@ export default {
   computed: {
     pkg() {
       return this.$store.getters.pkg
+    }
+  },
+  methods: {
+    handleBack() {
+      this.$router.push({
+        name: 'Home'
+      })
     }
   }
 }
