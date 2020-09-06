@@ -1,5 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <q-inner-loading class="_loading" :showing="isGlobalLoading">
+      <q-spinner-gears
+          color="primary"
+          size="5em"
+      />
+    </q-inner-loading>
+
     <DefaultHeader
         :title="pkg.name"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
@@ -30,6 +37,9 @@ export default {
   computed: {
     pkg() {
       return this.$store.getters.pkg
+    },
+    isGlobalLoading() {
+      return this.$store.getters.isGlobalLoading
     }
   },
   methods: {
@@ -42,5 +52,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+._loading {
+  z-index: 3000;
+}
 </style>

@@ -19,7 +19,7 @@
       />
 
       <q-toolbar-title class="main-title">
-        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(已解锁)' : '' }}</span>
+        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(Unlocked)' : '' }}</span>
       </q-toolbar-title>
 
       <template v-if="isUnlocked">

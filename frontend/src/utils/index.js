@@ -11,7 +11,7 @@ export const notifySuccess = (message = 'Success', caption) => {
     caption: caption,
     color: 'positive',
     position: 'top',
-    icon: 'success',
+    icon: 'done',
     timeout: 1500
   })
 }
