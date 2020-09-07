@@ -12,6 +12,8 @@ The following techniques are used:
 
 ## Features
 
+Under development...
+
 - [ ] Create database
 - [X] Open a single database (`password`/`password+key`)
 - [X] Browse groups and entries in groups
@@ -21,21 +23,21 @@ The following techniques are used:
 - [ ] Implement calendar view
 - [X] Support dark mode
 - Groups
-    -[ ] Rename group
-    -[ ] Move to the recycle bin (if you close the recycle bin, delete the group directly)
-    -[ ] Empty trash
-    -[ ] Move group
-    -[ ] New group
-    -[ ] List expansion and contraction
+    - [ ] Rename group
+    - [ ] Move to the recycle bin (if you close the recycle bin, delete the group directly)
+    - [ ] Empty trash
+    - [ ] Move group
+    - [ ] New group
+    - [ ] List expansion and contraction
 - Entries
-    -[ ] View and edit the title (Title) and content (Note)
-    -[ ] Create new entry
-    -[ ] Delete entry
-    -[ ] Move entry
-    -[ ] Sort (sort by creation or modification date)
-    -[ ] Search/Filter
-    -[ ] Markdown support
-    -[ ] Modify icon
+    - [ ] View and edit the title (Title) and content (Note)
+    - [ ] Create new entry
+    - [ ] Delete entry
+    - [ ] Move entry
+    - [ ] Sort (sort by creation or modification date)
+    - [ ] Search/Filter
+    - [ ] Markdown support
+    - [ ] Modify icon
 
 ## Development
 
