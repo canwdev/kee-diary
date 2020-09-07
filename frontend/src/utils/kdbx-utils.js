@@ -6,6 +6,7 @@ import LocalStorageSettings from "./settings"
 
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 import {notifyError, notifySuccess} from '@/utils'
+import {busEmitSaveNotes} from "./bus"
 
 
 /**
@@ -50,14 +51,12 @@ export function closeKdbx() {
   })
 }
 
-export function saveKdbx() {
-  const {dbPath} = settingsLogin.get() || {}
-  const db = store.getters.database
-
+function doSaveKdbx(dbPath, db) {
   return new Promise((resolve, reject) => {
-    if (  dbPath &&   db) {
+    if (dbPath && db) {
       const electronAPI = window.electronAPI
 
+      store.commit('setIsGlobalLoading')
       db.save().then(dataAsArrayBuffer => {
         try {
           electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
@@ -68,6 +67,8 @@ export function saveKdbx() {
           notifyError(e)
           return reject(e)
         }
+      }).finally(() => {
+        store.commit('setIsGlobalLoading', false)
       })
     } else {
       const errMsg = '数据库实例不存在'
@@ -75,6 +76,20 @@ export function saveKdbx() {
       return reject(errMsg)
     }
   })
+}
+
+export function saveKdbx() {
+  const {dbPath} = settingsLogin.get() || {}
+  const db = store.getters.database
+  const isEntryOpen = store.getters.isEntryOpen
+
+  if (isEntryOpen) {
+    return busEmitSaveNotes().then(() => {
+      return doSaveKdbx(dbPath, db)
+    })
+  }
+  return doSaveKdbx(dbPath, db)
+
 }
 
 /**

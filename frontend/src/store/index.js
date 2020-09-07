@@ -14,8 +14,9 @@ export default new Vuex.Store({
       isListView: true // 是列表视图还是日历视图
     },
     pkg,
-    database: null,
-    isUnlocked: false,
+    database: null, // kdbx 数据库实例
+    isGlobalLoading: false, // 全局加载中
+    isUnlocked: false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
     currentGroupUuid: null, // 当前选中的群组 UUID 对象
     currentEntry: null, // 当前打开的条目对象
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     isListView: state => state.settings.isListView,
     pkg: state => state.pkg,
     database: state => state.database,
+    isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
     isNotSave: state => state.isNotSave,
     currentGroupUuid: state => state.currentGroupUuid,
@@ -52,6 +54,9 @@ export default new Vuex.Store({
     },
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
+    },
+    setIsGlobalLoading: (state, val = true) => {
+      state.isGlobalLoading = val
     },
     setIsNotSave: (state, val = true) => {
       if (state.isNotSave === val) {

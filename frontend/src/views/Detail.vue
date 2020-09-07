@@ -45,6 +45,7 @@ require("codemirror/mode/stex/stex") // TeX 数学公式
 require("codemirror/mode/yaml/yaml") // Front Matter
 
 import icons from "@/assets/db-icons"
+import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 
 export default {
   name: "Detail",
@@ -60,7 +61,7 @@ export default {
     isEntryOpen: () => store.getters.isEntryOpen,
     currentEntry: {
       get: () => store.getters.currentEntry,
-      // set: val => store.commit('setCurrentEntry', val)
+      set: val => store.commit('setCurrentEntry', val)
     },
   },
   watch: {
@@ -97,9 +98,15 @@ export default {
   },
   mounted() {
     this.initHyperMD()
+    bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
+      this.syncNotes()
+      resolve()
+    })
   },
   beforeDestroy() {
-    this.saveData()
+    this.syncNotes()
+    bus.$off(BUS_SAVE_NOTES_START)
+    this.currentEntry = null
   },
   methods: {
     getIcon(index) {
@@ -119,7 +126,7 @@ export default {
       }
       this.editor = editor
     },
-    saveData() {
+    syncNotes() {
       const entry = this.currentEntry
       if (entry) {
         entry.fields.Notes = this.editor.getValue()

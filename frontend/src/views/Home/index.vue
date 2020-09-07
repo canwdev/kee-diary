@@ -29,14 +29,16 @@
               :selected.sync="selected"
               @row-click="handleRowClick"
           >
-            <template v-slot:body-cell-star="props">
+            <template v-slot:body-cell-title="props">
               <q-td
                   :props="props"
-                  @click.stop="handleIconClick(props.row)"
               >
-                <q-avatar size="32px" square>
-                  <img :src="props.value">
+                <q-avatar
+                    @click.stop="handleIconClick(props.row)"
+                    size="32px" square>
+                  <img :src="props.row.iconImg">
                 </q-avatar>
+                <span class="q-ml-md">{{props.row.title}}</span>
               </q-td>
             </template>
           </q-table>
@@ -63,7 +65,7 @@ export default {
       selectedGroup: null,
       entryList: [],
       entryTableColumns: Object.freeze([
-        {name: 'star', align: 'center', label: '★', field: 'iconImg'},
+        // {name: 'star', align: 'center', label: '★', field: 'iconImg'},
         {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
         {
           name: 'creationTime',
