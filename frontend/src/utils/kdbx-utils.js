@@ -61,7 +61,7 @@ function doSaveKdbx(dbPath, db) {
         try {
           electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
           store.commit('setIsNotSave', false)
-          notifySuccess('保存成功')
+          notifySuccess('Saved successfully')
           return resolve()
         } catch (e) {
           notifyError(e)
@@ -71,7 +71,7 @@ function doSaveKdbx(dbPath, db) {
         store.commit('setIsGlobalLoading', false)
       })
     } else {
-      const errMsg = '数据库实例不存在'
+      const errMsg = 'The database instance does not exist'
       notifyError(errMsg)
       return reject(errMsg)
     }

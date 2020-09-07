@@ -11,7 +11,8 @@ export default new Vuex.Store({
   state: {
     settings: settings.get() || {
       isDarkMode: false,
-      isListView: true // 是列表视图还是日历视图
+      isListView: true, // 是列表视图还是日历视图
+      isEditWYSIWYG: true
     },
     pkg,
     database: null, // kdbx 数据库实例
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   getters: {
     isDarkMode: state => state.settings.isDarkMode,
     isListView: state => state.settings.isListView,
+    isEditWYSIWYG: state => state.settings.isEditWYSIWYG,
     pkg: state => state.pkg,
     database: state => state.database,
     isGlobalLoading: state => state.isGlobalLoading,
@@ -42,6 +44,10 @@ export default new Vuex.Store({
     },
     setIsListView: (state, val) => {
       state.settings.isListView = val
+      settings.set(state.settings)
+    },
+    setIsEditWYSIWYG: (state, val) => {
+      state.settings.isEditWYSIWYG = val
       settings.set(state.settings)
     },
     updateSettings(state, kv) {

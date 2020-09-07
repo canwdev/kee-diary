@@ -1,74 +1,70 @@
 # KeeDiary
 
-## 简介
+## Introduction
 
-一款日记编辑器应用，使用 KeePass 技术加密存储。配合 Syncthing 使用，可以方便的在不同设备同步。
+A diary editor application that uses KeePass technology to encrypt storage. With Syncthing, you can easily synchronize on different devices.
 
-使用了以下技术：
+The following techniques are used:
 
 - Electron
 - Vue / Quasar UI
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
 
-## 截图
+## Features
 
-开发中，暂时没有
+- [ ] Create database
+- [X] Open a single database (`password`/`password+key`)
+- [X] Browse groups and entries in groups
+- [ ] Save database/close database
+- [ ] Determine whether the database has been changed
+- [ ] Full database search function
+- [ ] Implement calendar view
+- [X] Support dark mode
+- Groups
+    -[ ] Rename group
+    -[ ] Move to the recycle bin (if you close the recycle bin, delete the group directly)
+    -[ ] Empty trash
+    -[ ] Move group
+    -[ ] New group
+    -[ ] List expansion and contraction
+- Entries
+    -[ ] View and edit the title (Title) and content (Note)
+    -[ ] Create new entry
+    -[ ] Delete entry
+    -[ ] Move entry
+    -[ ] Sort (sort by creation or modification date)
+    -[ ] Search/Filter
+    -[ ] Markdown support
+    -[ ] Modify icon
 
-## 功能特性
-
-- [ ] 创建数据库
-- [X] 打开单个数据库（`密码`/`密码+密钥`）
-- [X] 浏览群组(groups)和群组里面的条目(entries)
-- [ ] 保存数据库/关闭数据库
-- [ ] 判断数据库是否被改动
-- [ ] 全数据库搜索功能
-- [ ] 实现日历视图
-- [X] 支持黑暗模式
-- 群组(groups)
-    - [ ] 重命名群组
-    - [ ] 移动至回收站（如果关闭了回收站则直接删除群组）
-    - [ ] 清空回收站
-    - [ ] 移动群组
-    - [ ] 新建群组
-    - [ ] 列表的展开与收缩
-- 条目(entries)
-    - [ ] 标题(Title)和内容(Note)的查看与编辑
-    - [ ] 创建新条目
-    - [ ] 删除条目
-    - [ ] 移动条目
-    - [ ] 排序（按创建或修改日期排序）
-    - [ ] 搜索/过滤
-    - [ ] Markdown 支持
-    - [ ] 修改图标
-
-## 开发运行
+## Development
 
 ```sh
-# 安装依赖
+# Install dependencies
 yarn install
 yarn install --cwd "./frontend"
 
-# 开发模式 
+# Run development
 yarn run dev
 ```
 
-## 生产构建
+## Build production
 
 ```sh
-# 全局安装 electron-builder
+# Global install: electron-builder
 npm -i -g electron-builder
 
-# 首先构建前端
+# Build frontend first
 yarn run build:frontend
 
-# 构建 electron 生成可执行文件
+# Build electron executable file
 yarn run build:electron
 ```
 
-## 备注
+## Remarks
 
-- `kdbxweb` 是一个用于操作 kdbx 数据库的函数库，由于国内网络问题使用了[拷贝的版本](https://gitee.com/canwdev/kdbxweb)，并无其他改动。
-- 上一个版本：[kee-diary-react-electron](https://github.com/canwdev/kee-diary-react-electron)
+- `kdbxweb` It is a function library for operating the kdbx database. Due to domestic network problems, [copy version](https://gitee.com/canwdev/kdbxweb) is used，there are no other changes.
+- last KeeDiary version: [kee-diary-react-electron](https://github.com/canwdev/kee-diary-react-electron)
 
 
 

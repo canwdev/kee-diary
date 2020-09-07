@@ -34,7 +34,7 @@
               <q-icon name="lock" color="primary"/>
             </q-avatar>
 
-            <h4 class="text-h5 text-white q-my-sm">打开 KDBX 数据库</h4>
+            <h4 class="text-h5 text-white q-my-sm">Open KDBX database</h4>
           </q-card-section>
 
           <q-form
@@ -42,13 +42,13 @@
             <q-card-section
                 class="q-px-sm q-gutter-y-sm q-pt-md">
               <q-input
-                  outlined dense clearable v-model="form.dbPath" type="text" placeholder="数据库文件路径">
+                  outlined dense clearable v-model="form.dbPath" type="text" placeholder="Database file path">
                 <template v-slot:prepend>
                   <q-icon name="lock"/>
                 </template>
                 <template v-slot:after>
                   <q-btn
-                      @click="handleChooseFile('dbPath', [{name: 'KeePass KDBX 文件', extensions: ['kdbx']}])"
+                      @click="handleChooseFile('dbPath', [{name: '*.kdbx file', extensions: ['kdbx']}])"
                       outline icon="attachment"/>
                 </template>
               </q-input>
@@ -57,15 +57,15 @@
                   <q-icon name="vpn_key"/>
                 </template>
               </q-input>
-              <q-input outlined dense clearable v-model="form.keyPath" type="text" placeholder="密钥文件路径">
+              <q-input outlined dense clearable v-model="form.keyPath" type="text" placeholder="Key file path">
                 <template v-slot:prepend>
                   <q-icon name="vpn_key"/>
                 </template>
                 <template v-slot:after>
                   <q-btn
                       @click="handleChooseFile('keyPath', [
-                    {name: '所有文件', extensions: ['*']},
-                    {name: '密钥文件', extensions: ['key']},
+                    {name: 'All', extensions: ['*']},
+                    {name: '*.key', extensions: ['key']},
                   ])"
 
                       outline icon="attachment"/>
@@ -85,7 +85,7 @@
 
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6">
-              可信任的离线日记本 <br>
+              Trusted offline diary <br>
               © {{ new Date().getFullYear() }} {{ pkg.name }} {{ pkg.version }} by {{ pkg.author }}
             </p>
           </q-card-section>
@@ -134,9 +134,9 @@ export default {
   },
   methods: {
     /**
-     * 选择文件
-     * name：对应表单name
-     * filters：文件过滤器，[{name: 'KeePass KDBX 文件', extensions: ['kdbx']}]
+     * Select the file
+     * name：Target form name
+     * filters：File filter: [{name: 'KeePass KDBX 文件', extensions: ['kdbx']}]
      **/
     handleChooseFile(name, filters) {
       const results = window.electronAPI.openFileChooser(filters)
@@ -148,11 +148,11 @@ export default {
     async handleUnlock() {
       const {dbPath, password, keyPath, isSaveHistory} = this.form
       if (!dbPath) {
-        notifyError('数据库路径不能为空')
+        notifyError('The database path cannot be empty')
         return
       }
       if (!password && !keyPath) {
-        notifyError('密码或密钥路径不能为空')
+        notifyError('Password or key path cannot be empty')
         return
       }
       if (isSaveHistory) {
