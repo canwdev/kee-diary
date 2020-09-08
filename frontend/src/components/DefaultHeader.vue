@@ -32,12 +32,12 @@
             @click="saveKdbx"
             :disable="!isNotSave"
             flat round icon="save">
-          <q-tooltip>Save</q-tooltip>
+          <q-tooltip>Save (Ctrl+S)</q-tooltip>
         </q-btn>
         <q-btn
             @click="closeKdbx"
             flat round icon="eject">
-          <q-tooltip>Close</q-tooltip>
+          <q-tooltip>Close (Ctrl+L)</q-tooltip>
         </q-btn>
       </template>
 

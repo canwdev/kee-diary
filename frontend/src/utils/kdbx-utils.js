@@ -130,8 +130,9 @@ export function saveKdbx() {
   const db = store.getters.database
   const isEntryOpen = store.getters.isEntryOpen
   const isGlobalLoading = store.getters.isGlobalLoading
+  const isNotSave = store.getters.isNotSave
 
-  if (isGlobalLoading) {
+  if (isGlobalLoading || !isNotSave) {
     return
   }
 

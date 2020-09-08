@@ -10,21 +10,46 @@
               color="secondary"
               placeholder="entry.fields.Title">
             <template v-slot:prepend>
-              <q-avatar size="32px" square>
+              <q-avatar size="32px" square class="cursor-pointer" @click="isDialogPreviewVisible = true">
                 <img :src="getIcon(currentEntry.icon)">
+                <q-tooltip>Preview (Ctrl+/)</q-tooltip>
               </q-avatar>
             </template>
           </q-input>
 
           <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
-            <q-toggle
-                v-model="isEditWYSIWYG"
-                color="secondary"
-                checked-icon="edit"
-                unchecked-icon="code"
-            >
-              <q-tooltip>isWYSIWYG</q-tooltip>
-            </q-toggle>
+            <div class="row q-gutter-x-md">
+              <q-toggle
+                  v-model="isEditWYSIWYG"
+                  color="secondary"
+                  checked-icon="edit"
+                  unchecked-icon="code"
+              >
+                <q-tooltip>isWYSIWYG</q-tooltip>
+              </q-toggle>
+              <q-select
+                  dense
+                  color="secondary"
+                  v-model="editorTheme" :options="themeOptions" label="Theme"
+                  style="width: 150px"
+              />
+              <q-btn-group flat >
+                <q-btn
+                    dense label="Load">
+                  <q-tooltip>Load outer text file</q-tooltip>
+                </q-btn>
+                <q-btn
+                    dense label="External">
+                  <q-tooltip>Edit with external tools</q-tooltip>
+                </q-btn>
+                <q-btn
+                    dense label="Export">
+                  <q-tooltip>Export to text file</q-tooltip>
+                </q-btn>
+              </q-btn-group>
+            </div>
+
+
             <q-space/>
             <div class="date-display" v-if="isEntryOpen">
               <span>Created:<DateTimeEdit :date.sync="editing.creationTime"/></span>
@@ -37,6 +62,10 @@
       </q-card>
     </div>
 
+    <DialogEntryPreview
+        :visible.sync="isDialogPreviewVisible"
+        :entry="currentEntry"
+    />
   </q-page>
 </template>
 
@@ -44,18 +73,35 @@
 import store from '@/store'
 import * as HyperMD from 'hypermd'
 // 语法高亮
-require("codemirror/mode/htmlmixed/htmlmixed") // Markdown 内嵌HTML
-require("codemirror/mode/stex/stex") // TeX 数学公式
-require("codemirror/mode/yaml/yaml") // Front Matter
+import "codemirror/mode/htmlmixed/htmlmixed" // Markdown 内嵌HTML
+import "codemirror/mode/stex/stex" // TeX 数学公式
+import "codemirror/mode/yaml/yaml" // Front Matter
+
+// CodeMirror Theme
+import 'codemirror/theme/idea.css'
+import 'codemirror/theme/elegant.css'
+import 'codemirror/theme/yeti.css'
+import 'codemirror/theme/darcula.css'
+import 'codemirror/theme/dracula.css'
+import 'codemirror/theme/gruvbox-dark.css'
+import 'codemirror/theme/lesser-dark.css'
+import 'codemirror/theme/material.css'
+import 'codemirror/theme/monokai.css'
+import 'codemirror/theme/mdn-like.css'
+import 'codemirror/theme/rubyblue.css'
+import 'codemirror/theme/solarized.css'
+import 'codemirror/theme/the-matrix.css'
 
 import icons from "@/assets/db-icons"
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
+import DialogEntryPreview from "@/components/DialogEntryPreview"
 
 export default {
   name: "Detail",
   components: {
-    DateTimeEdit
+    DateTimeEdit,
+    DialogEntryPreview
   },
   data() {
     return {
@@ -63,7 +109,25 @@ export default {
         title: '',
         creationTime: '',
         lastModTime: '',
-      }
+      },
+      isDialogPreviewVisible: false,
+      themeOptions: [
+        'default',
+        'idea',
+        'elegant',
+        'yeti',
+        'darcula',
+        'dracula',
+        'gruvbox-dark',
+        'lesser-dark',
+        'material',
+        'monokai',
+        'mdn-like',
+        'rubyblue',
+        'solarized dark',
+        'solarized light',
+        'the-matrix',
+      ],
     }
   },
   computed: {
@@ -74,6 +138,10 @@ export default {
     isEditWYSIWYG: {
       get: () => store.getters.isEditWYSIWYG,
       set: val => store.commit('setIsEditWYSIWYG', val)
+    },
+    editorTheme: {
+      get: () => store.getters.editorTheme || 'default',
+      set: val => store.commit('setEditorTheme', val)
     },
     currentEntry: {
       get: () => store.getters.currentEntry,
@@ -99,10 +167,13 @@ export default {
     isEditWYSIWYG(nv) {
       if (nv) {
         HyperMD.switchToHyperMD(this.editor)
-
       } else {
         HyperMD.switchToNormal(this.editor)
       }
+      this.editor.setOption("theme", this.editorTheme);
+    },
+    editorTheme(nv) {
+      this.editor.setOption("theme", nv);
     },
     editing: {
       handler() {
@@ -139,6 +210,7 @@ export default {
       if (!this.isEditWYSIWYG) {
         HyperMD.switchToNormal(editor)
       }
+      editor.setOption("theme", this.editorTheme);
       editor.setSize(null, "100%") // set height
       editor.on('change', () => {
         if (this.editor) {
@@ -157,7 +229,7 @@ export default {
       }
     },
     handleKeyDown(event) {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && !this.isDialogPreviewVisible) {
         event.preventDefault()
         this.$router.push({
           name: 'Home'
@@ -167,7 +239,7 @@ export default {
         switch (String.fromCharCode(event.which).toLowerCase()) {
           case '¿': // Keyboard symbol: "/"
             event.preventDefault()
-            this.isEditWYSIWYG = !this.isEditWYSIWYG
+            this.isDialogPreviewVisible = !this.isDialogPreviewVisible
             break;
           default:
             return
