@@ -22,6 +22,7 @@
 <script>
 import DefaultDrawer from "../components/DefaultDrawer"
 import DefaultHeader from "../components/DefaultHeader"
+import {registerKeyShortcuts, unRegisterKeyShortcuts} from "@/utils/key-shortcuts"
 
 export default {
   name: 'LayoutDefault',
@@ -41,6 +42,12 @@ export default {
     isGlobalLoading() {
       return this.$store.getters.isGlobalLoading
     }
+  },
+  mounted() {
+    registerKeyShortcuts()
+  },
+  beforeDestroy() {
+    unRegisterKeyShortcuts()
   },
   methods: {
     handleBack() {

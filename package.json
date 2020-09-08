@@ -9,8 +9,8 @@
   "main": "src/electron-starter.js",
   "scripts": {
     "dev": "node start-dev.js",
-    "dev:frontend": "cross-env PORT=5001 yarn --cwd './frontend' serve",
-    "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:5001 electron .",
+    "dev:frontend": "cross-env PORT=12020 yarn --cwd './frontend' serve",
+    "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:12020 electron .",
     "build:frontend": "cross-env yarn --cwd './frontend' build",
     "build:electron-dir": "electron-builder --dir",
     "build:electron": "electron-builder",

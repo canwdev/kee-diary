@@ -68,9 +68,7 @@ export default new Vuex.Store({
       if (state.isNotSave === val) {
         return
       }
-      if (val) {
-        window.electronAPI.setShowExitPrompt(val)
-      }
+      window.electronAPI.setShowExitPrompt(val)
       state.isNotSave = val
     },
     setCurrentGroupUuid: (state, val) => {
@@ -79,6 +77,13 @@ export default new Vuex.Store({
     setCurrentEntry: (state, val) => {
       state.currentEntry = val
     },
+    setCloseDatabase(state) {
+      state.database = null
+      state.currentGroupUuid = null
+      state.currentEntry = null
+      this.commit('setIsNotSave', false)
+      state.isUnlocked = false
+    }
   },
   actions: {},
   modules: {}

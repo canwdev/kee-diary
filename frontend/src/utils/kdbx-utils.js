@@ -7,6 +7,7 @@ import LocalStorageSettings from "./settings"
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 import {notifyError, notifySuccess} from '@/utils'
 import {busEmitSaveNotes} from "./bus"
+import { Dialog } from 'quasar'
 
 
 /**
@@ -38,17 +39,48 @@ export function decryptKdbx(dbPath, password, keyPath) {
 
 }
 
+
 export function openKdbx(db) {
   store.commit('setDatabase', db)
   store.commit('setIsUnlocked', true)
 }
 
-export function closeKdbx() {
-  store.commit('setDatabase', null)
-  store.commit('setIsUnlocked', false)
+export function doCloseKdbx() {
+  store.commit('setCloseDatabase')
   router.replace({
     name: 'Login'
   })
+}
+
+export function closeKdbx() {
+  const isNotSave = store.getters.isNotSave
+  if (isNotSave) {
+    Dialog.create({
+      title: 'Confirm Exit',
+      message: 'There are unsaved changes. Do you want to save?',
+      persistent: false,
+      ok: {
+        flat: true,
+        label: 'Save'
+      },
+      cancel: {
+        flat: true,
+        label: 'Don\'t save'
+      },
+
+    }).onOk(() => {
+      saveKdbx().then(() => {
+        doCloseKdbx()
+      })
+    }).onCancel(() => {
+      doCloseKdbx()
+    }).onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    })
+
+    return
+  }
+  doCloseKdbx()
 }
 
 function doSaveKdbx(dbPath, db) {
@@ -82,6 +114,11 @@ export function saveKdbx() {
   const {dbPath} = settingsLogin.get() || {}
   const db = store.getters.database
   const isEntryOpen = store.getters.isEntryOpen
+  const isGlobalLoading = store.getters.isGlobalLoading
+
+  if (isGlobalLoading) {
+    return
+  }
 
   if (isEntryOpen) {
     return busEmitSaveNotes().then(() => {

@@ -1,7 +1,7 @@
 const {exec, spawn} = require('child_process');
 const net = require('net');
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 12020;
 process.env.ELECTRON_START_URL = `http://localhost:${port}`;
 
 const fe = spawn('yarn run dev:frontend', { shell: true });

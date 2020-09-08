@@ -1,6 +1,6 @@
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, dialog} = require('electron')
+const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
 const isDev = judgementElectronIsDev()
@@ -39,20 +39,8 @@ function createWindow() {
   app.showExitPrompt = false
   mainWindow.on('close', (e) => {
     if (app.showExitPrompt) {
+      console.log('prevent close')
       e.preventDefault() // Prevents the window from closing
-      dialog.showMessageBox(mainWindow, {
-        type: 'warning',
-        buttons: ['不保存并退出', '取消'],
-        defaultId: 1,
-        cancelId: 1,
-        title: '退出程序',
-        message: '警告：未保存的数据将会丢失！确定要退出吗?'
-      }, function (response) {
-        if (response === 0) { // 退出
-          app.showExitPrompt = false
-          mainWindow.close()
-        }
-      })
     }
   })
 
