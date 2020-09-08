@@ -72,7 +72,7 @@ const electronAPI = function () {
   this.onMessage = (channel, func) => {
     if (validReceiveChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
-      ipcRenderer.on(channel, (event, ...args) => func(...args));
+      ipcRenderer.on(channel, func);
     }
   }
   this.offMessage = (channel, func) => {

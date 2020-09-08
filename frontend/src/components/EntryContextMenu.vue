@@ -48,18 +48,22 @@ export default {
             this.emitEvent('onEdit')
           }
         },
-        {isSeparator: true},
         {
           icon: 'star', label: 'Change icon', action: () => {
             this.emitEvent('onChangeIcon')
           }
         },
-        {icon: 'double_arrow', label: 'Move...', action: () => {
+        {isSeparator: true},
+        {
+          icon: 'double_arrow', label: 'Move...', action: () => {
             this.emitEvent('onMove')
-          }},
-        {icon: 'delete', label: 'Delete', action: () => {
+          }
+        },
+        {
+          icon: 'delete', label: 'Delete', action: () => {
             this.emitEvent('onDelete')
-          }}
+          }
+        }
       ]
     }
   },

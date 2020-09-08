@@ -6,16 +6,20 @@
           <q-avatar size="32px" square>
             <img :src="icons[entry.icon]"/>
           </q-avatar>
-          <span class="q-ml-md">{{entry.fields.Title}}</span>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
+          <span class="q-ml-md">{{ entry.fields.Title }}</span>
+          <q-space/>
+          <q-btn icon="close" flat round dense v-close-popup/>
         </div>
       </q-card-section>
 
       <q-separator/>
 
-      <q-card-section style="max-height: 80vh" class="scroll q-pa-md">
-        {{entry.fields.Notes}}
+      <q-card-section style="max-height: 80vh" class="scroll">
+        <q-card
+            flat
+            v-html="transformHTML(entry.fields.Notes)"
+            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+        />
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -23,6 +27,8 @@
 
 <script>
 import icons from '@/assets/db-icons'
+import markdownIt from "@/utils/markdown-it"
+import store from "@/store"
 
 export default {
   name: "DialogEntryPreview",
@@ -37,6 +43,9 @@ export default {
     }
   },
   computed: {
+    isDarkMode: {
+      get: () => store.getters.isDarkMode,
+    },
     mVisible: {
       get() {
         return this.visible
@@ -49,6 +58,11 @@ export default {
   data() {
     return {
       icons: Object.freeze(icons.items),
+    }
+  },
+  methods: {
+    transformHTML(text) {
+      return markdownIt.render(text)
     }
   }
 }

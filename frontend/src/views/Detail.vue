@@ -1,6 +1,6 @@
 <template>
   <q-page class="row justify-center">
-    <div class="col-md-10 q-pa-lg">
+    <div class="col-sm-12 col-md-10 q-pa-lg">
       <q-card>
         <q-card-section class="q-gutter-y-xs">
           <q-input
@@ -16,14 +16,15 @@
             </template>
           </q-input>
 
-          <q-toolbar class="bg-grey-3">
+          <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
             <q-toggle
                 v-model="isEditWYSIWYG"
                 color="secondary"
-                title="isWYSIWYG"
                 checked-icon="edit"
                 unchecked-icon="code"
-            />
+            >
+              <q-tooltip>isWYSIWYG</q-tooltip>
+            </q-toggle>
             <q-space/>
             <div class="date-display" v-if="isEntryOpen">
               <span>Created:<DateTimeEdit :date.sync="editing.creationTime"/></span>
@@ -66,6 +67,9 @@ export default {
     }
   },
   computed: {
+    isDarkMode: {
+      get: () => store.getters.isDarkMode,
+    },
     isEntryOpen: () => store.getters.isEntryOpen,
     isEditWYSIWYG: {
       get: () => store.getters.isEditWYSIWYG,
@@ -83,7 +87,6 @@ export default {
           this.editor && this.editor.setValue('')
           return
         }
-        console.log(nv)
         this.editing = {
           title: nv.fields.Title,
           creationTime: nv.times.creationTime,

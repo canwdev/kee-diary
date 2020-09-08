@@ -116,7 +116,6 @@ export default {
       store.commit('setIsNotSave')
     },
     handlePreview(target) {
-      console.log('handlePreview', target)
       this.isDialogPreviewVisible = true
       this.currentEntry = target
     },

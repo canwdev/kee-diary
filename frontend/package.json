@@ -15,6 +15,7 @@
     "hypermd": "^0.3.11",
     "kdbxweb": "https://gitee.com/canwdev/kdbxweb.git",
     "lodash": "^4.17.20",
+    "markdown-it": "^10.0.0",
     "quasar": "^1.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

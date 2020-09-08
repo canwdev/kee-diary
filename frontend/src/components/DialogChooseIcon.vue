@@ -12,22 +12,24 @@
 
       <q-separator />
 
-      <q-card-section style="max-height: 600px" class="scroll q-gutter-md">
-        <q-btn
-            v-for="(item, i) in icons"
-            :key="i"
-            @click="selectedIndex = i"
-            :flat="i !== selectedIndex"
-            color="primary"
-            round
-        >
-          <q-avatar size="32px" square>
-            <img :src="item"/>
-          </q-avatar>
-          <q-tooltip>
-            {{ iconNames[i] }}
-          </q-tooltip>
-        </q-btn>
+      <q-card-section style="max-height: 70vh" class="scroll">
+        <q-card flat class="q-gutter-md">
+          <q-btn
+              v-for="(item, i) in icons"
+              :key="i"
+              @click="selectedIndex = i"
+              :flat="i !== selectedIndex"
+              color="primary"
+              round
+          >
+            <q-avatar size="32px" square>
+              <img :src="item"/>
+            </q-avatar>
+            <q-tooltip>
+              {{ iconNames[i] }}
+            </q-tooltip>
+          </q-btn>
+        </q-card>
       </q-card-section>
 
       <q-separator/>

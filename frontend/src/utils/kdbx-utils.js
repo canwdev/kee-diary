@@ -59,7 +59,7 @@ export function closeKdbx(isExit = false) {
     Dialog.create({
       title: 'Confirm ' + (isExit ? 'Exit' : 'Close'),
       message: 'There are unsaved changes. Do you want to save?',
-      persistent: true,
+      persistent: false,
       options: {
         type: 'radio',
         model: true,
@@ -78,7 +78,6 @@ export function closeKdbx(isExit = false) {
       },
 
     }).onOk((result) => {
-      console.log(result)
       if (result) {
         saveKdbx().then(() => {
           doCloseKdbx()
