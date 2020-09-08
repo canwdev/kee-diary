@@ -1,4 +1,4 @@
-const {shell, remote} = require('electron')
+const {shell, remote, ipcRenderer, contextBridge} = require('electron')
 const fs = remote.require('fs')
 
 const electronAPI = function () {
@@ -57,10 +57,41 @@ const electronAPI = function () {
   // 退出前提示
   this.getShowExitPrompt = remote.app.showExitPrompt
   this.setShowExitPrompt = (flag = true) => remote.app.showExitPrompt = flag
+
+  // this.getIpcRender = () => ipcRenderer
+
+  this.sendMessage = (channel, data) => {
+    // whitelist channels
+    let validChannels = ["toMain"];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.send(channel, data);
+    }
+  }
+
+  let validReceiveChannels = ['app-closing'];
+  this.onMessage = (channel, func) => {
+    if (validReceiveChannels.includes(channel)) {
+      // Deliberately strip event as it includes `sender`
+      ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  }
+  this.offMessage = (channel, func) => {
+    if (validReceiveChannels.includes(channel)) {
+      // need test
+      ipcRenderer.off(channel, func);
+    }
+  }
 }
 
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', function () {
-  window.electronAPI = new electronAPI()
+  console.log('DOMContentLoaded')
+  // window.electronAPI = new electronAPI()
 })
+
+// Expose protected methods that allow the renderer process to use
+// the ipcRenderer without exposing the entire object
+contextBridge.exposeInMainWorld(
+  "electronAPI", new electronAPI()
+);

@@ -21,6 +21,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: true,
       preload: path.join(__dirname, 'electron', 'preload.js')
     },
     icon: __dirname + './assets/img/favicon.png'
@@ -41,6 +42,7 @@ function createWindow() {
     if (app.showExitPrompt) {
       console.log('prevent close')
       e.preventDefault() // Prevents the window from closing
+      mainWindow.webContents.send('app-closing')
     }
   })
 

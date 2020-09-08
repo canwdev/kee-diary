@@ -52,28 +52,31 @@ export function doCloseKdbx() {
   })
 }
 
-export function closeKdbx() {
+export function closeKdbx(isExit = false) {
   const isNotSave = store.getters.isNotSave
   if (isNotSave) {
+    const andExit = isExit ? ' and exit' : ''
     Dialog.create({
-      title: 'Confirm Exit',
+      title: 'Confirm ' + isExit ? 'Exit' : 'Close',
       message: 'There are unsaved changes. Do you want to save?',
       persistent: false,
       ok: {
         flat: true,
-        label: 'Save'
+        label: 'Save' + andExit
       },
       cancel: {
         flat: true,
-        label: 'Don\'t save'
+        label: 'Don\'t save' + andExit
       },
 
     }).onOk(() => {
       saveKdbx().then(() => {
         doCloseKdbx()
+        isExit && window.close()
       })
     }).onCancel(() => {
       doCloseKdbx()
+      isExit && window.close()
     }).onDismiss(() => {
       // console.log('I am triggered on both OK and Cancel')
     })
@@ -81,6 +84,7 @@ export function closeKdbx() {
     return
   }
   doCloseKdbx()
+  isExit && window.close()
 }
 
 function doSaveKdbx(dbPath, db) {

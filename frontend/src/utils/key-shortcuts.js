@@ -4,11 +4,17 @@ import {saveKdbx, closeKdbx} from "./kdbx-utils"
 export function registerKeyShortcuts() {
   window.addEventListener('keydown', handleKey)
   window.addEventListener('click', handleClick)
+  setTimeout(() => {
+    window.electronAPI.onMessage('app-closing', () => {
+      closeKdbx(true)
+    })
+  }, 500)
 }
 
 export function unRegisterKeyShortcuts() {
   window.removeEventListener('keydown', handleKey)
   window.removeEventListener('click', handleClick)
+  window.electronAPI.offMessage('app-closing')
 }
 
 function handleKey(event) {
