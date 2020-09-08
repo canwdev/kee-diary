@@ -1,21 +1,31 @@
 import {saveKdbx, closeKdbx} from "./kdbx-utils"
+import _debounce from 'lodash/debounce'
 
 // 注册键盘快捷键
 export function registerKeyShortcuts() {
   window.addEventListener('keydown', handleKey)
-  window.addEventListener('click', handleClick)
+  // window.addEventListener('click', handleClick)
   setTimeout(() => {
-    window.electronAPI.onMessage('app-closing', () => {
-      closeKdbx(true)
-    })
+    window.electronAPI.onMessage('app-closing', handleAppClose)
   }, 500)
 }
 
 export function unRegisterKeyShortcuts() {
   window.removeEventListener('keydown', handleKey)
-  window.removeEventListener('click', handleClick)
-  window.electronAPI.offMessage('app-closing')
+  // window.removeEventListener('click', handleClick)
+  window.electronAPI.offMessage('app-closing', handleAppClose)
 }
+
+function _closeKdbx() {
+  closeKdbx(true)
+}
+
+// _debounce function prevents repeated execution in an instant
+export const handleAppClose = _debounce(_closeKdbx, 1000, {
+  'leading': true,
+  'trailing': false
+})
+
 
 function handleKey(event) {
   if (event.ctrlKey || event.metaKey) {
@@ -35,10 +45,10 @@ function handleKey(event) {
 
 }
 
-function handleClick(event) {
-  // 在外部打开链接
-  if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
-    event.preventDefault()
-    window.electronAPI.openExternal(event.target.href)
-  }
-}
+// function handleClick(event) {
+//   // 在外部打开链接
+//   if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
+//     event.preventDefault()
+//     window.electronAPI.openExternal(event.target.href)
+//   }
+// }

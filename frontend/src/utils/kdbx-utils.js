@@ -55,27 +55,40 @@ export function closeKdbx(isExit = false) {
   const isNotSave = store.getters.isNotSave
   if (isNotSave) {
     const andExit = isExit ? ' and exit' : ''
+
     Dialog.create({
       title: 'Confirm ' + (isExit ? 'Exit' : 'Close'),
       message: 'There are unsaved changes. Do you want to save?',
-      persistent: false,
+      persistent: true,
+      options: {
+        type: 'radio',
+        model: true,
+        // inline: true,
+        items: [
+          { label: 'Save' + andExit, value: true, color: 'positive' },
+          { label: 'Don\'t save' + andExit, value: false, color: 'negative' },
+        ]
+      },
       ok: {
-        flat: true,
-        label: 'Save' + andExit
+        label: 'Confirm'
       },
       cancel: {
         flat: true,
-        label: 'Don\'t save' + andExit
+        label: 'Cancel'
       },
 
-    }).onOk(() => {
-      saveKdbx().then(() => {
+    }).onOk((result) => {
+      console.log(result)
+      if (result) {
+        saveKdbx().then(() => {
+          doCloseKdbx()
+          isExit && window.close()
+        })
+      } else {
         doCloseKdbx()
         isExit && window.close()
-      })
+      }
     }).onCancel(() => {
-      doCloseKdbx()
-      isExit && window.close()
     }).onDismiss(() => {
       // console.log('I am triggered on both OK and Cancel')
     })

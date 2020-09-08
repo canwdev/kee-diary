@@ -22,6 +22,7 @@
                 </q-avatar>
                 <div class="tree-name">{{ prop.node.name }}</div>
               </div>
+              <EntryContextMenu/>
             </template>
           </q-tree>
         </div>
@@ -29,55 +30,29 @@
       </template>
 
       <template v-slot:after>
-        <div class="q-pa-md">
-          <q-table
-              dense
-              :data="entryList"
-              :columns="entryTableColumns"
-              row-key="id"
-              :pagination.sync="pagination"
-              selection="multiple"
-              :selected-rows-label="getSelectedString"
-              :selected.sync="selected"
-              @row-click="handleRowClick"
-          >
-            <template v-slot:body-cell-title="props">
-              <q-td
-                  :props="props"
-              >
-                <q-avatar
-                    @click.stop="handleIconClick(props.row)"
-                    size="32px" square>
-                  <img :src="icons[props.row.iconIndex]">
-                </q-avatar>
-                <span class="q-ml-md">{{ props.row.title }}</span>
-              </q-td>
-            </template>
-          </q-table>
-        </div>
+        <EntryList
+            :entry-list="entryList"
+        />
       </template>
 
     </q-splitter>
 
-    <DialogChooseIcon
-      :visible.sync="isDialogChooseIconVisible"
-      :index="currentEntry.iconIndex"
-      @onChoose="updateEntryIcon"
-    />
+
   </q-page>
 </template>
 
 <script>
 import store from "@/store"
 import {getGroupTree, getGroupEntries} from "@/utils/kdbx-utils"
-import {formatDateLite} from "@/utils"
-import DialogChooseIcon from "@/components/DialogChooseIcon.vue"
 import icons from "@/assets/db-icons"
+import EntryContextMenu from "@/components/EntryContextMenu"
+import EntryList from "@/views/Home/EntryList"
 
 export default {
   name: "DbListView",
   components: {
-    DialogChooseIcon
+    EntryList,
+    EntryContextMenu
   },
   data() {
     return {
@@ -85,33 +60,7 @@ export default {
       groupTree: [],
       selectedGroup: null,
       entryList: [],
-      entryTableColumns: Object.freeze([
-        // {name: 'star', align: 'center', label: '★', field: 'iconImg'},
-        {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
-        {
-          name: 'creationTime',
-          align: 'center',
-          label: 'Created',
-          field: 'creationTime',
-          format: val => formatDateLite(val),
-          sortable: true
-        },
-        {
-          name: 'lastModTime',
-          align: 'center',
-          label: 'Modified',
-          field: 'lastModTime',
-          format: val => formatDateLite(val),
-          sortable: true
-        },
-      ]),
-      pagination: {
-        rowsPerPage: 10
-      },
-      selected: [],
-      icons: Object.freeze(icons.items),
-      isDialogChooseIconVisible: false,
-      currentEntry: {}
+      icons: Object.freeze(icons.items)
     }
   },
   computed: {
@@ -170,25 +119,6 @@ export default {
     }
   },
   methods: {
-    getSelectedString() {
-      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''}`
-    },
-    handleRowClick(evt, row) {
-      store.commit('setCurrentEntry', row._entry)
-      this.$router.push({
-        name: 'Detail'
-      })
-    },
-    handleIconClick(row) {
-      console.log(row)
-      this.isDialogChooseIconVisible = true
-      this.currentEntry = row
-    },
-    updateEntryIcon(iconIndex) {
-      this.currentEntry.iconIndex = iconIndex
-      this.currentEntry._entry.icon = iconIndex
-      store.commit('setIsNotSave')
-    }
   }
 }
 </script>

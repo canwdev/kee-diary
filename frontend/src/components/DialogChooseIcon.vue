@@ -45,7 +45,6 @@
 <script>
 import icons, {formatIconName} from '@/assets/db-icons'
 
-
 export default {
   props: {
     visible: {
