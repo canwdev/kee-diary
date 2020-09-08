@@ -53,8 +53,7 @@
                 <span class="q-ml-md">{{ props.row.title }}</span>
               </q-td>
             </template>
-          </q-table
-              dense>
+          </q-table>
         </div>
       </template>
 
