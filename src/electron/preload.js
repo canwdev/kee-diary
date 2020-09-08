@@ -40,6 +40,10 @@ const electronAPI = function () {
     return res
   }
 
+  this.readFileSyncAsPlainText = function (path) {
+    return fs.readFileSync(path, {encoding:'utf8'})
+  }
+
   this.showErrorBox = function (title, message) {
     remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), {
       type: 'error',

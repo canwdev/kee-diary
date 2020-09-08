@@ -35,6 +35,7 @@
               />
               <q-btn-group flat >
                 <q-btn
+                    @click="handleLoad"
                     dense label="Load">
                   <q-tooltip>Load outer text file</q-tooltip>
                 </q-btn>
@@ -245,6 +246,11 @@ export default {
             return
         }
       }
+    },
+    handleLoad() {
+      const [path] = window.electronAPI.openFileChooser()
+      const txt = window.electronAPI.readFileSyncAsPlainText(path)
+      alert(txt)
     }
   }
 }
