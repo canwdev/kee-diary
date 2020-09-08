@@ -12,7 +12,18 @@
               selected-color="primary"
               :selected.sync="selectedGroup"
               default-expand-all
-          />
+          >
+            <template v-slot:default-header="prop">
+              <div class="row items-center">
+                <q-avatar
+                    class="tree-icon"
+                    size="32px" square>
+                  <img :src="icons[prop.node.iconIndex]">
+                </q-avatar>
+                <div class="tree-name">{{ prop.node.name }}</div>
+              </div>
+            </template>
+          </q-tree>
         </div>
 
       </template>
@@ -20,6 +31,7 @@
       <template v-slot:after>
         <div class="q-pa-md">
           <q-table
+              dense
               :data="entryList"
               :columns="entryTableColumns"
               row-key="id"
@@ -36,28 +48,38 @@
                 <q-avatar
                     @click.stop="handleIconClick(props.row)"
                     size="32px" square>
-                  <img :src="props.row.iconImg">
+                  <img :src="icons[props.row.iconIndex]">
                 </q-avatar>
-                <span class="q-ml-md">{{props.row.title}}</span>
+                <span class="q-ml-md">{{ props.row.title }}</span>
               </q-td>
             </template>
-          </q-table>
+          </q-table
+              dense>
         </div>
       </template>
 
     </q-splitter>
 
-
+    <DialogChooseIcon
+      :visible.sync="isDialogChooseIconVisible"
+      :index="currentEntry.iconIndex"
+      @onChoose="updateEntryIcon"
+    />
   </q-page>
 </template>
 
 <script>
 import store from "@/store"
-import {getGroupTree, getGroupEntries} from "../../utils/kdbx-utils"
+import {getGroupTree, getGroupEntries} from "@/utils/kdbx-utils"
 import {formatDateLite} from "@/utils"
+import DialogChooseIcon from "@/components/DialogChooseIcon.vue"
+import icons from "@/assets/db-icons"
 
 export default {
   name: "DbListView",
+  components: {
+    DialogChooseIcon
+  },
   data() {
     return {
       splitterModel: 30,
@@ -87,7 +109,10 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
-      selected: []
+      selected: [],
+      icons: Object.freeze(icons.items),
+      isDialogChooseIconVisible: false,
+      currentEntry: {}
     }
   },
   computed: {
@@ -157,10 +182,27 @@ export default {
     },
     handleIconClick(row) {
       console.log(row)
+      this.isDialogChooseIconVisible = true
+      this.currentEntry = row
+    },
+    updateEntryIcon(iconIndex) {
+      this.currentEntry.iconIndex = iconIndex
+      this.currentEntry._entry.icon = iconIndex
+      store.commit('setIsNotSave')
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.tree-icon {
+  border-radius 0
+  margin-right: 8px
+}
+
+.text-primary {
+  .tree-name {
+    font-weight: bold;
+  }
+}
 </style>

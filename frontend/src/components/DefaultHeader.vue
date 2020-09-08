@@ -37,7 +37,7 @@
         <q-btn
             @click="closeKdbx"
             flat round icon="eject">
-          <q-tooltip>Eject</q-tooltip>
+          <q-tooltip>Close</q-tooltip>
         </q-btn>
       </template>
 
@@ -73,7 +73,9 @@ export default {
     }
   },
   methods: {
-    closeKdbx,
+    closeKdbx() {
+      closeKdbx()
+    },
     saveKdbx
   }
 }

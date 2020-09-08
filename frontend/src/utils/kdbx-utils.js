@@ -1,7 +1,6 @@
 import kdbxweb from "kdbxweb"
 import store from '@/store'
 import router from '@/router'
-import icons from "@/assets/db-icons"
 import LocalStorageSettings from "./settings"
 
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
@@ -57,7 +56,7 @@ export function closeKdbx(isExit = false) {
   if (isNotSave) {
     const andExit = isExit ? ' and exit' : ''
     Dialog.create({
-      title: 'Confirm ' + isExit ? 'Exit' : 'Close',
+      title: 'Confirm ' + (isExit ? 'Exit' : 'Close'),
       message: 'There are unsaved changes. Do you want to save?',
       persistent: false,
       ok: {
@@ -146,7 +145,7 @@ export function getGroupTree(node, counter = 0) {
     const children = group.groups
 
     list.push({
-      img: icons.getByIndex(group.icon),
+      iconIndex: group.icon,
       uuid: group.uuid,
       name: group.name,
       index: counter,
@@ -176,7 +175,7 @@ export function getGroupEntries(db, uuid) {
         list.push({
           id: entry.uuid.id,
           uuid: entry.uuid,
-          iconImg: icons.getByIndex(entry.icon),
+          iconIndex: entry.icon,
           title: entry.fields.Title,
           url: entry.fields.URL,
           bgColor: entry.bgColor,

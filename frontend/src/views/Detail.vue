@@ -133,6 +133,9 @@ export default {
     initHyperMD() {
       const textarea = document.getElementById('input-area')
       const editor = HyperMD.fromTextArea(textarea, {})
+      if (!this.isEditWYSIWYG) {
+        HyperMD.switchToNormal(editor)
+      }
       editor.setSize(null, "100%") // set height
       editor.on('change', () => {
         if (this.editor) {
