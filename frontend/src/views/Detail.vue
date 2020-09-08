@@ -1,7 +1,7 @@
 <template>
   <q-page class="row justify-center">
     <div class="col-sm-12 col-md-10 q-pa-lg">
-      <q-card>
+      <q-card style="height: 100%">
         <q-card-section class="q-gutter-y-xs">
           <q-input
               v-if="isEntryOpen"
@@ -33,7 +33,7 @@
                   v-model="editorTheme" :options="themeOptions" label="Theme"
                   style="width: 150px"
               />
-              <q-btn-group flat >
+              <q-btn-group flat>
                 <q-btn
                     @click="handleLoad"
                     dense label="Load">
@@ -44,6 +44,7 @@
                   <q-tooltip>Edit with external tools</q-tooltip>
                 </q-btn>
                 <q-btn
+                    @click="handleExport"
                     dense label="Export">
                   <q-tooltip>Export to text file</q-tooltip>
                 </q-btn>
@@ -58,7 +59,9 @@
             </div>
           </q-toolbar>
 
-          <textarea id="input-area"></textarea>
+          <div style="overflow: auto; height: calc(100vh - 230px)">
+            <textarea id="input-area"></textarea>
+          </div>
         </q-card-section>
       </q-card>
     </div>
@@ -97,6 +100,7 @@ import icons from "@/assets/db-icons"
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
+import {notifyError, notifySuccess} from "../utils"
 
 export default {
   name: "Detail",
@@ -113,6 +117,7 @@ export default {
       },
       isDialogPreviewVisible: false,
       themeOptions: [
+        'hypermd-light',
         'default',
         'idea',
         'elegant',
@@ -136,12 +141,13 @@ export default {
       get: () => store.getters.isDarkMode,
     },
     isEntryOpen: () => store.getters.isEntryOpen,
+    isGlobalLoading: () => store.getters.isGlobalLoading,
     isEditWYSIWYG: {
       get: () => store.getters.isEditWYSIWYG,
       set: val => store.commit('setIsEditWYSIWYG', val)
     },
     editorTheme: {
-      get: () => store.getters.editorTheme || 'default',
+      get: () => store.getters.editorTheme || 'hypermd-light',
       set: val => store.commit('setEditorTheme', val)
     },
     currentEntry: {
@@ -230,7 +236,7 @@ export default {
       }
     },
     handleKeyDown(event) {
-      if (event.key === 'Escape' && !this.isDialogPreviewVisible) {
+      if (event.key === 'Escape' && !this.isDialogPreviewVisible && !this.isGlobalLoading) {
         event.preventDefault()
         this.$router.push({
           name: 'Home'
@@ -247,10 +253,47 @@ export default {
         }
       }
     },
-    handleLoad() {
-      const [path] = window.electronAPI.openFileChooser()
-      const txt = window.electronAPI.readFileSyncAsPlainText(path)
-      alert(txt)
+    async handleLoad() {
+      this.$store.commit('setIsGlobalLoading')
+
+      try {
+        const paths = await window.electronAPI.openFileChooser({
+          sizeLimit: 1024000
+        })
+        if (!paths || paths.length === 0) {
+          return
+        }
+        const [path] = paths
+
+        const txt = await window.electronAPI.readFileAsPlainText(path)
+        if (!this.editor) {
+          return
+        }
+        this.editor.replaceSelection(txt)
+      } catch (e) {
+        notifyError(e.message)
+        console.error(e)
+      } finally {
+        this.$store.commit('setIsGlobalLoading', false)
+      }
+
+    },
+    handleExport() {
+      this.$store.commit('setIsGlobalLoading')
+
+      window.electronAPI.saveAsFile(this.editor.getValue(), {
+        title: 'Export file',
+        defaultPath: this.editing.title + '.txt'
+      }).then(result => {
+        if (result) {
+          notifySuccess()
+        }
+      }).catch(e => {
+        notifyError(e.message)
+        console.error(e)
+      }).finally(() => {
+        this.$store.commit('setIsGlobalLoading', false)
+      })
     }
   }
 }

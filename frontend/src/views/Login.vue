@@ -3,10 +3,10 @@
       class="row justify-center items-center"
   >
     <q-inner-loading class="_loading" :showing="isLoading">
-        <q-spinner-gears
-            color="primary"
-            size="5em"
-        />
+      <q-spinner-gears
+          color="primary"
+          size="5em"
+      />
     </q-inner-loading>
 
     <q-dialog v-model="isShowAlertDialog">
@@ -21,7 +21,7 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
+          <q-btn flat label="OK" color="primary" v-close-popup/>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -100,6 +100,7 @@ import {decryptKdbx, openKdbx} from "../utils/kdbx-utils"
 import LocalStorageSettings from "@/utils/settings"
 import {isProd} from "../utils/is"
 import {notifyError} from "@/utils"
+
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 
 const {
@@ -138,12 +139,15 @@ export default {
      * name：Target form name
      * filters：File filter: [{name: 'KeePass KDBX 文件', extensions: ['kdbx']}]
      **/
-    handleChooseFile(name, filters) {
-      const results = window.electronAPI.openFileChooser(filters)
+    async handleChooseFile(name, filters) {
+      this.$store.commit('setIsGlobalLoading')
+      const results = await window.electronAPI.openFileChooser({filters})
       // console.log(results)
       if (results && results[0]) {
         this.form[name] = results[0]
       }
+      this.$store.commit('setIsGlobalLoading', false)
+
     },
     async handleUnlock() {
       const {dbPath, password, keyPath, isSaveHistory} = this.form

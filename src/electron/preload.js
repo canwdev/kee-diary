@@ -5,43 +5,112 @@ const electronAPI = function () {
 
   // 外部浏览器打开链接
   this.openExternal = shell.openExternal
+
   // 打开文件选择器
-  this.openFileChooser = function (filters = []) {
-    return remote.dialog.showOpenDialogSync(remote.getCurrentWindow(), {
-      properties: ['openFile'],
-      filters: filters
+  this.openFileChooser = function (config = {}) {
+    return new Promise(async (resolve, reject) => {
+      const {
+        filters = [], // [{name: '*.kdbx file', extensions: ['kdbx']}]
+        sizeLimit = 0 // Byte
+      } = config
+      const resOpen = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+        properties: ['openFile'],
+        filters: filters
+      })
+      if (resOpen.canceled) {
+        return resolve([])
+      }
+      const {filePaths: files} = resOpen
+      if (!files) {
+        return resolve([])
+      }
+
+      if (sizeLimit > 0) {
+        const allSize = files.reduce((pv, cv) => {
+          return pv + fs.statSync(cv).size
+        }, 0)
+        if (allSize > sizeLimit) {
+          throw new Error(`File size cannot exceed ${(sizeLimit / 1024).toFixed(2)} KB, current size: ${(allSize / 1024).toFixed(2)} KB`)
+        }
+      }
+
+      return resolve(files)
     })
+  }
+
+  this.saveAsFile = function (text, options = {}) {
+    return new Promise(async (resolve, reject) => {
+      const {
+        title = "Save file",
+        defaultPath = "filename.txt",
+        buttonLabel = "Save",
+        filters = [
+          {name: 'txt', extensions: ['txt',]},
+          {name: 'All Files', extensions: ['*']}
+        ]
+      } = options
+
+      const saveRes = await remote.dialog.showSaveDialog(remote.getCurrentWindow(), {
+        title,
+        defaultPath,
+        buttonLabel,
+        filters
+      })
+      if (saveRes.canceled) {
+        return resolve(false)
+      }
+      const {filePath:savePath} = saveRes
+      if (!savePath) {
+        return reject(new Error('savePath is undefined'))
+      }
+
+      fs.writeFile(savePath, text, {
+        encoding: 'utf-8'
+      }, (err => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(true)
+      }));
+
+      // fs.exists(savePath, async exists => {
+      //
+      //   if (exists) {
+      //     const result = await remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+      //       buttons: ["Yes","No"],
+      //       message: "The file already exists, do you want to overwrite it?"
+      //     })
+      //     if (result === 1) {
+      //       return resolve(false)
+      //     }
+      //   }
+      //
+      // })
+
+    })
+
+
   }
 
   // fs
   this.readFileSyncAsArrayBuffer = function (path) {
-    let res
-    try {
-      const file = fs.readFileSync(path)
-      res = new Uint8Array(file).buffer
-    } catch (e) {
-      alert(e)
-      console.error(e)
-      throw new Error(e)
-    }
-
-    return res
+    const file = fs.readFileSync(path)
+    return new Uint8Array(file).buffer
   }
 
   this.saveFileSyncAsArrayBuffer = function (path, arrayBuffer) {
-    let res
-    try {
-      res = fs.writeFileSync(path, Buffer.from(arrayBuffer))
-    } catch (e) {
-      // alert(e)
-      console.error(e)
-      throw new Error(e)
-    }
-    return res
+    return fs.writeFileSync(path, Buffer.from(arrayBuffer))
   }
 
-  this.readFileSyncAsPlainText = function (path) {
-    return fs.readFileSync(path, {encoding:'utf8'})
+  this.readFileAsPlainText = function (path) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(path, {encoding: 'utf-8'}, (err, data) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(data)
+      })
+    })
   }
 
   this.showErrorBox = function (title, message) {

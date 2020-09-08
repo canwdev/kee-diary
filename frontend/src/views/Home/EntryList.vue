@@ -129,3 +129,9 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+>>> .q-table--dense .q-table th, .q-table--dense .q-table td {
+  padding: 10px 8px !important;
+}
+</style>

@@ -37,6 +37,6 @@ export const notifyError = (message = 'Error', caption) => {
     color: 'negative',
     position: 'top',
     icon: 'warning',
-    timeout: 1500
+    timeout: 2000
   })
 }
