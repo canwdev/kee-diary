@@ -134,6 +134,7 @@ export default {
         'solarized light',
         'the-matrix',
       ],
+      isDisableEsc: false
     }
   },
   computed: {
@@ -154,6 +155,9 @@ export default {
       get: () => store.getters.currentEntry,
       set: val => store.commit('setCurrentEntry', val)
     },
+    lockEsc() {
+      return this.isDialogPreviewVisible || this.isGlobalLoading || this.isDisableEsc
+    }
   },
   watch: {
     currentEntry: {
@@ -236,7 +240,7 @@ export default {
       }
     },
     handleKeyDown(event) {
-      if (event.key === 'Escape' && !this.isDialogPreviewVisible && !this.isGlobalLoading) {
+      if (event.key === 'Escape' && !this.lockEsc) {
         event.preventDefault()
         this.$router.push({
           name: 'Home'
@@ -269,7 +273,34 @@ export default {
         if (!this.editor) {
           return
         }
-        this.editor.replaceSelection(txt)
+
+        if (this.editor.getValue().length === 0) {
+          this.editor.setValue(txt)
+          return
+        }
+
+        this.isDisableEsc = true
+        this.$q.dialog({
+          title: 'Confirm',
+          message: 'The text area is not empty, do you want to overwrite it?',
+          persistent: true,
+          ok: {
+            flat: true,
+            label: 'Overwrite'
+          },
+          cancel: {
+            flat: true,
+            label: 'Insert'
+          },
+
+        }).onOk(() => {
+          this.editor.setValue(txt)
+        }).onCancel(() => {
+          this.editor.replaceSelection(txt)
+        }).onDismiss(() => {
+          this.isDisableEsc = false
+        })
+
       } catch (e) {
         notifyError(e.message)
         console.error(e)
