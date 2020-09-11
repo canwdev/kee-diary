@@ -6,7 +6,8 @@ import LocalStorageSettings from "./settings"
 const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 import {notifyError, notifySuccess} from '@/utils'
 import {busEmitSaveNotes} from "./bus"
-import { Dialog } from 'quasar'
+import {Dialog} from 'quasar'
+import {formatDate} from "@/utils/index"
 
 
 /**
@@ -65,8 +66,8 @@ export function closeKdbx(isExit = false) {
         model: true,
         // inline: true,
         items: [
-          { label: 'Save' + andExit, value: true, color: 'positive' },
-          { label: 'Don\'t save' + andExit, value: false, color: 'negative' },
+          {label: 'Save' + andExit, value: true, color: 'positive'},
+          {label: 'Don\'t save' + andExit, value: false, color: 'negative'},
         ]
       },
       ok: {
@@ -173,13 +174,13 @@ export function getGroupTree(node, counter = 0) {
 /**
  * 获取某群组的条目列表
  * @param db 数据库实例
- * @param uuid 必须是 uuid 对象，而不是字符串
+ * @param uuidObj 必须是 UUID 对象，而不是字符串
  * @return {[]}
  */
-export function getGroupEntries(db, uuid) {
+export function getGroupEntries(db, uuidObj) {
   const list = []
-  if (db && uuid) {
-    const group = db.getGroup(uuid)
+  if (db && uuidObj) {
+    const group = db.getGroup(uuidObj)
     // console.log('getGroup', group)
 
     if (group) {
@@ -206,3 +207,31 @@ export function getGroupEntries(db, uuid) {
   return list
 }
 
+/**
+ * 向群组内添加条目
+ * @param db 数据库实例
+ * @param uuidObj 群组 UUID 对象
+ * @returns {boolean}
+ */
+export function addEntry(db, uuidObj) {
+  try {
+    const group = db.getGroup(uuidObj)
+    const entry = db.createEntry(group)
+    // console.log(db, group)
+
+    entry.fields.Title = formatDate(new Date())
+    entry.icon = group.icon
+
+    // console.log(entry)
+
+    store.commit('setCurrentGroupUuid', group.uuid)
+    store.commit('setCurrentEntry', entry)
+    store.commit('setIsNotSave')
+
+    return true
+  } catch (e) {
+    notifyError(e.message)
+    console.error(e)
+    return false
+  }
+}

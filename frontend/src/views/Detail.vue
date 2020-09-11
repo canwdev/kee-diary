@@ -15,6 +15,13 @@
                 <q-tooltip>Preview (Ctrl+/)</q-tooltip>
               </q-avatar>
             </template>
+
+            <EntryContextMenu
+                :target="currentEntry"
+                :hidden-edit="true"
+                @onPreview="handlePreview"
+                @onChangeIcon="isDialogChooseIconVisible = true"
+            />
           </q-input>
 
           <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
@@ -53,9 +60,9 @@
 
 
             <q-space/>
-            <div class="date-display" v-if="isEntryOpen">
-              <span>Created:<DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>Modified: <DateTimeEdit :date.sync="editing.lastModTime"/></span>
+            <div class="date-display text-right" v-if="isEntryOpen">
+              <span>Created: <DateTimeEdit :date.sync="editing.creationTime"/></span>
+              <span>Modified: <DateTimeEdit disabled :date.sync="lastModTime"/></span>
             </div>
           </q-toolbar>
 
@@ -69,6 +76,12 @@
     <DialogEntryPreview
         :visible.sync="isDialogPreviewVisible"
         :entry="currentEntry"
+    />
+
+    <DialogChooseIcon
+        :visible.sync="isDialogChooseIconVisible"
+        :index="currentEntry.icon"
+        @onChoose="updateEntryIcon"
     />
   </q-page>
 </template>
@@ -101,21 +114,26 @@ import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import {notifyError, notifySuccess} from "../utils"
+import EntryContextMenu from "@/components/EntryContextMenu"
+import DialogChooseIcon from "@/components/DialogChooseIcon"
 
 export default {
   name: "Detail",
   components: {
     DateTimeEdit,
-    DialogEntryPreview
+    DialogEntryPreview,
+    EntryContextMenu,
+    DialogChooseIcon
   },
   data() {
     return {
       editing: {
         title: '',
         creationTime: '',
-        lastModTime: '',
       },
+      lastModTime: '',
       isDialogPreviewVisible: false,
+      isDialogChooseIconVisible: false,
       themeOptions: [
         'hypermd-light',
         'default',
@@ -156,7 +174,7 @@ export default {
       set: val => store.commit('setCurrentEntry', val)
     },
     lockEsc() {
-      return this.isDialogPreviewVisible || this.isGlobalLoading || this.isDisableEsc
+      return this.isDialogPreviewVisible || this.isDialogChooseIconVisible || this.isGlobalLoading || this.isDisableEsc
     }
   },
   watch: {
@@ -169,8 +187,8 @@ export default {
         this.editing = {
           title: nv.fields.Title,
           creationTime: nv.times.creationTime,
-          lastModTime: nv.times.lastModTime,
         }
+        this.lastModTime = nv.times.lastModTime
         this.editor && this.editor.setValue(nv.fields.Notes)
       },
       immediate: true,
@@ -192,7 +210,7 @@ export default {
         const entry = this.currentEntry
         entry.fields.Title = this.editing.title
         entry.times.creationTime = this.editing.creationTime
-        entry.times.lastModTime = this.editing.lastModTime
+        entry.times.lastModTime = this.lastModTime = new Date()
       },
       deep: true
     }
@@ -217,11 +235,13 @@ export default {
     },
     initHyperMD() {
       const textarea = document.getElementById('input-area')
-      const editor = HyperMD.fromTextArea(textarea, {})
+      const editor = HyperMD.fromTextArea(textarea, {
+        theme: this.editorTheme,
+        lineNumbers: false
+      })
       if (!this.isEditWYSIWYG) {
         HyperMD.switchToNormal(editor)
       }
-      editor.setOption("theme", this.editorTheme);
       editor.setSize(null, "100%") // set height
       editor.on('change', () => {
         if (this.editor) {
@@ -236,7 +256,11 @@ export default {
     syncNotes() {
       const entry = this.currentEntry
       if (entry) {
-        entry.fields.Notes = this.editor.getValue()
+        const newNotes = this.editor.getValue()
+        if (entry.fields.Notes !== newNotes) {
+          entry.fields.Notes = newNotes
+          entry.times.lastModTime = new Date()
+        }
       }
     },
     handleKeyDown(event) {
@@ -250,19 +274,27 @@ export default {
         switch (String.fromCharCode(event.which).toLowerCase()) {
           case '¿': // Keyboard symbol: "/"
             event.preventDefault()
-            this.isDialogPreviewVisible = !this.isDialogPreviewVisible
+            this.handlePreview()
             break;
           default:
             return
         }
       }
     },
+    handlePreview() {
+      this.syncNotes()
+      this.isDialogPreviewVisible = !this.isDialogPreviewVisible
+    },
     async handleLoad() {
       this.$store.commit('setIsGlobalLoading')
 
       try {
         const paths = await window.electronAPI.openFileChooser({
-          sizeLimit: 1024000
+          sizeLimit: 1024000,
+          filters: [
+            {name: 'Text File', extensions: ['txt', 'md']},
+            {name: 'All File', extensions: ['*']},
+          ]
         })
         if (!paths || paths.length === 0) {
           return
@@ -294,6 +326,8 @@ export default {
           },
 
         }).onOk(() => {
+          const title = path.substring(path.lastIndexOf(`\\`) + 1)
+          this.editing.title = title.replace(/\.[^.$]+$/, '')
           this.editor.setValue(txt)
         }).onCancel(() => {
           this.editor.replaceSelection(txt)
@@ -325,7 +359,11 @@ export default {
       }).finally(() => {
         this.$store.commit('setIsGlobalLoading', false)
       })
-    }
+    },
+    updateEntryIcon(iconIndex) {
+      this.currentEntry.icon = iconIndex
+      store.commit('setIsNotSave')
+    },
   }
 }
 </script>

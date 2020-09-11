@@ -10,7 +10,7 @@
               node-key="id"
               label-key="name"
               selected-color="primary"
-              :selected.sync="selectedGroup"
+              :selected.sync="selectedGroupUUIDStr"
               default-expand-all
           >
             <template v-slot:default-header="prop">
@@ -22,7 +22,10 @@
                 </q-avatar>
                 <div class="tree-name">{{ prop.node.name }}</div>
               </div>
-              <EntryContextMenu/>
+
+              <EntryContextMenu
+
+              />
             </template>
           </q-tree>
         </div>
@@ -30,6 +33,10 @@
       </template>
 
       <template v-slot:after>
+        <q-toolbar>
+          <q-btn label="Add entry" @click="handleAddEntry"/>
+        </q-toolbar>
+
         <EntryList
             :entry-list="entryList"
         />
@@ -43,7 +50,7 @@
 
 <script>
 import store from "@/store"
-import {getGroupTree, getGroupEntries} from "@/utils/kdbx-utils"
+import {getGroupTree, getGroupEntries, addEntry} from "@/utils/kdbx-utils"
 import icons from "@/assets/db-icons"
 import EntryContextMenu from "@/components/EntryContextMenu"
 import EntryList from "@/views/Home/EntryList"
@@ -58,7 +65,7 @@ export default {
     return {
       splitterModel: 30,
       groupTree: [],
-      selectedGroup: null,
+      selectedGroupUUIDStr: null,
       entryList: [],
       icons: Object.freeze(icons.items)
     }
@@ -87,6 +94,9 @@ export default {
       const map = getMap(groupTree)
       // console.log('groupUUIDMap', map)
       return map
+    },
+    selectedGroupUUIDObj() {
+      return this.groupUUIDMap[this.selectedGroupUUIDStr]
     }
   },
   watch: {
@@ -100,25 +110,33 @@ export default {
         this.groupTree = getGroupTree(db.groups)
 
         if (this.groupTree[0]) {
-          this.selectedGroup = this.groupTree[0].id
+          this.selectedGroupUUIDStr = this.groupTree[0].id
         }
       },
       immediate: true
     },
-    selectedGroup: {
+    selectedGroupUUIDStr: {
       handler(nv) {
         if (!nv || !this.database) {
           this.entryList = []
           return
         }
-        const groutUUIDObject = this.groupUUIDMap[nv]
-        this.entryList = getGroupEntries(this.database, groutUUIDObject)
+        // console.log('selectedGroupUUIDStr', nv)
+        this.entryList = getGroupEntries(this.database, this.selectedGroupUUIDObj)
         // console.log(this.entryList)
       },
       immediate: true
     }
   },
   methods: {
+    handleAddEntry() {
+      const res = addEntry(this.database, this.selectedGroupUUIDObj)
+      if (res) {
+        this.$router.push({
+          name: 'Detail'
+        })
+      }
+    }
   }
 }
 </script>

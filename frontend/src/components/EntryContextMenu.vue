@@ -11,7 +11,7 @@
             :key="index"
         />
         <q-item
-            v-else
+            v-else-if="!item.hidden"
             :key="index"
             @click="item.action"
             clickable v-close-popup
@@ -33,6 +33,10 @@ export default {
     target: {
       type: Object,
       default: null
+    },
+    hiddenEdit: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -44,6 +48,7 @@ export default {
           }
         },
         {
+          hidden: this.hiddenEdit,
           icon: 'edit', label: 'Edit', action: () => {
             this.emitEvent('onEdit')
           }

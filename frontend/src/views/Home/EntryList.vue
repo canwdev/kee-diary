@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-px-md q-py-sm">
     <q-table
         dense
         :data="entryList"
@@ -32,15 +32,15 @@
 
     </q-table>
 
-    <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="currentEntry.iconIndex"
-        @onChoose="updateEntryIcon"
-    />
-
     <DialogEntryPreview
       :visible.sync="isDialogPreviewVisible"
-      :entry="currentEntry._entry"
+      :entry="currentEntryWrap._entry"
+    />
+
+    <DialogChooseIcon
+        :visible.sync="isDialogChooseIconVisible"
+        :index="currentEntryWrap.iconIndex"
+        @onChoose="updateEntryIcon"
     />
   </div>
 </template>
@@ -49,9 +49,9 @@
 import {formatDateLite} from "@/utils"
 import icons from "@/assets/db-icons"
 import store from "@/store"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
 import EntryContextMenu from "@/components/EntryContextMenu"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
+import DialogChooseIcon from "@/components/DialogChooseIcon"
 
 export default {
   name: 'EntryList',
@@ -97,7 +97,7 @@ export default {
       icons: Object.freeze(icons.items),
       isDialogChooseIconVisible: false,
       isDialogPreviewVisible: false,
-      currentEntry: {}
+      currentEntryWrap: {}
     }
   },
   methods: {
@@ -111,20 +111,20 @@ export default {
       })
     },
     updateEntryIcon(iconIndex) {
-      this.currentEntry.iconIndex = iconIndex
-      this.currentEntry._entry.icon = iconIndex
+      this.currentEntryWrap.iconIndex = iconIndex
+      this.currentEntryWrap._entry.icon = iconIndex
       store.commit('setIsNotSave')
     },
     handlePreview(target) {
       this.isDialogPreviewVisible = true
-      this.currentEntry = target
+      this.currentEntryWrap = target
     },
     handleEdit(target) {
       this.handleRowClick(null, target)
     },
     handleChangeIcon(target) {
       this.isDialogChooseIconVisible = true
-      this.currentEntry = target
+      this.currentEntryWrap = target
     },
   }
 }

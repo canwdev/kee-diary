@@ -41,9 +41,9 @@ const electronAPI = function () {
   this.saveAsFile = function (text, options = {}) {
     return new Promise(async (resolve, reject) => {
       const {
-        title = "Save file",
-        defaultPath = "filename.txt",
-        buttonLabel = "Save",
+        title,
+        defaultPath,
+        buttonLabel,
         filters = [
           {name: 'txt', extensions: ['txt',]},
           {name: 'All Files', extensions: ['*']}
