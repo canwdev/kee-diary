@@ -17,27 +17,26 @@ Under development...
 - [ ] Create database
 - [X] Open a single database (`password`/`password+key`)
 - [X] Browse groups and entries in groups
-- [ ] Save database/close database
-- [ ] Determine whether the database has been changed
-- [ ] Full database search function
+- [X] Save database/close database
+- [X] Determine whether the database has been changed
+- [ ] Full database search
 - [ ] Implement calendar view
 - [X] Support dark mode
 - Groups
     - [ ] Rename group
-    - [ ] Move to the recycle bin (if you close the recycle bin, delete the group directly)
+    - [ ] Move to the recycle bin
     - [ ] Empty trash
     - [ ] Move group
     - [ ] New group
     - [ ] List expansion and contraction
 - Entries
-    - [ ] View and edit the title (Title) and content (Note)
-    - [ ] Create new entry
-    - [ ] Delete entry
+    - [X] View and edit the title (Title) and content (Note)
+    - [X] Create new entry
+    - [X] Delete entry
     - [ ] Move entry
-    - [ ] Sort (sort by creation or modification date)
-    - [ ] Search/Filter
-    - [ ] Markdown support
-    - [ ] Modify icon
+    - [X] Sort (sort by creation or modification date)
+    - [X] Markdown support
+    - [X] Modify icon
 
 ## Development
 

@@ -44,10 +44,7 @@ const electronAPI = function () {
         title,
         defaultPath,
         buttonLabel,
-        filters = [
-          {name: 'txt', extensions: ['txt',]},
-          {name: 'All Files', extensions: ['*']}
-        ]
+        filters
       } = options
 
       const saveRes = await remote.dialog.showSaveDialog(remote.getCurrentWindow(), {

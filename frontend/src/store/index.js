@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import LocalStorageSettings from "@/utils/settings"
+import {KEE_DIARY_VUE_SETTINGS} from "../utils/enum"
 
 const pkg = require('@/../package.json')
 Vue.use(Vuex)
 
-const settings = new LocalStorageSettings('KEE_DIARY_VUE_SETTINGS')
+const settings = new LocalStorageSettings(KEE_DIARY_VUE_SETTINGS)
+
+const initPagination = {
+  rowsPerPage: 10,
+  page: 1
+}
 
 export default new Vuex.Store({
   state: {
@@ -20,8 +26,9 @@ export default new Vuex.Store({
     isGlobalLoading: false, // 全局加载中
     isUnlocked: false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
-    currentGroupUuid: null, // 当前选中的群组 UUID 对象
+    currentGroupUUID: null, // 当前选中的群组 UUID 对象
     currentEntry: null, // 当前打开的条目对象
+    currentEntryPagination: initPagination, // 条目列表分页配置
   },
   getters: {
     isDarkMode: state => state.settings.isDarkMode,
@@ -33,8 +40,9 @@ export default new Vuex.Store({
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
     isNotSave: state => state.isNotSave,
-    currentGroupUuid: state => state.currentGroupUuid,
+    currentGroupUUID: state => state.currentGroupUUID,
     currentEntry: state => state.currentEntry,
+    currentEntryPagination: state => state.currentEntryPagination,
     isEntryOpen: state => {
       return Boolean(state.currentEntry)
     },
@@ -77,15 +85,27 @@ export default new Vuex.Store({
       window.electronAPI.setShowExitPrompt(val)
       state.isNotSave = val
     },
-    setCurrentGroupUuid: (state, val) => {
-      state.currentGroupUuid = val
+    setCurrentGroupUUID: (state, val) => {
+      if (state.currentGroupUUID && val) {
+        // prevent double set
+        if (state.currentGroupUUID.id === val.id) {
+          return
+        }
+      }
+      state.currentGroupUUID = val
+      state.currentEntryPagination = initPagination
+      // console.log('resetPagination', state.currentEntryPagination)
     },
     setCurrentEntry: (state, val) => {
       state.currentEntry = val
     },
+    setCurrentEntryPagination: (state, val) => {
+      // console.log('setCurrentEntryPagination', val)
+      state.currentEntryPagination = val
+    },
     setCloseDatabase(state) {
       state.database = null
-      state.currentGroupUuid = null
+      state.currentGroupUUID = null
       state.currentEntry = null
       this.commit('setIsNotSave', false)
       state.isUnlocked = false

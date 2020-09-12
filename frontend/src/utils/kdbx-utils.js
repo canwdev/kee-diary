@@ -211,7 +211,7 @@ export function getGroupEntries(db, uuidObj) {
  * 向群组内添加条目
  * @param db 数据库实例
  * @param uuidObj 群组 UUID 对象
- * @returns {boolean}
+ * @returns {boolean} 操作成功
  */
 export function addEntry(db, uuidObj) {
   try {
@@ -224,10 +224,28 @@ export function addEntry(db, uuidObj) {
 
     // console.log(entry)
 
-    store.commit('setCurrentGroupUuid', group.uuid)
+    store.commit('setCurrentGroupUUID', group.uuid)
     store.commit('setCurrentEntry', entry)
     store.commit('setIsNotSave')
 
+    return true
+  } catch (e) {
+    notifyError(e.message)
+    console.error(e)
+    return false
+  }
+}
+
+/**
+ * 删除条目，如果有回收站则移动至回收站
+ * @param db 数据库实例
+ * @param entry 条目对象
+ * @return {boolean} 操作成功
+ */
+export function removeEntry(db, entry) {
+  try {
+    db.remove(entry)
+    store.commit('setIsNotSave')
     return true
   } catch (e) {
     notifyError(e.message)

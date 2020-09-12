@@ -1,5 +1,5 @@
 <template>
-  <div class="q-px-md q-py-sm">
+  <div class="q-px-md q-py-sm q-pb-lg">
     <q-table
         dense
         :data="entryList"
@@ -26,7 +26,10 @@
             :target="props.row"
             @onPreview="handlePreview"
             @onEdit="handleEdit"
+            @onRename="handleRename"
             @onChangeIcon="handleChangeIcon"
+            @onMove="handleMove"
+            @onDelete="handleDelete"
         />
       </template>
 
@@ -52,6 +55,7 @@ import store from "@/store"
 import EntryContextMenu from "@/components/EntryContextMenu"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
+import {removeEntry} from "../../utils/kdbx-utils"
 
 export default {
   name: 'EntryList',
@@ -61,6 +65,10 @@ export default {
     DialogEntryPreview
   },
   props: {
+    database: {
+      type: Object,
+      default: null,
+    },
     entryList: {
       type: Array,
       default() {
@@ -90,14 +98,17 @@ export default {
           sortable: true
         },
       ]),
-      pagination: {
-        rowsPerPage: 10
-      },
       selected: [],
       icons: Object.freeze(icons.items),
       isDialogChooseIconVisible: false,
       isDialogPreviewVisible: false,
       currentEntryWrap: {}
+    }
+  },
+  computed: {
+    pagination: {
+      get: () => store.getters.currentEntryPagination,
+      set: val => store.commit('setCurrentEntryPagination', val)
     }
   },
   methods: {
@@ -119,12 +130,43 @@ export default {
       this.isDialogPreviewVisible = true
       this.currentEntryWrap = target
     },
+    handleRename(target) {
+      this.$q.dialog({
+        title: 'Rename',
+        prompt: {
+          model: target.title,
+          isValid: val => val !== target.title,
+          type: 'text'
+        },
+        cancel: true,
+        persistent: false
+      }).onOk(data => {
+        target.title = data
+        target._entry.fields.Title = data
+        store.commit('setIsNotSave')
+      })
+    },
     handleEdit(target) {
       this.handleRowClick(null, target)
     },
     handleChangeIcon(target) {
       this.isDialogChooseIconVisible = true
       this.currentEntryWrap = target
+    },
+    handleMove(target) {
+      console.log(target)
+    },
+    handleDelete(target) {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: `Are you sure you want to move <span class="text-red">${target.title}</span> to the trash bin?`,
+        html: true,
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        removeEntry(this.database, target._entry)
+        this.$emit('onRefresh')
+      })
     },
   }
 }

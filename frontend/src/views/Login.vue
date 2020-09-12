@@ -100,8 +100,9 @@ import {decryptKdbx, openKdbx} from "../utils/kdbx-utils"
 import LocalStorageSettings from "@/utils/settings"
 import {isProd} from "../utils/is"
 import {notifyError} from "@/utils"
+import {KEE_DIARY_VUE_LOGIN} from "../utils/enum"
 
-const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
+const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
 const {
   dbPath = '',

@@ -33,18 +33,20 @@
       </template>
 
       <template v-slot:after>
-        <q-toolbar>
-          <q-btn label="Add entry" @click="handleAddEntry"/>
-        </q-toolbar>
-
         <EntryList
+            :database="database"
             :entry-list="entryList"
+            @onRefresh="handleRefreshEntryList"
         />
+
+        <div style="height: 80px"></div>
       </template>
 
     </q-splitter>
 
-
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="add" color="secondary" @click="handleAddEntry" title="Add entry"/>
+    </q-page-sticky>
   </q-page>
 </template>
 
@@ -95,8 +97,9 @@ export default {
       // console.log('groupUUIDMap', map)
       return map
     },
-    selectedGroupUUIDObj() {
-      return this.groupUUIDMap[this.selectedGroupUUIDStr]
+    currentGroupUUID: {
+      get: () => store.getters.currentGroupUUID,
+      set: val => store.commit('setCurrentGroupUUID', val)
     }
   },
   watch: {
@@ -109,6 +112,11 @@ export default {
 
         this.groupTree = getGroupTree(db.groups)
 
+        // re-open last group
+        if (this.currentGroupUUID) {
+          this.selectedGroupUUIDStr = this.currentGroupUUID.id
+          return
+        }
         if (this.groupTree[0]) {
           this.selectedGroupUUIDStr = this.groupTree[0].id
         }
@@ -117,25 +125,33 @@ export default {
     },
     selectedGroupUUIDStr: {
       handler(nv) {
-        if (!nv || !this.database) {
+        if (!nv) {
           this.entryList = []
           return
         }
-        // console.log('selectedGroupUUIDStr', nv)
-        this.entryList = getGroupEntries(this.database, this.selectedGroupUUIDObj)
-        // console.log(this.entryList)
+        this.currentGroupUUID = this.groupUUIDMap[this.selectedGroupUUIDStr]
+        this.handleRefreshEntryList()
       },
       immediate: true
     }
   },
   methods: {
     handleAddEntry() {
-      const res = addEntry(this.database, this.selectedGroupUUIDObj)
+      const res = addEntry(this.database, this.currentGroupUUID)
       if (res) {
         this.$router.push({
           name: 'Detail'
         })
       }
+    },
+    handleRefreshEntryList() {
+      if (!this.database) {
+        this.entryList = []
+        return
+      }
+      // console.log('selectedGroupUUIDStr', nv)
+      this.entryList = getGroupEntries(this.database, this.currentGroupUUID)
+      // console.log(this.entryList)
     }
   }
 }

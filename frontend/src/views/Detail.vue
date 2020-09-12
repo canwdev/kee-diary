@@ -18,7 +18,7 @@
 
             <EntryContextMenu
                 :target="currentEntry"
-                :hidden-edit="true"
+                :hidden-items="['edit', 'rename']"
                 @onPreview="handlePreview"
                 @onChangeIcon="isDialogChooseIconVisible = true"
             />
@@ -117,6 +117,8 @@ import {notifyError, notifySuccess} from "../utils"
 import EntryContextMenu from "@/components/EntryContextMenu"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 
+import {textFilters as filters} from "../utils/enum"
+
 export default {
   name: "Detail",
   components: {
@@ -210,7 +212,7 @@ export default {
         const entry = this.currentEntry
         entry.fields.Title = this.editing.title
         entry.times.creationTime = this.editing.creationTime
-        entry.times.lastModTime = this.lastModTime = new Date()
+        this.updateTime()
       },
       deep: true
     }
@@ -259,9 +261,13 @@ export default {
         const newNotes = this.editor.getValue()
         if (entry.fields.Notes !== newNotes) {
           entry.fields.Notes = newNotes
-          entry.times.lastModTime = new Date()
+          this.updateTime()
         }
       }
+    },
+    updateTime() {
+      this.currentEntry.times.update()
+      this.lastModTime = this.currentEntry.times.lastModTime
     },
     handleKeyDown(event) {
       if (event.key === 'Escape' && !this.lockEsc) {
@@ -291,10 +297,7 @@ export default {
       try {
         const paths = await window.electronAPI.openFileChooser({
           sizeLimit: 1024000,
-          filters: [
-            {name: 'Text File', extensions: ['txt', 'md']},
-            {name: 'All File', extensions: ['*']},
-          ]
+          filters
         })
         if (!paths || paths.length === 0) {
           return
@@ -348,7 +351,8 @@ export default {
 
       window.electronAPI.saveAsFile(this.editor.getValue(), {
         title: 'Export file',
-        defaultPath: this.editing.title + '.txt'
+        defaultPath: this.editing.title + '.txt',
+        filters
       }).then(result => {
         if (result) {
           notifySuccess()
