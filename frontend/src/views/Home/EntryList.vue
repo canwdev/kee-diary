@@ -17,13 +17,16 @@
           <q-td @click.stop="">
             <q-checkbox dense v-model="props.selected" color="secondary"/>
           </q-td>
-          <q-td class="cursor-pointer" key="title" :props="props">
+          <q-td @click.stop="" key="icon" class="text-center">
             <q-avatar
+                class="cursor-pointer"
                 @click.stop="handlePreview(props.row)"
                 size="32px" square>
               <img :src="icons[props.row.iconIndex]">
             </q-avatar>
-            <span class="q-ml-md">{{ props.row.title }}</span>
+          </q-td>
+          <q-td class="cursor-pointer" key="title" :props="props">
+            {{ props.row.title }}
           </q-td>
           <q-td class="cursor-pointer" key="creationTime" :props="props">{{
               formatDateLite(props.row.creationTime)
@@ -93,7 +96,7 @@ export default {
     return {
       entryList: [],
       entryTableColumns: Object.freeze([
-        // {name: 'star', align: 'center', label: '★', field: 'iconImg'},
+        {name: 'icon', align: 'center', label: '★', field: 'iconImg'},
         {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
         {
           name: 'creationTime',
@@ -169,8 +172,11 @@ export default {
       store.commit('setIsNotSave')
     },
     handlePreview(target) {
-      this.isDialogPreviewVisible = true
+      if (Array.isArray(target)) {
+        target = target[0]
+      }
       this.currentEntryWrap = target
+      this.isDialogPreviewVisible = true
     },
     handleRename(items) {
       const [target] = items
@@ -194,6 +200,9 @@ export default {
       this.handleRowClick(target)
     },
     handleChangeIcon(target) {
+      if (Array.isArray(target)) {
+        target = target[0]
+      }
       this.isDialogChooseIconVisible = true
       this.currentEntryWrap = target
     },
@@ -208,23 +217,13 @@ export default {
       }
     },
     handleDelete(items) {
-      function getTitle(v) {
-        return `<li><span class="text-red">${v.title}</span></li>`
-      }
+      const getTitle = (v) => `<li><span class="text-red">${v.title}</span></li>`
 
       let msgItems
-      if (items.length > 1) {
-        msgItems = items.map(i => getTitle(i)).join('')
-      } else {
-        msgItems = getTitle(items[0])
-      }
+      msgItems = items.length > 1 ? items.map(i => getTitle(i)).join('') : getTitle(items[0])
 
       let msgAction
-      if (store.getters.databaseRecycleBinEnabled) {
-        msgAction = 'move to trash bin'
-      } else {
-        msgAction = '<b>DELETE</b>'
-      }
+      msgAction = store.getters.databaseRecycleBinEnabled ? 'move to trash bin' : '<b>DELETE</b>'
 
       this.$q.dialog({
         title: 'Confirm',
