@@ -1,9 +1,9 @@
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, session} = require('electron')
 const path = require('path')
 const url = require('url')
-const isDev = judgementElectronIsDev()
+const isDev = isElectionDevMode()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -54,10 +54,7 @@ function createWindow() {
     mainWindow = null
   })
 
-  if (isDev) {
-  // 开发者工具
-
-  } else {
+  if (!isDev) {
     mainWindow.setMenuBarVisibility(false)
   }
 
@@ -95,12 +92,25 @@ if (!gotTheLock) {
     if (mainWindow === null) createWindow()
   })
 
+  app.on('ready', async () => {
+    await session.defaultSession.loadExtension(path.join(__dirname, 'react-devtools'))
+    // Note that in order to use the React DevTools extension, you'll need to
+    // download and unzip a copy of the extension.
+  })
+
+  if (isDev) {
+    app.on('ready', async () => {
+      await session.defaultSession.loadExtension(path.join(__dirname, 'vue-devtools'))
+      // Note that in order to use the React DevTools extension, you'll need to
+      // download and unzip a copy of the extension.
+    })
+  }
 }
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-function judgementElectronIsDev() {
+function isElectionDevMode() {
   const electron = require('electron');
 
   const app = electron.app || electron.remote.app;
