@@ -6,6 +6,7 @@
       <template v-slot:before>
         <div class="q-pa-md">
           <GroupTree
+              :advanced="true"
               :selectedGroupUuid.sync="currentGroupUuid"
           />
         </div>

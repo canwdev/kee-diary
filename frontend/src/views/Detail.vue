@@ -16,7 +16,7 @@
               </q-avatar>
             </template>
 
-            <EntryContextMenu
+            <ContextMenuCommon
                 :target-data="currentEntry"
                 :hidden-items="['edit', 'rename']"
                 @onPreview="handlePreview"
@@ -81,7 +81,7 @@
     <DialogChooseIcon
         :visible.sync="isDialogChooseIconVisible"
         :index="currentEntry.icon"
-        @onChoose="updateEntryIcon"
+        @onChoose="handleUpdateIcon"
     />
   </q-page>
 </template>
@@ -114,7 +114,7 @@ import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import {notifyError, notifySuccess} from "../utils"
-import EntryContextMenu from "@/components/EntryContextMenu"
+import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 
 import {textFilters as filters} from "../utils/enum"
@@ -124,7 +124,7 @@ export default {
   components: {
     DateTimeEdit,
     DialogEntryPreview,
-    EntryContextMenu,
+    ContextMenuCommon,
     DialogChooseIcon
   },
   data() {
@@ -364,7 +364,7 @@ export default {
         this.$store.commit('setIsGlobalLoading', false)
       })
     },
-    updateEntryIcon(iconIndex) {
+    handleUpdateIcon(iconIndex) {
       this.currentEntry.icon = iconIndex
       store.commit('setIsNotSave')
     },

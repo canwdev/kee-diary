@@ -1,37 +1,74 @@
 <template>
-  <q-tree
-      class="group-tree-wrap"
-      :nodes="groupTree"
-      node-key="id"
-      label-key="name"
-      selected-color="primary"
-      :selected.sync="selectedGroupUuidStr"
-      default-expand-all
-  >
-    <template v-slot:default-header="prop">
-      <div class="row items-center">
-        <q-avatar
-            class="tree-icon"
-            size="32px" square>
-          <img :src="icons[prop.node.iconIndex]">
-        </q-avatar>
-        <div class="tree-name">{{ prop.node.name }}</div>
-      </div>
+  <div class="group-tree-wrap">
+    <q-tree
+        :nodes="groupTree"
+        node-key="id"
+        label-key="name"
+        selected-color="primary"
+        :selected.sync="selectedGroupUuidStr"
+        default-expand-all
+    >
+      <template v-slot:default-header="prop">
+        <div class="row items-center">
+          <q-avatar
+              class="tree-icon"
+              size="32px" square>
+            <img :src="icons[prop.node.iconIndex]">
+          </q-avatar>
+          <div class="tree-name">{{ prop.node.name }}</div>
+        </div>
+
+        <template v-if="advanced">
+          <ContextMenuCommon
+              :target-data="prop.node"
+              :hidden-items="['preview', 'rename', 'edit']"
+              @onChangeIcon="handleShowChangeIcon(prop.node)"
+              @onMove="handleShowMove(prop.node)"
+              @onDelete="handleDelete(prop.node)"
+          />
+        </template>
+      </template>
+    </q-tree>
+
+    <template v-if="advanced">
+      <DialogChooseIcon
+          :visible.sync="isDialogChooseIconVisible"
+          :index="previewTarget.iconIndex"
+          @onChoose="handleUpdateIcon"
+      />
+      <DialogChooseGroup
+          :visible.sync="isDialogChooseGroupVisible"
+          @onChoose="handleMoveEntry"
+      />
     </template>
-  </q-tree>
+
+  </div>
 </template>
 
 <script>
 import icons from "@/assets/db-icons"
 import store from "@/store"
 import {getGroupTree} from "@/utils/kdbx-utils"
+import ContextMenuCommon from "@/components/ContextMenuCommon"
+import DialogChooseIcon from "@/components/DialogChooseIcon"
+import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
+import {moveItems, removeItems} from "../../utils/kdbx-utils"
 
 export default {
   name: "GroupTree",
+  components: {
+    ContextMenuCommon,
+    DialogChooseIcon,
+    DialogChooseGroup
+  },
   props: {
     selectedGroupUuid: {
       type: Object,
       default: null
+    },
+    advanced: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -39,6 +76,9 @@ export default {
       icons: Object.freeze(icons.items),
       groupTree: [],
       selectedGroupUuidStr: null,
+      previewTarget: false,
+      isDialogChooseIconVisible: false,
+      isDialogChooseGroupVisible: false,
     }
   },
   computed: {
@@ -81,16 +121,7 @@ export default {
           return
         }
 
-        this.groupTree = getGroupTree(db.groups)
-
-        // re-open last group
-        if (this.mSelectedGroupUuid) {
-          this.selectedGroupUuidStr = this.mSelectedGroupUuid.id
-          return
-        }
-        if (this.groupTree[0]) {
-          this.selectedGroupUuidStr = this.groupTree[0].id
-        }
+        this.updateGroupTree()
       },
       immediate: true
     },
@@ -101,9 +132,59 @@ export default {
           return
         }
         this.mSelectedGroupUuid = this.groupUuidMap[this.selectedGroupUuidStr]
-        // this.handleRefreshEntryList()
       },
       immediate: true
+    },
+  },
+  methods: {
+    updateGroupTree() {
+      this.groupTree = getGroupTree(this.database.groups)
+
+      // re-open last group
+      if (this.mSelectedGroupUuid) {
+        this.selectedGroupUuidStr = this.mSelectedGroupUuid.id
+        return
+      }
+      if (this.groupTree[0]) {
+        this.selectedGroupUuidStr = this.groupTree[0].id
+      }
+    },
+    handleShowChangeIcon(target) {
+      this.previewTarget = target
+      this.isDialogChooseIconVisible = true
+    },
+    handleShowMove(target) {
+      this.previewTarget = target
+      this.isDialogChooseGroupVisible = true
+    },
+    handleUpdateIcon(iconIndex) {
+      this.previewTarget.iconIndex = iconIndex
+      this.previewTarget._group.icon = iconIndex
+      store.commit('setIsNotSave')
+    },
+    handleMoveEntry(groupUuid) {
+      const result = moveItems(this.database, [this.previewTarget._group], groupUuid)
+      if (result) {
+        this.updateGroupTree()
+      }
+    },
+    handleDelete(item) {
+      // TODO: refactor
+      const msgTitle = `<li><span class="text-red">${item.name}</span></li>`
+
+      let msgAction
+      msgAction = store.getters.databaseRecycleBinEnabled ? 'move to trash bin' : '<b>DELETE</b>'
+
+      this.$q.dialog({
+        title: 'Confirm',
+        message: `Are you sure you want to ${msgAction}?<br><ul>${msgTitle}</ul>`,
+        html: true,
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        removeItems(this.database, [item._group])
+        this.updateGroupTree()
+      })
     },
   }
 }

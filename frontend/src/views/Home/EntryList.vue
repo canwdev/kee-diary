@@ -17,7 +17,7 @@
           <q-td @click.stop="">
             <q-checkbox dense v-model="props.selected" color="secondary"/>
           </q-td>
-          <q-td @click.stop="" key="icon" class="text-center">
+          <q-td @click.stop="" key="icon" class="text-center" style="width: 40px">
             <q-avatar
                 class="cursor-pointer"
                 @click.stop="handlePreview(props.row)"
@@ -40,25 +40,25 @@
       </template>
     </q-table>
 
-    <EntryContextMenu
+    <ContextMenuCommon
         :target-data="selected"
         @onPreview="handlePreview"
         @onEdit="handleEdit"
         @onRename="handleRename"
-        @onChangeIcon="handleChangeIcon"
-        @onMove="handleShowChooseEntry"
+        @onChangeIcon="handleShowChangeIcon"
+        @onMove="isDialogChooseGroupVisible = true"
         @onDelete="handleDelete"
     />
 
     <DialogEntryPreview
         :visible.sync="isDialogPreviewVisible"
-        :entry="currentEntryWrap._entry"
+        :entry="previewTarget._entry"
     />
 
     <DialogChooseIcon
         :visible.sync="isDialogChooseIconVisible"
-        :index="currentEntryWrap.iconIndex"
-        @onChoose="updateEntryIcon"
+        :index="previewTarget.iconIndex"
+        @onChoose="handleUpdateIcon"
     />
 
     <DialogChooseGroup
@@ -72,7 +72,7 @@
 import {formatDateLite} from "@/utils"
 import icons from "@/assets/db-icons"
 import store from "@/store"
-import EntryContextMenu from "@/components/EntryContextMenu"
+import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
@@ -82,7 +82,7 @@ export default {
   name: 'EntryList',
   components: {
     DialogChooseIcon,
-    EntryContextMenu,
+    ContextMenuCommon,
     DialogEntryPreview,
     DialogChooseGroup
   },
@@ -118,7 +118,7 @@ export default {
       isDialogChooseIconVisible: false,
       isDialogPreviewVisible: false,
       isDialogChooseGroupVisible: false,
-      currentEntryWrap: {},
+      previewTarget: {},
     }
   },
   computed: {
@@ -133,7 +133,7 @@ export default {
   watch: {
     currentGroupUuid: {
       handler() {
-        this.handleRefreshEntryList()
+        this.refreshEntryList()
       },
       immediate: true
     }
@@ -166,16 +166,11 @@ export default {
 
       // console.log(item)
     },
-    updateEntryIcon(iconIndex) {
-      this.currentEntryWrap.iconIndex = iconIndex
-      this.currentEntryWrap._entry.icon = iconIndex
-      store.commit('setIsNotSave')
-    },
     handlePreview(target) {
       if (Array.isArray(target)) {
         target = target[0]
       }
-      this.currentEntryWrap = target
+      this.previewTarget = target
       this.isDialogPreviewVisible = true
     },
     handleRename(items) {
@@ -199,21 +194,23 @@ export default {
       const [target] = items
       this.handleRowClick(target)
     },
-    handleChangeIcon(target) {
+    handleShowChangeIcon(target) {
       if (Array.isArray(target)) {
         target = target[0]
       }
       this.isDialogChooseIconVisible = true
-      this.currentEntryWrap = target
+      this.previewTarget = target
     },
-    handleShowChooseEntry() {
-      this.isDialogChooseGroupVisible = true
+    handleUpdateIcon(iconIndex) {
+      this.previewTarget.iconIndex = iconIndex
+      this.previewTarget._entry.icon = iconIndex
+      store.commit('setIsNotSave')
     },
     handleMoveEntry(groupUuid) {
       const entries = this.selected.map(item => item._entry)
       const result = moveItems(this.database, entries, groupUuid)
       if (result) {
-        this.handleRefreshEntryList()
+        this.refreshEntryList()
       }
     },
     handleDelete(items) {
@@ -235,15 +232,15 @@ export default {
         const entries = items.map(item => item._entry)
 
         removeItems(this.database, entries)
-        this.handleRefreshEntryList()
+        this.refreshEntryList()
       })
     },
-    handleRefreshEntryList() {
+    refreshEntryList() {
       if (!this.database) {
         this.entryList = []
         return
       }
-      this.currentEntryWrap = {}
+      this.previewTarget = {}
       this.selected = []
       this.entryList = getGroupEntries(this.database, this.currentGroupUuid)
       // console.log(this.entryList)

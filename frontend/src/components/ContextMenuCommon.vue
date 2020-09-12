@@ -19,7 +19,7 @@
             clickable v-close-popup
             class="row items-center"
         >
-          <q-icon :name="item.icon" size="sm" class="q-mr-sm"/>
+          <q-icon :name="item.icon" color="secondary" size="sm" class="q-mr-sm"/>
           <q-item-label>{{ item.label }}</q-item-label>
         </q-item>
       </template>
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: 'ContextMenu',
+  name: 'ContextMenuCommon',
   props: {
     targetData: {
       type: [Object, Array],

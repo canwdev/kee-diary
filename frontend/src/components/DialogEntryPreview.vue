@@ -1,5 +1,9 @@
 <template>
-  <q-dialog v-model="mVisible">
+  <q-dialog
+      v-model="mVisible"
+      transition-show="fade"
+      transition-hide="fade"
+  >
     <q-card v-if="entry" style="width: 700px; max-width: 80vw;">
       <q-card-section>
         <div class="text-h6 row items-center">
