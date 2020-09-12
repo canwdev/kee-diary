@@ -1,10 +1,11 @@
 <template>
   <q-tree
+      class="group-tree-wrap"
       :nodes="groupTree"
       node-key="id"
       label-key="name"
       selected-color="primary"
-      :selected.sync="selectedGroupUUIDStr"
+      :selected.sync="selectedGroupUuidStr"
       default-expand-all
   >
     <template v-slot:default-header="prop">
@@ -28,7 +29,7 @@ import {getGroupTree} from "@/utils/kdbx-utils"
 export default {
   name: "GroupTree",
   props: {
-    selectedGroupUUID: {
+    selectedGroupUuid: {
       type: Object,
       default: null
     }
@@ -37,14 +38,14 @@ export default {
     return {
       icons: Object.freeze(icons.items),
       groupTree: [],
-      selectedGroupUUIDStr: null,
+      selectedGroupUuidStr: null,
     }
   },
   computed: {
     database: {
       get: () => store.getters.database
     },
-    groupUUIDMap() {
+    groupUuidMap() {
       const groupTree = this.groupTree
 
       function getMap(node, counter = 0, map = {}) {
@@ -63,12 +64,12 @@ export default {
 
       return getMap(groupTree)
     },
-    mSelectedGroupUUID: {
+    mSelectedGroupUuid: {
       get() {
-        return this.selectedGroupUUID
+        return this.selectedGroupUuid
       },
       set(nv) {
-        this.$emit('update:selectedGroupUUID', nv)
+        this.$emit('update:selectedGroupUuid', nv)
       }
     }
   },
@@ -83,23 +84,23 @@ export default {
         this.groupTree = getGroupTree(db.groups)
 
         // re-open last group
-        if (this.mSelectedGroupUUID) {
-          this.selectedGroupUUIDStr = this.mSelectedGroupUUID.id
+        if (this.mSelectedGroupUuid) {
+          this.selectedGroupUuidStr = this.mSelectedGroupUuid.id
           return
         }
         if (this.groupTree[0]) {
-          this.selectedGroupUUIDStr = this.groupTree[0].id
+          this.selectedGroupUuidStr = this.groupTree[0].id
         }
       },
       immediate: true
     },
-    selectedGroupUUIDStr: {
+    selectedGroupUuidStr: {
       handler(nv) {
         if (!nv) {
-          this.mSelectedGroupUUID = null
+          this.mSelectedGroupUuid = null
           return
         }
-        this.mSelectedGroupUUID = this.groupUUIDMap[this.selectedGroupUUIDStr]
+        this.mSelectedGroupUuid = this.groupUuidMap[this.selectedGroupUuidStr]
         // this.handleRefreshEntryList()
       },
       immediate: true
@@ -109,15 +110,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.tree-icon {
-  border-radius 0
-  margin-right: 8px
-}
+.group-tree-wrap {
+  .tree-icon {
+    border-radius 0
+    margin-right: 8px
+  }
 
-.text-primary {
-  .tree-name {
-    font-weight: bold;
-    text-decoration: underline
+  >>> .q-tree__node--selected {
+    background $primary
+  }
+
+  .text-primary {
+    .tree-name {
+      color #fff
+      font-weight: bold;
+    }
   }
 }
+
 </style>

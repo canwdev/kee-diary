@@ -6,7 +6,7 @@
       <template v-slot:before>
         <div class="q-pa-md">
           <GroupTree
-              :selectedGroupUUID.sync="currentGroupUUID"
+              :selectedGroupUuid.sync="currentGroupUuid"
           />
         </div>
 
@@ -14,9 +14,7 @@
 
       <template v-slot:after>
         <EntryList
-            :database="database"
-            :entry-list="entryList"
-            @onRefresh="handleRefreshEntryList"
+            :currentGroupUuid="currentGroupUuid"
         />
 
         <div style="height: 80px"></div>
@@ -32,7 +30,7 @@
 
 <script>
 import store from "@/store"
-import {getGroupEntries, addEntry} from "@/utils/kdbx-utils"
+import {addEntry} from "@/utils/kdbx-utils"
 import GroupTree from "./GroupTree"
 import EntryList from "@/views/Home/EntryList"
 
@@ -44,43 +42,26 @@ export default {
   },
   data() {
     return {
-      splitterModel: 30,
-      entryList: []
+      splitterModel: 30
     }
   },
   computed: {
     database: {
       get: () => store.getters.database
     },
-    currentGroupUUID: {
-      get: () => store.getters.currentGroupUUID,
-      set: val => store.commit('setCurrentGroupUUID', val)
-    }
-  },
-  watch: {
-    currentGroupUUID: {
-      handler() {
-        this.handleRefreshEntryList()
-      },
-      immediate: true
+    currentGroupUuid: {
+      get: () => store.getters.currentGroupUuid,
+      set: val => store.commit('setCurrentGroupUuid', val)
     }
   },
   methods: {
     handleAddEntry() {
-      const res = addEntry(this.database, this.currentGroupUUID)
+      const res = addEntry(this.database, this.currentGroupUuid)
       if (res) {
         this.$router.push({
           name: 'Detail'
         })
       }
-    },
-    handleRefreshEntryList() {
-      if (!this.database) {
-        this.entryList = []
-        return
-      }
-      this.entryList = getGroupEntries(this.database, this.currentGroupUUID)
-      // console.log(this.entryList)
     }
   }
 }

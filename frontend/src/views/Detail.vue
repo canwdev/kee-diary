@@ -17,7 +17,7 @@
             </template>
 
             <EntryContextMenu
-                :target="currentEntry"
+                :target-data="currentEntry"
                 :hidden-items="['edit', 'rename']"
                 @onPreview="handlePreview"
                 @onChangeIcon="isDialogChooseIconVisible = true"

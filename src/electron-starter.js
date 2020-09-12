@@ -92,12 +92,6 @@ if (!gotTheLock) {
     if (mainWindow === null) createWindow()
   })
 
-  app.on('ready', async () => {
-    await session.defaultSession.loadExtension(path.join(__dirname, 'react-devtools'))
-    // Note that in order to use the React DevTools extension, you'll need to
-    // download and unzip a copy of the extension.
-  })
-
   if (isDev) {
     app.on('ready', async () => {
       await session.defaultSession.loadExtension(path.join(__dirname, 'vue-devtools'))

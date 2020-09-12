@@ -1,5 +1,7 @@
 <template>
   <q-menu
+      transition-show="none"
+      transition-hide="none"
       touch-position
       context-menu
   >
@@ -30,8 +32,8 @@
 export default {
   name: 'ContextMenu',
   props: {
-    target: {
-      type: Object,
+    targetData: {
+      type: [Object, Array],
       default: null
     },
     hiddenItems: {
@@ -46,24 +48,28 @@ export default {
       menuList: [
         {
           id: 'preview',
+          showOnlyOne: true,
           icon: 'visibility', label: 'Preview', action: () => {
             this.emitEvent('onPreview')
           }
         },
         {
           id: 'rename',
+          showOnlyOne: true,
           icon: 'space_bar', label: 'Rename', action: () => {
             this.emitEvent('onRename')
           }
         },
         {
           id: 'edit',
+          showOnlyOne: true,
           icon: 'edit', label: 'Edit', action: () => {
             this.emitEvent('onEdit')
           }
         },
         {
           id: 'changeIcon',
+          showOnlyOne: true,
           icon: 'star', label: 'Change icon', action: () => {
             this.emitEvent('onChangeIcon')
           }
@@ -72,7 +78,7 @@ export default {
         {
           id: 'logToConsole',
           icon: 'code', label: 'Log to console', action: () => {
-            console.log(this.target)
+            console.log(this.targetData)
           }
         },
         {
@@ -91,18 +97,29 @@ export default {
     }
   },
   computed: {
+    isTargetArray() {
+      return Array.isArray(this.targetData)
+    },
     menuListFiltered() {
-      if (!this.hiddenItems || this.hiddenItems.length === 0) {
-        return this.menuList
+      if (!this.targetData || this.targetData.length === 0) {
+        return []
       }
+
       return this.menuList.filter(item => {
-        return this.hiddenItems.indexOf(item.id) === -1
+        return (this.hiddenItems.indexOf(item.id) === -1) && this.testShowOnlyOne(item)
       })
     }
   },
   methods: {
     emitEvent(eventName) {
-      this.$emit(eventName, this.target)
+      this.$emit(eventName, this.targetData)
+    },
+    // show when only one targetData is selected
+    testShowOnlyOne(item) {
+      if (this.isTargetArray && this.targetData.length > 1 && item.showOnlyOne) {
+        return false
+      }
+      return true
     }
   }
 }

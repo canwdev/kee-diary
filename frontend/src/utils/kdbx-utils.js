@@ -174,13 +174,13 @@ export function getGroupTree(node, counter = 0) {
 /**
  * 获取某群组的条目列表
  * @param db 数据库实例
- * @param groupUUID 群组 UUID 对象，而不是字符串
+ * @param groupUuid 群组 Uuid 对象，而不是字符串
  * @return {[]}
  */
-export function getGroupEntries(db, groupUUID) {
+export function getGroupEntries(db, groupUuid) {
   const list = []
-  if (db && groupUUID) {
-    const group = db.getGroup(groupUUID)
+  if (db && groupUuid) {
+    const group = db.getGroup(groupUuid)
     // console.log('getGroup', group)
 
     if (group) {
@@ -210,12 +210,12 @@ export function getGroupEntries(db, groupUUID) {
 /**
  * 向群组内添加条目
  * @param db 数据库实例
- * @param groupUUID 群组 UUID 对象
+ * @param groupUuid 群组 Uuid 对象
  * @returns {boolean} 操作成功
  */
-export function addEntry(db, groupUUID) {
+export function addEntry(db, groupUuid) {
   try {
-    const group = db.getGroup(groupUUID)
+    const group = db.getGroup(groupUuid)
     const entry = db.createEntry(group)
     // console.log(db, group)
 
@@ -224,7 +224,7 @@ export function addEntry(db, groupUUID) {
 
     // console.log(entry)
 
-    store.commit('setCurrentGroupUUID', group.uuid)
+    store.commit('setCurrentGroupUuid', group.uuid)
     store.commit('setCurrentEntry', entry)
     store.commit('setIsNotSave')
 
@@ -237,14 +237,17 @@ export function addEntry(db, groupUUID) {
 }
 
 /**
- * 删除条目，如果有回收站则移动至回收站
+ * 删除多条(条目||群组)，如果有回收站则移动至回收站
  * @param db 数据库实例
- * @param entry 条目对象
+ * @param items (条目||群组)对象数组
  * @return {boolean} 操作成功
  */
-export function removeEntry(db, entry) {
+export function removeItems(db, items) {
   try {
-    db.remove(entry)
+    items.forEach(items => {
+      db.remove(items)
+    })
+
     store.commit('setIsNotSave')
     return true
   } catch (e) {
@@ -254,12 +257,23 @@ export function removeEntry(db, entry) {
   }
 }
 
-export function moveEntry(db, entry, groupUUID) {
+/**
+ * 移动多条(条目||群组)
+ * @param db 数据库实例
+ * @param items (条目||群组)对象数组
+ * @param groupUuid 群组 Uuid 对象
+ * @return {boolean} 操作成功
+ */
+export function moveItems(db, items, groupUuid) {
   try {
-    const group = db.getGroup(groupUUID)
-    db.move(entry, group);
+    const group = db.getGroup(groupUuid)
+
+    items.forEach(item => {
+      db.move(item, group);
+    })
+
     store.commit('setIsNotSave')
-    // store.commit('setCurrentGroupUUID', groupUUID)
+    // store.commit('setCurrentGroupUuid', groupUuid)
     return true
   } catch (e) {
     notifyError(e.message)

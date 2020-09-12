@@ -26,7 +26,7 @@ export default new Vuex.Store({
     isGlobalLoading: false, // 全局加载中
     isUnlocked: false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
-    currentGroupUUID: null, // 当前选中的群组 UUID 对象
+    currentGroupUuid: null, // 当前选中的群组 Uuid 对象
     currentEntry: null, // 当前打开的条目对象
     currentEntryPagination: initPagination, // 条目列表分页配置
   },
@@ -37,10 +37,11 @@ export default new Vuex.Store({
     editorTheme: state => state.settings.editorTheme,
     pkg: state => state.pkg,
     database: state => state.database,
+    databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
     isNotSave: state => state.isNotSave,
-    currentGroupUUID: state => state.currentGroupUUID,
+    currentGroupUuid: state => state.currentGroupUuid,
     currentEntry: state => state.currentEntry,
     currentEntryPagination: state => state.currentEntryPagination,
     isEntryOpen: state => {
@@ -85,14 +86,14 @@ export default new Vuex.Store({
       window.electronAPI.setShowExitPrompt(val)
       state.isNotSave = val
     },
-    setCurrentGroupUUID: (state, val) => {
-      if (state.currentGroupUUID && val) {
+    setCurrentGroupUuid: (state, val) => {
+      if (state.currentGroupUuid && val) {
         // prevent double set
-        if (state.currentGroupUUID.id === val.id) {
+        if (state.currentGroupUuid.id === val.id) {
           return
         }
       }
-      state.currentGroupUUID = val
+      state.currentGroupUuid = val
       state.currentEntryPagination = initPagination
       // console.log('resetPagination', state.currentEntryPagination)
     },
@@ -105,7 +106,7 @@ export default new Vuex.Store({
     },
     setCloseDatabase(state) {
       state.database = null
-      state.currentGroupUUID = null
+      state.currentGroupUuid = null
       state.currentEntry = null
       this.commit('setIsNotSave', false)
       state.isUnlocked = false

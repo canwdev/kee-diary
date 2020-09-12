@@ -10,9 +10,9 @@
       <q-separator/>
 
       <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md">
+        <q-card flat class="q-gutter-md" v-if="mVisible">
           <GroupTree
-              :selectedGroupUUID.sync="selected"
+              :selectedGroupUuid.sync="selected"
           />
         </q-card>
       </q-card-section>
