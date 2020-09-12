@@ -20,8 +20,8 @@ Under development...
 - [X] Save database/close database
 - [X] Determine whether the database has been changed
 - [ ] Full database search
-- [ ] Implement calendar view
-- [X] Support dark mode
+- [ ] Calendar view
+- [X] Dark mode
 - Groups
     - [ ] Rename group
     - [ ] Move to the recycle bin

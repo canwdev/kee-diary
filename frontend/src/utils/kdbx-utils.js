@@ -174,13 +174,13 @@ export function getGroupTree(node, counter = 0) {
 /**
  * 获取某群组的条目列表
  * @param db 数据库实例
- * @param uuidObj 必须是 UUID 对象，而不是字符串
+ * @param groupUUID 群组 UUID 对象，而不是字符串
  * @return {[]}
  */
-export function getGroupEntries(db, uuidObj) {
+export function getGroupEntries(db, groupUUID) {
   const list = []
-  if (db && uuidObj) {
-    const group = db.getGroup(uuidObj)
+  if (db && groupUUID) {
+    const group = db.getGroup(groupUUID)
     // console.log('getGroup', group)
 
     if (group) {
@@ -210,12 +210,12 @@ export function getGroupEntries(db, uuidObj) {
 /**
  * 向群组内添加条目
  * @param db 数据库实例
- * @param uuidObj 群组 UUID 对象
+ * @param groupUUID 群组 UUID 对象
  * @returns {boolean} 操作成功
  */
-export function addEntry(db, uuidObj) {
+export function addEntry(db, groupUUID) {
   try {
-    const group = db.getGroup(uuidObj)
+    const group = db.getGroup(groupUUID)
     const entry = db.createEntry(group)
     // console.log(db, group)
 
@@ -246,6 +246,20 @@ export function removeEntry(db, entry) {
   try {
     db.remove(entry)
     store.commit('setIsNotSave')
+    return true
+  } catch (e) {
+    notifyError(e.message)
+    console.error(e)
+    return false
+  }
+}
+
+export function moveEntry(db, entry, groupUUID) {
+  try {
+    const group = db.getGroup(groupUUID)
+    db.move(entry, group);
+    store.commit('setIsNotSave')
+    // store.commit('setCurrentGroupUUID', groupUUID)
     return true
   } catch (e) {
     notifyError(e.message)

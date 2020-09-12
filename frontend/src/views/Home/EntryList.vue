@@ -28,7 +28,7 @@
             @onEdit="handleEdit"
             @onRename="handleRename"
             @onChangeIcon="handleChangeIcon"
-            @onMove="handleMove"
+            @onMove="handleShowChoose"
             @onDelete="handleDelete"
         />
       </template>
@@ -45,6 +45,11 @@
         :index="currentEntryWrap.iconIndex"
         @onChoose="updateEntryIcon"
     />
+
+    <DialogChooseGroup
+        :visible.sync="isDialogChooseGroupVisible"
+        @onChoose="handleMoveEntry"
+    />
   </div>
 </template>
 
@@ -55,14 +60,16 @@ import store from "@/store"
 import EntryContextMenu from "@/components/EntryContextMenu"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
-import {removeEntry} from "../../utils/kdbx-utils"
+import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
+import {moveEntry, removeEntry} from "../../utils/kdbx-utils"
 
 export default {
   name: 'EntryList',
   components: {
     DialogChooseIcon,
     EntryContextMenu,
-    DialogEntryPreview
+    DialogEntryPreview,
+    DialogChooseGroup
   },
   props: {
     database: {
@@ -102,6 +109,7 @@ export default {
       icons: Object.freeze(icons.items),
       isDialogChooseIconVisible: false,
       isDialogPreviewVisible: false,
+      isDialogChooseGroupVisible: false,
       currentEntryWrap: {}
     }
   },
@@ -153,8 +161,18 @@ export default {
       this.isDialogChooseIconVisible = true
       this.currentEntryWrap = target
     },
-    handleMove(target) {
-      console.log(target)
+    handleShowChoose(target) {
+      this.currentEntryWrap = target
+      this.isDialogChooseGroupVisible = true
+
+      console.log(this.currentEntryWrap)
+    },
+    handleMoveEntry(groupUUID) {
+      const result = moveEntry(this.database, this.currentEntryWrap._entry, groupUUID)
+      if (result) {
+        this.currentEntryWrap = {}
+        this.$emit('onRefresh')
+      }
     },
     handleDelete(target) {
       this.$q.dialog({
