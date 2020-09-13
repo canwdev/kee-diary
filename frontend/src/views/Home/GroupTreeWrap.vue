@@ -27,6 +27,7 @@
       />
       <DialogChooseGroup
           :visible.sync="isDialogChooseGroupVisible"
+          :is-group="true"
           @onChoose="handleMoveEntry"
       />
     </template>

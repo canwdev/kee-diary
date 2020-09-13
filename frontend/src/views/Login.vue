@@ -86,6 +86,7 @@
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6">
               Trusted offline diary <br>
+              Comes with absolutely no warranty <br>
               © {{ new Date().getFullYear() }} {{ pkg.name }} {{ pkg.version }} by {{ pkg.author }}
             </p>
           </q-card-section>

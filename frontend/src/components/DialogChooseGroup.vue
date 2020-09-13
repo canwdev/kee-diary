@@ -15,6 +15,7 @@
 
       <q-card-section style="max-height: 70vh" class="scroll">
         <q-card flat class="q-gutter-md" v-if="mVisible">
+          <p v-if="isGroup" class="text-weight-thin">Tip: Do not move to the group itself or subgroups, otherwise the group will disappear. This is a bug that cannot be fixed at present.</p>
           <GroupTree
               :selectedGroupUuid.sync="selected"
           />
@@ -44,6 +45,10 @@ export default {
   },
   props: {
     visible: {
+      type: Boolean,
+      default: false
+    },
+    isGroup: {
       type: Boolean,
       default: false
     }

@@ -32,12 +32,20 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
       msgTitles = getTitle(originTarget)
     }
 
+    const isRecycleBin = originTarget.uuid.id === context.database.meta.recycleBinUuid.id
+
     let msgAction
-    msgAction = context.$store.getters.databaseRecycleBinEnabled ? 'move to trash bin' : '<b>DELETE</b>'
+    if (isRecycleBin) {
+      msgAction = '<b>empty recycle bin</b>?'
+    } else if (context.$store.getters.databaseRecycleBinEnabled) {
+      msgAction = '<b>move to recycle bin</b>?'
+    } else {
+      msgAction = '<b>DELETE</b>?'
+    }
 
     context.$q.dialog({
       title: 'Confirm',
-      message: `Are you sure you want to ${msgAction}?<br><ul>${msgTitles}</ul>`,
+      message: `Are you sure you want to ${msgAction}<br><ul>${msgTitles}</ul>`,
       html: true,
       cancel: true,
       persistent: false
