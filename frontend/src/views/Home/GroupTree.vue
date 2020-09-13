@@ -10,11 +10,10 @@
     >
       <template v-slot:default-header="prop">
         <div class="row items-center">
-          <q-avatar
+          <IconShow
               class="tree-icon"
-              size="32px" square>
-            <img :src="icons[prop.node.iconIndex]">
-          </q-avatar>
+              :item="prop.node._origin"
+          />
           <div class="tree-name">{{ prop.node.title }}</div>
         </div>
         <slot v-bind:node="prop.node"></slot>
@@ -27,9 +26,13 @@
 import icons from "@/assets/db-icons"
 import store from "@/store"
 import {getGroupTree} from "@/utils/kdbx-utils"
+import IconShow from "@/components/IconShow"
 
 export default {
   name: "GroupTree",
+  components: {
+    IconShow
+  },
   props: {
     selectedGroupUuid: {
       type: Object,

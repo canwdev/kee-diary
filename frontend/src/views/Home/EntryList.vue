@@ -18,12 +18,11 @@
             <q-checkbox dense v-model="props.selected" color="secondary"/>
           </q-td>
           <q-td @click.stop="" key="icon" class="text-center" style="width: 40px">
-            <q-avatar
+            <IconShow
                 class="cursor-pointer"
-                @click.stop="handlePreview(props.row)"
-                size="32px" square>
-              <img :src="icons[props.row.iconIndex]">
-            </q-avatar>
+                :item="props.row._origin"
+                @click.native.stop="handlePreview(props.row)"
+            />
           </q-td>
           <q-td class="cursor-pointer" key="title" :props="props">
             {{ props.row.title }}
@@ -70,12 +69,12 @@
 
 <script>
 import {formatDateLite} from "@/utils"
-import icons from "@/assets/db-icons"
 import store from "@/store"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
-import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
+import DialogChooseGroup from "@/components/DialogChooseGroup"
+import IconShow from "@//components/IconShow"
 import {getGroupEntries, moveItems} from "../../utils/kdbx-utils"
 import {handleCommonDelete, handleCommonRename} from "./common-action"
 
@@ -85,7 +84,8 @@ export default {
     DialogChooseIcon,
     ContextMenuCommon,
     DialogEntryPreview,
-    DialogChooseGroup
+    DialogChooseGroup,
+    IconShow
   },
   props: {
     currentGroupUuid: {
@@ -115,7 +115,6 @@ export default {
         },
       ]),
       selected: [],
-      icons: Object.freeze(icons.items),
       isDialogChooseIconVisible: false,
       isDialogPreviewVisible: false,
       isDialogChooseGroupVisible: false,

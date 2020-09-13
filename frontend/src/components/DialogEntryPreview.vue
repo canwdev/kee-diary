@@ -7,9 +7,9 @@
     <q-card v-if="entry" style="width: 700px; max-width: 80vw;">
       <q-card-section>
         <div class="text-h6 row items-center">
-          <q-avatar size="32px" square>
-            <img :src="icons[entry.icon]"/>
-          </q-avatar>
+          <IconShow
+              :item="entry"
+          />
           <span class="q-ml-md">{{ entry.fields.Title }}</span>
           <q-space/>
           <q-btn icon="close" flat round dense v-close-popup/>
@@ -33,9 +33,13 @@
 import icons from '@/assets/db-icons'
 import markdownIt from "@/utils/markdown-it"
 import store from "@/store"
+import IconShow from "@/components/IconShow"
 
 export default {
   name: "DialogEntryPreview",
+  components: {
+    IconShow
+  },
   props: {
     visible: {
       type: Boolean,

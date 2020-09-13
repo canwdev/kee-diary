@@ -10,10 +10,13 @@
               color="secondary"
               placeholder="entry.fields.Title">
             <template v-slot:prepend>
-              <q-avatar size="32px" square class="cursor-pointer" @click="isDialogPreviewVisible = true">
-                <img :src="getIcon(currentEntry.icon)">
+              <IconShow
+                  class="cursor-pointer"
+                  @click.native="isDialogPreviewVisible = true"
+                  :item="currentEntry"
+              >
                 <q-tooltip>Preview (Ctrl+/)</q-tooltip>
-              </q-avatar>
+              </IconShow>
             </template>
 
             <ContextMenuCommon
@@ -116,6 +119,7 @@ import DialogEntryPreview from "@/components/DialogEntryPreview"
 import {notifyError, notifySuccess} from "../utils"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
+import IconShow from "@/components/IconShow"
 
 import {textFilters as filters} from "../utils/enum"
 
@@ -125,7 +129,8 @@ export default {
     DateTimeEdit,
     DialogEntryPreview,
     ContextMenuCommon,
-    DialogChooseIcon
+    DialogChooseIcon,
+    IconShow
   },
   data() {
     return {
