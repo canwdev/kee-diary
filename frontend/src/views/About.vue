@@ -3,6 +3,11 @@
     <div class="text-center">
       <h3>About</h3>
 
+      <q-card class="q-pa-md q-mb-lg">
+        <div>Trusted offline diary</div>
+        <div>Comes with absolutely no warranty</div>
+      </q-card>
+
       <div class="column q-gutter-sm">
         <q-btn color="primary" to="/home">Home</q-btn>
         <q-btn color="primary" @click="logDatabase">Log database</q-btn>

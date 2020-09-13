@@ -7,7 +7,7 @@
       :style="{background: item.bgColor}"
   >
     <span v-if="item.fgColor" class="color-fg" :style="{background: item.fgColor}"></span>
-    <img :src="icons[item.icon]">
+    <img :src="getIconSrc(item.iconIndex || item.icon)">
     <slot></slot>
   </q-avatar>
 </template>
@@ -23,9 +23,9 @@ export default {
       default: null
     }
   },
-  data() {
-    return {
-      icons: Object.freeze(icons.items)
+  methods: {
+    getIconSrc(index) {
+      return icons.items[index]
     }
   }
 }

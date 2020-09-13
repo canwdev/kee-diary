@@ -12,7 +12,7 @@
         <div class="row items-center">
           <IconShow
               class="tree-icon"
-              :item="prop.node._origin"
+              :item="prop.node"
           />
           <div class="tree-name">{{ prop.node.title }}</div>
         </div>

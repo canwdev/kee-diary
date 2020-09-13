@@ -8,6 +8,7 @@
       <q-card-section>
         <div class="text-h6 row items-center">
           <IconShow
+              class="preview-icon"
               :item="entry"
           />
           <span class="q-ml-md">{{ entry.fields.Title }}</span>
@@ -76,6 +77,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+.preview-icon {
+  &:hover {
+    transform scale(1.5)
+  }
+}
 </style>

@@ -8,7 +8,7 @@
         <ContextMenuCommon
             :is-group="true"
             :target-data="prop.node"
-            :hidden-items="['preview', 'edit']"
+            :hidden-items="['preview', 'edit', 'changeColor']"
             @onCreateEntry="handleCreateEntry"
             @onCreateGroup="handleCreateGroup"
             @onRename="handleRename"

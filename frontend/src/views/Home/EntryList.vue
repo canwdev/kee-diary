@@ -20,7 +20,7 @@
           <q-td @click.stop="" key="icon" class="text-center" style="width: 40px">
             <IconShow
                 class="cursor-pointer"
-                :item="props.row._origin"
+                :item="props.row"
                 @click.native.stop="handlePreview(props.row)"
             />
           </q-td>
@@ -45,6 +45,7 @@
         @onEdit="handleEdit"
         @onRename="handleRename"
         @onChangeIcon="handleShowChangeIcon"
+        @onChangeColor="handleShowChangeColor"
         @onMove="isDialogChooseGroupVisible = true"
         @onDelete="handleDelete"
     />
@@ -58,6 +59,11 @@
         :visible.sync="isDialogChooseIconVisible"
         :index="previewTarget.iconIndex"
         @onChoose="handleUpdateIcon"
+    />
+    <DialogChooseColor
+        :item="previewTarget"
+        :visible.sync="isDialogChooseColorVisible"
+        @onChoose="handleUpdateColor"
     />
 
     <DialogChooseGroup
@@ -73,6 +79,7 @@ import store from "@/store"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
+import DialogChooseColor from "@/components/DialogChooseColor"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
 import IconShow from "@//components/IconShow"
 import {getGroupEntries, moveItems} from "../../utils/kdbx-utils"
@@ -82,6 +89,7 @@ export default {
   name: 'EntryList',
   components: {
     DialogChooseIcon,
+    DialogChooseColor,
     ContextMenuCommon,
     DialogEntryPreview,
     DialogChooseGroup,
@@ -116,6 +124,7 @@ export default {
       ]),
       selected: [],
       isDialogChooseIconVisible: false,
+      isDialogChooseColorVisible: false,
       isDialogPreviewVisible: false,
       isDialogChooseGroupVisible: false,
       previewTarget: {},
@@ -166,11 +175,15 @@ export default {
 
       // console.log(item)
     },
-    handlePreview(target) {
+    selectPreviewTarget(target) {
       if (Array.isArray(target)) {
-        target = target[0]
+        this.previewTarget = target[0]
+        return
       }
       this.previewTarget = target
+    },
+    handlePreview(target) {
+      this.selectPreviewTarget(target)
       this.isDialogPreviewVisible = true
     },
     handleRename(items) {
@@ -182,15 +195,22 @@ export default {
       this.handleRowClick(target)
     },
     handleShowChangeIcon(target) {
-      if (Array.isArray(target)) {
-        target = target[0]
-      }
+      this.selectPreviewTarget(target)
       this.isDialogChooseIconVisible = true
-      this.previewTarget = target
     },
     handleUpdateIcon(iconIndex) {
       this.previewTarget.iconIndex = iconIndex
       this.previewTarget._origin.icon = iconIndex
+      store.commit('setIsNotSave')
+    },
+    handleShowChangeColor(target) {
+      this.selectPreviewTarget(target)
+      this.isDialogChooseColorVisible = true
+    },
+    handleUpdateColor(result) {
+      const {type, value} = result
+      this.previewTarget[type] = value
+      this.previewTarget._origin[type] = value
       store.commit('setIsNotSave')
     },
     handleMoveEntry(groupUuid) {

@@ -104,6 +104,13 @@ export default {
             this.emitEvent('onChangeIcon')
           }
         },
+        {
+          id: 'changeColor',
+          showOnlyOne: true,
+          icon: 'palette', label: 'Change color', action: () => {
+            this.emitEvent('onChangeColor')
+          }
+        },
         {isSeparator: true},
         {
           id: 'logToConsole',

@@ -21,7 +21,7 @@
 
             <ContextMenuCommon
                 :target-data="currentEntry"
-                :hidden-items="['edit', 'rename']"
+                :hidden-items="['edit', 'rename', 'changeColor']"
                 @onPreview="handlePreview"
                 @onChangeIcon="isDialogChooseIconVisible = true"
             />
