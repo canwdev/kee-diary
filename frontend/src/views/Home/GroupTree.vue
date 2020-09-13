@@ -3,7 +3,7 @@
     <q-tree
         :nodes="groupTree"
         node-key="id"
-        label-key="name"
+        label-key="title"
         selected-color="primary"
         :selected.sync="selectedGroupUuidStr"
         default-expand-all
@@ -15,33 +15,11 @@
               size="32px" square>
             <img :src="icons[prop.node.iconIndex]">
           </q-avatar>
-          <div class="tree-name">{{ prop.node.name }}</div>
+          <div class="tree-name">{{ prop.node.title }}</div>
         </div>
-
-        <template v-if="advanced">
-          <ContextMenuCommon
-              :target-data="prop.node"
-              :hidden-items="['preview', 'rename', 'edit']"
-              @onChangeIcon="handleShowChangeIcon(prop.node)"
-              @onMove="handleShowMove(prop.node)"
-              @onDelete="handleDelete(prop.node)"
-          />
-        </template>
+        <slot v-bind:node="prop.node"></slot>
       </template>
     </q-tree>
-
-    <template v-if="advanced">
-      <DialogChooseIcon
-          :visible.sync="isDialogChooseIconVisible"
-          :index="previewTarget.iconIndex"
-          @onChoose="handleUpdateIcon"
-      />
-      <DialogChooseGroup
-          :visible.sync="isDialogChooseGroupVisible"
-          @onChoose="handleMoveEntry"
-      />
-    </template>
-
   </div>
 </template>
 
@@ -49,26 +27,13 @@
 import icons from "@/assets/db-icons"
 import store from "@/store"
 import {getGroupTree} from "@/utils/kdbx-utils"
-import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
-import {moveItems, removeItems} from "../../utils/kdbx-utils"
 
 export default {
   name: "GroupTree",
-  components: {
-    ContextMenuCommon,
-    DialogChooseIcon,
-    DialogChooseGroup
-  },
   props: {
     selectedGroupUuid: {
       type: Object,
       default: null
-    },
-    advanced: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -76,9 +41,6 @@ export default {
       icons: Object.freeze(icons.items),
       groupTree: [],
       selectedGroupUuidStr: null,
-      previewTarget: false,
-      isDialogChooseIconVisible: false,
-      isDialogChooseGroupVisible: false,
     }
   },
   computed: {
@@ -121,7 +83,7 @@ export default {
           return
         }
 
-        this.updateGroupTree()
+        this.refreshGroupTree()
       },
       immediate: true
     },
@@ -137,7 +99,7 @@ export default {
     },
   },
   methods: {
-    updateGroupTree() {
+    refreshGroupTree() {
       this.groupTree = getGroupTree(this.database.groups)
 
       // re-open last group
@@ -148,44 +110,7 @@ export default {
       if (this.groupTree[0]) {
         this.selectedGroupUuidStr = this.groupTree[0].id
       }
-    },
-    handleShowChangeIcon(target) {
-      this.previewTarget = target
-      this.isDialogChooseIconVisible = true
-    },
-    handleShowMove(target) {
-      this.previewTarget = target
-      this.isDialogChooseGroupVisible = true
-    },
-    handleUpdateIcon(iconIndex) {
-      this.previewTarget.iconIndex = iconIndex
-      this.previewTarget._group.icon = iconIndex
-      store.commit('setIsNotSave')
-    },
-    handleMoveEntry(groupUuid) {
-      const result = moveItems(this.database, [this.previewTarget._group], groupUuid)
-      if (result) {
-        this.updateGroupTree()
-      }
-    },
-    handleDelete(item) {
-      // TODO: refactor
-      const msgTitle = `<li><span class="text-red">${item.name}</span></li>`
-
-      let msgAction
-      msgAction = store.getters.databaseRecycleBinEnabled ? 'move to trash bin' : '<b>DELETE</b>'
-
-      this.$q.dialog({
-        title: 'Confirm',
-        message: `Are you sure you want to ${msgAction}?<br><ul>${msgTitle}</ul>`,
-        html: true,
-        cancel: true,
-        persistent: false
-      }).onOk(() => {
-        removeItems(this.database, [item._group])
-        this.updateGroupTree()
-      })
-    },
+    }
   }
 }
 </script>

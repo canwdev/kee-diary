@@ -5,8 +5,7 @@
     >
       <template v-slot:before>
         <div class="q-pa-md">
-          <GroupTree
-              :advanced="true"
+          <GroupTreeWrap
               :selectedGroupUuid.sync="currentGroupUuid"
           />
         </div>
@@ -32,14 +31,14 @@
 <script>
 import store from "@/store"
 import {addEntry} from "@/utils/kdbx-utils"
-import GroupTree from "./GroupTree"
+import GroupTreeWrap from "./GroupTreeWrap"
 import EntryList from "@/views/Home/EntryList"
 
 export default {
   name: "DbListView",
   components: {
     EntryList,
-    GroupTree
+    GroupTreeWrap
   },
   data() {
     return {
@@ -57,8 +56,8 @@ export default {
   },
   methods: {
     handleAddEntry() {
-      const res = addEntry(this.database, this.currentGroupUuid)
-      if (res) {
+      const result = addEntry(this.database, this.currentGroupUuid)
+      if (result) {
         this.$router.push({
           name: 'Detail'
         })

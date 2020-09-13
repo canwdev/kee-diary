@@ -161,11 +161,11 @@ export function getGroupTree(node, counter = 0) {
     list.push({
       iconIndex: group.icon,
       uuid: group.uuid,
-      name: group.name,
+      title: group.name,
       index: counter,
       children: getGroupTree(children, counter + 1),
       id: group.uuid.id,
-      _group: group
+      _origin: group
     })
   })
   return list
@@ -196,7 +196,7 @@ export function getGroupEntries(db, groupUuid) {
           fgColor: entry.fgColor,
           creationTime: entry.times.creationTime,
           lastModTime: entry.times.lastModTime,
-          _entry: entry
+          _origin: entry
         })
       }
     }
@@ -205,6 +205,28 @@ export function getGroupEntries(db, groupUuid) {
   // console.log('getGroupEntries', list)
 
   return list
+}
+
+/**
+ * 向群组内添加群组
+ * @param db 数据库实例
+ * @param groupUuid 群组 Uuid 对象
+ * @param name 名字
+ * @returns {boolean} 操作成功
+ */
+export function addGroup(db, groupUuid, name = formatDate(new Date(), true)) {
+  try {
+    const group = db.getGroup(groupUuid)
+
+    db.createGroup(group, name)
+    store.commit('setIsNotSave')
+
+    return true
+  } catch (e) {
+    notifyError(e.message)
+    console.error(e)
+    return false
+  }
 }
 
 /**
@@ -219,7 +241,7 @@ export function addEntry(db, groupUuid) {
     const entry = db.createEntry(group)
     // console.log(db, group)
 
-    entry.fields.Title = formatDate(new Date())
+    entry.fields.Title = formatDate(new Date(), true)
     entry.icon = group.icon
 
     // console.log(entry)
@@ -244,9 +266,14 @@ export function addEntry(db, groupUuid) {
  */
 export function removeItems(db, items) {
   try {
-    items.forEach(items => {
+    if (Array.isArray(items)) {
+      items.forEach(items => {
+        db.remove(items)
+      })
+    } else {
       db.remove(items)
-    })
+    }
+
 
     store.commit('setIsNotSave')
     return true
@@ -265,13 +292,23 @@ export function removeItems(db, items) {
  * @return {boolean} 操作成功
  */
 export function moveItems(db, items, groupUuid) {
+  const checkIllegal = (item) => {
+    if (item.uuid.id === groupUuid.id) {
+      throw new Error('Not allowed to move to the group itself')
+    }
+  }
+
   try {
     const group = db.getGroup(groupUuid)
-
-    items.forEach(item => {
-      db.move(item, group);
-    })
-
+    if (Array.isArray(items)) {
+      items.forEach(item => {
+        checkIllegal(item)
+        db.move(item, group);
+      })
+    } else {
+      checkIllegal(items)
+      db.move(items, group);
+    }
     store.commit('setIsNotSave')
     // store.commit('setCurrentGroupUuid', groupUuid)
     return true

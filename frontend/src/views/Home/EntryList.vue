@@ -52,7 +52,7 @@
 
     <DialogEntryPreview
         :visible.sync="isDialogPreviewVisible"
-        :entry="previewTarget._entry"
+        :entry="previewTarget._origin"
     />
 
     <DialogChooseIcon
@@ -76,7 +76,8 @@ import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseGroup from "@/components/DialogChooseGroup.vue"
-import {getGroupEntries, moveItems, removeItems} from "../../utils/kdbx-utils"
+import {getGroupEntries, moveItems} from "../../utils/kdbx-utils"
+import {handleCommonDelete, handleCommonRename} from "./common-action"
 
 export default {
   name: 'EntryList',
@@ -144,7 +145,7 @@ export default {
       return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''}`
     },
     handleRowClick(row) {
-      store.commit('setCurrentEntry', row._entry)
+      store.commit('setCurrentEntry', row._origin)
       this.$router.push({
         name: 'Detail'
       })
@@ -175,20 +176,7 @@ export default {
     },
     handleRename(items) {
       const [target] = items
-      this.$q.dialog({
-        title: 'Rename',
-        prompt: {
-          model: target.title,
-          isValid: val => val !== target.title,
-          type: 'text'
-        },
-        cancel: true,
-        persistent: false
-      }).onOk(data => {
-        target.title = data
-        target._entry.fields.Title = data
-        store.commit('setIsNotSave')
-      })
+      handleCommonRename(this, target)
     },
     handleEdit(items) {
       const [target] = items
@@ -203,35 +191,20 @@ export default {
     },
     handleUpdateIcon(iconIndex) {
       this.previewTarget.iconIndex = iconIndex
-      this.previewTarget._entry.icon = iconIndex
+      this.previewTarget._origin.icon = iconIndex
       store.commit('setIsNotSave')
     },
     handleMoveEntry(groupUuid) {
-      const entries = this.selected.map(item => item._entry)
+      const entries = this.selected.map(item => item._origin)
       const result = moveItems(this.database, entries, groupUuid)
       if (result) {
         this.refreshEntryList()
       }
     },
     handleDelete(items) {
-      const getTitle = (v) => `<li><span class="text-red">${v.title}</span></li>`
+      const entries = items.map(item => item._origin)
 
-      let msgItems
-      msgItems = items.length > 1 ? items.map(i => getTitle(i)).join('') : getTitle(items[0])
-
-      let msgAction
-      msgAction = store.getters.databaseRecycleBinEnabled ? 'move to trash bin' : '<b>DELETE</b>'
-
-      this.$q.dialog({
-        title: 'Confirm',
-        message: `Are you sure you want to ${msgAction}?<br><ul>${msgItems}</ul>`,
-        html: true,
-        cancel: true,
-        persistent: false
-      }).onOk(() => {
-        const entries = items.map(item => item._entry)
-
-        removeItems(this.database, entries)
+      handleCommonDelete(this, entries).then(() => {
         this.refreshEntryList()
       })
     },

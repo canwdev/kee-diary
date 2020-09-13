@@ -29,6 +29,18 @@
 </template>
 
 <script>
+// hidden when root group
+function isHiddenGroupRoot(isGroup, targetData) {
+  if (!isGroup) {
+    return false
+  }
+  try {
+    return !(targetData._origin.parentGroup)
+  } catch {
+    return false
+  }
+}
+
 export default {
   name: 'ContextMenuCommon',
   props: {
@@ -41,11 +53,29 @@ export default {
       default() {
         return []
       }
+    },
+    isGroup: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       menuList: [
+        {
+          id: 'createEntry',
+          hidden: !this.isGroup,
+          icon: 'add_circle', label: 'Create entry', action: () => {
+            this.emitEvent('onCreateEntry')
+          }
+        },
+        {
+          id: 'createGroup',
+          hidden: !this.isGroup,
+          icon: 'add_box', label: 'Create group', action: () => {
+            this.emitEvent('onCreateGroup')
+          }
+        },
         {
           id: 'preview',
           showOnlyOne: true,
@@ -83,12 +113,14 @@ export default {
         },
         {
           id: 'move',
+          hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
           icon: 'double_arrow', label: 'Move...', action: () => {
             this.emitEvent('onMove')
           }
         },
         {
           id: 'delete',
+          hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
           icon: 'delete', label: 'Delete', action: () => {
             this.emitEvent('onDelete')
           }
@@ -106,7 +138,7 @@ export default {
       }
 
       return this.menuList.filter(item => {
-        return (this.hiddenItems.indexOf(item.id) === -1) && this.testShowOnlyOne(item)
+        return (this.hiddenItems.indexOf(item.id) === -1) && this.isShowOnlyOne(item)
       })
     }
   },
@@ -115,7 +147,7 @@ export default {
       this.$emit(eventName, this.targetData)
     },
     // show when only one targetData is selected
-    testShowOnlyOne(item) {
+    isShowOnlyOne(item) {
       if (this.isTargetArray && this.targetData.length > 1 && item.showOnlyOne) {
         return false
       }

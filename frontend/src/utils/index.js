@@ -4,14 +4,14 @@ export function pad2Num(num, len = 2) {
   return num.toString().padStart(len, '0')
 }
 
-export function formatDate(date) {
+export function formatDate(date, isSecond) {
   const year = date.getFullYear() + '-'
   const month = pad2Num(date.getMonth() + 1) + '-'
   const day = pad2Num(date.getDate())
   const hours = ' ' + pad2Num(date.getHours()) + ':'
-  const minutes = pad2Num(date.getMinutes()) // + ':'
-  // const seconds = pad2Num(date.getSeconds())
-  return [year, month, day, hours, minutes].join('')
+  const minutes = pad2Num(date.getMinutes())
+  const seconds = isSecond ? (':' + pad2Num(date.getSeconds())) : ''
+  return [year, month, day, hours, minutes, seconds].join('')
 }
 
 export function formatDateLite(d) {
