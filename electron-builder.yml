@@ -8,7 +8,7 @@ extraMetadata:
 
 # Mac OS configuration
 mac:
-  icon: "src/app/assets/images/icon.icns"
+  icon: "src/assets/img/favicon.png"
 
 # Config for OSX dmg
 dmg:
@@ -38,7 +38,8 @@ nsis:
 
 # Linux configuration
 linux:
-  category: Development
+  icon: "src/assets/img/favicon-2.png"
+  category: Tools
   target:
     - "AppImage"
     - "deb"
