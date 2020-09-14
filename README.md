@@ -15,28 +15,34 @@ The following techniques are used:
 Under development...
 
 - [ ] Create database
-- [X] Open a single database (`password`/`password+key`)
-- [X] Browse groups and entries in groups
-- [X] Save database/close database
-- [X] Determine whether the database has been changed
+- [x] Open a database (`password`/`password+key`)
+- [x] Save database/close database
 - [ ] Full database search
-- [ ] Calendar view
-- [X] Dark mode
+- [x] Dark mode
+- [ ] Welcome page
+- [ ] About page
+- [ ] i18n support
 - Groups
-    - [ ] Rename group
-    - [ ] Move to the recycle bin
-    - [ ] Empty trash
-    - [ ] Move group
-    - [ ] New group
-    - [ ] List expansion and contraction
+    - [x] Create new entry
+    - [x] Create new group
+    - [x] Rename group
+    - [x] Change icon
+    - [x] Move group
+    - [x] Move to the recycle bin
+    - [x] Empty trash
 - Entries
-    - [X] View and edit the title (Title) and content (Note)
-    - [X] Create new entry
-    - [X] Delete entry
-    - [ ] Move entry
-    - [X] Sort (sort by creation or modification date)
-    - [X] Markdown support
-    - [X] Modify icon
+    - [x] List view (sort)
+    - [ ] Calendar view
+    - [x] Change icon
+    - [x] Change color
+    - [x] Markdown support
+    - [x] Preview
+    - [x] Rename entry
+    - [x] Edit (CodeMirror)
+    - [ ] Edit with external tools
+    - [x] Import/Export
+    - [x] Move entry
+    - [x] Delete entry
 
 ## Development
 
