@@ -43,23 +43,19 @@
         <q-separator/>
         <q-item-label header>Settings</q-item-label>
 
-        <q-item>
+        <q-item clickable @click="isDarkMode = !isDarkMode">
           <q-item-section avatar>
             <q-icon name="nights_stay"/>
           </q-item-section>
-          <q-toggle
-              v-model="isDarkMode"
-              label="Dark mode"
-          />
-        </q-item>
 
-        <q-item clickable tag="a" @click="toggleFullscreen">
-          <q-item-section avatar>
-            <q-icon name="note"/>
-          </q-item-section>
           <q-item-section>
-            <q-item-label>Test</q-item-label>
-            <q-item-label caption>Info</q-item-label>
+            <q-item-label>
+              Dark mode
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-toggle v-model="isDarkMode"/>
           </q-item-section>
         </q-item>
 
@@ -101,7 +97,7 @@ export default {
       handler(nv) {
         this.$q.dark.set(nv)
       },
-      immediate:true
+      immediate: true
     }
   },
   methods: {

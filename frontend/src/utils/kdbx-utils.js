@@ -1,9 +1,7 @@
 import kdbxweb from "kdbxweb"
 import store from '@/store'
 import router from '@/router'
-import LocalStorageSettings from "./settings"
 
-const settingsLogin = new LocalStorageSettings('KEE_DIARY_VUE_LOGIN')
 import {notifyError, notifySuccess} from '@/utils'
 import {busEmitSaveNotes} from "./bus"
 import {Dialog} from 'quasar'
@@ -40,8 +38,9 @@ export function decryptKdbx(dbPath, password, keyPath) {
 }
 
 
-export function openKdbx(db) {
+export function openKdbx(db, dbPath) {
   store.commit('setDatabase', db)
+  store.commit('setDbPath', dbPath)
   store.commit('setIsUnlocked', true)
 }
 
@@ -127,7 +126,7 @@ function doSaveKdbx(dbPath, db) {
 }
 
 export function saveKdbx() {
-  const {dbPath} = settingsLogin.get() || {}
+  const dbPath = store.getters.dbPath
   const db = store.getters.database
   const isEntryOpen = store.getters.isEntryOpen
   const isGlobalLoading = store.getters.isGlobalLoading

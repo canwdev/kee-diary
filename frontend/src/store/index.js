@@ -22,7 +22,8 @@ export default new Vuex.Store({
       editorTheme: null
     },
     pkg,
-    database: null, // kdbx 数据库实例
+    database: null, // opened kdbx database instance
+    dbPath: null, // opened kdbx path
     isGlobalLoading: false, // 全局加载中
     isUnlocked: false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
@@ -37,6 +38,7 @@ export default new Vuex.Store({
     editorTheme: state => state.settings.editorTheme,
     pkg: state => state.pkg,
     database: state => state.database,
+    dbPath: state => state.dbPath,
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
@@ -73,6 +75,9 @@ export default new Vuex.Store({
     setDatabase: (state, val) => {
       state.database = val
     },
+    setDbPath: (state, val) => {
+      state.dbPath = val
+    },
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
     },
@@ -106,6 +111,7 @@ export default new Vuex.Store({
     },
     setCloseDatabase(state) {
       state.database = null
+      state.dbPath = null
       state.currentGroupUuid = null
       state.currentEntry = null
       this.commit('setIsNotSave', false)

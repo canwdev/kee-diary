@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './quasar'
+import './styles/base.styl'
 import './styles/github-markdown.css'
 import './styles/github-markdown-dark.css'
 

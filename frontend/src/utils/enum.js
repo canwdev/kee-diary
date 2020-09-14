@@ -1,3 +1,4 @@
+export const kdbxFilters = [{name: '*.kdbx file', extensions: ['kdbx']}]
 export const textFilters = [
   {name: 'Text File', extensions: ['txt', 'md']},
   {name: 'All File', extensions: ['*']},
