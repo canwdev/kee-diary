@@ -25,14 +25,16 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
   return new Promise((resolve) => {
     const getTitle = (v) => `<li><span class="text-red">${isGroup ? v.name : v.fields.Title}</span></li>`
 
-    let msgTitles
+    let msgTitles = '', isRecycleBin = false
+
     if (Array.isArray(originTarget)) {
       msgTitles = originTarget.map(i => getTitle(i)).join('')
     } else {
       msgTitles = getTitle(originTarget)
+      isRecycleBin = originTarget.uuid.id === context.database.meta.recycleBinUuid.id
     }
 
-    const isRecycleBin = originTarget.uuid.id === context.database.meta.recycleBinUuid.id
+
 
     let msgAction
     if (isRecycleBin) {
