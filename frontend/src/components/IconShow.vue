@@ -2,12 +2,16 @@
   <q-avatar
       v-if="item"
       class="icon-show"
-      size="32px"
+      :size="size"
       square
       :style="{background: item.bgColor}"
   >
-    <span v-if="item.fgColor" class="color-fg" :style="{background: item.fgColor}"></span>
-    <img :src="getIconSrc(item.iconIndex || item.icon)">
+    <span
+        v-if="item.fgColor"
+        class="color-fg"
+        :style="[{background: item.fgColor}, dotStyle]"
+    ></span>
+    <img :src="getIconSrc(item)">
     <slot></slot>
   </q-avatar>
 </template>
@@ -21,11 +25,31 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    size: {
+      type: String,
+      default: '32px'
     }
   },
   methods: {
-    getIconSrc(index) {
+    getIconSrc(item) {
+      let index = item.iconIndex !== undefined ? item.iconIndex : item.icon
       return icons.items[index]
+    }
+  },
+  computed: {
+    dotStyle() {
+      if (this.size === '32px') {
+        return
+      }
+      const size = parseInt(this.size) / 4
+      const offset = -(size / 2.6)
+      return {
+        width: size + 'px',
+        height: size + 'px',
+        top: offset + 'px',
+        right: offset + 'px',
+      }
     }
   }
 }
@@ -33,7 +57,8 @@ export default {
 
 <style lang="stylus" scoped>
 .icon-show {
-  border-radius 4px
+  border-radius 5px
+
   .color-fg {
     position: absolute;
     top: -3px

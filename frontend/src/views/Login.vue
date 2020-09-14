@@ -103,13 +103,6 @@ import {KEE_DIARY_VUE_LOGIN} from "../utils/enum"
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
-const {
-  dbPath = '',
-  keyPath = '',
-  password = '',
-  isSaveHistory = false,
-} = settingsLogin.get() || {}
-
 export default {
   name: 'Login',
   data() {
@@ -121,10 +114,10 @@ export default {
         content: 'Content'
       },
       form: {
-        dbPath: dbPath,
-        keyPath: keyPath,
-        password: isProd ? '' : password,
-        isSaveHistory: isSaveHistory
+        dbPath: '',
+        keyPath: '',
+        password: '',
+        isSaveHistory: false
       },
     }
   },
@@ -132,6 +125,19 @@ export default {
     pkg() {
       return this.$store.getters.pkg
     }
+  },
+  created() {
+    const {
+      dbPath = '',
+      keyPath = '',
+      password = '',
+      isSaveHistory = false,
+    } = settingsLogin.get() || {}
+
+    this.form.dbPath = dbPath
+    this.form.keyPath = keyPath
+    this.form.password = isProd ? '' : password
+    this.form.isSaveHistory = isSaveHistory
   },
   methods: {
     /**

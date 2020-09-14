@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import icons from "@/assets/db-icons"
 import store from "@/store"
 import {getGroupTree} from "@/utils/kdbx-utils"
 import IconShow from "@/components/IconShow"
@@ -41,7 +40,6 @@ export default {
   },
   data() {
     return {
-      icons: Object.freeze(icons.items),
       groupTree: [],
       selectedGroupUuidStr: null,
     }

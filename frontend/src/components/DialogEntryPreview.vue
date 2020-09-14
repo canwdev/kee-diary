@@ -1,37 +1,51 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
-  >
-    <q-card v-if="entry" style="width: 700px; max-width: 80vw;">
-      <q-card-section>
-        <div class="text-h6 row items-center">
+  <div>
+    <q-dialog
+        v-model="mVisible"
+        transition-show="fade"
+        transition-hide="fade"
+    >
+      <q-card v-if="entry" style="width: 700px; max-width: 80vw;">
+        <q-card-section>
+          <div class="text-h6 row items-center">
+            <IconShow
+                @click.native="previewBigIcon = true"
+                class="cursor-pointer"
+                :item="entry"
+            />
+            <span class="q-ml-md">{{ entry.fields.Title }}</span>
+            <q-space/>
+            <q-btn icon="close" flat round dense v-close-popup/>
+          </div>
+        </q-card-section>
+
+        <q-separator/>
+
+        <q-card-section style="max-height: 80vh" class="scroll">
+          <q-card
+              flat
+              v-html="transformHTML(entry.fields.Notes)"
+              :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="previewBigIcon" transition-show="scale" transition-hide="scale">
+      <q-card class="q-pa-lg">
+
+        <q-card-section class="q-pa-lg text-center">
           <IconShow
-              class="preview-icon"
+              size="256px"
               :item="entry"
           />
-          <span class="q-ml-md">{{ entry.fields.Title }}</span>
-          <q-space/>
-          <q-btn icon="close" flat round dense v-close-popup/>
-        </div>
-      </q-card-section>
-
-      <q-separator/>
-
-      <q-card-section style="max-height: 80vh" class="scroll">
-        <q-card
-            flat
-            v-html="transformHTML(entry.fields.Notes)"
-            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
-        />
-      </q-card-section>
-    </q-card>
-  </q-dialog>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
-import icons from '@/assets/db-icons'
 import markdownIt from "@/utils/markdown-it"
 import store from "@/store"
 import IconShow from "@/components/IconShow"
@@ -66,7 +80,7 @@ export default {
   },
   data() {
     return {
-      icons: Object.freeze(icons.items),
+      previewBigIcon: false
     }
   },
   methods: {
@@ -78,9 +92,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.preview-icon {
-  &:hover {
-    transform scale(1.5)
-  }
-}
+
 </style>

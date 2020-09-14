@@ -242,7 +242,8 @@ export function addEntry(db, groupUuid) {
     // console.log(db, group)
 
     entry.fields.Title = formatDate(new Date(), true)
-    entry.icon = group.icon
+    // 48 is default folder icon, 0 is default entry icon
+    entry.icon = group.icon === 48 ? 0 : group.icon
 
     // console.log(entry)
 
