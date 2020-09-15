@@ -29,7 +29,7 @@
     <div class="column q-pa-lg">
       <div class="row">
         <q-card class="shadow-10" style="width:400px;">
-          <q-card-section class="bg-primary text-center">
+          <q-card-section class="bg-primary bg-wood text-center">
             <q-btn
                 @click="isWelcome = true"
                 v-show="!isWelcome"
@@ -39,7 +39,9 @@
               <q-icon name="lock" color="primary"/>
             </q-avatar>
 
-            <h4 class="text-h5 text-white q-mb-none q-mt-md">{{ isWelcome ? 'Welcome to KeeDiary' : 'Open KDBX database' }}</h4>
+            <h4 class="text-h5 text-white q-mb-none q-mt-md">{{
+                isWelcome ? 'Welcome to KeeDiary' : 'Open KDBX database'
+              }}</h4>
           </q-card-section>
 
           <div v-show="isWelcome">
@@ -134,7 +136,7 @@
           </div>
 
           <q-card-section class="text-center q-pa-sm">
-            <p class="text-grey-6">
+            <p class="text-grey-6 q-mb-none">
               © {{ new Date().getFullYear() }} {{ pkg.name }} {{ pkg.version }} by {{ pkg.author }}
             </p>
           </q-card-section>
@@ -302,6 +304,8 @@ export default {
 ._loading {
   z-index 10
 }
+
+
 
 .q-item__section--avatar {
   min-width 32px

@@ -1,5 +1,5 @@
 <template>
-  <q-header elevated>
+  <q-header elevated class="">
     <q-toolbar class="home-header" :class="{'_dark': isDarkMode}">
       <q-btn
           flat

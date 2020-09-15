@@ -1,9 +1,9 @@
 <template>
-  <q-page class="flex items-center justify-center">
+  <q-page class="flex items-center justify-center bg-wall">
     <div class="text-center">
-      <h3>About</h3>
+      <h5 class="text-primary">About KeeDiary</h5>
 
-      <q-card class="q-pa-md q-mb-lg">
+      <q-card class="text-white q-pa-md q-mb-lg bg-wood">
         <div>Trusted offline diary</div>
         <div>Comes with absolutely no warranty</div>
       </q-card>

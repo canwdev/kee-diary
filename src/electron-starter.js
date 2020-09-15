@@ -54,11 +54,8 @@ function createWindow() {
     mainWindow = null
   })
 
-  if (!isDev) {
-    mainWindow.setMenuBarVisibility(false)
-  }
-
-
+  // hide menu bar
+  mainWindow.setMenuBarVisibility(false)
 }
 
 // 限制 APP 单实例
