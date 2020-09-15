@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import {palette} from "../utils/enum"
+import {palette} from "@/utils/enum"
 
 function getTypeColor(isFgColor, item) {
   return isFgColor ? item.fgColor : item.bgColor

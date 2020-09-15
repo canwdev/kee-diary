@@ -21,7 +21,7 @@
 
         <q-separator/>
 
-        <q-card-section style="max-height: 80vh" class="scroll">
+        <q-card-section style="max-height: 78vh" class="scroll">
           <q-card
               flat
               v-html="transformHTML(entry.fields.Notes)"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import markdownIt from "@/utils/markdown-it"
+import marked from "@/utils/marked"
 import store from "@/store"
 import IconShow from "@/components/IconShow"
 
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     transformHTML(text) {
-      return markdownIt.render(text)
+      return marked(text)
     }
   }
 }
