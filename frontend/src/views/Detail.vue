@@ -32,7 +32,7 @@
               <q-toggle
                   v-model="isEditWYSIWYG"
                   color="secondary"
-                  checked-icon="edit"
+                  checked-icon="note"
                   unchecked-icon="code"
               >
                 <q-tooltip>isWYSIWYG</q-tooltip>
@@ -40,29 +40,34 @@
               <q-select
                   dense
                   color="secondary"
-                  v-model="editorTheme" :options="themeOptions" label="Theme"
+                  v-model="editorTheme" :options="themeOptions"
                   style="width: 150px"
-              />
+              >
+                <template v-slot:prepend>
+                  <q-icon name="style" />
+                </template>
+              </q-select>
               <q-btn-group flat>
                 <q-btn
                     @click="handleChangeFont"
-                    dense label="Font">
+                    dense icon="text_fields">
+                  <q-tooltip>Change font-family</q-tooltip>
                 </q-btn>
               </q-btn-group>
               <q-btn-group flat>
                 <q-btn
                     @click="handleLoad"
-                    dense label="Load">
+                    dense icon="archive">
                   <q-tooltip>Load outer text file</q-tooltip>
                 </q-btn>
                 <q-btn
-                    dense label="External">
-                  <q-tooltip>Edit with external tools</q-tooltip>
+                    @click="handleExport"
+                    dense icon="unarchive">
+                  <q-tooltip>Export to text file</q-tooltip>
                 </q-btn>
                 <q-btn
-                    @click="handleExport"
-                    dense label="Export">
-                  <q-tooltip>Export to text file</q-tooltip>
+                    dense icon="open_in_browser">
+                  <q-tooltip>Edit with external tools (not implement)</q-tooltip>
                 </q-btn>
               </q-btn-group>
             </div>
@@ -316,7 +321,7 @@ export default {
     },
     handleChangeFont() {
       this.$q.dialog({
-        title: 'Font family',
+        title: 'Change font-family',
         prompt: {
           model: this.editorFontFamily,
           type: 'text'
