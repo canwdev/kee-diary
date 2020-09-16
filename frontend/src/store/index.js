@@ -19,7 +19,9 @@ export default new Vuex.Store({
       isDarkMode: false,
       isListView: true, // 是列表视图还是日历视图
       isEditWYSIWYG: true,
-      editorTheme: null
+      editorTheme: 'hypermd-light',
+      editorFontSize: 16, // px
+      editorFontFamily: null,
     },
     pkg,
     database: null, // opened kdbx database instance
@@ -36,6 +38,8 @@ export default new Vuex.Store({
     isListView: state => state.settings.isListView,
     isEditWYSIWYG: state => state.settings.isEditWYSIWYG,
     editorTheme: state => state.settings.editorTheme,
+    editorFontSize: state => state.settings.editorFontSize,
+    editorFontFamily: state => state.settings.editorFontFamily,
     pkg: state => state.pkg,
     database: state => state.database,
     dbPath: state => state.dbPath,
@@ -65,6 +69,14 @@ export default new Vuex.Store({
     },
     setEditorTheme: (state, val) => {
       state.settings.editorTheme = val
+      settings.set(state.settings)
+    },
+    setEditorFontSize: (state, val) => {
+      state.settings.editorFontSize = val
+      settings.set(state.settings)
+    },
+    setEditorFontFamily: (state, val) => {
+      state.settings.editorFontFamily = val
       settings.set(state.settings)
     },
     updateSettings(state, kv) {

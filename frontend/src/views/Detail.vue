@@ -45,6 +45,12 @@
               />
               <q-btn-group flat>
                 <q-btn
+                    @click="handleChangeFont"
+                    dense label="Font">
+                </q-btn>
+              </q-btn-group>
+              <q-btn-group flat>
+                <q-btn
                     @click="handleLoad"
                     dense label="Load">
                   <q-tooltip>Load outer text file</q-tooltip>
@@ -176,6 +182,14 @@ export default {
       get: () => store.getters.editorTheme || 'hypermd-light',
       set: val => store.commit('setEditorTheme', val)
     },
+    editorFontSize: {
+      get: () => store.getters.editorFontSize,
+      set: val => store.commit('setEditorFontSize', val)
+    },
+    editorFontFamily: {
+      get: () => store.getters.editorFontFamily,
+      set: val => store.commit('setEditorFontFamily', val)
+    },
     currentEntry: {
       get: () => store.getters.currentEntry,
       set: val => store.commit('setCurrentEntry', val)
@@ -223,18 +237,28 @@ export default {
     }
   },
   mounted() {
+    if (!this.isEntryOpen) {
+      console.warn('Entry is not open')
+      this.$router.push({
+        name: 'Home'
+      })
+      return
+    }
+
     this.initHyperMD()
     bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
       this.syncNotes()
       resolve()
     })
-    window.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
   },
   beforeDestroy() {
     this.syncNotes()
     bus.$off(BUS_SAVE_NOTES_START)
     this.currentEntry = null
-    window.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('wheel', this.handleCtrlScroll)
   },
   methods: {
     getIcon(index) {
@@ -243,13 +267,15 @@ export default {
     initHyperMD() {
       const textarea = document.getElementById('input-area')
       const editor = HyperMD.fromTextArea(textarea, {
-        theme: this.editorTheme,
         lineNumbers: false
       })
       if (!this.isEditWYSIWYG) {
         HyperMD.switchToNormal(editor)
       }
       editor.setSize(null, "100%") // set height
+      this.setFontFamily(editor)
+      this.setFontSize(editor)
+      editor.setOption("theme", this.editorTheme);
       editor.on('change', () => {
         if (this.editor) {
           store.commit('setIsNotSave')
@@ -259,6 +285,20 @@ export default {
         editor.setValue(this.currentEntry.fields.Notes)
       }
       this.editor = editor
+    },
+    setFontSize(editor) {
+      editor = this.editor || editor
+      const el = editor.display.wrapper
+      el.style.fontSize = this.editorFontSize + 'px'
+      editor.refresh();
+    },
+    setFontFamily(editor) {
+      editor = this.editor || editor
+      const el = editor.display.wrapper
+      if (this.editorFontFamily) {
+        el.style.fontFamily = this.editorFontFamily
+      }
+      editor.refresh();
     },
     syncNotes() {
       const entry = this.currentEntry
@@ -273,6 +313,20 @@ export default {
     updateTime() {
       this.currentEntry.times.update()
       this.lastModTime = this.currentEntry.times.lastModTime
+    },
+    handleChangeFont() {
+      this.$q.dialog({
+        title: 'Font family',
+        prompt: {
+          model: this.editorFontFamily,
+          type: 'text'
+        },
+        cancel: true,
+        persistent: false
+      }).onOk(data => {
+        this.editorFontFamily = data
+        this.setFontFamily()
+      })
     },
     handleKeyDown(event) {
       if (event.key === 'Escape' && !this.lockEsc) {
@@ -373,6 +427,26 @@ export default {
       this.currentEntry.icon = iconIndex
       store.commit('setIsNotSave')
     },
+    handleCtrlScroll(event) {
+
+      if (event.ctrlKey) {
+        event.preventDefault()
+        let editorFontSize = this.editorFontSize
+        if (this.editor) {
+          if (event.deltaY > 0) {
+            if (editorFontSize <= 0) {
+              return
+            }
+            editorFontSize -= 1
+          } else {
+            editorFontSize += 1
+          }
+          this.editorFontSize = editorFontSize
+          this.setFontSize()
+        }
+
+      }
+    }
   }
 }
 </script>
