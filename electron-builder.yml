@@ -3,12 +3,10 @@ appId: "com.canwdev.keediary"
 
 files:
   - ./dist-frontend/**/*
-  - filter:
-      - ./build/**/*
-      - ./src/electron/**/*
-      - ./src/electron-starter.js
+  - ./src/electron/**/*
+  - ./src/index.js
 extraMetadata:
-  main: ./src/electron-starter.js
+  main: ./src/index.js
 
 # Mac OS configuration
 mac:
