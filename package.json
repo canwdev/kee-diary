@@ -7,7 +7,7 @@
   "private": true,
   "author": "canwdev",
   "license": "MIT",
-  "main": "src/electron-starter.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "node start-dev.js",
     "dev:frontend": "cross-env PORT=12020 yarn --cwd './frontend' serve",
