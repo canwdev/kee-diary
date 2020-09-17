@@ -1,4 +1,8 @@
+productName: "KeeDiary"
+appId: "com.canwdev.keediary"
+
 files:
+  - ./dist-frontend/**/*
   - filter:
       - ./build/**/*
       - ./src/electron/**/*
@@ -8,7 +12,9 @@ extraMetadata:
 
 # Mac OS configuration
 mac:
-  icon: "src/assets/img/favicon.png"
+  target:
+    - "dmg"
+    - "zip"
 
 # Config for OSX dmg
 dmg:
@@ -22,7 +28,6 @@ dmg:
 
 # Windows configuration
 win:
-  icon: "public/favicon.ico"
   target:
 #    - "zip"
     - "nsis"
@@ -32,13 +37,12 @@ nsis:
   oneClick: false
   perMachine: true
   allowToChangeInstallationDirectory: true
-  installerHeader: "public/installerHeader.bmp"
-  installerSidebar: "public/installerSidebar.bmp"
+  installerHeader: "build/installerHeader.bmp"
+  installerSidebar: "build/installerSidebar.bmp"
   shortcutName: "KeeDiary"
 
 # Linux configuration
 linux:
-  icon: "src/assets/img/favicon-2.png"
   category: Tools
   target:
     - "AppImage"

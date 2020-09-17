@@ -1,6 +1,6 @@
 {
-  "name": "KeeDiary",
-  "version": "0.3.1-dev",
+  "name": "kee-diary-vue-frontend",
+  "version": "1.0.0",
   "private": true,
   "author": "canwdev",
   "scripts": {

@@ -8,7 +8,7 @@
     </q-inner-loading>
 
     <DefaultHeader
-        :title="pkg.name"
+        :title="pkg.appName"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
         @onBackClick="handleBack"
     />

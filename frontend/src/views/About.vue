@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex items-center justify-center bg-wall">
     <div class="text-center">
-      <h5 class="text-primary">About KeeDiary</h5>
+      <h5 class="text-primary">About</h5>
 
       <q-card class="text-white q-pa-md q-mb-lg bg-wood">
         <div>Trusted offline diary</div>

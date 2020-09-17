@@ -137,7 +137,7 @@
 
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6 q-mb-none">
-              © {{ new Date().getFullYear() }} {{ pkg.name }} {{ pkg.version }} by {{ pkg.author }}
+              © {{ new Date().getFullYear() }} {{ pkg.appName }} {{ pkg.version }} by {{ pkg.author }}
             </p>
           </q-card-section>
         </q-card>

@@ -1,10 +1,11 @@
 {
   "name": "kee-diary-vue-electron",
-  "version": "0.1.0",
+  "appName": "KeeDiary",
+  "version": "0.3.2",
   "description": "A diary app that use kdbx to encrypt your diary",
   "repository": "",
   "private": true,
-  "author": "canwdev <c2097@live.com>",
+  "author": "canwdev",
   "license": "MIT",
   "main": "src/electron-starter.js",
   "scripts": {
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "electron": "^10.1.1"
+    "electron": "^10.1.2",
+    "electron-builder": "^22.8.0"
   }
 }

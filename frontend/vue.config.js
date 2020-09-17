@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
   publicPath: './',
-  outputDir: '../build',
-
+  outputDir: '../dist-frontend',
+  productionSourceMap: false,
   pluginOptions: {
     quasar: {
       importStrategy: 'kebab', // 'manual'

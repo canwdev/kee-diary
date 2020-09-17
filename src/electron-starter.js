@@ -25,13 +25,13 @@ function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, 'electron', 'preload.js')
     },
-    icon: __dirname + './assets/img/favicon.png'
+    icon: path.join(__dirname, '../build/256x256.png')
   })
 
   // and load the index.html of the app.
   // mainWindow.loadFile('src/index.html')
   const startUrl = process.env.ELECTRON_START_URL || url.format({
-    pathname: path.join(__dirname, '/../build/index.html'),
+    pathname: path.join(__dirname, '/../dist-frontend/index.html'),
     protocol: 'file:',
     slashes: true
   });

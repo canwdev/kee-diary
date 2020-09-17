@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import LocalStorageSettings from "@/utils/settings"
-import {KEE_DIARY_VUE_SETTINGS} from "../utils/enum"
+import {KEE_DIARY_VUE_SETTINGS} from "@/utils/enum"
 
-const pkg = require('@/../package.json')
+const pkg = require('@/../../package.json')
+
 Vue.use(Vuex)
 
 const settings = new LocalStorageSettings(KEE_DIARY_VUE_SETTINGS)
