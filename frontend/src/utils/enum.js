@@ -26,3 +26,12 @@ export const palette = [
   {name: 'grey', color: '#9e9e9e'},
   {name: 'blue-grey', color: '#607d8b'},
 ]
+
+export const META_NAME = '__keediary_meta__'
+export const NOTE_TYPE = {
+  binary: 'binary',
+  text: 'text',
+}
+export const META_DEFAULT = {
+  noteType: NOTE_TYPE.text
+}

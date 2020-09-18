@@ -9,7 +9,9 @@ Vue.use(Vuex)
 
 const settings = new LocalStorageSettings(KEE_DIARY_VUE_SETTINGS)
 
-const initPagination = {
+const initEntryListPagination = {
+  sortBy: 'lastModTime',
+  descending: true,
   rowsPerPage: 10,
   page: 1
 }
@@ -32,7 +34,7 @@ export default new Vuex.Store({
     isNotSave: false, // 有未保存的变更
     currentGroupUuid: null, // 当前选中的群组 Uuid 对象
     currentEntry: null, // 当前打开的条目对象
-    currentEntryPagination: initPagination, // 条目列表分页配置
+    currentEntryPagination: initEntryListPagination, // 条目列表分页配置
   },
   getters: {
     isDarkMode: state => state.settings.isDarkMode,
@@ -112,7 +114,7 @@ export default new Vuex.Store({
         }
       }
       state.currentGroupUuid = val
-      state.currentEntryPagination = initPagination
+      state.currentEntryPagination = initEntryListPagination
       // console.log('resetPagination', state.currentEntryPagination)
     },
     setCurrentEntry: (state, val) => {

@@ -131,7 +131,6 @@ import 'codemirror/theme/rubyblue.css'
 import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
-import icons from "@/assets/db-icons"
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
 import DialogEntryPreview from "@/components/DialogEntryPreview"
@@ -277,9 +276,6 @@ export default {
     document.removeEventListener('wheel', this.handleCtrlScroll)
   },
   methods: {
-    getIcon(index) {
-      return icons.getByIndex(index)
-    },
     initHyperMD() {
       const textarea = document.getElementById('input-area')
       const editor = HyperMD.fromTextArea(textarea, {
@@ -321,10 +317,10 @@ export default {
     syncNotes() {
       const entry = this.currentEntry
       if (entry) {
+        this.updateTime()
         const newNotes = this.editor.getValue()
         if (entry.fields.Notes !== newNotes) {
           entry.fields.Notes = newNotes
-          this.updateTime()
         }
       }
     },
