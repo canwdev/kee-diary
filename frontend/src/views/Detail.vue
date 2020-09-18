@@ -21,9 +21,10 @@
 
             <ContextMenuCommon
                 :target-data="currentEntry"
-                :hidden-items="['edit', 'rename', 'changeColor']"
+                :hidden-items="['edit', 'rename']"
                 @onPreview="handlePreview"
                 @onChangeIcon="isDialogChooseIconVisible = true"
+                @onChangeColor="isDialogChooseColorVisible = true"
             />
           </q-input>
 
@@ -97,6 +98,13 @@
         :index="currentEntry.icon"
         @onChoose="handleUpdateIcon"
     />
+
+
+    <DialogChooseColor
+        :item="currentEntry"
+        :visible.sync="isDialogChooseColorVisible"
+        @onChoose="handleUpdateColor"
+    />
   </q-page>
 </template>
 
@@ -131,6 +139,7 @@ import {notifyError, notifySuccess} from "../utils"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import IconShow from "@/components/IconShow"
+import DialogChooseColor from "@/components/DialogChooseColor"
 
 import {textFilters as filters} from "../utils/enum"
 
@@ -141,7 +150,8 @@ export default {
     DialogEntryPreview,
     ContextMenuCommon,
     DialogChooseIcon,
-    IconShow
+    IconShow,
+    DialogChooseColor
   },
   data() {
     return {
@@ -152,6 +162,7 @@ export default {
       lastModTime: '',
       isDialogPreviewVisible: false,
       isDialogChooseIconVisible: false,
+      isDialogChooseColorVisible: false,
       themeOptions: [
         'hypermd-light',
         'default',
@@ -302,6 +313,8 @@ export default {
       const el = editor.display.wrapper
       if (this.editorFontFamily) {
         el.style.fontFamily = this.editorFontFamily
+      } else {
+        el.style.fontFamily = null
       }
       editor.refresh();
     },
@@ -430,6 +443,11 @@ export default {
     },
     handleUpdateIcon(iconIndex) {
       this.currentEntry.icon = iconIndex
+      store.commit('setIsNotSave')
+    },
+    handleUpdateColor(result) {
+      const {type, value} = result
+      this.currentEntry[type] = value
       store.commit('setIsNotSave')
     },
     handleCtrlScroll(event) {

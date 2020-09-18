@@ -105,7 +105,7 @@
                     <q-icon name="lock"/>
                   </template>
                 </q-input>
-                <q-input outlined dense clearable v-model="form.password" type="password" placeholder="Password">
+                <q-input outlined dense clearable v-model="form.password" type="password" placeholder="Password" autofocus>
                   <template v-slot:prepend>
                     <q-icon name="vpn_key"/>
                   </template>

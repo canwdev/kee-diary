@@ -7,13 +7,12 @@
     <q-card>
       <q-card-section>
         <div class="text-h6 row items-center">
-          <span class="q-ml-md">Choose Color</span>
+          <span class="q-ml-md">Choose {{ isFgColor ? 'Foreground' : 'Background' }} Color</span>
           <q-space/>
           <q-toggle
               v-model="isFgColor"
               :color="toggleColor"
               keep-color
-              :label="isFgColor ? 'Foreground' : 'Background'"
               left-label
           >
           </q-toggle>

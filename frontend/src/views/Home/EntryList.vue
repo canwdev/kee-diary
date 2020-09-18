@@ -81,8 +81,8 @@ import DialogEntryPreview from "@/components/DialogEntryPreview"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseColor from "@/components/DialogChooseColor"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
-import IconShow from "@//components/IconShow"
-import {getGroupEntries, moveItems} from "../../utils/kdbx-utils"
+import IconShow from "@/components/IconShow"
+import {getGroupEntries, moveItems} from "@/utils/kdbx-utils"
 import {handleCommonDelete, handleCommonRename} from "./common-action"
 
 export default {
