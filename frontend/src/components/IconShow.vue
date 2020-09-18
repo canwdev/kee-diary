@@ -11,7 +11,7 @@
         class="color-fg"
         :style="[{background: item.fgColor}, dotStyle]"
     ></span>
-    <img :src="getIconSrc(item)">
+    <img :src="getIconSrc(item)" style="image-rendering: pixelated;">
     <slot></slot>
   </q-avatar>
 </template>

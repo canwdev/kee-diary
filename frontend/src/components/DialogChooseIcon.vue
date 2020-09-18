@@ -27,7 +27,7 @@
               round
           >
             <q-avatar size="32px" square>
-              <img :src="item"/>
+              <img :src="item" style="image-rendering: pixelated;"/>
             </q-avatar>
             <q-tooltip>
               {{ iconNames[i] }}
