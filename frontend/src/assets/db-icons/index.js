@@ -1,13 +1,17 @@
-const theme = require('./icons-original.json')
+const themeConfig = require('./themes.json')
 
-function Icons() {
+// const themes = themeConfig.themes.map(item => {
+//   return require(`./${themeConfig.baseDir}/${item.dir}.json`)
+// })
+
+function Icons(theme) {
   const {
     dir,
     isPixel = false
   } = theme
   this.list = theme.list.map(item => ({
     // 让 Webpack 自动打包图片
-    file: require(`./${dir}/${item.file}`),
+    file: require(`./${themeConfig.baseDir}/${dir}/${item.file}`),
     name: item.name
   }))
 
@@ -19,4 +23,4 @@ function Icons() {
   }
 }
 
-export default new Icons()
+export default new Icons(require(`./${themeConfig.baseDir}/${themeConfig.themes[0].dir}.json`))
