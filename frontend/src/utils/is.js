@@ -7,3 +7,5 @@ export function isOutboundURL(path) {
 }
 
 export const isProd = process.env.NODE_ENV === 'production'
+
+export const isErroredItem = item => item === null || item === undefined || isNaN(item)

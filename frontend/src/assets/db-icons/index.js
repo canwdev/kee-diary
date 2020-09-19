@@ -1,16 +1,22 @@
-const iconMap = require('./icon-map.json')
+const theme = require('./icons-original.json')
 
 function Icons() {
-  // 让 Webpack 自动打包图片
-  this.items = iconMap.map(item => require('./icons2/' + item))
+  const {
+    dir,
+    isPixel = false
+  } = theme
+  this.list = theme.list.map(item => ({
+    // 让 Webpack 自动打包图片
+    file: require(`./${dir}/${item.file}`),
+    name: item.name
+  }))
+
+  this.dir = dir
+  this.isPixel = isPixel
 
   this.getByIndex = function (index) {
     return this.items[index]
   }
-}
-
-export function formatIconName(name) {
-  return name.slice(name.indexOf('/') + 1, name.indexOf('.'))
 }
 
 export default new Icons()

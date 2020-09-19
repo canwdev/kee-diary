@@ -11,7 +11,7 @@
         class="color-fg"
         :style="[{background: item.fgColor}, dotStyle]"
     ></span>
-    <img :src="getIconSrc(item)" style="image-rendering: pixelated;">
+    <img :src="getIconSrc(item)" :class="{isPixel}" :style="iconImgStyle">
     <slot></slot>
   </q-avatar>
 </template>
@@ -29,12 +29,16 @@ export default {
     size: {
       type: String,
       default: '32px'
+    },
+    isPixel: {
+      type: Boolean,
+      default: icons.isPixel
     }
   },
   methods: {
     getIconSrc(item) {
-      let index = item.iconIndex !== undefined ? item.iconIndex : item.icon
-      return icons.items[index]
+      const index = item.iconIndex !== undefined ? item.iconIndex : item.icon
+      return icons.list[index].file
     }
   },
   computed: {
@@ -49,6 +53,13 @@ export default {
         height: size + 'px',
         top: offset + 'px',
         right: offset + 'px',
+      }
+    },
+    iconImgStyle() {
+      const size = parseInt(this.size) * 0.8
+      return {
+        width: size + 'px',
+        height: size + 'px'
       }
     }
   }
@@ -68,6 +79,10 @@ export default {
     width: 8px
     height 8px
     border 1px solid rgba(0, 0, 0, 0.3)
+  }
+
+  .isPixel {
+    image-rendering: pixelated
   }
 }
 

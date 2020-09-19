@@ -7,14 +7,14 @@
     <q-card>
       <q-card-section>
         <div class="text-h6 row items-center">
-          <q-avatar size="32px" square>
-            <img :src="icons[index]"/>
-          </q-avatar>
+          <IconShow
+              :item="{icon:index}"
+          />
           <span class="q-ml-md">Choose Icon</span>
         </div>
       </q-card-section>
 
-      <q-separator />
+      <q-separator/>
 
       <q-card-section style="max-height: 70vh" class="scroll">
         <q-card flat class="q-gutter-md">
@@ -26,11 +26,11 @@
               color="primary"
               round
           >
-            <q-avatar size="32px" square>
-              <img :src="item" style="image-rendering: pixelated;"/>
-            </q-avatar>
+            <IconShow
+                :item="{icon:i}"
+            />
             <q-tooltip>
-              {{ iconNames[i] }}
+              {{ item.name }}
             </q-tooltip>
           </q-btn>
         </q-card>
@@ -50,9 +50,13 @@
 </template>
 
 <script>
-import icons, {formatIconName} from '@/assets/db-icons'
+import icons from '@/assets/db-icons'
+import IconShow from "./IconShow"
 
 export default {
+  components: {
+    IconShow
+  },
   props: {
     visible: {
       type: Boolean,
@@ -83,8 +87,7 @@ export default {
   },
   data() {
     return {
-      icons: Object.freeze(icons.items),
-      iconNames: icons.items.map(formatIconName),
+      icons: Object.freeze(icons.list),
       selectedIndex: null
     }
   },
