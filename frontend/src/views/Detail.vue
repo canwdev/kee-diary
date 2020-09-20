@@ -28,6 +28,10 @@
             />
           </q-input>
 
+          <div style="overflow: auto; height: calc(100vh - 230px)">
+            <textarea id="input-area"></textarea>
+          </div>
+
           <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
             <div class="row q-gutter-x-md">
               <q-toggle
@@ -36,7 +40,7 @@
                   checked-icon="note"
                   unchecked-icon="code"
               >
-                <q-tooltip>isWYSIWYG</q-tooltip>
+                <q-tooltip anchor="top middle" self="center middle">isWYSIWYG</q-tooltip>
               </q-toggle>
               <q-select
                   dense
@@ -52,23 +56,23 @@
                 <q-btn
                     @click="handleChangeFont"
                     dense icon="text_fields">
-                  <q-tooltip>Change font-family</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">Change font-family</q-tooltip>
                 </q-btn>
               </q-btn-group>
               <q-btn-group flat>
                 <q-btn
                     @click="handleLoad"
                     dense icon="archive">
-                  <q-tooltip>Load outer text file</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">Load outer text file</q-tooltip>
                 </q-btn>
                 <q-btn
                     @click="handleExport"
                     dense icon="unarchive">
-                  <q-tooltip>Export to text file</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">Export to text file</q-tooltip>
                 </q-btn>
                 <q-btn
                     dense icon="open_in_browser">
-                  <q-tooltip>Edit with external tools (not implement)</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">Edit with external tools (not implement)</q-tooltip>
                 </q-btn>
               </q-btn-group>
             </div>
@@ -80,10 +84,6 @@
               <span>Modified: <DateTimeEdit disabled :date.sync="lastModTime"/></span>
             </div>
           </q-toolbar>
-
-          <div style="overflow: auto; height: calc(100vh - 230px)">
-            <textarea id="input-area"></textarea>
-          </div>
         </q-card-section>
       </q-card>
     </div>

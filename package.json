@@ -12,6 +12,7 @@
     "dev": "node start-dev.js",
     "dev:frontend": "cross-env PORT=12020 yarn --cwd './frontend' serve",
     "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:12020 electron .",
+    "build": "yarn run build:frontend && yarn run build:electron-dir",
     "build:frontend": "cross-env yarn --cwd './frontend' build",
     "build:electron-dir": "electron-builder --dir",
     "build:electron": "electron-builder",

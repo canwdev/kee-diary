@@ -23,4 +23,4 @@ function Icons(theme) {
   }
 }
 
-export default new Icons(require(`./${themeConfig.baseDir}/${themeConfig.themes[0].dir}.json`))
+export default new Icons(require(`./${themeConfig.baseDir}/${themeConfig.themes[1].dir}.json`))
