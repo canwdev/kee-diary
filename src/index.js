@@ -3,7 +3,10 @@
 const {app, BrowserWindow, session} = require('electron')
 const path = require('path')
 const url = require('url')
+const windowStateKeeper = require('electron-window-state');
 const isDev = isElectionDevMode()
+
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,13 +15,20 @@ let mainWindow
 function createWindow() {
   console.log('createWindow')
 
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 1000,
+    defaultHeight: 700
+  });
+
   // 自定义菜单
   // require('./electron/menu')
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 700,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     webPreferences: {
       spellcheck: false,
       enableRemoteModule: true,
@@ -57,6 +67,8 @@ function createWindow() {
 
   // hide menu bar
   mainWindow.setMenuBarVisibility(false)
+
+  mainWindowState.manage(mainWindow);
 }
 
 // 限制 APP 单实例

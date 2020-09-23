@@ -560,6 +560,14 @@ electron-publish@22.8.1:
     lazy-val "^1.0.4"
     mime "^2.4.6"
 
+electron-window-state@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.npm.taobao.org/electron-window-state/download/electron-window-state-5.0.3.tgz#4f36d09e3f953d87aff103bf010f460056050aa8"
+  integrity sha1-TzbQnj+VPYev8QO/AQ9GAFYFCqg=
+  dependencies:
+    jsonfile "^4.0.0"
+    mkdirp "^0.5.1"
+
 electron@^10.1.2:
   version "10.1.2"
   resolved "https://registry.npm.taobao.org/electron/download/electron-10.1.2.tgz?cache=0&sync_timestamp=1600129457400&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felectron%2Fdownload%2Felectron-10.1.2.tgz#30b6fd7669f8daf08c56219a61dfa053fa2b0c70"
@@ -1024,7 +1032,7 @@ minimist@^1.2.0, minimist@^1.2.5:
   resolved "https://registry.npm.taobao.org/minimist/download/minimist-1.2.5.tgz?cache=0&sync_timestamp=1589682820731&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fminimist%2Fdownload%2Fminimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=
 
-mkdirp@^0.5.4:
+mkdirp@^0.5.1, mkdirp@^0.5.4:
   version "0.5.5"
   resolved "https://registry.npm.taobao.org/mkdirp/download/mkdirp-0.5.5.tgz?cache=0&sync_timestamp=1589682820707&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmkdirp%2Fdownload%2Fmkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"
   integrity sha1-2Rzv1i0UNsoPQWIOJRKI1CAJne8=
