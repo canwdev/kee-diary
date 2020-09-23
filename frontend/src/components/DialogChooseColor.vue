@@ -25,7 +25,7 @@
         <q-card flat class="q-gutter-md">
           <span
               class="color-item"
-              :class="{active: selectedColor === item.color}"
+              :class="{active: selectedColor === item.color, 'no-color': !item.color}"
               v-for="(item, i) in palette"
               :key="i"
               :style="{background: item.color}"
@@ -134,6 +134,7 @@ export default {
   transition all .3s
   cursor pointer
   border 5px solid transparent
+  box-shadow 0 1px 2px rgba(0,0,0,0.2)
 
   &:hover {
     transform scale(1.1)
@@ -145,6 +146,16 @@ export default {
 
   &:active {
     transform scale(0.9)
+  }
+
+  &.no-color {
+    background repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 5px,
+        #ccc 5px,
+        #ccc 10px
+    )
   }
 }
 </style>

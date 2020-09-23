@@ -1,5 +1,5 @@
 const themeConfig = require('./themes.json')
-
+const theme = require(`./${themeConfig.baseDir}/${themeConfig.themes[0].dir}.json`)
 // const themes = themeConfig.themes.map(item => {
 //   return require(`./${themeConfig.baseDir}/${item.dir}.json`)
 // })
@@ -23,4 +23,4 @@ function Icons(theme) {
   }
 }
 
-export default new Icons(require(`./${themeConfig.baseDir}/${themeConfig.themes[1].dir}.json`))
+export default new Icons(theme)

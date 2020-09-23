@@ -25,6 +25,9 @@ export const palette = [
   {name: 'brown', color: '#795548'},
   {name: 'grey', color: '#9e9e9e'},
   {name: 'blue-grey', color: '#607d8b'},
+  {name: 'white', color: '#ffffff'},
+  {name: 'black', color: '#000000'},
+  {name: 'none', color: null},
 ]
 
 export const META_NAME = '__keediary_meta__'
