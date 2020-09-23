@@ -61,7 +61,7 @@
                 <q-space/>
                 <q-btn
                     v-show="recentList.length > 0"
-                    @click="saveSettings(true)"
+                    @click="handleClearRecent"
                     dense flat label="Clear"/>
               </div>
               <q-list dense bordered padding class="rounded-borders" style="height: 150px; overflow: auto">
@@ -197,27 +197,15 @@ export default {
       this.recentList = recentList
       this.isSaveHistory = isSaveHistory
     },
-    saveSettings(isClearRecent = false) {
+    handleClearRecent() {
+      this.recentList = []
+      this.saveSettings()
+    },
+    saveSettings() {
       const settings = {
         recentList: this.recentList,
         isSaveHistory: this.isSaveHistory
       }
-
-      if (!isClearRecent && this.isSaveHistory && !!this.form.dbPath) {
-        const formCopy = {...this.form}
-        if (isProd) {
-          delete formCopy.password
-        }
-        const index = this.recentList.findIndex(i => i.dbPath === formCopy.dbPath)
-        if (index !== -1) {
-          this.recentList.splice(index, 1)
-        }
-        this.recentList.unshift(formCopy)
-      }
-      if (!this.isSaveHistory || isClearRecent) {
-        this.recentList = settings.recentList = []
-      }
-
       settingsLogin.set(settings)
     },
     async chooseNewKdbx() {
@@ -274,11 +262,25 @@ export default {
         notifyError('Password or key path cannot be empty')
         return
       }
-      this.saveSettings()
 
       try {
         this.isLoading = true
         const db = await decryptKdbx(dbPath, password, keyPath)
+
+        // save recent settings
+        if (this.isSaveHistory && !!this.form.dbPath) {
+          const formCopy = {...this.form}
+          if (isProd) {
+            delete formCopy.password
+          }
+          const index = this.recentList.findIndex(i => i.dbPath === formCopy.dbPath)
+          if (index !== -1) {
+            this.recentList.splice(index, 1)
+          }
+          this.recentList.unshift(formCopy)
+
+          this.saveSettings()
+        }
 
         openKdbx(db, dbPath)
         await this.$router.replace({
