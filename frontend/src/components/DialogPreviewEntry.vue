@@ -9,7 +9,7 @@
         <q-card-section>
           <div class="text-h6 row items-center">
             <IconShow
-                @click.native="previewBigIcon = true"
+                @click.native="isPreviewIconVisible = true"
                 class="cursor-pointer"
                 :item="entry"
             />
@@ -31,17 +31,14 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="previewBigIcon" transition-show="scale" transition-hide="scale">
-      <q-card class="q-pa-lg">
-
-        <q-card-section class="q-pa-lg text-center">
-          <IconShow
-              size="256px"
-              :item="entry"
-          />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+    <DialogPreview
+      :visible.sync="isPreviewIconVisible"
+    >
+      <IconShow
+          size="256px"
+          :item="entry"
+      />
+    </DialogPreview>
   </div>
 </template>
 
@@ -49,11 +46,13 @@
 import marked from "@/utils/marked"
 import store from "@/store"
 import IconShow from "@/components/IconShow"
+import DialogPreview from "./DialogPreview"
 
 export default {
-  name: "DialogEntryPreview",
+  name: "DialogPreviewEntry",
   components: {
-    IconShow
+    IconShow,
+    DialogPreview
   },
   props: {
     visible: {
@@ -80,7 +79,7 @@ export default {
   },
   data() {
     return {
-      previewBigIcon: false
+      isPreviewIconVisible: false
     }
   },
   methods: {

@@ -33,6 +33,10 @@ export default {
     isPixel: {
       type: Boolean,
       default: icons.isPixel
+    },
+    iconScale: {
+      type: Number,
+      default: 0.8
     }
   },
   methods: {
@@ -46,7 +50,7 @@ export default {
       if (this.size === '32px') {
         return
       }
-      const size = parseInt(this.size) / 4
+      const size = Math.round(parseInt(this.size) / 4)
       const offset = -(size / 2.6)
       return {
         width: size + 'px',
@@ -56,7 +60,7 @@ export default {
       }
     },
     iconImgStyle() {
-      const size = parseInt(this.size) * 0.8
+      const size = Math.round(parseInt(this.size) * this.iconScale)
       return {
         width: size + 'px',
         height: size + 'px'

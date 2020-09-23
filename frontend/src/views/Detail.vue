@@ -88,7 +88,7 @@
       </q-card>
     </div>
 
-    <DialogEntryPreview
+    <DialogPreviewEntry
         :visible.sync="isDialogPreviewVisible"
         :entry="currentEntry"
     />
@@ -133,7 +133,7 @@ import 'codemirror/theme/the-matrix.css'
 
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from "../components/DateTimeEdit"
-import DialogEntryPreview from "@/components/DialogEntryPreview"
+import DialogPreviewEntry from "@/components/DialogPreviewEntry"
 import {notifyError, notifySuccess} from "../utils"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
@@ -146,7 +146,7 @@ export default {
   name: "Detail",
   components: {
     DateTimeEdit,
-    DialogEntryPreview,
+    DialogPreviewEntry,
     ContextMenuCommon,
     DialogChooseIcon,
     IconShow,

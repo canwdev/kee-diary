@@ -50,7 +50,7 @@
         @onDelete="handleDelete"
     />
 
-    <DialogEntryPreview
+    <DialogPreviewEntry
         :visible.sync="isDialogPreviewVisible"
         :entry="previewTarget._origin"
     />
@@ -77,7 +77,7 @@
 import {formatDateLite} from "@/utils"
 import store from "@/store"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogEntryPreview from "@/components/DialogEntryPreview"
+import DialogPreviewEntry from "@/components/DialogPreviewEntry"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseColor from "@/components/DialogChooseColor"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
@@ -91,7 +91,7 @@ export default {
     DialogChooseIcon,
     DialogChooseColor,
     ContextMenuCommon,
-    DialogEntryPreview,
+    DialogPreviewEntry,
     DialogChooseGroup,
     IconShow
   },
