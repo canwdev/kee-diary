@@ -4,8 +4,7 @@
       <h5 class="text-primary">About</h5>
 
       <q-card class="text-white q-pa-md q-mb-lg bg-wood">
-        <div class="text-bold">Trusted offline diary</div>
-        <div class="text-bold">Comes with absolutely no warranty</div>
+        <div class="text-bold" v-html="$t('aboutInfo')"></div>
         <div class="q-mt-md">
           <VersionText/>
         </div>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import LocalStorageSettings from "@/utils/settings"
 import {KEE_DIARY_VUE_SETTINGS} from "@/utils/enum"
+import languages from "@/lang/languages"
 
 const pkg = require('@/../../package.json')
 
@@ -19,6 +20,7 @@ const initEntryListPagination = {
 export default new Vuex.Store({
   state: {
     settings: settings.get() || {
+      locate: languages[0].locate,
       isDarkMode: false,
       isListView: true, // 是列表视图还是日历视图
       isEditWYSIWYG: true,
@@ -37,6 +39,7 @@ export default new Vuex.Store({
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
   },
   getters: {
+    locate: state => state.settings.locate,
     isDarkMode: state => state.settings.isDarkMode,
     isListView: state => state.settings.isListView,
     isEditWYSIWYG: state => state.settings.isEditWYSIWYG,
@@ -58,6 +61,10 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setLocate: (state, val) => {
+      state.settings.locate = val
+      settings.set(state.settings)
+    },
     setIsDarkMode: (state, val) => {
       state.settings.isDarkMode = val
       settings.set(state.settings)

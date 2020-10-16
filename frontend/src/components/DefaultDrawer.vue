@@ -59,6 +59,25 @@
           </q-item-section>
         </q-item>
 
+        <q-item>
+          <q-item-section avatar>
+            <q-icon name="translate"/>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-select
+                borderless
+                dense
+                v-model="locate"
+                :options="languages"
+                option-value="locate"
+                option-label="name"
+                emit-value
+                map-options
+            />
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-scroll-area>
   </q-drawer>
@@ -66,6 +85,7 @@
 
 <script>
 import store from "@/store"
+import languages from "@/lang/languages"
 
 export default {
   name: "DefaultDrawer",
@@ -73,6 +93,11 @@ export default {
     value: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      languages: Object.freeze(languages)
     }
   },
   computed: {
@@ -83,6 +108,10 @@ export default {
       set(nv) {
         return this.$emit('input', nv)
       }
+    },
+    locate: {
+      get: () => store.getters.locate,
+      set: val => store.commit('setLocate', val)
     },
     isDarkMode: {
       get: () => store.getters.isDarkMode,
@@ -98,7 +127,13 @@ export default {
         this.$q.dark.set(nv)
       },
       immediate: true
-    }
+    },
+    locate: {
+      handler(nv) {
+        this.$i18n.locale = nv
+      },
+      immediate: true
+    },
   },
   methods: {
     toggleFullscreen() {

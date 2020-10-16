@@ -9,6 +9,7 @@
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
+    "inst": "yarn install && yarn install --cwd './frontend'",
     "dev": "node start-dev.js",
     "dev:frontend": "cross-env PORT=12020 yarn --cwd './frontend' serve",
     "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:12020 electron .",
@@ -21,7 +22,9 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "electron": "^10.1.2",
-    "electron-builder": "^22.8.0",
+    "electron-builder": "^22.8.0"
+  },
+  "dependencies": {
     "electron-window-state": "^5.0.3"
   }
 }
