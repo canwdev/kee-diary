@@ -105,7 +105,8 @@
                     <q-icon name="lock"/>
                   </template>
                 </q-input>
-                <q-input outlined dense clearable v-model="form.password" type="password" placeholder="Password" autofocus>
+                <q-input outlined dense clearable v-model="form.password" type="password" placeholder="Password"
+                         autofocus>
                   <template v-slot:prepend>
                     <q-icon name="vpn_key"/>
                   </template>
@@ -137,7 +138,7 @@
 
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6 q-mb-none">
-              © {{ new Date().getFullYear() }} {{ pkg.appName }} {{ pkg.version }} by {{ pkg.author }}
+              <VersionText/>
             </p>
           </q-card-section>
         </q-card>
@@ -152,11 +153,15 @@ import LocalStorageSettings from "@/utils/settings"
 import {isProd} from "@/utils/is"
 import {notifyError} from "@/utils"
 import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from "@/utils/enum"
+import VersionText from "@/components/VersionText"
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
 export default {
   name: 'Login',
+  components: {
+    VersionText
+  },
   data() {
     return {
       isWelcome: true,
@@ -173,11 +178,6 @@ export default {
       },
       isSaveHistory: false,
       recentList: []
-    }
-  },
-  computed: {
-    pkg() {
-      return this.$store.getters.pkg
     }
   },
   created() {
@@ -306,7 +306,6 @@ export default {
 ._loading {
   z-index 10
 }
-
 
 
 .q-item__section--avatar {

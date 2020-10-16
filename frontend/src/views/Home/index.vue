@@ -22,7 +22,7 @@
 
     </q-splitter>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-left" :offset="[18, 18]">
       <q-btn fab icon="add" color="secondary" @click="handleAddEntry" title="Add entry"/>
     </q-page-sticky>
   </q-page>

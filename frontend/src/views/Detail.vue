@@ -49,7 +49,7 @@
                   style="width: 150px"
               >
                 <template v-slot:prepend>
-                  <q-icon name="style" />
+                  <q-icon name="style"/>
                 </template>
               </q-select>
               <q-btn-group flat>
@@ -72,7 +72,8 @@
                 </q-btn>
                 <q-btn
                     dense icon="open_in_browser">
-                  <q-tooltip anchor="top middle" self="center middle">Edit with external tools (not implement)</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">Edit with external tools (not implement)
+                  </q-tooltip>
                 </q-btn>
               </q-btn-group>
             </div>
@@ -317,9 +318,9 @@ export default {
     syncNotes() {
       const entry = this.currentEntry
       if (entry) {
-        this.updateTime()
         const newNotes = this.editor.getValue()
         if (entry.fields.Notes !== newNotes) {
+          this.updateTime()
           entry.fields.Notes = newNotes
         }
       }
