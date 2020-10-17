@@ -40,7 +40,7 @@
             </q-avatar>
 
             <h4 class="text-h5 text-white q-mb-none q-mt-md">{{
-                isWelcome ? 'Welcome to KeeDiary' : 'Open KDBX database'
+                isWelcome ? $t('login.welcome') : $t('login.openDatabase')
               }}</h4>
           </q-card-section>
 
@@ -51,18 +51,18 @@
                   unelevated size="md"
                   color="secondary"
                   class="full-width text-white"
-                  label="Open database"
+                  :label="$t('login.openDatabase')"
               />
             </q-card-actions>
 
             <q-card-section class="q-pt-xs">
               <div class="row q-mb-xs">
-                <q-checkbox dense v-model="isSaveHistory" label="Save history"/>
+                <q-checkbox dense v-model="isSaveHistory" :label="$t('login.saveHistory')"/>
                 <q-space/>
                 <q-btn
                     v-show="recentList.length > 0"
                     @click="handleClearRecent"
-                    dense flat label="Clear"/>
+                    dense flat :label="$t('login.clear')"/>
               </div>
               <q-list dense bordered padding class="rounded-borders" style="height: 150px; overflow: auto">
                 <q-item
@@ -87,7 +87,7 @@
                   </q-item-section>
                 </q-item>
 
-                <q-item class="text-grey" v-if="recentList.length === 0">No recent item</q-item>
+                <q-item class="text-grey" v-if="recentList.length === 0">{{ $t('login.noRecent') }}</q-item>
               </q-list>
             </q-card-section>
           </div>
@@ -105,14 +105,14 @@
                     <q-icon name="lock"/>
                   </template>
                 </q-input>
-                <q-input outlined dense clearable v-model="form.password" type="password" placeholder="Password"
+                <q-input outlined dense clearable v-model="form.password" type="password" :placeholder="$t('login.password')"
                          autofocus>
                   <template v-slot:prepend>
                     <q-icon name="vpn_key"/>
                   </template>
                 </q-input>
                 <q-input outlined dense clearable v-model="form.keyPath" type="text"
-                         placeholder="Key file path (optional)">
+                         :placeholder="$t('login.keyFilePath')">
                   <template v-slot:prepend>
                     <q-icon name="vpn_key"/>
                   </template>
@@ -131,7 +131,7 @@
               <q-card-actions>
                 <q-btn
                     type="submit"
-                    unelevated size="md" color="secondary" class="full-width text-white" label="Unlock"/>
+                    unelevated size="md" color="secondary" class="full-width text-white" :label="$t('login.unlock')"/>
               </q-card-actions>
             </q-form>
           </div>

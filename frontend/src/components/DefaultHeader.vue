@@ -19,25 +19,25 @@
       />
 
       <q-toolbar-title class="main-title">
-        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? '(Unlocked)' : '' }}</span>
+        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? $t('header.unlocked') : '' }}</span>
       </q-toolbar-title>
 
       <template v-if="isUnlocked">
         <q-btn flat round icon="search">
           <q-tooltip>
-            Search
+            {{ $t('header.search') }}
           </q-tooltip>
         </q-btn>
         <q-btn
             @click="saveKdbx"
             :disable="!isNotSave"
             flat round icon="save">
-          <q-tooltip>Save (Ctrl+S)</q-tooltip>
+          <q-tooltip>{{ $t('header.save') }} (Ctrl+S)</q-tooltip>
         </q-btn>
         <q-btn
             @click="closeKdbx"
             flat round icon="eject">
-          <q-tooltip>Close (Ctrl+L)</q-tooltip>
+          <q-tooltip>{{ $t('header.close') }} (Ctrl+L)</q-tooltip>
         </q-btn>
       </template>
 

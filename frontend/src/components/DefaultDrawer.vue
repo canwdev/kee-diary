@@ -7,7 +7,7 @@
   >
     <q-scroll-area class="fit">
       <q-list>
-        <q-item-label header>Navigation</q-item-label>
+        <q-item-label header>{{ $t('drawer.navigation') }}</q-item-label>
 
         <template v-if="isUnlocked">
           <q-item clickable tag="a" to="/home">
@@ -15,7 +15,7 @@
               <q-icon name="home"/>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Home</q-item-label>
+              <q-item-label>{{ $t('pages.home') }}</q-item-label>
             </q-item-section>
           </q-item>
         </template>
@@ -25,7 +25,7 @@
               <q-icon name="login"/>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Login</q-item-label>
+              <q-item-label>{{ $t('pages.login') }}</q-item-label>
             </q-item-section>
           </q-item>
         </template>
@@ -36,12 +36,12 @@
             <q-icon name="info"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>About</q-item-label>
+            <q-item-label>{{ $t('pages.about') }}</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-separator/>
-        <q-item-label header>Settings</q-item-label>
+        <q-item-label header>{{ $t('drawer.settings') }}</q-item-label>
 
         <q-item clickable @click="isDarkMode = !isDarkMode">
           <q-item-section avatar>
@@ -50,7 +50,7 @@
 
           <q-item-section>
             <q-item-label>
-              Dark mode
+              {{ $t('drawer.darkMode') }}
             </q-item-label>
           </q-item-section>
 

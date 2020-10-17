@@ -5,6 +5,6 @@ export default [
   },
   {
     locate: 'zh-CN',
-    name: '中文（简体）'
+    name: '中文(简体) (尚未完成)'
   }
 ]

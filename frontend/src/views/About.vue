@@ -1,10 +1,10 @@
 <template>
   <q-page class="flex items-center justify-center bg-wall">
     <div class="text-center">
-      <h5 class="text-primary">About</h5>
+      <h5 class="text-primary">{{ $t('pages.about') }}</h5>
 
       <q-card class="text-white q-pa-md q-mb-lg bg-wood">
-        <div class="text-bold" v-html="$t('aboutInfo')"></div>
+        <div class="text-bold" v-html="$t('about.info')"></div>
         <div class="q-mt-md">
           <VersionText/>
         </div>
@@ -12,8 +12,12 @@
 
 
       <div class="column q-gutter-sm">
-        <q-btn color="primary" to="/home">Home</q-btn>
-        <q-btn flat @click="logDatabase">Log database</q-btn>
+        <q-btn color="primary" to="/home">{{$t('about.btnHome')}}</q-btn>
+        <q-btn
+            flat
+            @click="logDatabase"
+            title="Ctrl + Shift + I"
+        >{{$t('about.btnLogDatabase')}}</q-btn>
       </div>
     </div>
   </q-page>
