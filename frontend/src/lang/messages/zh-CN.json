@@ -58,7 +58,8 @@
     "database-not-exist": "数据库实例不存在",
     "not-allowed-move-group-itself": "不允许移动到群组本身",
     "saved-successfully": "保存成功",
-    "there-are-unsaved": "有未保存的更改，您要保存吗？"
+    "there-are-unsaved": "有未保存的更改，您要保存吗？",
+    "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。此 bug 暂时无法解决。"
   },
   "save": "保存",
   "and-exit": "然后退出",
@@ -81,5 +82,7 @@
   "choose": "选择",
   "choose-icon": "选择图标",
   "foreground": "前景",
-  "color": "颜色"
+  "color": "颜色",
+  "choose-group": "选择群组",
+  "tip": "提示"
 }

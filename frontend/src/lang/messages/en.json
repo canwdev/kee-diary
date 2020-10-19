@@ -58,7 +58,8 @@
     "there-are-unsaved": "There are unsaved changes. Do you want to save?",
     "saved-successfully": "Saved successfully",
     "database-not-exist": "The database instance does not exist",
-    "not-allowed-move-group-itself": "Not allowed to move to the group itself"
+    "not-allowed-move-group-itself": "Not allowed to move to the group itself",
+    "do-not-move-to-the-group-itself": "Do not move to the group itself or subgroups, otherwise the group will disappear. This is a bug that cannot be fixed at present."
   },
   "save": "Save",
   "don-t-save": "Don\\'t save",
@@ -81,5 +82,7 @@
   "background": "Background",
   "choose": "Choose",
   "choose-icon": "Choose Icon",
-  "color": "Color"
+  "color": "Color",
+  "choose-group": "Choose Group",
+  "tip": "Tip"
 }
