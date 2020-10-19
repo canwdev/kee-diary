@@ -31,5 +31,55 @@
     "password": "密码",
     "keyFilePath": "密钥文件路径（可选）",
     "unlock": "解 锁"
-  }
+  },
+  "home": {
+    "add-entry": "添加条目",
+    "title": "标题",
+    "created": "创建时间",
+    "modified": "修改时间"
+  },
+  "detail": {
+    "changeFontFamily": "设置字体",
+    "edit-with-external": "用外部编辑器协作",
+    "export-to-text-file": "导出文本文件",
+    "iswysiwyg": "启用可视化编辑",
+    "load-outer-text-file": "导入文本文件",
+    "confirm-not-empty": "文本区域不为空，是否要覆盖它？"
+  },
+  "confirm": "确认",
+  "export-file": "导出文件",
+  "insert": "插入",
+  "overwrite": "覆盖",
+  "cancel": "取消",
+  "close": "关闭",
+  "don-t-save": "不保存",
+  "exit": "退出",
+  "kdbx": {
+    "database-not-exist": "数据库实例不存在",
+    "not-allowed-move-group-itself": "不允许移动到群组本身",
+    "saved-successfully": "保存成功",
+    "there-are-unsaved": "有未保存的更改，您要保存吗？"
+  },
+  "save": "保存",
+  "and-exit": "然后退出",
+  "delete": "删除",
+  "rename": "重命名",
+  "edit": "编辑",
+  "menu": {
+    "change-color": "修改颜色",
+    "change-icon": "修改图标",
+    "create-entry": "创建条目",
+    "create-group": "创建群组",
+    "log-to-console": "输出到控制台",
+    "are-you-sure": "你确定要",
+    "empty-recycle-bin": "清空回收站",
+    "move-to-recycle-bin": "移到回收站"
+  },
+  "move": "移动",
+  "preview": "预览",
+  "background": "背景",
+  "choose": "选择",
+  "choose-icon": "选择图标",
+  "foreground": "前景",
+  "color": "颜色"
 }

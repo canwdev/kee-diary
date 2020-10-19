@@ -65,70 +65,70 @@ export default {
         {
           id: 'createEntry',
           hidden: !this.isGroup,
-          icon: 'add_circle', label: 'Create entry', action: () => {
+          icon: 'add_circle', label: this.$t('menu.create-entry'), action: () => {
             this.emitEvent('onCreateEntry')
           }
         },
         {
           id: 'createGroup',
           hidden: !this.isGroup,
-          icon: 'add_box', label: 'Create group', action: () => {
+          icon: 'add_box', label: this.$t('menu.create-group'), action: () => {
             this.emitEvent('onCreateGroup')
           }
         },
         {
           id: 'preview',
           showOnlyOne: true,
-          icon: 'visibility', label: 'Preview', action: () => {
+          icon: 'visibility', label: this.$t('preview'), action: () => {
             this.emitEvent('onPreview')
           }
         },
         {
           id: 'rename',
           showOnlyOne: true,
-          icon: 'space_bar', label: 'Rename', action: () => {
+          icon: 'space_bar', label: this.$t('rename'), action: () => {
             this.emitEvent('onRename')
           }
         },
         {
           id: 'edit',
           showOnlyOne: true,
-          icon: 'edit', label: 'Edit', action: () => {
+          icon: 'edit', label: this.$t('edit'), action: () => {
             this.emitEvent('onEdit')
           }
         },
         {
           id: 'changeIcon',
           showOnlyOne: true,
-          icon: 'star', label: 'Change icon', action: () => {
+          icon: 'star', label: this.$t('menu.change-icon'), action: () => {
             this.emitEvent('onChangeIcon')
           }
         },
         {
           id: 'changeColor',
           showOnlyOne: true,
-          icon: 'palette', label: 'Change color', action: () => {
+          icon: 'palette', label: this.$t('menu.change-color'), action: () => {
             this.emitEvent('onChangeColor')
           }
         },
         {isSeparator: true},
         {
           id: 'logToConsole',
-          icon: 'code', label: 'Log to console', action: () => {
+          icon: 'code', label: this.$t('menu.log-to-console'), action: () => {
             console.log(this.targetData)
           }
         },
         {
           id: 'move',
           hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
-          icon: 'double_arrow', label: 'Move...', action: () => {
+          icon: 'double_arrow', label: this.$t('move') + '...', action: () => {
             this.emitEvent('onMove')
           }
         },
         {
           id: 'delete',
           hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
-          icon: 'delete', label: 'Delete', action: () => {
+          icon: 'delete', label: this.$t('delete'), action: () => {
             this.emitEvent('onDelete')
           }
         }

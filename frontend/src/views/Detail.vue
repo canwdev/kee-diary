@@ -15,7 +15,7 @@
                   @click.native="isDialogPreviewVisible = true"
                   :item="currentEntry"
               >
-                <q-tooltip>Preview (Ctrl+/)</q-tooltip>
+                <q-tooltip>{{$t('preview')}} (Ctrl+/)</q-tooltip>
               </IconShow>
             </template>
 
@@ -40,7 +40,7 @@
                   checked-icon="note"
                   unchecked-icon="code"
               >
-                <q-tooltip anchor="top middle" self="center middle">isWYSIWYG</q-tooltip>
+                <q-tooltip anchor="top middle" self="center middle">{{$t('detail.iswysiwyg')}}</q-tooltip>
               </q-toggle>
               <q-select
                   dense
@@ -56,23 +56,23 @@
                 <q-btn
                     @click="handleChangeFont"
                     dense icon="text_fields">
-                  <q-tooltip anchor="top middle" self="center middle">Change font-family</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.changeFontFamily')}}</q-tooltip>
                 </q-btn>
               </q-btn-group>
               <q-btn-group flat>
                 <q-btn
                     @click="handleLoad"
                     dense icon="archive">
-                  <q-tooltip anchor="top middle" self="center middle">Load outer text file</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.load-outer-text-file')}}</q-tooltip>
                 </q-btn>
                 <q-btn
                     @click="handleExport"
                     dense icon="unarchive">
-                  <q-tooltip anchor="top middle" self="center middle">Export to text file</q-tooltip>
+                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.export-to-text-file')}}</q-tooltip>
                 </q-btn>
                 <q-btn
                     dense icon="open_in_browser">
-                  <q-tooltip anchor="top middle" self="center middle">Edit with external tools (not implement)
+                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.edit-with-external')}}
                   </q-tooltip>
                 </q-btn>
               </q-btn-group>
@@ -81,8 +81,8 @@
 
             <q-space/>
             <div class="date-display text-right" v-if="isEntryOpen">
-              <span>Created: <DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>Modified: <DateTimeEdit disabled :date.sync="lastModTime"/></span>
+              <span>{{$t('home.created')}}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
+              <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date.sync="lastModTime"/></span>
             </div>
           </q-toolbar>
         </q-card-section>
@@ -331,7 +331,7 @@ export default {
     },
     handleChangeFont() {
       this.$q.dialog({
-        title: 'Change font-family',
+        title: this.$t('detail.changeFontFamily'),
         prompt: {
           model: this.editorFontFamily,
           type: 'text'
@@ -390,16 +390,16 @@ export default {
 
         this.isDisableEsc = true
         this.$q.dialog({
-          title: 'Confirm',
-          message: 'The text area is not empty, do you want to overwrite it?',
+          title: this.$t('confirm'),
+          message: this.$t('detail.confirm-not-empty'),
           persistent: true,
           ok: {
             flat: true,
-            label: 'Overwrite'
+            label: this.$t('overwrite')
           },
           cancel: {
             flat: true,
-            label: 'Insert'
+            label: this.$t('insert')
           },
 
         }).onOk(() => {
@@ -424,7 +424,7 @@ export default {
       this.$store.commit('setIsGlobalLoading')
 
       window.electronAPI.saveAsFile(this.editor.getValue(), {
-        title: 'Export file',
+        title: this.$t('export-file'),
         defaultPath: this.editing.title + '.txt',
         filters
       }).then(result => {

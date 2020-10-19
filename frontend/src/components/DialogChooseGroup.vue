@@ -25,11 +25,11 @@
       <q-separator/>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup/>
+        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
         <q-btn
             :disabled="!selected"
             @click="handleChoose"
-            flat label="Choose" color="primary" v-close-popup/>
+            flat :label="$t('choose')" color="primary" v-close-popup/>
       </q-card-actions>
     </q-card>
   </q-dialog>

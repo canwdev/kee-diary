@@ -2,7 +2,7 @@ import {removeItems} from "@/utils/kdbx-utils"
 
 export function handleCommonRename(context, target, isGroup = false) {
   context.$q.dialog({
-    title: 'Rename',
+    title: context.$t('rename'),
     prompt: {
       model: target.title,
       isValid: val => val !== target.title,
@@ -38,16 +38,16 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
 
     let msgAction
     if (isRecycleBin) {
-      msgAction = '<b>empty recycle bin</b>?'
+      msgAction = `<b>${context.$t('menu.empty-recycle-bin')}</b>?`
     } else if (context.$store.getters.databaseRecycleBinEnabled) {
-      msgAction = '<b>move to recycle bin</b>?'
+      msgAction = `<b>${context.$t('menu.move-to-recycle-bin')}</b>?`
     } else {
-      msgAction = '<b>DELETE</b>?'
+      msgAction = `<b>${context.$t('delete')}</b>?`
     }
 
     context.$q.dialog({
-      title: 'Confirm',
-      message: `Are you sure you want to ${msgAction}<br><ul>${msgTitles}</ul>`,
+      title: context.$t('confirm'),
+      message: `${context.$t('menu.are-you-sure')} ${msgAction}<br><ul>${msgTitles}</ul>`,
       html: true,
       cancel: true,
       persistent: false

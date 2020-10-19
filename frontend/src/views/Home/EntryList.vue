@@ -106,18 +106,18 @@ export default {
       entryList: [],
       entryTableColumns: Object.freeze([
         {name: 'icon', align: 'center', label: '★', field: 'iconImg'},
-        {name: 'title', align: 'left', label: 'Title', field: 'title', sortable: true},
+        {name: 'title', align: 'left', label: this.$t('home.title'), field: 'title', sortable: true},
         {
           name: 'creationTime',
           align: 'center',
-          label: 'Created',
+          label: this.$t('home.created'),
           field: 'creationTime',
           sortable: true
         },
         {
           name: 'lastModTime',
           align: 'center',
-          label: 'Modified',
+          label: this.$t('home.modified'),
           field: 'lastModTime',
           sortable: true
         },

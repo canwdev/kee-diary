@@ -7,7 +7,7 @@
     <q-card>
       <q-card-section>
         <div class="text-h6 row items-center">
-          <span class="q-ml-md">Choose {{ isFgColor ? 'Foreground' : 'Background' }} Color</span>
+          <span class="q-ml-md">{{$t('choose')}} {{ isFgColor ? $t('foreground') : $t('background') }} {{$t('color')}}</span>
           <q-space/>
           <q-toggle
               v-model="isFgColor"
@@ -39,11 +39,11 @@
       <q-separator/>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup/>
+        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
         <q-btn
             :disabled="selectedColor === color"
             @click="handleChoose"
-            flat label="Choose" color="primary" v-close-popup/>
+            flat :label="$t('choose')" color="primary" v-close-popup/>
       </q-card-actions>
     </q-card>
   </q-dialog>

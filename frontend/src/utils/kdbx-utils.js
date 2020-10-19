@@ -7,6 +7,7 @@ import {busEmitSaveNotes} from "./bus"
 import {Dialog} from 'quasar'
 import {formatDate} from "@/utils/index"
 
+import i18n from '@/lang/i18n'
 
 /**
  * 打开 KDBX 数据库
@@ -54,27 +55,27 @@ export function doCloseKdbx() {
 export function closeKdbx(isExit = false) {
   const isNotSave = store.getters.isNotSave
   if (isNotSave) {
-    const andExit = isExit ? ' and exit' : ''
+    const andExit = isExit ? i18n.t('and-exit') : ''
 
     Dialog.create({
-      title: 'Confirm ' + (isExit ? 'Exit' : 'Close'),
-      message: 'There are unsaved changes. Do you want to save?',
+      title: i18n.t('confirm') + ' ' + (isExit ? i18n.t('exit') : i18n.t('close')),
+      message: i18n.t('kdbx.there-are-unsaved'),
       persistent: false,
       options: {
         type: 'radio',
         model: true,
         // inline: true,
         items: [
-          {label: 'Save' + andExit, value: true, color: 'positive'},
-          {label: 'Don\'t save' + andExit, value: false, color: 'negative'},
+          {label: i18n.t('save') + andExit, value: true, color: 'positive'},
+          {label: i18n.t('don-t-save') + andExit, value: false, color: 'negative'},
         ]
       },
       ok: {
-        label: 'Confirm'
+        label: i18n.t('confirm')
       },
       cancel: {
         flat: true,
-        label: 'Cancel'
+        label: i18n.t('cancel')
       },
 
     }).onOk((result) => {
@@ -108,7 +109,7 @@ function doSaveKdbx(dbPath, db) {
         try {
           electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
           store.commit('setIsNotSave', false)
-          notifySuccess('Saved successfully')
+          notifySuccess(i18n.t('kdbx.saved-successfully'))
           return resolve()
         } catch (e) {
           notifyError(e)
@@ -118,7 +119,7 @@ function doSaveKdbx(dbPath, db) {
         store.commit('setIsGlobalLoading', false)
       })
     } else {
-      const errMsg = 'The database instance does not exist'
+      const errMsg = i18n.t('kdbx.database-not-exist')
       notifyError(errMsg)
       return reject(errMsg)
     }
@@ -294,7 +295,7 @@ export function removeItems(db, items) {
 export function moveItems(db, items, groupUuid) {
   const checkIllegal = (item) => {
     if (item.uuid.id === groupUuid.id) {
-      throw new Error('Not allowed to move to the group itself')
+      throw new Error(i18n.t('kdbx.not-allowed-move-group-itself'))
     }
   }
 
