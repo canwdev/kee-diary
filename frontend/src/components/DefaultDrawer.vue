@@ -43,6 +43,22 @@
         <q-separator/>
         <q-item-label header>{{ $t('drawer.settings') }}</q-item-label>
 
+        <q-item clickable @click="isListView = !isListView">
+          <q-item-section avatar>
+            <q-icon name="list"/>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>
+              {{ isListView ? $t('drawer.listView') : $t('drawer.calendarView') }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-toggle v-model="isListView"/>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable @click="isDarkMode = !isDarkMode">
           <q-item-section avatar>
             <q-icon name="nights_stay"/>
@@ -119,6 +135,10 @@ export default {
     },
     isUnlocked: {
       get: () => store.getters.isUnlocked
+    },
+    isListView: {
+      get: () => store.getters.isListView,
+      set: val => store.commit('setIsListView', val)
     }
   },
   watch: {

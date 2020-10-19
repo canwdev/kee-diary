@@ -7,6 +7,8 @@ export default {
   drawer: {
     navigation: 'Navigation',
     settings: 'Settings',
+    listView: 'List View',
+    calendarView: 'Calendar View',
     darkMode: 'Dark Mode',
   },
   header: {

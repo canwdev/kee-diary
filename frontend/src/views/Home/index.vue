@@ -9,15 +9,16 @@
               :selectedGroupUuid.sync="currentGroupUuid"
           />
         </div>
-
+        <div style="height: 80px"></div>
       </template>
 
       <template v-slot:after>
         <EntryList
+            v-if="isListView"
             :currentGroupUuid="currentGroupUuid"
         />
 
-        <div style="height: 80px"></div>
+        <CalendarView v-else/>
       </template>
 
     </q-splitter>
@@ -33,16 +34,19 @@ import store from "@/store"
 import {addEntry} from "@/utils/kdbx-utils"
 import GroupTreeWrap from "./GroupTreeWrap"
 import EntryList from "@/views/Home/EntryList"
+import CalendarView from "@/views/Home/CalendarView"
 
 export default {
   name: "DbListView",
   components: {
     EntryList,
-    GroupTreeWrap
+    GroupTreeWrap,
+    CalendarView
   },
   data() {
     return {
-      splitterModel: 30
+      splitterModel: 30,
+      isList: false
     }
   },
   computed: {
@@ -52,6 +56,9 @@ export default {
     currentGroupUuid: {
       get: () => store.getters.currentGroupUuid,
       set: val => store.commit('setCurrentGroupUuid', val)
+    },
+    isListView: {
+      get: () => store.getters.isListView,
     }
   },
   methods: {

@@ -13,6 +13,8 @@ export default {
   drawer: {
     navigation: '导航',
     settings: '设置',
+    listView: '列表视图',
+    calendarView: '日历视图',
     darkMode: '黑暗模式',
   },
   about: {

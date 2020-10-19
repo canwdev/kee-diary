@@ -3343,6 +3343,11 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+date-fns@^2.8.1:
+  version "2.16.1"
+  resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha1-BXdXksPzMx2oEq8lPhqTWFHTg0s=
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/de-indent/download/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -8821,6 +8826,15 @@ uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.4.0.tgz?cache=0&sync_timestamp=1595885088251&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuuid%2Fdownload%2Fuuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
+
+v-calendar@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/v-calendar/download/v-calendar-1.1.1.tgz#8e77be97013deea0eb2b09b381cdd856f7a64b23"
+  integrity sha1-jne+lwE97qDrKwmzgc3YVvemSyM=
+  dependencies:
+    core-js "^3.6.5"
+    date-fns "^2.8.1"
+    lodash "^4.17.15"
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
