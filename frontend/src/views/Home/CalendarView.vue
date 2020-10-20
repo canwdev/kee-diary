@@ -1,22 +1,23 @@
-<script src="../../lang/messages/en.js"></script>
 <template>
   <div class="calendar-view q-px-md q-py-lg">
     <Calendar
         is-expanded
         :locale="locate"
         :is-dark="isDarkMode"
-        :attributes="attributes"
+        :attributes="calendarAttributes"
         disable-page-swipe
+        @update:from-page="handlePageChange"
     >
       <template v-slot:day-content="{ day, attributes }">
         <div class="day-content">
           <span class="day-label">{{ day.day }}</span>
           <div class="entry-list">
             <div
-                v-for="(attr,i) in attributes"
-                :key="i"
+                v-for="attr in attributes"
+                :key="attr.key"
                 class="entry-item"
                 :class="attr.customData.class"
+                @click="handleAttrClick(attr)"
             >
               {{ attr.customData.title }}
             </div>
@@ -39,109 +40,94 @@ export default {
   components: {
     Calendar,
   },
-  data() {
-    const month = new Date().getMonth();
-    const year = new Date().getFullYear();
-    return {
-      attributes: [
-        {
-          key: 1,
-          customData: {
-            title: 'Lunch with mom.',
-            class: 'bg-red-6 text-white',
-          },
-          dates: new Date(year, month, 1),
-        },
-        {
-          key: 2,
-          customData: {
-            title: 'Take Noah to basketball practice',
-            class: 'bg-blue-5 text-white',
-          },
-          dates: new Date(year, month, 2),
-        },
-        {
-          key: 311,
-          customData: {
-            title: "Noah's basketball2 game.",
-            class: 'bg-blue-5 text-white',
-          },
-          dates: new Date(year, month, 5),
-        },
-        {
-          key: 322,
-          customData: {
-            title: "Noah's basketball3 game.",
-            class: 'bg-blue-5 text-white',
-          },
-          dates: new Date(year, month, 5),
-        },
-        {
-          key: 3,
-          customData: {
-            title: "Noah's basketball game.",
-            class: 'bg-blue-5 text-white',
-          },
-          dates: new Date(year, month, 5),
-        },
-        {
-          key: 4,
-          customData: {
-            title: 'Take car to the shop',
-            class: 'bg-indigo-5 text-white',
-          },
-          dates: new Date(year, month, 5),
-        },
-        {
-          key: 4,
-          customData: {
-            title: 'Meeting with new client.',
-            class: 'bg-teal-5 text-white',
-          },
-          dates: new Date(year, month, 7),
-        },
-        {
-          key: 5,
-          customData: {
-            title: "Mia's gymnastics practice.",
-            class: 'bg-pink-5 text-white',
-          },
-          dates: new Date(year, month, 11),
-        },
-        {
-          key: 6,
-          customData: {
-            title: 'Cookout with friends.',
-            class: 'bg-orange-5 text-white',
-          },
-          dates: {months: 5, ordinalWeekdays: {2: 1}},
-        },
-        {
-          key: 7,
-          customData: {
-            title: "Mia's gymnastics recital.",
-            class: 'bg-pink-5 text-white',
-          },
-          dates: new Date(year, month, 22),
-        },
-        {
-          key: 8,
-          customData: {
-            title: 'Visit great grandma.',
-            class: 'bg-red-6 text-white',
-          },
-          dates: new Date(year, month, 25),
-        },
-      ],
+  props: {
+    currentGroupUuid: {
+      type: Object,
+      default: null,
     }
   },
+  data() {
+    return {}
+  },
   computed: {
+    calendarDate: {
+      get: () => store.getters.calendarDate,
+      set: val => store.commit('setCalendarDate', val)
+    },
+    database: {
+      get: () => store.getters.database
+    },
     isDarkMode: {
       get: () => store.getters.isDarkMode,
     },
     locate: {
       get: () => store.getters.locate,
     },
+    calendarData() {
+      if (!this.database || !this.currentGroupUuid) {
+        return null
+      }
+
+      const data = {}
+      const group = this.database.getGroup(this.currentGroupUuid)
+
+      let creationTime, year, month;
+
+      // Recursive traverse，will be called for each entry or group
+      group.forEach((entry) => {
+        if (entry) {
+          creationTime = entry.times.creationTime
+          year = creationTime.getFullYear()
+          month = creationTime.getMonth() + 1
+
+          // 初始化
+          if (!data[year]) data[year] = {}
+          if (!data[year][month]) data[year][month] = []
+
+          data[year][month].push(entry)
+        }
+      });
+
+      return data
+    },
+    calendarAttributes() {
+      const date = this.calendarDate
+
+      if (!date || !this.calendarData) {
+        return []
+      }
+
+      const year = date.getFullYear()
+      const month = date.getMonth()
+
+      // console.log(year, month)
+
+      const list = this.calendarData[year] && this.calendarData[year][month]
+      if (!list) {
+        return []
+      }
+
+      return list.map((entry, index) => {
+        return {
+          key: index,
+          customData: {
+            title: entry.fields.Title,
+            class: 'bg-blue text-white',
+          },
+          dates: entry.times.creationTime
+        }
+      })
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    handlePageChange({year, month}) {
+      this.calendarDate = new Date(year, month, 1)
+    },
+    handleAttrClick(attr) {
+      console.log(attr)
+    }
   }
 }
 </script>
@@ -169,7 +155,7 @@ export default {
     }
 
     & .vc-day {
-      padding: 0 5px 3px 5px;
+
       text-align: left;
       height: var(--day-height);
       min-width: var(--day-width);
@@ -215,11 +201,13 @@ export default {
 
       .day-label {
         font-size: 12px
+        padding 2px 4px
       }
 
       .entry-list {
         overflow: auto;
         flex-grow: 1
+        padding 2px 4px
       }
 
       .entry-item {

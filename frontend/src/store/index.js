@@ -37,6 +37,7 @@ export default new Vuex.Store({
     currentGroupUuid: null, // 当前选中的群组 Uuid 对象
     currentEntry: null, // 当前打开的条目对象
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
+    calendarDate: new Date() // 日历视图
   },
   getters: {
     locate: state => state.settings.locate,
@@ -59,6 +60,7 @@ export default new Vuex.Store({
     isEntryOpen: state => {
       return Boolean(state.currentEntry)
     },
+    calendarDate: state => state.calendarDate,
   },
   mutations: {
     setLocate: (state, val) => {
@@ -138,6 +140,9 @@ export default new Vuex.Store({
       state.currentEntry = null
       this.commit('setIsNotSave', false)
       state.isUnlocked = false
+    },
+    setCalendarDate(state, val) {
+      state.calendarDate = val
     }
   },
   actions: {},

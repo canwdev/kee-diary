@@ -18,7 +18,10 @@
             :currentGroupUuid="currentGroupUuid"
         />
 
-        <CalendarView v-else/>
+        <CalendarView
+            v-else
+            :currentGroupUuid="currentGroupUuid"
+        />
       </template>
 
     </q-splitter>
