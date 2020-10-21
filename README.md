@@ -19,9 +19,9 @@ Under development...
 - [x] Save database/close database
 - [ ] Full database search
 - [x] Dark mode
-- [ ] Welcome page
-- [ ] About page
-- [ ] i18n support
+- [x] Welcome page
+- [x] About page
+- [x] i18n support
 - Groups
     - [x] Create new entry
     - [x] Create new group
@@ -32,7 +32,7 @@ Under development...
     - [x] Empty trash
 - Entries
     - [x] List view (sort)
-    - [ ] Calendar view
+    - [x] Calendar view
     - [x] Change icon
     - [x] Change color
     - [x] Markdown support

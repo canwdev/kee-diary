@@ -45,17 +45,13 @@
 
         <q-item clickable @click="isListView = !isListView">
           <q-item-section avatar>
-            <q-icon name="list"/>
+            <q-icon :name="isListView ? 'list': 'event'"/>
           </q-item-section>
 
           <q-item-section>
             <q-item-label>
               {{ isListView ? $t('drawer.listView') : $t('drawer.calendarView') }}
             </q-item-label>
-          </q-item-section>
-
-          <q-item-section side>
-            <q-toggle v-model="isListView"/>
           </q-item-section>
         </q-item>
 

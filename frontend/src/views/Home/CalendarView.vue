@@ -186,7 +186,7 @@ export default {
     },
     refreshCalendarData() {
       if (!this.database || !this.currentGroupUuid) {
-        return null
+        return this.calendarData = null
       }
 
       const data = {}
@@ -217,6 +217,11 @@ export default {
     handleAttrContextMenu(attr) {
       this.currentAttr = attr
       this.currentEntry = this.getEntry(attr)
+    },
+    handleCalendarContextMenu() {
+
+      this.currentAttr = null
+      this.currentEntry = null
     },
     handlePreview(attr) {
       this.currentEntry = this.getEntry(attr)
@@ -271,9 +276,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$color_transparent = rgba(160, 174, 192, 0.4)
+
 .calendar-view {
   >>> .vc-container {
-    --day-border: 1px solid rgba(160, 174, 192, 0.5);
+    --day-border: 1px solid $color_transparent;
     --day-width: 100px;
     --day-height: 100px;
     width: 100%;
@@ -300,7 +307,7 @@ export default {
 
       &.weekday-1,
       &.weekday-7 {
-        background-color: rgba(239, 248, 255, 0.2);
+        background-color: rgba(224, 67, 54, 0.08);
       }
 
       &:not(.on-bottom) {
@@ -358,7 +365,7 @@ export default {
         border-radius 3px
         padding 4px
         line-height: 1.2
-        border var(--day-border)
+        background $color_transparent
 
         &:hover {
           opacity 0.8
