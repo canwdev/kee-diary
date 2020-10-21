@@ -1,6 +1,7 @@
 <template>
   <div class="calendar-view q-px-md q-py-lg">
     <Calendar
+        ref="calendar"
         is-expanded
         :locale="locate"
         :is-dark="isDarkMode"
@@ -12,15 +13,21 @@
         <div class="day-content">
           <span class="day-label">{{ day.day }}</span>
           <div class="entry-list">
-            <div
-                v-for="attr in attributes"
-                :key="attr.key"
-                class="entry-item"
-                :class="attr.customData.class"
-                @click="handleAttrClick(attr)"
-            >
-              {{ attr.customData.title }}
-            </div>
+            <q-scroll-area>
+              <div
+                  v-for="attr in attributes"
+                  :key="attr.key"
+                  class="entry-item cursor-pointer overflow-hidden"
+                  :style="{
+                    background: attr.customData.bgColor,
+                    color: attr.customData.fgColor
+                  }"
+                  @click="handleAttrClick(attr)"
+              >
+                {{ attr.customData.title }}
+              </div>
+            </q-scroll-area>
+
           </div>
         </div>
       </template>
@@ -47,7 +54,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      initialized: false
+    }
   },
   computed: {
     calendarDate: {
@@ -90,7 +99,7 @@ export default {
 
       return data
     },
-    calendarAttributes() {
+    calendarAttributesRaw() {
       const date = this.calendarDate
 
       if (!date || !this.calendarData) {
@@ -103,16 +112,17 @@ export default {
       // console.log(year, month)
 
       const list = this.calendarData[year] && this.calendarData[year][month]
-      if (!list) {
-        return []
-      }
 
-      return list.map((entry, index) => {
+      return list || []
+    },
+    calendarAttributes() {
+      return this.calendarAttributesRaw.map((entry, index) => {
         return {
           key: index,
           customData: {
             title: entry.fields.Title,
-            class: 'bg-blue text-white',
+            fgColor: entry.fgColor,
+            bgColor: entry.bgColor,
           },
           dates: entry.times.creationTime
         }
@@ -120,13 +130,28 @@ export default {
     }
   },
   mounted() {
+    this.initCalendar()
   },
   methods: {
+    initCalendar() {
+      const calendar = this.$refs.calendar
+
+      const date = this.calendarDate
+      const year = date.getFullYear()
+      const month = date.getMonth()
+
+      calendar.move({month: month, year: year})
+      this.calendarDate = new Date(year, month, 1)
+      this.initialized = true
+    },
     handlePageChange({year, month}) {
+      if (!this.initialized) return
+      console.log('handlePageChange', year, month)
       this.calendarDate = new Date(year, month, 1)
     },
     handleAttrClick(attr) {
-      console.log(attr)
+      const entry = this.calendarAttributesRaw[attr.key]
+      console.log(entry)
     }
   }
 }
@@ -136,8 +161,8 @@ export default {
 .calendar-view {
   >>> .vc-container {
     --day-border: 1px solid rgba(160, 174, 192, 0.5);
-    --day-width: 90px;
-    --day-height: 90px;
+    --day-width: 100px;
+    --day-height: 100px;
     width: 100%;
 
     & .vc-header {
@@ -208,6 +233,11 @@ export default {
         overflow: auto;
         flex-grow: 1
         padding 2px 4px
+
+        .q-scrollarea {
+          height: 100%;
+          width: 100%;
+        }
       }
 
       .entry-item {
@@ -215,6 +245,10 @@ export default {
         border-radius 3px
         padding 4px
         line-height: 1.2
+        border var(--day-border)
+        &:hover {
+          opacity 0.8
+        }
 
         & + .entry-item {
           margin-top: 4px
