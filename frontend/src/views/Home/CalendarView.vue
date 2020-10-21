@@ -281,9 +281,24 @@ $color_transparent = rgba(160, 174, 192, 0.4)
 .calendar-view {
   >>> .vc-container {
     --day-border: 1px solid $color_transparent;
-    --day-width: 100px;
-    --day-height: 100px;
+    --day-width: 120px;
+    --day-height: 120px;
     width: 100%;
+
+    @media screen and (max-width: $breakpoint-lg-max) {
+      --day-width: 100px;
+      --day-height: 100px;
+    }
+
+    @media screen and (max-width: $breakpoint-md-max) {
+      --day-width: 80px;
+      --day-height: 80px;
+    }
+
+    @media screen and (max-width: $breakpoint-sm-max) {
+      --day-width: 60px;
+      --day-height: 80px;
+    }
 
     & .vc-header {
       padding: 10px 0;

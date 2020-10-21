@@ -43,7 +43,7 @@
         <q-separator/>
         <q-item-label header>{{ $t('drawer.settings') }}</q-item-label>
 
-        <q-item clickable @click="isListView = !isListView">
+        <q-item v-if="isUnlocked" clickable @click="isListView = !isListView">
           <q-item-section avatar>
             <q-icon :name="isListView ? 'list': 'event'"/>
           </q-item-section>
