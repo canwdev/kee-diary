@@ -14,10 +14,11 @@
       <div class="column q-gutter-sm">
         <q-btn color="primary" to="/home">{{$t('about.btnHome')}}</q-btn>
         <q-btn
-            flat
+            outline color="secondary"
             @click="logDatabase"
-            title="Ctrl + Shift + I"
+            title="Ctrl+Shift+I"
         >{{$t('about.btnLogDatabase')}}</q-btn>
+        <q-btn outline color="secondary" no-caps @click="checkOnline">window.navigator.onLine</q-btn>
       </div>
     </div>
   </q-page>
@@ -35,6 +36,9 @@ export default {
     logDatabase() {
       const db = this.$store.getters.database
       console.log(db)
+    },
+    checkOnline() {
+      console.log('window.navigator.onLine', window.navigator.onLine)
     }
   }
 }

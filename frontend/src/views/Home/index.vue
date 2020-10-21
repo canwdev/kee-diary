@@ -1,15 +1,18 @@
 <template>
   <q-page>
     <q-splitter
-        v-model="splitterModel"
+        v-model="splitterSize"
+        class="home-page"
     >
       <template v-slot:before>
-        <div class="q-pa-md">
-          <GroupTreeWrap
-              :selectedGroupUuid.sync="currentGroupUuid"
-          />
+        <div class="nav-tree">
+          <div class="q-pa-md">
+            <GroupTreeWrap
+                :selectedGroupUuid.sync="currentGroupUuid"
+            />
+          </div>
+          <div style="height: 80px"></div>
         </div>
-        <div style="height: 80px"></div>
       </template>
 
       <template v-slot:after>
@@ -48,13 +51,16 @@ export default {
   },
   data() {
     return {
-      splitterModel: 30,
       isList: false
     }
   },
   computed: {
     database: {
       get: () => store.getters.database
+    },
+    splitterSize: {
+      get: () => store.getters.splitterSize,
+      set: val => store.commit('setSplitterSize', val)
     },
     currentGroupUuid: {
       get: () => store.getters.currentGroupUuid,
@@ -78,4 +84,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.home-page {
+  height calc(100vh - 50px)
+}
+.nav-tree {
+  min-width 350px
+}
 </style>

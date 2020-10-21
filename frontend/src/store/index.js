@@ -27,6 +27,7 @@ export default new Vuex.Store({
       editorTheme: 'hypermd-light',
       editorFontSize: 16, // px
       editorFontFamily: null,
+      splitterSize: 30
     },
     pkg,
     database: null, // opened kdbx database instance
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     editorTheme: state => state.settings.editorTheme,
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
+    splitterSize: state => state.settings.splitterSize || 30,
     pkg: state => state.pkg,
     database: state => state.database,
     dbPath: state => state.dbPath,
@@ -85,6 +87,10 @@ export default new Vuex.Store({
     },
     setEditorFontSize: (state, val) => {
       state.settings.editorFontSize = val
+      settings.set(state.settings)
+    },
+    setSplitterSize: (state, val) => {
+      state.settings.splitterSize = Number(val.toFixed(2))
       settings.set(state.settings)
     },
     setEditorFontFamily: (state, val) => {
