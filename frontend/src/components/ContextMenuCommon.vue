@@ -23,7 +23,6 @@
           <q-item-label>{{ item.label }}</q-item-label>
         </q-item>
       </template>
-      <q-separator/>
     </q-list>
   </q-menu>
 </template>

@@ -53,6 +53,7 @@
 import {palette} from "@/utils/enum"
 
 function getTypeColor(isFgColor, item) {
+  if (!item) return
   return isFgColor ? item.fgColor : item.bgColor
 }
 

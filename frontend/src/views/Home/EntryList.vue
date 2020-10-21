@@ -13,7 +13,8 @@
       <template v-slot:body="props">
         <q-tr :props="props"
               @click="handleRowClick(props.row)"
-              @contextmenu="handleRowContextMenu(props.row)">
+              @contextmenu="handleRowContextMenu(props.row)"
+        >
           <q-td @click.stop="">
             <q-checkbox dense v-model="props.selected" color="secondary"/>
           </q-td>

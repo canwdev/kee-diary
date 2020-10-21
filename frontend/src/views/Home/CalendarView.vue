@@ -22,7 +22,8 @@
                     background: attr.customData.bgColor,
                     color: attr.customData.fgColor
                   }"
-                  @click="handleAttrClick(attr)"
+                  @click="handlePreview(attr)"
+                  @contextmenu="handleAttrContextMenu(attr)"
               >
                 {{ attr.customData.title }}
               </div>
@@ -32,6 +33,39 @@
         </div>
       </template>
     </Calendar>
+
+    <ContextMenuCommon
+        :target-data="currentAttr"
+        @onPreview="handlePreview"
+        @onEdit="handleEdit"
+        @onRename="handleRename"
+        @onChangeIcon="handleShowChangeIcon"
+        @onChangeColor="handleShowChangeColor"
+        @onMove="isDialogChooseGroupVisible = true"
+        @onDelete="handleDelete"
+    />
+
+    <DialogPreviewEntry
+        :visible.sync="isDialogPreviewVisible"
+        :entry="currentEntry"
+    />
+
+    <DialogChooseIcon
+        :visible.sync="isDialogChooseIconVisible"
+        :index="currentEntry && currentEntry.icon"
+        @onChoose="handleUpdateIcon"
+    />
+
+    <DialogChooseColor
+        :item="currentEntry"
+        :visible.sync="isDialogChooseColorVisible"
+        @onChoose="handleUpdateColor"
+    />
+
+    <DialogChooseGroup
+        :visible.sync="isDialogChooseGroupVisible"
+        @onChoose="handleMoveEntry"
+    />
   </div>
 </template>
 
@@ -40,12 +74,25 @@ import Vue from 'vue'
 import Calendar from 'v-calendar/lib/components/calendar.umd'
 import store from "@/store"
 
+import ContextMenuCommon from "@/components/ContextMenuCommon"
+import DialogPreviewEntry from "@/components/DialogPreviewEntry"
+import DialogChooseIcon from "@/components/DialogChooseIcon"
+import DialogChooseColor from "@/components/DialogChooseColor"
+import DialogChooseGroup from "@/components/DialogChooseGroup"
+import {handleCommonDelete, handleCommonRename} from "@/views/Home/common-action"
+import {moveItems} from "@/utils/kdbx-utils"
+
 Vue.component('calendar', Calendar)
 
 export default {
   name: "CalendarView",
   components: {
     Calendar,
+    DialogChooseIcon,
+    DialogChooseColor,
+    ContextMenuCommon,
+    DialogPreviewEntry,
+    DialogChooseGroup,
   },
   props: {
     currentGroupUuid: {
@@ -55,7 +102,22 @@ export default {
   },
   data() {
     return {
-      initialized: false
+      initialized: false,
+      calendarData: {},
+      isDialogPreviewVisible: false,
+      isDialogChooseIconVisible: false,
+      isDialogChooseColorVisible: false,
+      isDialogChooseGroupVisible: false,
+      currentEntry: null,
+      currentAttr: null,
+    }
+  },
+  watch: {
+    currentGroupUuid: {
+      handler() {
+        this.refreshCalendarData()
+      },
+      immediate: true
     }
   },
   computed: {
@@ -71,33 +133,6 @@ export default {
     },
     locate: {
       get: () => store.getters.locate,
-    },
-    calendarData() {
-      if (!this.database || !this.currentGroupUuid) {
-        return null
-      }
-
-      const data = {}
-      const group = this.database.getGroup(this.currentGroupUuid)
-
-      let creationTime, year, month;
-
-      // Recursive traverse，will be called for each entry or group
-      group.forEach((entry) => {
-        if (entry) {
-          creationTime = entry.times.creationTime
-          year = creationTime.getFullYear()
-          month = creationTime.getMonth() + 1
-
-          // 初始化
-          if (!data[year]) data[year] = {}
-          if (!data[year][month]) data[year][month] = []
-
-          data[year][month].push(entry)
-        }
-      });
-
-      return data
     },
     calendarAttributesRaw() {
       const date = this.calendarDate
@@ -149,10 +184,88 @@ export default {
       console.log('handlePageChange', year, month)
       this.calendarDate = new Date(year, month, 1)
     },
-    handleAttrClick(attr) {
-      const entry = this.calendarAttributesRaw[attr.key]
-      console.log(entry)
-    }
+    refreshCalendarData() {
+      if (!this.database || !this.currentGroupUuid) {
+        return null
+      }
+
+      const data = {}
+      const group = this.database.getGroup(this.currentGroupUuid)
+
+      let creationTime, year, month;
+
+      // Recursive traverse，will be called for each entry or group
+      group.forEach((entry) => {
+        if (entry) {
+          creationTime = entry.times.creationTime
+          year = creationTime.getFullYear()
+          month = creationTime.getMonth() + 1
+
+          // 初始化
+          if (!data[year]) data[year] = {}
+          if (!data[year][month]) data[year][month] = []
+
+          data[year][month].push(entry)
+        }
+      });
+
+      this.calendarData = data
+    },
+    getEntry(attr) {
+      return this.calendarAttributesRaw[attr.key]
+    },
+    handleAttrContextMenu(attr) {
+      this.currentAttr = attr
+      this.currentEntry = this.getEntry(attr)
+    },
+    handlePreview(attr) {
+      this.currentEntry = this.getEntry(attr)
+      this.isDialogPreviewVisible = true
+    },
+    handleEdit(attr) {
+      store.commit('setCurrentEntry', this.getEntry(attr))
+      this.$router.push({
+        name: 'Detail'
+      })
+    },
+    handleRename(attr) {
+      handleCommonRename(this, {
+        title: attr.customData.title,
+        _origin: this.getEntry(attr)
+      }).then(data => {
+        attr.customData.title = data
+      })
+    },
+    handleShowChangeIcon(attr) {
+      this.currentEntry = this.getEntry(attr)
+      this.isDialogChooseIconVisible = true
+    },
+    handleUpdateIcon(iconIndex) {
+      this.currentEntry.icon = iconIndex
+      store.commit('setIsNotSave')
+    },
+    handleShowChangeColor(attr) {
+      this.currentAttr = attr
+      this.currentEntry = this.getEntry(attr)
+      this.isDialogChooseColorVisible = true
+    },
+    handleUpdateColor(result) {
+      const {type, value} = result
+      this.currentAttr.customData[type] = value
+      this.currentEntry[type] = value
+      store.commit('setIsNotSave')
+    },
+    handleMoveEntry(groupUuid) {
+      const result = moveItems(this.database, this.currentEntry, groupUuid)
+      if (result) {
+        this.refreshCalendarData()
+      }
+    },
+    handleDelete() {
+      handleCommonDelete(this, this.currentEntry).then(() => {
+        this.refreshCalendarData()
+      })
+    },
   }
 }
 </script>
@@ -246,6 +359,7 @@ export default {
         padding 4px
         line-height: 1.2
         border var(--day-border)
+
         &:hover {
           opacity 0.8
         }

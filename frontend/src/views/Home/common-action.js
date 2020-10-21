@@ -1,24 +1,31 @@
 import {removeItems} from "@/utils/kdbx-utils"
 
 export function handleCommonRename(context, target, isGroup = false) {
-  context.$q.dialog({
-    title: context.$t('rename'),
-    prompt: {
-      model: target.title,
-      isValid: val => val !== target.title,
-      type: 'text'
-    },
-    cancel: true,
-    persistent: false
-  }).onOk(data => {
-    target.title = data
-    if (isGroup) {
-      target._origin.name = data
-    } else {
-      target._origin.fields.Title = data
-    }
-    context.$store.commit('setIsNotSave')
+  return new Promise((resolve, reject) => {
+    context.$q.dialog({
+      title: context.$t('rename'),
+      prompt: {
+        model: target.title,
+        isValid: val => val !== target.title,
+        type: 'text'
+      },
+      cancel: true,
+      persistent: false
+    }).onOk(data => {
+      target.title = data
+      if (isGroup) {
+        target._origin.name = data
+      } else {
+        target._origin.fields.Title = data
+      }
+      context.$store.commit('setIsNotSave')
+      resolve(data)
+    }).onCancel(() => {
+      reject()
+    })
   })
+
+
 }
 
 export function handleCommonDelete(context, originTarget, isGroup = false) {
@@ -33,7 +40,6 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
       msgTitles = getTitle(originTarget)
       isRecycleBin = originTarget.uuid.id === context.database.meta.recycleBinUuid.id
     }
-
 
 
     let msgAction
