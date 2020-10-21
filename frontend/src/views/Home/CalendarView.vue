@@ -25,7 +25,12 @@
                   @click="handlePreview(attr)"
                   @contextmenu="handleAttrContextMenu(attr)"
               >
-                {{ attr.customData.title }}
+                <IconShow
+                  :item="{iconIndex: attr.customData.iconIndex}"
+                  size="16px"
+                  :icon-scale="1"
+                />
+                <span class="entry-title">{{ attr.customData.title }}</span>
               </div>
             </q-scroll-area>
 
@@ -79,6 +84,8 @@ import DialogPreviewEntry from "@/components/DialogPreviewEntry"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseColor from "@/components/DialogChooseColor"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
+import IconShow from "@/components/IconShow"
+
 import {handleCommonDelete, handleCommonRename} from "@/views/Home/common-action"
 import {moveItems} from "@/utils/kdbx-utils"
 
@@ -93,6 +100,7 @@ export default {
     ContextMenuCommon,
     DialogPreviewEntry,
     DialogChooseGroup,
+    IconShow
   },
   props: {
     currentGroupUuid: {
@@ -155,6 +163,7 @@ export default {
         return {
           key: index,
           customData: {
+            iconIndex: entry.icon,
             title: entry.fields.Title,
             fgColor: entry.fgColor,
             bgColor: entry.bgColor,
@@ -246,6 +255,7 @@ export default {
       this.isDialogChooseIconVisible = true
     },
     handleUpdateIcon(iconIndex) {
+      this.currentAttr.customData.iconIndex = iconIndex
       this.currentEntry.icon = iconIndex
       store.commit('setIsNotSave')
     },
@@ -292,7 +302,7 @@ $color_transparent = rgba(160, 174, 192, 0.4)
 
     @media screen and (max-width: $breakpoint-md-max) {
       --day-width: 80px;
-      --day-height: 80px;
+      --day-height: 100px;
     }
 
     @media screen and (max-width: $breakpoint-sm-max) {
@@ -384,6 +394,15 @@ $color_transparent = rgba(160, 174, 192, 0.4)
 
         &:hover {
           opacity 0.8
+        }
+
+        .q-avatar {
+          margin-top: -3px
+        }
+
+        .entry-title {
+          display inline
+          margin-left: 2px
         }
 
         & + .entry-item {
