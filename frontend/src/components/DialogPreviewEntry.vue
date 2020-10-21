@@ -21,6 +21,13 @@
 
         <q-separator/>
 
+        <q-card-section class="q-py-sm flex justify-between">
+          <span>{{$t('home.created')}}: <DateTimeEdit disabled :date="entry.times.creationTime"/></span>
+          <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date="entry.times.lastModTime"/></span>
+        </q-card-section>
+
+        <q-separator/>
+
         <q-card-section style="max-height: 78vh" class="scroll">
           <q-card
               flat
@@ -46,13 +53,15 @@
 import marked from "@/utils/marked"
 import store from "@/store"
 import IconShow from "@/components/IconShow"
+import DateTimeEdit from "@/components/DateTimeEdit"
 import DialogPreview from "./DialogPreview"
 
 export default {
   name: "DialogPreviewEntry",
   components: {
     IconShow,
-    DialogPreview
+    DialogPreview,
+    DateTimeEdit
   },
   props: {
     visible: {

@@ -82,7 +82,7 @@
             <q-space/>
             <div class="date-display text-right" v-if="isEntryOpen">
               <span>{{$t('home.created')}}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date.sync="lastModTime"/></span>
+              <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date="lastModTime"/></span>
             </div>
           </q-toolbar>
         </q-card-section>
