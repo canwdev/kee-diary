@@ -150,11 +150,9 @@ export default {
       }
 
       const year = date.getFullYear()
-      const month = date.getMonth()
+      const month = date.getMonth() + 1
 
-      console.log('calendarAttributesRaw', year, month)
-
-      // console.log(year, month)
+      // console.log('calendarAttributesRaw', year, month)
 
       const list = this.calendarData[year] && this.calendarData[year][month]
 
@@ -187,13 +185,13 @@ export default {
       const month = date.getMonth()
 
       calendar.move({month: month + 1, year: year})
-      this.calendarDate = new Date(year, month, 1)
+      this.calendarDate = new Date(date) // trigger refresh
       this.initialized = true
     },
     handlePageChange({year, month}) {
       if (!this.initialized) return
-      console.log('handlePageChange', year, month)
-      this.calendarDate = new Date(year, month, 1)
+      // console.log('handlePageChange', year, month)
+      this.calendarDate = new Date(year, month - 1, 1)
     },
     refreshCalendarData() {
       if (!this.database || !this.currentGroupUuid) {
