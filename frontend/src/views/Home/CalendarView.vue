@@ -26,9 +26,9 @@
                   @contextmenu="handleAttrContextMenu(attr)"
               >
                 <IconShow
-                  :item="{iconIndex: attr.customData.iconIndex}"
-                  size="16px"
-                  :icon-scale="1"
+                    :item="{iconIndex: attr.customData.iconIndex}"
+                    size="16px"
+                    :icon-scale="1"
                 />
                 <span class="entry-title">{{ attr.customData.title }}</span>
               </div>
@@ -152,6 +152,8 @@ export default {
       const year = date.getFullYear()
       const month = date.getMonth()
 
+      console.log('calendarAttributesRaw', year, month)
+
       // console.log(year, month)
 
       const list = this.calendarData[year] && this.calendarData[year][month]
@@ -184,7 +186,7 @@ export default {
       const year = date.getFullYear()
       const month = date.getMonth()
 
-      calendar.move({month: month, year: year})
+      calendar.move({month: month + 1, year: year})
       this.calendarDate = new Date(year, month, 1)
       this.initialized = true
     },
