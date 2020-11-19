@@ -1,5 +1,6 @@
 const {shell, remote, ipcRenderer, contextBridge} = require('electron')
 const fs = remote.require('fs')
+const fetch = require('node-fetch');
 
 const electronAPI = function () {
 
@@ -150,6 +151,22 @@ const electronAPI = function () {
       // need test
       ipcRenderer.off(channel, func);
     }
+  }
+
+  this.checkIsOnLine = () => {
+    const url = 'http://developers.google.cn/generate_204'
+    const origin = 'http://developers.google.cn'
+    return new Promise((resolve) => {
+      fetch(url, {
+        headers: { 'Origin': origin },
+      }).then(res => {
+        console.log(res)
+        resolve(true)
+      }).catch(e => {
+        console.error(e)
+        resolve(false)
+      })
+    })
   }
 }
 

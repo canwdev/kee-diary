@@ -18,7 +18,7 @@
             @click="logDatabase"
             title="Ctrl+Shift+I"
         >{{$t('about.btnLogDatabase')}}</q-btn>
-        <q-btn outline color="secondary" no-caps @click="checkOnline">window.navigator.onLine</q-btn>
+        <q-btn outline color="secondary" no-caps @click="checkOnline">Check Online</q-btn>
       </div>
     </div>
   </q-page>
@@ -38,7 +38,10 @@ export default {
       console.log(db)
     },
     checkOnline() {
-      console.log('window.navigator.onLine', window.navigator.onLine)
+      // console.log('window.navigator.onLine', window.navigator.onLine)
+      window.electronAPI.checkIsOnLine().then(flag => {
+        console.log(flag)
+      })
     }
   }
 }
