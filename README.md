@@ -22,6 +22,7 @@ Under development...
 - [x] Welcome page
 - [x] About page
 - [x] i18n support
+- [x] Check Internet connection (Offline for better security)
 - Groups
     - [x] Create new entry
     - [x] Create new group

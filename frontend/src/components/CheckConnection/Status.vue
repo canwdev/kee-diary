@@ -2,9 +2,9 @@
   <span class="status-item" v-if="type === ConnectType.CHECKING">
     <q-spinner-ios />
   </span>
-  <span class="status-item online" v-else-if="type === ConnectType.ONLINE">Online</span>
-  <span class="status-item offline" v-else-if="type === ConnectType.OFFLINE">Offline</span>
-  <span class="status-item unknown" v-else>Unknown</span>
+  <span class="status-item online" v-else-if="type === ConnectType.ONLINE"><q-icon name="public"/> Online</span>
+  <span class="status-item offline" v-else-if="type === ConnectType.OFFLINE"><q-icon name="public_off"/> Offline</span>
+  <span class="status-item unknown" v-else><q-icon name="help"/> Unknown</span>
 </template>
 
 <script>
@@ -28,15 +28,14 @@ export default {
 
 <style lang="stylus" scoped>
 .status-item {
-
   &.online {
-    color $positive
+    color $red
   }
   &.offline {
-    color $negative
+    color $green
   }
   &.unknown {
-    color $warning
+    color $yellow
   }
 }
 </style>

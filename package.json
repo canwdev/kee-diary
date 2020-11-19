@@ -1,7 +1,7 @@
 {
   "name": "kee-diary-vue-electron",
   "appName": "KeeDiary",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "A diary app that use kdbx to encrypt your diary",
   "repository": "",
   "private": true,

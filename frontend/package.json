@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "axios": "^0.21.0",
     "codemirror": "^5.57.0",
     "core-js": "^3.6.5",
     "hypermd": "^0.3.11",

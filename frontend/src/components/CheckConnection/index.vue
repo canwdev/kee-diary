@@ -1,17 +1,19 @@
 <template>
   <q-card class="check-connection q-py-md q-px-lg">
-    <div class="text-h6 flex items-center justify-between">Internet Connection
+    <div class="text-h6 flex items-center justify-between"><abbr title="(Offline for better security)">Internet Connection</abbr>
       <q-btn dense flat color="secondary" no-caps @click="check">Check</q-btn>
     </div>
 
     <ul>
-      <li title="window.navigator.onLine">System:
+      <li><abbr title="window.navigator.onLine">System</abbr>
         <Status :type="status.navigator"/>
       </li>
-      <li title="Electron BrowserWindow fetch: v1.hitokoto.cn">Frontend:
+      <q-separator/>
+      <li><abbr title="Electron BrowserWindow test: v1.hitokoto.cn">Frontend</abbr>
         <Status :type="status.frontend"/>
       </li>
-      <li title="Electron Node.js fetch: developers.google.cn">Backend:
+      <q-separator/>
+      <li><abbr title="Electron Node.js test: developers.google.cn">Backend</abbr>
         <Status :type="status.backend"/>
       </li>
     </ul>
@@ -21,6 +23,7 @@
 <script>
 import {ConnectType} from './enum'
 import Status from './Status'
+import axios from 'axios'
 
 const initStatus = Object.freeze({
   navigator: ConnectType.CHECKING,
@@ -49,10 +52,10 @@ export default {
         this.status.backend = flag ? ConnectType.ONLINE : ConnectType.OFFLINE
       })
 
-      fetch('https://v1.hitokoto.cn/').then(res => {
+      axios.get('https://v1.hitokoto.cn/', {
+        timeout: 10000,
+      }).then(({data}) => {
         this.status.frontend = ConnectType.ONLINE
-        return res.json()
-      }).then(data => {
         if (data && data.hitokoto) {
           this.$emit('onMessage', data.hitokoto)
         }
@@ -75,6 +78,7 @@ export default {
     li {
       display flex
       justify-content space-between
+      line-height: 2
     }
   }
 }
