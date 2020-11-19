@@ -10,6 +10,7 @@
         </div>
       </q-card>
 
+      <CheckConnection class="q-mb-lg"/>
 
       <div class="column q-gutter-sm">
         <q-btn color="primary" to="/home">{{$t('about.btnHome')}}</q-btn>
@@ -18,30 +19,26 @@
             @click="logDatabase"
             title="Ctrl+Shift+I"
         >{{$t('about.btnLogDatabase')}}</q-btn>
-        <q-btn outline color="secondary" no-caps @click="checkOnline">Check Online</q-btn>
       </div>
+
     </div>
   </q-page>
 </template>
 
 <script>
 import VersionText from "@/components/VersionText"
+import CheckConnection from '@/components/CheckConnection'
 
 export default {
   name: "About",
   components: {
-    VersionText
+    VersionText,
+    CheckConnection
   },
   methods: {
     logDatabase() {
       const db = this.$store.getters.database
       console.log(db)
-    },
-    checkOnline() {
-      // console.log('window.navigator.onLine', window.navigator.onLine)
-      window.electronAPI.checkIsOnLine().then(flag => {
-        console.log(flag)
-      })
     }
   }
 }

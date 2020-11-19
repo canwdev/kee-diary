@@ -159,11 +159,9 @@ const electronAPI = function () {
     return new Promise((resolve) => {
       fetch(url, {
         headers: { 'Origin': origin },
-      }).then(res => {
-        console.log(res)
+      }).then(() => {
         resolve(true)
-      }).catch(e => {
-        console.error(e)
+      }).catch(() => {
         resolve(false)
       })
     })
