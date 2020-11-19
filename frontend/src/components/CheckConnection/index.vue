@@ -1,17 +1,17 @@
 <template>
-  <q-card class="check-connection q-pa-md">
-    <div class="text-h6">Internet Connection
-      <q-btn flat color="secondary" no-caps @click="check">Check</q-btn>
+  <q-card class="check-connection q-py-md q-px-lg">
+    <div class="text-h6 flex items-center justify-between">Internet Connection
+      <q-btn dense flat color="secondary" no-caps @click="check">Check</q-btn>
     </div>
 
     <ul>
       <li title="window.navigator.onLine">System:
         <Status :type="status.navigator"/>
       </li>
-      <li title="Electron BrowserWindow">Frontend:
+      <li title="Electron BrowserWindow fetch: v1.hitokoto.cn">Frontend:
         <Status :type="status.frontend"/>
       </li>
-      <li title="Electron Node.js">Backend:
+      <li title="Electron Node.js fetch: developers.google.cn">Backend:
         <Status :type="status.backend"/>
       </li>
     </ul>
@@ -53,9 +53,12 @@ export default {
         this.status.frontend = ConnectType.ONLINE
         return res.json()
       }).then(data => {
-        console.log(data)
+        if (data && data.hitokoto) {
+          this.$emit('onMessage', data.hitokoto)
+        }
       }).catch(() => {
         this.status.frontend = ConnectType.OFFLINE
+        this.$emit('onMessage', null)
       })
     }
   }
@@ -67,7 +70,7 @@ export default {
   text-align: left;
 
   ul {
-    padding 0 20px
+    padding 0
 
     li {
       display flex
