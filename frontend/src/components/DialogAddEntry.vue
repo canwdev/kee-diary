@@ -7,7 +7,7 @@
     <q-card style="width: 320px">
       <q-card-section>
         <div class="text-h6 row items-center">
-          <span class="q-ml-md">{{ $t('home.add-entry') }}</span>
+          <q-icon name="add"/> <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
         </div>
       </q-card-section>
 
@@ -42,11 +42,13 @@
             <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
             <div class="row-content">
               <q-btn
+                  flat
                   round
                   @click="isDialogChooseIconVisible = true"
               >
                 <IconShow
-                    :item="{icon: form.iconIndex}"
+                    size="45px"
+                    :item="form"
                 />
               </q-btn>
             </div>
