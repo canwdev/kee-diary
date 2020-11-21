@@ -235,15 +235,28 @@ export function addGroup(db, groupUuid, name = formatDate(new Date(), true)) {
  * @param groupUuid 群组 Uuid 对象
  * @returns {boolean} 操作成功
  */
-export function addEntry(db, groupUuid) {
+export function addEntry(db, groupUuid, config = {}) {
   try {
+    const {
+      title,
+      icon,
+      bgColor,
+      fgColor
+    } = config
     const group = db.getGroup(groupUuid)
     const entry = db.createEntry(group)
     // console.log(db, group)
 
-    entry.fields.Title = formatDate(new Date(), true)
+    entry.fields.Title = title || formatDate(new Date(), true)
     // 48 is default folder icon, 0 is default entry icon
-    entry.icon = group.icon === 48 ? 0 : group.icon
+    entry.icon = icon === undefined ? (group.icon === 48 ? 0 : group.icon) : icon
+
+    if (bgColor) {
+      entry.bgColor = bgColor
+    }
+    if (fgColor) {
+      entry.fgColor = fgColor
+    }
 
     // console.log(entry)
 

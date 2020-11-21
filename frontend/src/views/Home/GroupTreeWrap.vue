@@ -19,18 +19,16 @@
       </template>
     </GroupTree>
 
-    <template>
-      <DialogChooseIcon
-          :visible.sync="isDialogChooseIconVisible"
-          :index="previewTarget.iconIndex"
-          @onChoose="handleUpdateIcon"
-      />
-      <DialogChooseGroup
-          :visible.sync="isDialogChooseGroupVisible"
-          :is-group="true"
-          @onChoose="handleMoveEntry"
-      />
-    </template>
+    <DialogChooseIcon
+        :visible.sync="isDialogChooseIconVisible"
+        :index="previewTarget.iconIndex"
+        @onChoose="handleUpdateIcon"
+    />
+    <DialogChooseGroup
+        :visible.sync="isDialogChooseGroupVisible"
+        :show-tips="true"
+        @onChoose="handleMoveEntry"
+    />
 
   </div>
 </template>

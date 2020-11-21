@@ -15,7 +15,7 @@
 
       <q-card-section style="max-height: 70vh" class="scroll">
         <q-card flat class="q-gutter-md" v-if="mVisible">
-          <p v-if="isGroup" class="text-weight-thin">{{$t('tip')}}: {{$t('kdbx.do-not-move-to-the-group-itself')}}</p>
+          <p v-if="showTips" class="text-weight-thin">{{$t('tip')}}: {{$t('kdbx.do-not-move-to-the-group-itself')}}</p>
           <GroupTree
               :selectedGroupUuid.sync="selected"
           />
@@ -48,7 +48,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isGroup: {
+    showTips: {
       type: Boolean,
       default: false
     }

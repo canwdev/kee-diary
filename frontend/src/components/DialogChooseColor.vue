@@ -7,7 +7,9 @@
     <q-card>
       <q-card-section>
         <div class="text-h6 row items-center">
-          <span class="q-ml-md">{{$t('choose')}} {{ isFgColor ? $t('foreground') : $t('background') }} {{$t('color')}}</span>
+          <span class="q-ml-md">{{ $t('choose') }} {{
+              isFgColor ? $t('foreground') : $t('background')
+            }} {{ $t('color') }}</span>
           <q-space/>
           <q-toggle
               v-model="isFgColor"
@@ -23,16 +25,14 @@
 
       <q-card-section style="max-height: 70vh" class="scroll">
         <q-card flat class="q-gutter-md">
-          <span
-              class="color-item"
-              :class="{active: selectedColor === item.color, 'no-color': !item.color}"
+          <ColorItem
               v-for="(item, i) in palette"
               :key="i"
-              :style="{background: item.color}"
-              @click="selectedColor = item.color"
-          >
-            <q-tooltip>{{ item.name }}</q-tooltip>
-          </span>
+              :color="item.color"
+              :name="item.name"
+              :is-active="selectedColor === item.color"
+              @click.native="selectedColor = item.color"
+          />
         </q-card>
       </q-card-section>
 
@@ -51,6 +51,7 @@
 
 <script>
 import {palette} from "@/utils/enum"
+import ColorItem from '@/components/ColorItem'
 
 function getTypeColor(isFgColor, item) {
   if (!item) return
@@ -64,6 +65,9 @@ function getColorName(color) {
 
 export default {
   name: "DialogChooseIcon",
+  components: {
+    ColorItem
+  },
   props: {
     visible: {
       type: Boolean,
@@ -126,37 +130,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.color-item {
-  display inline-block
-  width: 45px
-  height: 45px
-  border-radius 50%;
-  overflow: hidden;
-  transition all .3s
-  cursor pointer
-  border 5px solid transparent
-  box-shadow 0 1px 2px rgba(0,0,0,0.2)
 
-  &:hover {
-    transform scale(1.1)
-  }
-
-  &:active, &.active {
-    border-color rgba(0, 0, 0, 0.5)
-  }
-
-  &:active {
-    transform scale(0.9)
-  }
-
-  &.no-color {
-    background repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 5px,
-        #ccc 5px,
-        #ccc 10px
-    )
-  }
-}
 </style>
