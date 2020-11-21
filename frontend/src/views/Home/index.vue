@@ -9,6 +9,7 @@
           <div class="q-pa-md">
             <GroupTreeWrap
                 :selectedGroupUuid.sync="currentGroupUuid"
+                @onCreateEntry="handleAddEntryFromGroup"
             />
           </div>
           <div style="height: 80px"></div>
@@ -34,8 +35,9 @@
     </q-page-sticky>
 
     <DialogAddEntry
-      :visible.sync="isDialogAddEntryVisible"
-      @confirm="handleAddEntry"
+        ref="addEntry"
+        :visible.sync="isDialogAddEntryVisible"
+        @confirm="handleAddEntry"
     />
   </q-page>
 </template>
@@ -80,7 +82,6 @@ export default {
   },
   methods: {
     handleAddEntry(data) {
-      console.log(data)
       const result = addEntry(this.database, data.groupUuid || this.currentGroupUuid, {
         title: data.title,
         icon: data.iconIndex,
@@ -92,6 +93,12 @@ export default {
           name: 'Detail'
         })
       }
+    },
+    handleAddEntryFromGroup(group) {
+      this.isDialogAddEntryVisible = true
+      this.$nextTick(() => {
+        this.$refs.addEntry.getGroupInfo(group)
+      })
     }
   }
 }
@@ -101,6 +108,7 @@ export default {
 .home-page {
   height calc(100vh - 50px)
 }
+
 .nav-tree {
   min-width 350px
 }

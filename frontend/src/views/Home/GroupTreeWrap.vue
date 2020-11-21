@@ -39,7 +39,7 @@ import GroupTree from "./GroupTree"
 import ContextMenuCommon from "@/components/ContextMenuCommon"
 import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
-import {addEntry, addGroup, moveItems} from "@/utils/kdbx-utils"
+import {addGroup, moveItems} from "@/utils/kdbx-utils"
 import {handleCommonDelete, handleCommonRename} from "./common-action"
 
 export default {
@@ -81,12 +81,7 @@ export default {
       this.$refs.groupTree.refreshGroupTree()
     },
     handleCreateEntry(target) {
-      const result = addEntry(this.database, target.uuid)
-      if (result) {
-        this.$router.push({
-          name: 'Detail'
-        })
-      }
+      this.$emit('onCreateEntry', target)
     },
     handleCreateGroup(target) {
       const result = addGroup(this.database, target.uuid)
