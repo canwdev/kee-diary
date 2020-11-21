@@ -29,10 +29,10 @@ export default {
 <style lang="stylus" scoped>
 .status-item {
   &.online {
-    color $red
+    color $green
   }
   &.offline {
-    color $green
+    color $grey
   }
   &.unknown {
     color $yellow
