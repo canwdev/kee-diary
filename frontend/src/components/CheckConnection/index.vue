@@ -1,6 +1,6 @@
 <template>
   <q-card class="check-connection q-py-md q-px-lg">
-    <div class="text-h6 flex items-center justify-between"><abbr title="(Offline for better security)">Internet Connection</abbr>
+    <div class="text-h6 flex items-center justify-between"><abbr title="Offline for better security\n本程序不会主动联网，断网使用以获得最佳安全性">Internet Connection</abbr>
       <q-btn dense flat color="secondary" no-caps @click="check">Check</q-btn>
     </div>
 
@@ -40,7 +40,7 @@ export default {
     }
   },
   created() {
-    this.check()
+    // this.check()
   },
   methods: {
     check() {
