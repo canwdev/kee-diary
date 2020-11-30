@@ -1,5 +1,5 @@
 <template>
-  <span>© {{ new Date().getFullYear() }} {{ pkg.appName }} {{ pkg.version }} by {{ pkg.author }}</span>
+  <span :title="'© ' + new Date().getFullYear() + ' ' + pkg.author">{{ pkg.appName }} v{{ pkg.version }}</span>
 </template>
 
 <script>
