@@ -22,6 +22,7 @@
               v-for="(item, i) in icons"
               :key="i"
               @click="handleSelect(i)"
+              @contextmenu="handlePreview(i)"
               :flat="i !== selectedIndex"
               color="primary"
               round
@@ -44,7 +45,7 @@
         <q-btn
             :disabled="index === selectedIndex"
             @click="handleChoose"
-            flat :label="$t('choose')" color="primary" v-close-popup/>
+            flat :label="$t('choose')" color="primary"/>
       </q-card-actions>
     </q-card>
 
@@ -53,7 +54,7 @@
     >
       <IconShow
           size="256px"
-          :item="{icon:selectedIndex}"
+          :item="{icon:previewIndex}"
           :icon-scale="1"
       />
     </DialogPreview>
@@ -102,19 +103,25 @@ export default {
     return {
       icons: Object.freeze(icons.list),
       selectedIndex: null,
+      previewIndex: null,
       isPreviewIconVisible: false
     }
   },
   methods: {
     handleChoose() {
       this.$emit('onChoose', this.selectedIndex)
+      this.mVisible = false
     },
     handleSelect(i) {
       if (this.selectedIndex === i) {
-        this.isPreviewIconVisible = true
+        this.handleChoose()
       } else {
         this.selectedIndex = i
       }
+    },
+    handlePreview(i) {
+      this.previewIndex = i
+      this.isPreviewIconVisible = true
     }
   }
 }

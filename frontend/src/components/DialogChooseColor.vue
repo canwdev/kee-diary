@@ -31,7 +31,7 @@
               :color="item.color"
               :name="item.name"
               :is-active="selectedColor === item.color"
-              @click.native="selectedColor = item.color"
+              @click.native="handleSelect(item.color)"
           />
         </q-card>
       </q-card-section>
@@ -43,7 +43,8 @@
         <q-btn
             :disabled="selectedColor === color"
             @click="handleChoose"
-            flat :label="$t('choose')" color="primary" v-close-popup/>
+            flat :label="$t('choose')" color="primary"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -119,11 +120,19 @@ export default {
     }
   },
   methods: {
+    handleSelect(color) {
+      if (this.selectedColor === color) {
+        this.handleChoose()
+      } else {
+        this.selectedColor = color
+      }
+    },
     handleChoose() {
       this.$emit('onChoose', {
         type: this.isFgColor ? 'fgColor' : 'bgColor',
         value: this.selectedColor
       })
+      this.mVisible = false
     }
   }
 }

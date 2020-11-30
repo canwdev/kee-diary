@@ -55,7 +55,7 @@ export default {
       })
 
       axios.get('https://v1.hitokoto.cn/', {
-        timeout: 10000,
+        timeout: 5000,
       }).then(({data}) => {
         this.status.frontend = ConnectType.ONLINE
         if (data && data.hitokoto) {

@@ -189,6 +189,7 @@ export default {
       const group = this.database.getGroup(groupUuid)
       this.groupInfo.name = group.name
       this.groupInfo.iconIndex = group.icon
+      this.form.iconIndex = group.icon
       this.form.groupUuid = groupUuid
     },
     handleUpdateIcon(iconIndex) {
