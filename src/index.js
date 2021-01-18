@@ -29,6 +29,8 @@ function createWindow() {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       spellcheck: false,
       enableRemoteModule: true,

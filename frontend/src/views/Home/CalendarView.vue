@@ -6,6 +6,7 @@
         :locale="locate"
         :is-dark="isDarkMode"
         :attributes="calendarAttributes"
+        :first-day-of-week="1"
         disable-page-swipe
         @update:from-page="handlePageChange"
     >
@@ -286,11 +287,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$color_transparent = rgba(160, 174, 192, 0.4)
 
 .calendar-view {
   >>> .vc-container {
-    --day-border: 1px solid $color_transparent;
+    --day-border: 1px solid rgba(160, 174, 192, 0.4);
     --day-width: 120px;
     --day-height: 120px;
     width: 100%;
@@ -362,6 +362,8 @@ $color_transparent = rgba(160, 174, 192, 0.4)
   }
 
   >>> .vc-container {
+    border-radius 0
+
     .day-content {
       display flex
       flex-direction column
@@ -390,7 +392,7 @@ $color_transparent = rgba(160, 174, 192, 0.4)
         border-radius 3px
         padding 4px
         line-height: 1.2
-        background $color_transparent
+        background transparent
 
         &:hover {
           opacity 0.8
