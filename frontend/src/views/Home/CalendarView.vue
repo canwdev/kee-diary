@@ -12,30 +12,41 @@
     >
       <template v-slot:day-content="{ day, attributes }">
         <div class="day-content">
-          <span class="day-label">{{ day.day }}</span>
           <div class="entry-list">
             <q-scroll-area>
-              <div
+              <template
                   v-for="attr in attributes"
-                  :key="attr.key"
-                  class="entry-item cursor-pointer overflow-hidden"
-                  :style="{
+              >
+                <div
+                    v-if="attr.customData"
+                    :key="attr.key"
+                    class="entry-item cursor-pointer overflow-hidden"
+                    :style="{
                     background: attr.customData.bgColor,
                     color: attr.customData.fgColor
                   }"
-                  @click="handlePreview(attr)"
-                  @contextmenu="handleAttrContextMenu(attr)"
-              >
-                <IconShow
-                    :item="{iconIndex: attr.customData.iconIndex}"
-                    size="16px"
-                    :icon-scale="1"
-                />
-                <span class="entry-title">{{ attr.customData.title }}</span>
-              </div>
+                    @click="handlePreview(attr)"
+                    @contextmenu="handleAttrContextMenu(attr)"
+                >
+                  <IconShow
+                      :item="{iconIndex: attr.customData.iconIndex}"
+                      size="16px"
+                      :icon-scale="1"
+                  />
+                  <span class="entry-title">{{ attr.customData.title }}</span>
+                </div>
+              </template>
             </q-scroll-area>
 
           </div>
+          <span class="day-label-wrap">
+            <DayDetail
+                v-if="/^zh/i.test($i18n.locale)"
+                :lunar-data="getLunarData(day.year, day.month, day.day)"
+                class="lunar-label"
+            />
+            <span class="day-label">{{ day.day }}</span>
+          </span>
         </div>
       </template>
     </Calendar>
@@ -78,6 +89,7 @@
 <script>
 import Vue from 'vue'
 import Calendar from 'v-calendar/lib/components/calendar.umd'
+import solarLunar from "solarlunar"
 import store from "@/store"
 
 import ContextMenuCommon from "@/components/ContextMenuCommon"
@@ -86,6 +98,7 @@ import DialogChooseIcon from "@/components/DialogChooseIcon"
 import DialogChooseColor from "@/components/DialogChooseColor"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
 import IconShow from "@/components/IconShow"
+import DayDetail from "@/components/DayDetail"
 
 import {handleCommonDelete, handleCommonRename} from "@/views/Home/common-action"
 import {moveItems} from "@/utils/kdbx-utils"
@@ -101,7 +114,8 @@ export default {
     ContextMenuCommon,
     DialogPreviewEntry,
     DialogChooseGroup,
-    IconShow
+    IconShow,
+    DayDetail
   },
   props: {
     currentGroupUuid: {
@@ -224,6 +238,9 @@ export default {
     getEntry(attr) {
       return this.calendarAttributesRaw[attr.key]
     },
+    getLunarData(year, month, day) {
+      return solarLunar.solar2lunar(year, month, day)
+    },
     handleAttrContextMenu(attr) {
       this.currentAttr = attr
       this.currentEntry = this.getEntry(attr)
@@ -310,29 +327,66 @@ export default {
       --day-height: 80px;
     }
 
-    & .vc-header {
+    &.vc-is-dark {
+      background $dark
+
+      .vc-weekday {
+        color $grey-4
+      }
+    }
+
+    .vc-header {
       padding: 10px 0;
     }
 
-    & .vc-weeks {
+    .vc-weeks {
       padding: 0;
     }
 
-    & .vc-weekday {
+    .vc-weekday {
       border-bottom: var(--day-border);
       border-top: var(--day-border);
       padding: 5px 0;
     }
 
-    & .vc-day {
-
+    .vc-day {
+      position: relative;
       text-align: left;
       height: var(--day-height);
       min-width: var(--day-width);
 
       &.weekday-1,
       &.weekday-7 {
-        background-color: rgba(224, 67, 54, 0.08);
+        color $red
+      }
+
+      &.is-today {
+        &:before {
+          position: absolute;
+          display: block;
+          content: "今";
+          left: 0;
+          bottom: 0;
+          color: white;
+          width: 18px;
+          height: 18px;
+          font-size: 12px;
+          transform: scale(0.8);
+          transform-origin: right top;
+          background: $red;
+          border-radius: 50%;
+          text-align: center;
+        }
+
+        &:after {
+          content: " ";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: $red;
+        }
       }
 
       &:not(.on-bottom) {
@@ -355,7 +409,7 @@ export default {
       margin-left: 0;
     }
 
-    & .vc-day-dots {
+    .vc-day-dots {
       margin-bottom: 5px;
     }
 
@@ -371,28 +425,42 @@ export default {
       overflow: hidden;
       z-index: 10;
 
-      .day-label {
-        font-size: 12px
+      .day-label-wrap {
+        font-size: 14px
         padding 2px 4px
+        text-align: right;
+
+        .lunar-label {
+          font-size: 12px
+          margin-right: 4px
+          opacity .8
+        }
+
+        .day-label {
+          font-weight: bold;
+        }
       }
 
       .entry-list {
         overflow: auto;
         flex-grow: 1
-        padding 2px 4px
 
         .q-scrollarea {
           height: 100%;
           width: 100%;
+
+          .scroll > .absolute {
+            padding 4px 4px
+          }
         }
       }
 
       .entry-item {
         font-size: 12px
-        border-radius 3px
-        padding 4px
+        padding 2px
         line-height: 1.2
         background transparent
+        box-shadow 0 0 1px 1px rgba(134, 134, 134, .5)
 
         &:hover {
           opacity 0.8

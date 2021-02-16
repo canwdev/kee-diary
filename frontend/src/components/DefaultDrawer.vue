@@ -4,6 +4,9 @@
       bordered
       overlay
       behavior="mobile"
+      no-swipe-open
+      no-swipe-close
+      no-swipe-backdrop
   >
     <q-scroll-area class="fit">
       <q-list>

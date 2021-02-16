@@ -33,7 +33,7 @@
         <div class="form-row">
           <div class="row-title q-mb-xs">{{ $t('home.title') }}:</div>
           <div class="row-content">
-            <q-input dense outlined v-model="form.title"/>
+            <q-input dense outlined v-model="form.title" autofocus/>
           </div>
         </div>
 
