@@ -3,7 +3,7 @@
     <div class="text-center">
       <h5 class="text-primary">{{ $t('pages.about') }}</h5>
 
-      <q-card class="text-white q-pa-md q-mb-lg bg-wood">
+      <q-card class="text-white bg-primary q-pa-md q-mb-lg">
         <div class="text-bold">{{ message || $t('about.info') }}</div>
         <div class="q-mt-md">
           <VersionText/>

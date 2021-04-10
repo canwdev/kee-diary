@@ -29,7 +29,7 @@
     <div class="column q-pa-lg">
       <div class="row">
         <q-card class="shadow-10" style="width:400px;">
-          <q-card-section class="bg-primary bg-wood text-center">
+          <q-card-section class="bg-primary text-center">
             <q-btn
                 @click="isWelcome = true"
                 v-show="!isWelcome"

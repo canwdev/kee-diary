@@ -256,7 +256,8 @@
 }
 
 .markdown-body strong {
-  font-weight: 600;
+  font-weight: bold;
+  color: #f44336;
 }
 
 .markdown-body hr {

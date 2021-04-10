@@ -124,13 +124,11 @@ export default {
   }
 
   >>> .q-tree__node--selected {
-    background $primary
+    box-shadow 0 0 1px 1px $primary inset
   }
 
   .text-primary {
     .tree-name {
-      color #fff
-      font-weight: bold;
     }
   }
 }
