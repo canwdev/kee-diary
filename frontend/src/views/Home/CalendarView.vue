@@ -22,9 +22,9 @@
                     :key="attr.key"
                     class="entry-item cursor-pointer overflow-hidden"
                     :style="{
-                    background: attr.customData.bgColor,
-                    color: attr.customData.fgColor
-                  }"
+                      background: attr.customData.bgColor,
+                      color: attr.customData.fgColor
+                    }"
                     @click="handlePreview(attr)"
                     @contextmenu="handleAttrContextMenu(attr)"
                 >
@@ -357,7 +357,12 @@ export default {
 
       &.weekday-1,
       &.weekday-7 {
-        color $red
+        .lunar-label {
+          color $red
+        }
+        .day-label {
+          color $red
+        }
       }
 
       &.is-today {
@@ -459,7 +464,6 @@ export default {
         font-size: 12px
         padding 2px
         line-height: 1.2
-        background transparent
         box-shadow 0 0 1px 1px rgba(134, 134, 134, .5)
 
         &:hover {

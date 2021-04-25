@@ -27,7 +27,7 @@
               <q-btn
                   @click="isDialogChooseGroupVisible = true"
                   outline
-                  style="width: 100%;"
+                  class="list-btn"
               >
                 <IconShow
                     :item="{icon: groupInfo.iconIndex}"
@@ -72,25 +72,41 @@
 
       <q-separator/>
 
-
-      <q-card-actions class="q-pa-md">
-        <template v-if="!searchResults.length">
-          无搜索结果
-        </template>
-        <div v-else>
-          <div
-              v-for="item in searchResults"
-              :key="item.uuid.id"
-          >{{ item.fields.Title }}
-          </div>
-        </div>
-      </q-card-actions>
+      <div v-if="!searchResults.length" class="text-center q-pa-md">
+        无搜索结果
+      </div>
+      <div v-else class="result-list q-pa-md">
+        <q-btn
+            flat
+            v-for="item in searchResults"
+            :key="item.uuid.id"
+            class="list-btn"
+            @click="handlePreview(item)"
+            :style="{
+                      background: item.bgColor,
+                      color: item.fgColor
+                    }"
+        >
+          <IconShow
+              :item="{iconIndex: item.icon}"
+              size="16px"
+              :icon-scale="1"
+          />
+          <span class="entry-title q-ml-sm">{{ item.fields.Title }}</span>
+        </q-btn>
+      </div>
 
       <q-inner-loading :showing="isLoading">
         <q-spinner-gears size="50px" color="primary"/>
       </q-inner-loading>
 
     </q-card>
+
+    <DialogPreviewEntry
+        :visible.sync="isDialogPreviewVisible"
+        :entry="currentEntry"
+    />
+
     <DialogChooseGroup
         :visible.sync="isDialogChooseGroupVisible"
         @onChoose="getGroupInfo"
@@ -101,7 +117,7 @@
 
 <script>
 import store from "@/store"
-
+import DialogPreviewEntry from "@/components/DialogPreviewEntry"
 import DialogChooseGroup from "@/components/DialogChooseGroup"
 import IconShow from "@/components/IconShow"
 import {searchEntries} from "@/utils/kdbx-utils"
@@ -110,6 +126,7 @@ export default {
   name: "DialogSearch",
   components: {
     DialogChooseGroup,
+    DialogPreviewEntry,
     IconShow
   },
   props: {
@@ -126,10 +143,12 @@ export default {
         groupUuid: null
       },
       isDialogChooseGroupVisible: false,
+      isDialogPreviewVisible: false,
       searchText: '',
       isDeep: true,
       searchResults: [],
       isLoading: false,
+      currentEntry: null
     }
   },
   computed: {
@@ -169,24 +188,29 @@ export default {
       if (!this.searchText || this.isLoading) {
         return
       }
-        this.isLoading = true
       try {
+        this.isLoading = true
         this.searchResults = searchEntries(
             this.database,
             this.groupInfo.groupUuid,
             this.searchText,
             this.isDeep
         )
-        console.log('this.searchResults', this.searchResults)
+        // console.log('this.searchResults', this.searchResults)
       } catch (e) {
         console.error(e)
+      } finally {
+        this.isLoading = false
       }
-      this.isLoading = false
     },
     clearSearch() {
       this.searchText = ''
       this.searchResults = []
-    }
+    },
+    handlePreview(entry) {
+      this.currentEntry = entry
+      this.isDialogPreviewVisible = true
+    },
   }
 }
 </script>
@@ -194,5 +218,18 @@ export default {
 <style lang="stylus" scoped>
 .flex-1 {
   flex 1
+}
+
+.list-btn {
+  width: 100%
+
+  >>> .q-btn__content {
+    justify-content flex-start !important
+  }
+}
+
+.result-list {
+  max-height 300px
+  overflow: auto;
 }
 </style>

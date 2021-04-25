@@ -13,7 +13,7 @@
                 class="cursor-pointer"
                 :item="entry"
             />
-            <span class="q-ml-md">{{ entry.fields.Title }}</span>
+            <span class="q-ml-md" @dblclick="logEntry">{{ entry.fields.Title }}</span>
             <q-space/>
             <q-btn icon="close" flat round dense v-close-popup/>
           </div>
@@ -94,6 +94,9 @@ export default {
   methods: {
     transformHTML(text) {
       return marked(text)
+    },
+    logEntry() {
+      console.log(this.entry)
     }
   }
 }
