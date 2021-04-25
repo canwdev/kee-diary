@@ -23,7 +23,9 @@
       </q-toolbar-title>
 
       <template v-if="isUnlocked">
-        <q-btn flat round icon="search">
+        <q-btn
+            @click="isDialogSearchVisible = true"
+            flat round icon="search">
           <q-tooltip>
             {{ $t('header.search') }}
           </q-tooltip>
@@ -42,19 +44,32 @@
       </template>
 
     </q-toolbar>
+
+    <DialogSearch
+      :visible.sync="isDialogSearchVisible"
+    />
   </q-header>
 </template>
 
 <script>
 import store from "@/store"
 import {closeKdbx, saveKdbx} from "../utils/kdbx-utils"
+import DialogSearch from "./DialogSearch"
 
 export default {
   name: "DefaultHeader",
+  components: {
+    DialogSearch
+  },
   props: {
     title: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      isDialogSearchVisible: false
     }
   },
   computed: {

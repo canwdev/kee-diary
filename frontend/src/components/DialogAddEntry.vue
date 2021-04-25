@@ -5,95 +5,109 @@
       transition-hide="fade"
   >
     <q-card style="width: 320px">
-      <q-card-section>
-        <div class="text-h6 row items-center">
-          <q-icon name="add"/> <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
-        </div>
-      </q-card-section>
-
-      <q-separator/>
-
-      <q-card-section class="form-wrap q-pa-md q-gutter-md">
-        <div class="form-row">
-          <div class="row-title q-mb-xs">{{ $t('choose-group') }}:</div>
-          <div class="row-content">
-            <q-btn
-                @click="isDialogChooseGroupVisible = true"
-                outline
-                style="width: 100%;"
-            >
-              <IconShow
-                  :item="{icon: groupInfo.iconIndex}"
-              />
-              {{ groupInfo.name }}
-            </q-btn>
+      <form @submit.prevent="handleSubmit">
+        <q-card-section>
+          <div class="text-h6 row items-center">
+            <div class="text-h6 row items-center">
+              <q-icon name="add"/>
+              <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
+            </div>
+            <q-space/>
+            <q-btn icon="close" flat round dense v-close-popup/>
           </div>
-        </div>
+        </q-card-section>
 
-        <div class="form-row">
-          <div class="row-title q-mb-xs">{{ $t('home.title') }}:</div>
-          <div class="row-content">
-            <q-input dense outlined v-model="form.title" autofocus/>
-          </div>
-        </div>
+        <q-separator/>
 
-        <div class="flex justify-between">
-          <div class="form-row text-center">
-            <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
+        <q-card-section class="form-wrap q-pa-md q-gutter-md">
+          <div class="form-row">
+            <div class="row-title q-mb-xs">{{ $t('choose-group') }}:</div>
             <div class="row-content">
               <q-btn
-                  flat
-                  round
-                  @click="isDialogChooseIconVisible = true"
+                  @click="isDialogChooseGroupVisible = true"
+                  outline
+                  style="width: 100%;"
               >
                 <IconShow
-                    size="45px"
-                    :item="form"
+                    :item="{icon: groupInfo.iconIndex}"
                 />
+                {{ groupInfo.name }}
               </q-btn>
             </div>
           </div>
 
-          <div class="form-row text-center">
-            <div class="row-title q-mb-xs">{{ $t('foreground') + ' ' + $t('color') }}</div>
+          <div class="form-row">
+            <div class="row-title q-mb-xs">{{ $t('home.title') }}:</div>
             <div class="row-content">
-              <ColorItem
-                  @click.native="showColorChooser(true)"
-                  :color="form.fgColor"
+              <q-input
+                  required
+                  dense
+                  outlined
+                  v-model="form.title"
+                  autofocus
               />
             </div>
           </div>
 
-          <div class="form-row text-center">
-            <div class="row-title q-mb-xs">{{ $t('background') + ' ' + $t('color') }}</div>
-            <div class="row-content">
-              <ColorItem
-                  @click.native="showColorChooser(false)"
-                  :color="form.bgColor"
-              />
+          <div class="flex justify-between">
+            <div class="form-row text-center">
+              <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
+              <div class="row-content">
+                <q-btn
+                    flat
+                    round
+                    @click="isDialogChooseIconVisible = true"
+                >
+                  <IconShow
+                      size="45px"
+                      :item="form"
+                  />
+                </q-btn>
+              </div>
+            </div>
+
+            <div class="form-row text-center">
+              <div class="row-title q-mb-xs">{{ $t('foreground') + ' ' + $t('color') }}</div>
+              <div class="row-content">
+                <ColorItem
+                    @click.native="showColorChooser(true)"
+                    :color="form.fgColor"
+                />
+              </div>
+            </div>
+
+            <div class="form-row text-center">
+              <div class="row-title q-mb-xs">{{ $t('background') + ' ' + $t('color') }}</div>
+              <div class="row-content">
+                <ColorItem
+                    @click.native="showColorChooser(false)"
+                    :color="form.bgColor"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-      </q-card-section>
+        </q-card-section>
 
-      <q-separator/>
+        <q-separator/>
 
-      <q-card-actions align="right">
-        <q-btn
-            flat
-            :label="$t('cancel')"
-            color="primary"
-            v-close-popup
-        />
-        <q-btn
-            flat
-            :label="$t('confirm')"
-            @click="$emit('confirm', form)"
-            color="primary"
-            v-close-popup
-        />
-      </q-card-actions>
+        <q-card-actions align="right">
+          <q-btn
+              flat
+              :label="$t('cancel')"
+              color="primary"
+              v-close-popup
+          />
+          <q-btn
+              :disable="!form.title"
+              flat
+              :label="$t('confirm')"
+              type="submit"
+              color="primary"
+              v-close-popup
+          />
+        </q-card-actions>
+      </form>
     </q-card>
 
     <DialogChooseIcon
@@ -178,6 +192,7 @@ export default {
     mVisible: {
       handler(nv) {
         if (nv) {
+          this.form.title = new Date().toLocaleString()
           this.getGroupInfo(this.currentGroupUuid)
         }
       },
@@ -206,6 +221,12 @@ export default {
     showColorChooser(isFgColor) {
       this.$refs.colorChooser.isFgColor = isFgColor
       this.isDialogChooseColorVisible = true
+    },
+    handleSubmit() {
+      if (!this.form.title) {
+        return
+      }
+      this.$emit('confirm', this.form)
     }
   }
 }

@@ -332,3 +332,50 @@ export function moveItems(db, items, groupUuid) {
     return false
   }
 }
+
+/**
+ * 获取群组下的所有条目
+ * @param group 群组实例
+ * @param isDeep 是否遍历子群组
+ * @returns {[]}
+ */
+export function getEntriesFromGroup(group, isDeep = false) {
+  const result = []
+  const walkGroups = (groups) => {
+    if (!groups || groups.length === 0) return null
+
+    groups.forEach(group => {
+      group.entries.forEach(entry => {
+        result.push(entry)
+      })
+      walkGroups(group.groups)
+    })
+
+  }
+
+  group.entries.forEach(entry => {
+    result.push(entry)
+  })
+
+  if (isDeep) {
+    walkGroups(group.groups)
+  }
+
+  return result
+}
+
+/**
+ *
+ * @param db 数据库实例
+ * @param groupUuid 群组 Uuid 对象
+ * @param searchText 搜索文本
+ * @param isDeep 是否搜索子群组
+ */
+export function searchEntries(db, groupUuid, searchText, isDeep = false) {
+  const group = db.getGroup(groupUuid)
+
+  return getEntriesFromGroup(group, isDeep).filter(entry => {
+    return entry.fields.Title.indexOf(searchText) > -1 ||
+      entry.fields.Notes.indexOf(searchText) > -1;
+  })
+}
