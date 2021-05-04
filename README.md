@@ -10,18 +10,25 @@ The following techniques are used:
 - Vue / Quasar UI
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
 
+## Screenshots
+
+![img](./screenshots/001.png)
+![img](./screenshots/002.png)
+![img](./screenshots/003.png)
+![img](./screenshots/004.png)
+![img](./screenshots/005.png)
+![img](./screenshots/006.png)
+![img](./screenshots/007.png)
+![img](./screenshots/008.png)
 ## Features
 
-Under development...
-
-- [ ] Create database
 - [x] Open a database (`password`/`password+key`)
 - [x] Save database/close database
-- [ ] Full database search
+- [x] Full database search
 - [x] Dark mode
 - [x] Welcome page
 - [x] About page
-- [x] i18n support
+- [x] Multiple language support
 - [x] Check Internet connection (Offline for better security)
 - Groups
     - [x] Create new entry
@@ -72,7 +79,6 @@ yarn run build:electron
 ## Remarks
 
 - `kdbxweb` It is a function library for operating the kdbx database. Due to domestic network problems, [copy version](https://gitee.com/canwdev/kdbxweb) is used，there are no other changes.
-- last KeeDiary version: [kee-diary-react-electron](https://github.com/canwdev/kee-diary-react-electron)
 
 
 
