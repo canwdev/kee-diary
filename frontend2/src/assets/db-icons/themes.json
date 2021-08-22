@@ -1,0 +1,15 @@
+{
+ "baseDir": "themes",
+ "themes": [
+  {
+   "name": "KeepassXC",
+   "source": "https://github.com/keepassxreboot/keepassxc/tree/develop/share/icons/database",
+   "dir": "icons"
+  },
+  {
+   "name": "Keepass",
+   "dir": "icons-original",
+   "isPixel": true
+  }
+ ]
+}

@@ -1,15 +1,14 @@
 <template>
   <div class="home">
-    home
+    <TkButton>123</TkButton>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script>
 
-export default defineComponent({
+export default {
   name: 'Home',
   components: {
-  },
-});
+  }
+}
 </script>

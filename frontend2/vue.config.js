@@ -1,13 +1,7 @@
-// vue.config.js
+const path = require('path')
+
 module.exports = {
   publicPath: './',
   outputDir: '../dist-frontend',
   productionSourceMap: false,
-  css: {
-    loaderOptions: {
-      scss: {
-        prependData: `@import "~@/style/variables.sass";`
-      }
-    }
-  }
 }
