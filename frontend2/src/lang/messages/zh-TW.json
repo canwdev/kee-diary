@@ -1,0 +1,88 @@
+{
+  "about": {
+    "btnHome": "返回首頁",
+    "btnLogDatabase": "輸出數據庫到控制台",
+    "info": "可信任的日記編輯器"
+  },
+  "and-exit": "然後退出",
+  "background": "背景",
+  "cancel": "取消",
+  "choose": "選擇",
+  "choose-group": "選擇群組",
+  "choose-icon": "選擇圖標",
+  "close": "關閉",
+  "color": "顏色",
+  "confirm": "確認",
+  "delete": "刪除",
+  "detail": {
+    "changeFontFamily": "設置字體",
+    "confirm-not-empty": "文本區域不為空，是否要覆蓋它？",
+    "edit-with-external": "用外部編輯器協作",
+    "export-to-text-file": "導出文本文件",
+    "iswysiwyg": "啟用可視化編輯",
+    "load-outer-text-file": "導入文本文件"
+  },
+  "don-t-save": "不保存",
+  "drawer": {
+    "calendarView": "日曆視圖",
+    "darkMode": "黑暗模式",
+    "listView": "列表視圖",
+    "navigation": "導航",
+    "settings": "設置"
+  },
+  "edit": "編輯",
+  "exit": "退出",
+  "export-file": "導出文件",
+  "foreground": "前景",
+  "header": {
+    "close": "關閉數據庫",
+    "save": "保存",
+    "search": "搜索",
+    "unlocked": "(已解鎖)"
+  },
+  "home": {
+    "add-entry": "添加條目",
+    "created": "創建時間",
+    "modified": "修改時間",
+    "title": "標題"
+  },
+  "insert": "插入",
+  "kdbx": {
+    "database-not-exist": "數據庫實例不存在",
+    "do-not-move-to-the-group-itself": "請勿移動群組到它本身或子群組，否則該群組將消失。\n此 bug 暫時無法解決。",
+    "not-allowed-move-group-itself": "不允許移動到群組本身",
+    "saved-successfully": "保存成功",
+    "there-are-unsaved": "有未保存的更改，您要保存嗎？"
+  },
+  "login": {
+    "clear": "清空歷史記錄",
+    "keyFilePath": "密鑰文件路徑（可選）",
+    "noRecent": "沒有最近打開的條目",
+    "openDatabase": "打開數據庫",
+    "password": "密碼",
+    "saveHistory": "保存歷史記錄",
+    "unlock": "解 鎖",
+    "welcome": "歡迎來到 KeeDiary"
+  },
+  "menu": {
+    "are-you-sure": "你確定要",
+    "change-color": "修改顏色",
+    "change-icon": "修改圖標",
+    "create-entry": "創建條目",
+    "create-group": "創建群組",
+    "empty-recycle-bin": "清空回收站",
+    "log-to-console": "輸出到控制台",
+    "move-to-recycle-bin": "移到回收站"
+  },
+  "move": "移動",
+  "overwrite": "覆蓋",
+  "pages": {
+    "about": "關於",
+    "home": "首頁",
+    "login": "登錄"
+  },
+  "preview": "預覽",
+  "rename": "重命名",
+  "save": "保存",
+  "tip": "提示"
+}
