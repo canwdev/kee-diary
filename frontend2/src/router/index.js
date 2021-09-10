@@ -1,14 +1,55 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '@/views/Login.vue'
+import Default from '@/layout/Default'
+import store from '@/store'
+
+const validateUnlock = (to, from, next) => {
+  if (store.getters.isUnlocked) {
+    next()
+  } else {
+    router.replace({name: 'Login'})
+  }
+}
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Root',
+    component: Default,
+    redirect: {
+      name: 'Login'
+    },
+    children: [
+      {
+        path: 'login',
+        name: 'Login',
+        component: Login
+      },
+      {
+        path: 'home',
+        name: 'Home',
+        beforeEnter: validateUnlock,
+        component: () => import('@/views/Home/index.vue')
+      },
+      {
+        path: 'detail',
+        name: 'Detail',
+        beforeEnter: validateUnlock,
+        component: () => import('@/views/Detail.vue')
+      },
+      {
+        path: '/about',
+        name: 'About',
+        component: () => import('@/views/About.vue')
+      }
+    ]
+  },
+  {
+    path: '*',
+    component: () => import('@/views/404.vue')
   }
 ]
 
