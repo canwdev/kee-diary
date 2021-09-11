@@ -1,15 +1,18 @@
 <template>
-  <div>
-    <TkLoading :visible="isGlobalLoading">
-    </TkLoading>
+  <div class="default-layout">
+    <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
     <DefaultHeader
-        :title="pkg.appName"
+        title="KeeDiary"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
         @onBackClick="handleBack"
     />
-    <router-view/>
+
     <DefaultDrawer v-model="leftDrawerOpen"/>
+
+    <div class="main-content">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -30,9 +33,6 @@ export default {
     }
   },
   computed: {
-    pkg() {
-      return this.$store.getters.pkg
-    },
     isGlobalLoading() {
       return this.$store.getters.isGlobalLoading
     }
@@ -52,5 +52,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.default-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .main-content {
+    flex: 1;
+  }
+}
+</style>
 
 

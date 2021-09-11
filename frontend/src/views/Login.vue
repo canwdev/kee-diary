@@ -1,157 +1,154 @@
 <template>
   <div
-      class="row justify-center items-center"
+      class="full-height row justify-center items-center"
   >
-    <TkModalDialog v-show="isLoading">
-      <TkLoading class="_loading" :visible="true">
-      </TkLoading>
-    </TkModalDialog>
-
+    <TkLoading class="_loading" :visible="isLoading" fixed/>
 
     <TkModalDialog v-show="isShowAlertDialog">
       <TkCard>
-        <TkCard>
-          <h6>{{ alertDialog.title || 'Error' }}</h6>
-        </TkCard>
+        <h2>{{ alertDialog.title || 'Error' }}</h2>
 
-        <TkCard>
-          {{ alertDialog.content }}
-        </TkCard>
+        <p>{{ alertDialog.content }}</p>
 
-        <TkCard>
+        <div>
           <TkButton @click="isShowAlertDialog = false" label="OK"/>
-        </TkCard>
+        </div>
       </TkCard>
     </TkModalDialog>
 
-    <div>
-      <TkCard style="width:400px;">
-        <TkCard class="bg-primary text-center">
-          <TkButton
-              v-show="!isWelcome"
-              class="absolute-top-left"
-              @click="isWelcome = true"
-          >Back</TkButton>
+    <TkCard solid style="width:400px;">
+      <TkCard class=" text-center">
+        <TkButton
+            v-show="!isWelcome"
+            class="absolute-top-left"
+            @click="isWelcome = true"
+        >Back
+        </TkButton>
 
-          <h4>{{
-              isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-            }}</h4>
+        <h4>{{
+            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+          }}</h4>
+      </TkCard>
+
+      <div v-show="isWelcome">
+        <TkCard>
+          <TkButton
+              unelevated
+              size="md"
+              color="secondary"
+              class="full-width "
+              :label="$t('login.openDatabase')"
+              @click="chooseNewKdbx"
+          />
         </TkCard>
 
-        <div v-show="isWelcome">
-          <TkCard>
+        <TkCard>
+          <div>
+            <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
             <TkButton
-                unelevated
-                size="md"
-                color="secondary"
-                class="full-width text-white"
-                :label="$t('login.openDatabase')"
-                @click="chooseNewKdbx"
+                v-show="recentList.length > 0"
+                dense
+                flat
+                :label="$t('login.clear')"
+                @click="handleClearRecent"
             />
-          </TkCard>
-
-          <TkCard>
-            <div>
-              <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
-              <TkButton
-                  v-show="recentList.length > 0"
-                  dense
-                  flat
-                  :label="$t('login.clear')"
-                  @click="handleClearRecent"
-              />
-            </div>
-            <ul>
-              <li
-                  v-for="(item, index) in recentList"
-                  :key="index"
-                  @click="openRecentItem(item)"
-              >
+          </div>
+          <ul>
+            <li
+                v-for="(item, index) in recentList"
+                :key="index"
+                @click="openRecentItem(item)"
+                class="cursor-pointer"
+            >
 
                 <span class="text-overflow" :title="item.dbPath">
-                      {{ item.dbPath }}
-                    </span>
-                <TkButton
-                    dense
-                    flat
-                    icon="close"
-                    color="secondary"
-                    @click.stop="removeRecentItem(item)"
-                />
-              </li>
+                {{ item.dbPath }}
+                </span>
+              <TkButton
+                  label="X"
+                  @click.stop="removeRecentItem(item)"
+              />
+            </li>
 
-              <li v-if="recentList.length === 0">{{ $t('login.noRecent') }}</li>
-            </ul>
-          </TkCard>
-        </div>
+            <li v-if="recentList.length === 0">{{ $t('login.noRecent') }}</li>
+          </ul>
+        </TkCard>
+      </div>
 
-        <div v-show="!isWelcome">
-          <form
-              @submit="handleUnlock"
-          >
-            <TkCard>
+      <div v-show="!isWelcome">
+        <form
+            @submit="handleUnlock"
+        >
+          <TkCard>
 
+            <TkInput
+                v-model="form.dbPath"
+                readonly
+                type="text"
+                placeholder="Database file path"
+            >
+            </TkInput>
+            <TkInput
+                v-model="form.password"
+                type="password"
+                :placeholder="$t('login.password')"
+                autofocus
+            >
+            </TkInput>
+            <div>
               <TkInput
-                  v-model="form.dbPath"
+                  v-model="form.keyPath"
+                  clearable
                   readonly
                   type="text"
-                  placeholder="Database file path"
+                  :placeholder="$t('login.keyFilePath')"
               >
               </TkInput>
-              <TkInput
-                  v-model="form.password"
-                  type="password"
-                  :placeholder="$t('login.password')"
-                  autofocus
-              >
-              </TkInput>
-              <div>
-                <TkInput
-                    v-model="form.keyPath"
-                    clearable
-                    type="text"
-                    :placeholder="$t('login.keyFilePath')"
-                >
-                </TkInput>
-                <TkButton
-                    @click="handleChooseFile('keyPath', [
+              <TkButton
+                  type="button"
+                  @click="handleChooseFile('keyPath', [
                         {name: 'All', extensions: ['*']},
                         {name: '*.key', extensions: ['key']},
                       ])"
-                >Choose</TkButton>
-              </div>
-            </TkCard>
+              >Choose
+              </TkButton>
+            </div>
+          </TkCard>
 
-            <TkCard>
-              <TkButton
-                  type="submit"
-                  unelevated
-                  size="md"
-                  color="secondary"
-                  class="full-width text-white"
-                  :label="$t('login.unlock')"
-              />
-            </TkCard>
-          </form>
-        </div>
+          <TkCard>
+            <TkButton
+                type="submit"
+                unelevated
+                size="md"
+                color="secondary"
+                class="full-width "
+                :label="$t('login.unlock')"
+            />
+          </TkCard>
+        </form>
+      </div>
 
-        <div class="text-center">
-          <p>
-            <VersionText/>
-          </p>
-        </div>
-      </TkCard>
-    </div>
+      <div class="text-center">
+        <p>
+          <VersionText/>
+        </p>
+      </div>
+    </TkCard>
   </div>
 </template>
 
 <script>
-import {decryptKdbx, openKdbx} from '@/utils/kdbx-utils'
+
 import LocalStorageSettings from '@/utils/settings'
 import {isProd} from '@/utils/is'
 import {notifyError} from '@/utils'
-import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/utils/enum'
+import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/enum'
 import VersionText from '@/components/VersionText'
+import {
+  openDatabase,
+  checkIsOpen
+} from '@/api'
+import store from '@/store'
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
@@ -222,7 +219,7 @@ export default {
      **/
     async handleChooseFile(name, filters) {
       this.$store.commit('setIsGlobalLoading')
-      const results = await window.electronAPI.openFileChooser({filters})
+      const results = await window.electronAPI.showFileChooser({filters})
       this.$store.commit('setIsGlobalLoading', false)
       // console.log(results)
       if (results && results[0]) {
@@ -263,7 +260,7 @@ export default {
 
       try {
         this.isLoading = true
-        const db = await decryptKdbx(dbPath, password, keyPath)
+        await openDatabase({dbPath, password, keyPath})
 
         // save recent settings
         if (this.isSaveHistory && !!this.form.dbPath) {
@@ -280,7 +277,7 @@ export default {
           this.saveSettings()
         }
 
-        openKdbx(db, dbPath)
+        store.commit('setIsUnlocked', true)
         await this.$router.replace({
           name: 'Home'
         })

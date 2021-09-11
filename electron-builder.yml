@@ -1,5 +1,5 @@
 productName: "KeeDiary"
-appId: "com.canwdev.keediary"
+appId: "com.canwdev.keediary3"
 
 files:
   - ./dist-frontend/**/*

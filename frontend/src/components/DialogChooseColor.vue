@@ -8,18 +8,15 @@
           <span class="q-ml-md">{{ $t('choose') }} {{
             isFgColor ? $t('foreground') : $t('background')
           }} {{ $t('color') }}</span>
-          <q-space/>
-          <q-toggle
+
+          <TkSwitch
             v-model="isFgColor"
-            :color="toggleColor"
-            keep-color
-            left-label
           >
-          </q-toggle>
+          </TkSwitch>
         </div>
       </TkCard>
 
-      <q-separator/>
+      <hr/>
 
       <TkCard style="max-height: 70vh" class="scroll">
         <TkCard flat class="q-gutter-md">
@@ -34,10 +31,10 @@
         </TkCard>
       </TkCard>
 
-      <q-separator/>
+      <hr/>
 
       <TkCard>
-        <TkButton v-close-popup flat :label="$t('cancel')" color="primary"/>
+        <TkButton @click="mVisible = false" flat :label="$t('cancel')" color="primary"/>
         <TkButton
           :disabled="selectedColor === color"
           flat
@@ -51,7 +48,7 @@
 </template>
 
 <script>
-import {palette} from '@/utils/enum'
+import {palette} from '@/enum'
 import ColorItem from '@/components/ColorItem'
 
 function getTypeColor(isFgColor, item) {

@@ -1,6 +1,12 @@
+html, body {
+  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  height: 100%;
+}
+
 body {
   margin: 0;
 }
+
 
 .single-line-hide {
   overflow: hidden;
@@ -8,11 +14,6 @@ body {
   white-space: nowrap;
 }
 
-.bg-wood {
-  background: url("~@/assets/images/jon-moore-5fIoyoKlz7A-unsplash.jpg") no-repeat center / cover !important;
-}
-.bg-wall {
-}
 
 ::-webkit-scrollbar {
   width: 10px;

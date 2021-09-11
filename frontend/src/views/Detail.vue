@@ -35,14 +35,11 @@
 
           <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
             <div class="row q-gutter-x-md">
-              <q-toggle
+              <TkSwitch
                   v-model="isEditWYSIWYG"
-                  color="secondary"
-                  checked-icon="note"
-                  unchecked-icon="code"
               >
-                <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.iswysiwyg') }}</q-tooltip>
-              </q-toggle>
+                {{ $t('detail.iswysiwyg') }}
+              </TkSwitch>
               <q-select
                   v-model="editorTheme"
                   dense
@@ -91,7 +88,7 @@
               </TkButton-group>
             </div>
 
-            <q-space/>
+
             <div v-if="isEntryOpen" class="date-display text-right">
               <span>{{ $t('home.created') }}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
               <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="lastModTime"/></span>
@@ -152,7 +149,7 @@ import DialogChooseIcon from '@/components/DialogChooseIcon'
 import IconShow from '@/components/IconShow'
 import DialogChooseColor from '@/components/DialogChooseColor'
 
-import {textFilters as filters} from '../utils/enum'
+import {textFilters as filters} from '@/enum'
 
 export default {
   name: 'Detail',
@@ -380,7 +377,7 @@ export default {
       this.$store.commit('setIsGlobalLoading')
 
       try {
-        const paths = await window.electronAPI.openFileChooser({
+        const paths = await window.electronAPI.showFileChooser({
           sizeLimit: 1024000,
           filters
         })
@@ -432,7 +429,7 @@ export default {
     handleExport() {
       this.$store.commit('setIsGlobalLoading')
 
-      window.electronAPI.saveAsFile(this.editor.getValue(), {
+      window.electronAPI.showSaveDialog(this.editor.getValue(), {
         title: this.$t('export-file'),
         defaultPath: this.editing.title + '.txt',
         filters

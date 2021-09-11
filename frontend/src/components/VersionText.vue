@@ -3,11 +3,12 @@
 </template>
 
 <script>
+const pkg = require('@/../../package.json')
 export default {
   name: 'VersionText',
-  computed: {
-    pkg() {
-      return this.$store.getters.pkg
+  data() {
+    return {
+      pkg
     }
   }
 }

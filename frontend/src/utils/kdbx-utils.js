@@ -8,40 +8,6 @@ import {formatDate} from '@/utils/index'
 
 import i18n from '@/lang/i18n'
 
-/**
- * 打开 KDBX 数据库
- * @param dbPath 数据库路径
- * @param password 密码
- * @param keyPath 密钥路径
- */
-export function decryptKdbx(dbPath, password, keyPath) {
-  return new Promise((resolve, reject) => {
-    try {
-      const electronAPI = window.electronAPI
-
-      const dbArrayBuffer = electronAPI.readFileSyncAsArrayBuffer(dbPath)
-
-      let keyFileArrayBuffer
-      if (keyPath) {
-        keyFileArrayBuffer = electronAPI.readFileSyncAsArrayBuffer(keyPath)
-      }
-
-      const credentials = new kdbxweb.Credentials(kdbxweb.ProtectedValue.fromString(password), keyFileArrayBuffer)
-
-      const res = kdbxweb.Kdbx.load(dbArrayBuffer, credentials)
-      return resolve(res)
-    } catch (e) {
-      return reject(e)
-    }
-  })
-}
-
-export function openKdbx(db, dbPath) {
-  store.commit('setDatabase', db)
-  store.commit('setDbPath', dbPath)
-  store.commit('setIsUnlocked', true)
-}
-
 export function doCloseKdbx() {
   store.commit('setCloseDatabase')
   router.replace({

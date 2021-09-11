@@ -12,19 +12,19 @@
               @click.native="isPreviewIconVisible = true"
             />
             <span class="q-ml-md" @dblclick="logEntry">{{ entry.fields.Title }}</span>
-            <q-space/>
-            <TkButton v-close-popup icon="close" flat round dense/>
+
+            <TkButton @click="mVisible = false" icon="close" flat round dense/>
           </div>
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
         <TkCard class="q-py-sm flex justify-between">
           <span>{{ $t('home.created') }}: <DateTimeEdit disabled :date="entry.times.creationTime"/></span>
           <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="entry.times.lastModTime"/></span>
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
         <TkCard style="max-height: 78vh" class="scroll">
           <TkCard

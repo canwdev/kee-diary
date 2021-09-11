@@ -7,17 +7,16 @@
         <TkCard>
           <div class="text-h6 row items-center">
             <div class="text-h6 row items-center">
-              <q-icon name="add"/>
               <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
             </div>
-            <q-space/>
-            <TkButton v-close-popup icon="close" flat round dense/>
+
+            <TkButton @click="mVisible = false" icon="close" flat round dense/>
           </div>
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
-        <TkCard class="form-wrap q-pa-md q-gutter-md">
+        <TkCard class="form-wrap  q-gutter-md">
           <div class="form-row">
             <div class="row-title q-mb-xs">{{ $t('choose-group') }}:</div>
             <div class="row-content">
@@ -87,17 +86,17 @@
 
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
         <TkCard align="right">
           <TkButton
-            v-close-popup
+              @click="mVisible = false"
             flat
             :label="$t('cancel')"
             color="primary"
           />
           <TkButton
-            v-close-popup
+              @click="mVisible = false"
             :disable="!form.title"
             flat
             :label="$t('confirm')"

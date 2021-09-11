@@ -12,7 +12,7 @@
         </div>
       </TkCard>
 
-      <q-separator/>
+      <hr/>
 
       <TkCard style="max-height: 70vh" class="scroll">
         <TkCard flat class="q-gutter-md">
@@ -36,10 +36,10 @@
         </TkCard>
       </TkCard>
 
-      <q-separator/>
+      <hr/>
 
       <TkCard>
-        <TkButton v-close-popup flat :label="$t('cancel')" color="primary"/>
+        <TkButton @click="mVisible = false" flat :label="$t('cancel')" color="primary"/>
         <TkButton
           :disabled="index === selectedIndex"
           flat

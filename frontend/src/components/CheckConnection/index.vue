@@ -48,7 +48,7 @@ export default {
 
       this.status.navigator = window.navigator.onLine ? ConnectType.ONLINE : ConnectType.OFFLINE
 
-      window.electronAPI.checkIsOnLine().then(flag => {
+      window.electronAPI.checkConnectivity().then(flag => {
         this.status.backend = flag ? ConnectType.ONLINE : ConnectType.OFFLINE
       })
 

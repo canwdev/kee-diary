@@ -31,7 +31,11 @@
     </div>
 
     <div class="menu-item">
-      <TkDropdown v-model="locate" :options="languages"/>
+      <TkDropdown
+          v-model="locate" :options="languages"
+          option-label="name"
+          option-value="locate"
+      />
     </div>
   </TkDrawer>
 </template>
@@ -81,7 +85,7 @@ export default {
   watch: {
     isDarkMode: {
       handler(nv) {
-        this.$q.dark.set(nv)
+        console.log('isDarkMode',nv)
       },
       immediate: true
     },

@@ -18,7 +18,7 @@ export function formatDateLite(d) {
 }
 
 export const notifySuccess = (message = 'Success', caption) => {
-  alert(caption)
+  alert(message)
   // Notify.create({
   //   message: message,
   //   caption: caption,
@@ -30,7 +30,7 @@ export const notifySuccess = (message = 'Success', caption) => {
 }
 
 export const notifyError = (message = 'Error', caption) => {
-  alert(caption)
+  alert(message)
   // Notify.create({
   //   message: message,
   //   caption: caption,

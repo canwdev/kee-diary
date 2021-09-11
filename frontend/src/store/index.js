@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import LocalStorageSettings from '@/utils/settings'
-import {KEE_DIARY_VUE_SETTINGS} from '@/utils/enum'
+import {KEE_DIARY_VUE_SETTINGS} from '@/enum'
 import languages from '@/lang/languages'
 
-const pkg = require('@/../../package.json')
+import {
+  checkIsOpen
+} from '@/api'
 
 Vue.use(Vuex)
 
@@ -28,11 +30,8 @@ export default new Vuex.Store({
       editorFontSize: 16, // px
       editorFontFamily: null,
     },
-    pkg,
-    database: null, // opened kdbx database instance
-    dbPath: null, // opened kdbx path
     isGlobalLoading: false, // 全局加载中
-    isUnlocked: false, // 数据库是否已解锁
+    isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
     currentGroupUuid: null, // 当前选中的群组 Uuid 对象
     currentEntry: null, // 当前打开的条目对象
@@ -47,9 +46,6 @@ export default new Vuex.Store({
     editorTheme: state => state.settings.editorTheme,
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
-    pkg: state => state.pkg,
-    database: state => state.database,
-    dbPath: state => state.dbPath,
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
@@ -96,12 +92,6 @@ export default new Vuex.Store({
       this.state.settings[key] = value
       settings.set(state.settings)
     },
-    setDatabase: (state, val) => {
-      state.database = val
-    },
-    setDbPath: (state, val) => {
-      state.dbPath = val
-    },
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
     },
@@ -132,14 +122,6 @@ export default new Vuex.Store({
     setCurrentEntryPagination: (state, val) => {
       // console.log('setCurrentEntryPagination', val)
       state.currentEntryPagination = val
-    },
-    setCloseDatabase(state) {
-      state.database = null
-      state.dbPath = null
-      state.currentGroupUuid = null
-      state.currentEntry = null
-      this.commit('setIsNotSave', false)
-      state.isUnlocked = false
     },
     setCalendarDate(state, val) {
       state.calendarDate = val

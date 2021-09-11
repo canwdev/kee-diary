@@ -4,7 +4,7 @@
         class="home-page"
     >
       <div class="nav-tree">
-        <div class="q-pa-md">
+        <div class="">
           <GroupTreeWrap
               :selected-group-uuid.sync="currentGroupUuid"
               @onCreateEntry="handleAddEntryFromGroup"
@@ -13,7 +13,7 @@
         <div style="height: 80px"></div>
       </div>
 
-      <div class="home-right">
+      <div v-if="false" class="home-right">
         <EntryList
             v-if="isListView"
             :current-group-uuid="currentGroupUuid"

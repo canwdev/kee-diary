@@ -8,17 +8,16 @@
         <TkCard>
           <div class="text-h6 row items-center">
             <div class="text-h6 row items-center">
-              <q-icon name="search"/>
               <span class="q-ml-sm">搜索</span>
             </div>
-            <q-space/>
-            <TkButton v-close-popup icon="close" flat round dense/>
+
+            <TkButton @click="mVisible = false" icon="close" flat round dense/>
           </div>
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
-        <TkCard class="form-wrap q-pa-md q-gutter-md">
+        <TkCard class="form-wrap  q-gutter-md">
           <div class="form-row">
             <div class="row-title q-mb-xs">要搜索的群组:</div>
             <div class="row-content flex-1">
@@ -44,15 +43,14 @@
 
         </TkCard>
 
-        <q-separator/>
+        <hr/>
 
         <TkCard class="q-px-md">
-          <q-toggle
+          <TkSwitch
             v-model="isDeep"
             size="sm"
-            label="搜索子群组"
-          />
-          <q-space/>
+          >搜索子群组</TkSwitch>
+
           <TkButton
             flat
             label="清除"
@@ -68,12 +66,12 @@
         </TkCard>
       </form>
 
-      <q-separator/>
+      <hr/>
 
-      <div v-if="!searchResults.length" class="text-center q-pa-md">
+      <div v-if="!searchResults.length" class="text-center ">
         无搜索结果
       </div>
-      <div v-else class="result-list q-pa-md">
+      <div v-else class="result-list ">
         <TkButton
           v-for="item in searchResults"
           :key="item.uuid.id"

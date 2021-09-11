@@ -6,15 +6,15 @@ import {isOutboundURL} from '@/utils/is'
 export function registerKeyShortcuts() {
   window.addEventListener('keydown', handleKey)
   window.addEventListener('click', handleClick)
-  setTimeout(() => {
-    window.electronAPI.onMessage('app-closing', handleAppClose)
-  }, 500)
+  // setTimeout(() => {
+  //   window.electronAPI.onMessage('app-closing', handleAppClose)
+  // }, 500)
 }
 
 export function unRegisterKeyShortcuts() {
   window.removeEventListener('keydown', handleKey)
   window.removeEventListener('click', handleClick)
-  window.electronAPI.offMessage('app-closing')
+  // window.electronAPI.offMessage('app-closing')
 }
 
 function _closeKdbx() {
