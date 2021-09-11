@@ -1,11 +1,10 @@
-import kdbxweb from "kdbxweb"
+import kdbxweb from 'kdbxweb'
 import store from '@/store'
 import router from '@/router'
 
 import {notifyError, notifySuccess} from '@/utils'
-import {busEmitSaveNotes} from "./bus"
-import {Dialog} from 'quasar'
-import {formatDate} from "@/utils/index"
+import {busEmitSaveNotes} from './bus'
+import {formatDate} from '@/utils/index'
 
 import i18n from '@/lang/i18n'
 
@@ -27,7 +26,7 @@ export function decryptKdbx(dbPath, password, keyPath) {
         keyFileArrayBuffer = electronAPI.readFileSyncAsArrayBuffer(keyPath)
       }
 
-      let credentials = new kdbxweb.Credentials(kdbxweb.ProtectedValue.fromString(password), keyFileArrayBuffer);
+      const credentials = new kdbxweb.Credentials(kdbxweb.ProtectedValue.fromString(password), keyFileArrayBuffer)
 
       const res = kdbxweb.Kdbx.load(dbArrayBuffer, credentials)
       return resolve(res)
@@ -35,9 +34,7 @@ export function decryptKdbx(dbPath, password, keyPath) {
       return reject(e)
     }
   })
-
 }
-
 
 export function openKdbx(db, dbPath) {
   store.commit('setDatabase', db)
@@ -57,7 +54,9 @@ export function closeKdbx(isExit = false) {
   if (isNotSave) {
     const andExit = isExit ? i18n.t('and-exit') : ''
 
-    Dialog.create({
+    alert('TODO: Dialog')
+    // TODO: Dialog
+    /*Dialog.create({
       title: i18n.t('confirm') + ' ' + (isExit ? i18n.t('exit') : i18n.t('close')),
       message: i18n.t('kdbx.there-are-unsaved'),
       persistent: false,
@@ -91,7 +90,7 @@ export function closeKdbx(isExit = false) {
     }).onCancel(() => {
     }).onDismiss(() => {
       // console.log('I am triggered on both OK and Cancel')
-    })
+    })*/
 
     return
   }
@@ -143,7 +142,6 @@ export function saveKdbx() {
     })
   }
   return doSaveKdbx(dbPath, db)
-
 }
 
 /**
@@ -185,7 +183,7 @@ export function getGroupEntries(db, groupUuid) {
 
     if (group) {
       for (let i = group.entries.length - 1; i >= 0; i--) {
-        let entry = group.entries[i]
+        const entry = group.entries[i]
         list.push({
           id: entry.uuid.id,
           uuid: entry.uuid,
@@ -200,7 +198,6 @@ export function getGroupEntries(db, groupUuid) {
         })
       }
     }
-
   }
   // console.log('getGroupEntries', list)
 
@@ -288,7 +285,6 @@ export function removeItems(db, items) {
       db.remove(items)
     }
 
-
     store.commit('setIsNotSave')
     return true
   } catch (e) {
@@ -317,11 +313,11 @@ export function moveItems(db, items, groupUuid) {
     if (Array.isArray(items)) {
       items.forEach(item => {
         checkIllegal(item)
-        db.move(item, group);
+        db.move(item, group)
       })
     } else {
       checkIllegal(items)
-      db.move(items, group);
+      db.move(items, group)
     }
     store.commit('setIsNotSave')
     // store.commit('setCurrentGroupUuid', groupUuid)
@@ -350,7 +346,6 @@ export function getEntriesFromGroup(group, isDeep = false) {
       })
       walkGroups(group.groups)
     })
-
   }
 
   group.entries.forEach(entry => {
@@ -376,6 +371,6 @@ export function searchEntries(db, groupUuid, searchText, isDeep = false) {
 
   return getEntriesFromGroup(group, isDeep).filter(entry => {
     return entry.fields.Title.indexOf(searchText) > -1 ||
-      entry.fields.Notes.indexOf(searchText) > -1;
+      entry.fields.Notes.indexOf(searchText) > -1
   })
 }

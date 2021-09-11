@@ -1,36 +1,40 @@
 <template>
   <div class="group-tree-wrap">
-    <q-tree
-        :nodes="groupTree"
-        node-key="id"
-        label-key="title"
-        selected-color="primary"
-        :selected.sync="selectedGroupUuidStr"
-        default-expand-all
-    >
-      <template v-slot:default-header="prop">
-        <div class="row items-center">
-          <IconShow
-              class="tree-icon"
-              :item="prop.node"
-          />
-          <div class="tree-name">{{ prop.node.title }}</div>
-        </div>
-        <slot v-bind:node="prop.node"></slot>
-      </template>
-    </q-tree>
+<!--    <q-tree-->
+<!--      :nodes="groupTree"-->
+<!--      node-key="id"-->
+<!--      label-key="title"-->
+<!--      selected-color="primary"-->
+<!--      :selected.sync="selectedGroupUuidStr"-->
+<!--      default-expand-all-->
+<!--    >-->
+<!--      <template v-slot:default-header="prop">-->
+<!--        <div class="row items-center">-->
+<!--          <IconShow-->
+<!--            class="tree-icon"-->
+<!--            :item="prop.node"-->
+<!--          />-->
+<!--          <div class="tree-name">{{ prop.node.title }}</div>-->
+<!--        </div>-->
+<!--        <slot :node="prop.node"></slot>-->
+<!--      </template>-->
+<!--    </q-tree>-->
+
+    <TkTree
+        :nodes="{title: 'root'}"
+    ></TkTree>
   </div>
 </template>
 
 <script>
-import store from "@/store"
-import {getGroupTree} from "@/utils/kdbx-utils"
-import IconShow from "@/components/IconShow"
+import store from '@/store'
+import {getGroupTree} from '@/utils/kdbx-utils'
+// import IconShow from '@/components/IconShow'
 
 export default {
-  name: "GroupTree",
+  name: 'GroupTree',
   components: {
-    IconShow
+    // IconShow
   },
   props: {
     selectedGroupUuid: {
@@ -116,15 +120,15 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .group-tree-wrap {
   .tree-icon {
-    border-radius 0
-    margin-right: 8px
+    border-radius: 0;
+    margin-right: 8px;
   }
 
-  >>> .q-tree__node--selected {
-    box-shadow 0 0 1px 1px $primary inset
+  ::v-deep .q-tree__node--selected {
+    box-shadow: 0 0 1px 1px green inset;
   }
 
   .text-primary {

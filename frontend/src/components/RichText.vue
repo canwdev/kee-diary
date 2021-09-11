@@ -1,14 +1,14 @@
 <template>
   <q-editor
-      v-model="editor"
-      min-height="30rem"
-      :toolbar="toolbar"
+    v-model="editor"
+    min-height="30rem"
+    :toolbar="toolbar"
   />
 </template>
 
 <script>
 export default {
-  name: "RichText",
+  name: 'RichText',
   data() {
     return {
       editor: 'What you see is <b>what</b> you get.',
@@ -63,6 +63,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

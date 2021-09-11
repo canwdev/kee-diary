@@ -1,6 +1,6 @@
-import {saveKdbx, closeKdbx} from "./kdbx-utils"
+import {saveKdbx, closeKdbx} from './kdbx-utils'
 import _debounce from 'lodash/debounce'
-import {isOutboundURL} from "@/utils/is"
+import {isOutboundURL} from '@/utils/is'
 
 // 注册键盘快捷键
 export function registerKeyShortcuts() {
@@ -27,23 +27,21 @@ export const handleAppClose = _debounce(_closeKdbx, 1000, {
   'trailing': false
 })
 
-
 function handleKey(event) {
   if (event.ctrlKey || event.metaKey) {
     switch (String.fromCharCode(event.which).toLowerCase()) {
       case 's':
-        event.preventDefault();
+        event.preventDefault()
         saveKdbx()
-        break;
+        break
       case 'l':
-        event.preventDefault();
+        event.preventDefault()
         closeKdbx()
-        break;
+        break
       default:
         return
     }
   }
-
 }
 
 function handleClick(event) {

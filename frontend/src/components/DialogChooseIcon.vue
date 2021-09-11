@@ -1,70 +1,71 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card>
-      <q-card-section>
+    <TkCard>
+      <TkCard>
         <div class="text-h6 row items-center">
           <IconShow
-              :item="{icon:index}"
+            :item="{icon:index}"
           />
-          <span class="q-ml-md">{{$t('choose-icon')}}</span>
+          <span class="q-ml-md">{{ $t('choose-icon') }}</span>
         </div>
-      </q-card-section>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md">
-          <q-btn
-              v-for="(item, i) in icons"
-              :key="i"
-              @click="handleSelect(i)"
-              @contextmenu="handlePreview(i)"
-              :flat="i !== selectedIndex"
-              color="primary"
-              round
+      <TkCard style="max-height: 70vh" class="scroll">
+        <TkCard flat class="q-gutter-md">
+          <TkButton
+            v-for="(item, i) in icons"
+            :key="i"
+            :flat="i !== selectedIndex"
+            color="primary"
+            round
+            @click="handleSelect(i)"
+            @contextmenu="handlePreview(i)"
           >
             <IconShow
-                :item="{icon:i}"
-                :icon-scale="1"
+              :item="{icon:i}"
+              :icon-scale="1"
             />
             <q-tooltip>
               {{ item.name }}
             </q-tooltip>
-          </q-btn>
-        </q-card>
-      </q-card-section>
+          </TkButton>
+        </TkCard>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
-        <q-btn
-            :disabled="index === selectedIndex"
-            @click="handleChoose"
-            flat :label="$t('choose')" color="primary"/>
-      </q-card-actions>
-    </q-card>
+      <TkCard>
+        <TkButton v-close-popup flat :label="$t('cancel')" color="primary"/>
+        <TkButton
+          :disabled="index === selectedIndex"
+          flat
+          :label="$t('choose')"
+          color="primary"
+          @click="handleChoose"
+        />
+      </TkCard>
+    </TkCard>
 
     <DialogPreview
-        :visible.sync="isPreviewIconVisible"
+      :visible.sync="isPreviewIconVisible"
     >
       <IconShow
-          size="256px"
-          :item="{icon:previewIndex}"
-          :icon-scale="1"
+        size="256px"
+        :item="{icon:previewIndex}"
+        :icon-scale="1"
       />
     </DialogPreview>
-  </q-dialog>
+  </TkModalDialog>
 </template>
 
 <script>
 import icons from '@/assets/db-icons'
-import IconShow from "./IconShow"
-import DialogPreview from "./DialogPreview"
+import IconShow from './IconShow'
+import DialogPreview from './DialogPreview'
 
 export default {
   components: {

@@ -1,23 +1,24 @@
 <template>
   <q-menu
-      transition-show="none"
-      transition-hide="none"
-      touch-position
-      context-menu
+    transition-show="none"
+    transition-hide="none"
+    touch-position
+    context-menu
   >
-    <q-list dense style="min-width: 100px">
+    <q-list style="min-width: 100px">
 
       <template v-for="(item, index) in menuListFiltered">
         <q-separator
-            v-if="item.isSeparator"
-            :key="index"
+          v-if="item.isSeparator"
+          :key="index"
         />
         <q-item
-            v-else-if="!item.hidden"
-            :key="index"
-            @click="item.action"
-            clickable v-close-popup
-            class="row items-center"
+          v-else-if="!item.hidden"
+          :key="index"
+          v-close-popup
+          clickable
+          class="row items-center"
+          @click="item.action"
         >
           <q-icon :name="item.icon" color="secondary" size="sm" class="q-mr-sm"/>
           <q-item-label>{{ item.label }}</q-item-label>

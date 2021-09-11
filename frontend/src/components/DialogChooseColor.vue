@@ -1,57 +1,57 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card>
-      <q-card-section>
+    <TkCard>
+      <TkCard>
         <div class="text-h6 row items-center">
           <span class="q-ml-md">{{ $t('choose') }} {{
-              isFgColor ? $t('foreground') : $t('background')
-            }} {{ $t('color') }}</span>
+            isFgColor ? $t('foreground') : $t('background')
+          }} {{ $t('color') }}</span>
           <q-space/>
           <q-toggle
-              v-model="isFgColor"
-              :color="toggleColor"
-              keep-color
-              left-label
+            v-model="isFgColor"
+            :color="toggleColor"
+            keep-color
+            left-label
           >
           </q-toggle>
         </div>
-      </q-card-section>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md">
+      <TkCard style="max-height: 70vh" class="scroll">
+        <TkCard flat class="q-gutter-md">
           <ColorItem
-              v-for="(item, i) in palette"
-              :key="i"
-              :color="item.color"
-              :name="item.name"
-              :is-active="selectedColor === item.color"
-              @click.native="handleSelect(item.color)"
+            v-for="(item, i) in palette"
+            :key="i"
+            :color="item.color"
+            :name="item.name"
+            :is-active="selectedColor === item.color"
+            @click.native="handleSelect(item.color)"
           />
-        </q-card>
-      </q-card-section>
+        </TkCard>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
-        <q-btn
-            :disabled="selectedColor === color"
-            @click="handleChoose"
-            flat :label="$t('choose')" color="primary"
+      <TkCard>
+        <TkButton v-close-popup flat :label="$t('cancel')" color="primary"/>
+        <TkButton
+          :disabled="selectedColor === color"
+          flat
+          :label="$t('choose')"
+          color="primary"
+          @click="handleChoose"
         />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      </TkCard>
+    </TkCard>
+  </TkModalDialog>
 </template>
 
 <script>
-import {palette} from "@/utils/enum"
+import {palette} from '@/utils/enum'
 import ColorItem from '@/components/ColorItem'
 
 function getTypeColor(isFgColor, item) {
@@ -65,7 +65,7 @@ function getColorName(color) {
 }
 
 export default {
-  name: "DialogChooseIcon",
+  name: 'DialogChooseIcon',
   components: {
     ColorItem
   },
@@ -138,6 +138,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>

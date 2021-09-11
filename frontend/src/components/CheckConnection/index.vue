@@ -1,23 +1,21 @@
 <template>
-  <q-card class="check-connection q-py-md q-px-lg">
+  <TkCard class="check-connection q-py-md q-px-lg">
     <div class="text-h6 flex items-center justify-between"><abbr>Internet Connection</abbr>
-      <q-btn dense flat color="secondary" no-caps @click="check">Check</q-btn>
+      <TkButton flat color="secondary" no-caps @click="check">Check</TkButton>
     </div>
 
     <ul>
       <li><abbr title="window.navigator.onLine">System</abbr>
         <Status :type="status.navigator"/>
       </li>
-      <q-separator/>
       <li><abbr title="Electron BrowserWindow test: v1.hitokoto.cn">Frontend</abbr>
         <Status :type="status.frontend"/>
       </li>
-      <q-separator/>
       <li><abbr title="Electron Node.js test: developers.google.cn">Backend</abbr>
         <Status :type="status.backend"/>
       </li>
     </ul>
-  </q-card>
+  </TkCard>
 </template>
 
 <script>
@@ -34,7 +32,7 @@ const getInitStatus = (initState = ConnectType.UNKNOWN) => {
 }
 
 export default {
-  name: "CheckConnection",
+  name: 'CheckConnection',
   components: {Status},
   data() {
     return {
@@ -70,17 +68,17 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .check-connection {
   text-align: left;
 
   ul {
-    padding 0
+    padding: 0;
 
     li {
-      display flex
-      justify-content space-between
-      line-height: 2
+      display: flex;
+      justify-content: space-between;
+      line-height: 2;
     }
   }
 }

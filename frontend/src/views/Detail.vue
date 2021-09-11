@@ -1,21 +1,22 @@
 <template>
   <q-page class="row justify-center">
     <div class="col-sm-12 col-md-10 q-pa-lg">
-      <q-card style="height: 100%">
-        <q-card-section class="q-gutter-y-xs">
-          <q-input
+      <TkCard style="height: 100%">
+        <TkCard class="q-gutter-y-xs">
+          <TkInput
               v-if="isEntryOpen"
               v-model="editing.title"
               dense
               color="secondary"
-              placeholder="entry.fields.Title">
+              placeholder="entry.fields.Title"
+          >
             <template v-slot:prepend>
               <IconShow
                   class="cursor-pointer"
-                  @click.native="isDialogPreviewVisible = true"
                   :item="currentEntry"
+                  @click.native="isDialogPreviewVisible = true"
               >
-                <q-tooltip>{{$t('preview')}} (Ctrl+/)</q-tooltip>
+                {{ $t('preview') }} (Ctrl+/)
               </IconShow>
             </template>
 
@@ -26,7 +27,7 @@
                 @onChangeIcon="isDialogChooseIconVisible = true"
                 @onChangeColor="isDialogChooseColorVisible = true"
             />
-          </q-input>
+          </TkInput>
 
           <div style="overflow: auto; height: calc(100vh - 230px)">
             <textarea id="input-area"></textarea>
@@ -40,53 +41,64 @@
                   checked-icon="note"
                   unchecked-icon="code"
               >
-                <q-tooltip anchor="top middle" self="center middle">{{$t('detail.iswysiwyg')}}</q-tooltip>
+                <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.iswysiwyg') }}</q-tooltip>
               </q-toggle>
               <q-select
+                  v-model="editorTheme"
                   dense
                   color="secondary"
-                  v-model="editorTheme" :options="themeOptions"
+                  :options="themeOptions"
                   style="width: 150px"
               >
                 <template v-slot:prepend>
                   <q-icon name="style"/>
                 </template>
               </q-select>
-              <q-btn-group flat>
-                <q-btn
+              <TkButton-group flat>
+                <TkButton
+                    dense
+                    icon="text_fields"
                     @click="handleChangeFont"
-                    dense icon="text_fields">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.changeFontFamily')}}</q-tooltip>
-                </q-btn>
-              </q-btn-group>
-              <q-btn-group flat>
-                <q-btn
+                >
+                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.changeFontFamily') }}</q-tooltip>
+                </TkButton>
+              </TkButton-group>
+              <TkButton-group flat>
+                <TkButton
+                    dense
+                    icon="archive"
                     @click="handleLoad"
-                    dense icon="archive">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.load-outer-text-file')}}</q-tooltip>
-                </q-btn>
-                <q-btn
-                    @click="handleExport"
-                    dense icon="unarchive">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.export-to-text-file')}}</q-tooltip>
-                </q-btn>
-                <q-btn
-                    dense icon="open_in_browser">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.edit-with-external')}}
+                >
+                  <q-tooltip anchor="top middle" self="center middle">{{
+                      $t('detail.load-outer-text-file')
+                    }}
                   </q-tooltip>
-                </q-btn>
-              </q-btn-group>
+                </TkButton>
+                <TkButton
+                    dense
+                    icon="unarchive"
+                    @click="handleExport"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.export-to-text-file') }}</q-tooltip>
+                </TkButton>
+                <TkButton
+                    dense
+                    icon="open_in_browser"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.edit-with-external') }}
+                  </q-tooltip>
+                </TkButton>
+              </TkButton-group>
             </div>
-
 
             <q-space/>
-            <div class="date-display text-right" v-if="isEntryOpen">
-              <span>{{$t('home.created')}}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date="lastModTime"/></span>
+            <div v-if="isEntryOpen" class="date-display text-right">
+              <span>{{ $t('home.created') }}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
+              <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="lastModTime"/></span>
             </div>
           </q-toolbar>
-        </q-card-section>
-      </q-card>
+        </TkCard>
+      </TkCard>
     </div>
 
     <DialogPreviewEntry
@@ -100,7 +112,6 @@
         @onChoose="handleUpdateIcon"
     />
 
-
     <DialogChooseColor
         :item="currentEntry"
         :visible.sync="isDialogChooseColorVisible"
@@ -113,9 +124,9 @@
 import store from '@/store'
 import * as HyperMD from 'hypermd'
 // 语法高亮
-import "codemirror/mode/htmlmixed/htmlmixed" // Markdown 内嵌HTML
-import "codemirror/mode/stex/stex" // TeX 数学公式
-import "codemirror/mode/yaml/yaml" // Front Matter
+import 'codemirror/mode/htmlmixed/htmlmixed' // Markdown 内嵌HTML
+import 'codemirror/mode/stex/stex' // TeX 数学公式
+import 'codemirror/mode/yaml/yaml' // Front Matter
 
 // CodeMirror Theme
 import 'codemirror/theme/idea.css'
@@ -133,18 +144,18 @@ import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
-import DateTimeEdit from "../components/DateTimeEdit"
-import DialogPreviewEntry from "@/components/DialogPreviewEntry"
-import {notifyError, notifySuccess} from "../utils"
-import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import IconShow from "@/components/IconShow"
-import DialogChooseColor from "@/components/DialogChooseColor"
+import DateTimeEdit from '../components/DateTimeEdit'
+import DialogPreviewEntry from '@/components/DialogPreviewEntry'
+import {notifyError, notifySuccess} from '../utils'
+import ContextMenuCommon from '@/components/ContextMenuCommon'
+import DialogChooseIcon from '@/components/DialogChooseIcon'
+import IconShow from '@/components/IconShow'
+import DialogChooseColor from '@/components/DialogChooseColor'
 
-import {textFilters as filters} from "../utils/enum"
+import {textFilters as filters} from '../utils/enum'
 
 export default {
-  name: "Detail",
+  name: 'Detail',
   components: {
     DateTimeEdit,
     DialogPreviewEntry,
@@ -236,10 +247,10 @@ export default {
       } else {
         HyperMD.switchToNormal(this.editor)
       }
-      this.editor.setOption("theme", this.editorTheme);
+      this.editor.setOption('theme', this.editorTheme)
     },
     editorTheme(nv) {
-      this.editor.setOption("theme", nv);
+      this.editor.setOption('theme', nv)
     },
     editing: {
       handler() {
@@ -285,10 +296,10 @@ export default {
       if (!this.isEditWYSIWYG) {
         HyperMD.switchToNormal(editor)
       }
-      editor.setSize(null, "100%") // set height
+      editor.setSize(null, '100%') // set height
       this.setFontFamily(editor)
       this.setFontSize(editor)
-      editor.setOption("theme", this.editorTheme);
+      editor.setOption('theme', this.editorTheme)
       editor.on('change', () => {
         if (this.editor) {
           store.commit('setIsNotSave')
@@ -303,7 +314,7 @@ export default {
       editor = this.editor || editor
       const el = editor.display.wrapper
       el.style.fontSize = this.editorFontSize + 'px'
-      editor.refresh();
+      editor.refresh()
     },
     setFontFamily(editor) {
       editor = this.editor || editor
@@ -313,7 +324,7 @@ export default {
       } else {
         el.style.fontFamily = null
       }
-      editor.refresh();
+      editor.refresh()
     },
     syncNotes() {
       const entry = this.currentEntry
@@ -355,7 +366,7 @@ export default {
           case '¿': // Keyboard symbol: "/"
             event.preventDefault()
             this.handlePreview()
-            break;
+            break
           default:
             return
         }
@@ -411,14 +422,12 @@ export default {
         }).onDismiss(() => {
           this.isDisableEsc = false
         })
-
       } catch (e) {
         notifyError(e.message)
         console.error(e)
       } finally {
         this.$store.commit('setIsGlobalLoading', false)
       }
-
     },
     handleExport() {
       this.$store.commit('setIsGlobalLoading')
@@ -448,7 +457,6 @@ export default {
       store.commit('setIsNotSave')
     },
     handleCtrlScroll(event) {
-
       if (event.ctrlKey) {
         event.preventDefault()
         let editorFontSize = this.editorFontSize
@@ -464,20 +472,19 @@ export default {
           this.editorFontSize = editorFontSize
           this.setFontSize()
         }
-
       }
     }
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .date-display {
-  display flex
-  flex-direction column
+  display: flex;
+  flex-direction: column;
 
-  .q-btn {
-    line-height: 1
+  .TkButton {
+    line-height: 1;
   }
 }
 </style>

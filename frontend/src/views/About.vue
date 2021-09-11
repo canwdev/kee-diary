@@ -1,14 +1,14 @@
 <template>
-  <q-page class="flex items-center justify-center bg-wall">
+  <div class="flex items-center justify-center bg-wall">
     <div class="text-center">
       <h5 class="text-primary">{{ $t('pages.about') }}</h5>
 
-      <q-card class="text-white bg-primary q-pa-md q-mb-lg">
+      <TkCard class="text-white bg-primary q-pa-md q-mb-lg">
         <div class="text-bold">{{ message || $t('about.info') }}</div>
         <div class="q-mt-md">
           <VersionText/>
         </div>
-      </q-card>
+      </TkCard>
 
       <div class="content">
         <CheckConnection
@@ -17,25 +17,29 @@
         />
 
         <div class="column q-gutter-sm">
-          <q-btn color="primary" to="/home">{{$t('about.btnHome')}}</q-btn>
-          <q-btn
-              outline color="secondary"
-              @click="logDatabase"
+          <TkButton>
+            <TkLink href="/home">{{ $t('about.btnHome') }}</TkLink>
+          </TkButton>
+          <TkButton
+              outline
+              color="secondary"
               title="Ctrl+Shift+I"
-          >{{$t('about.btnLogDatabase')}}</q-btn>
+              @click="logDatabase"
+          >{{ $t('about.btnLogDatabase') }}
+          </TkButton>
         </div>
       </div>
 
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
-import VersionText from "@/components/VersionText"
+import VersionText from '@/components/VersionText'
 import CheckConnection from '@/components/CheckConnection'
 
 export default {
-  name: "About",
+  name: 'About',
   components: {
     VersionText,
     CheckConnection
@@ -57,13 +61,14 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .bg-wood {
-  user-select text
+  user-select: text;
   white-space: pre-line;
 }
+
 .content {
-  margin 0 auto
-  width 300px
+  margin: 0 auto;
+  width: 300px;
 }
 </style>

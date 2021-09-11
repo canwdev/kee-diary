@@ -1,5 +1,3 @@
-import {Notify} from "quasar"
-
 export function pad2Num(num, len = 2) {
   return num.toString().padStart(len, '0')
 }
@@ -20,23 +18,25 @@ export function formatDateLite(d) {
 }
 
 export const notifySuccess = (message = 'Success', caption) => {
-  Notify.create({
-    message: message,
-    caption: caption,
-    color: 'positive',
-    position: 'top',
-    icon: 'done',
-    timeout: 1500
-  })
+  alert(caption)
+  // Notify.create({
+  //   message: message,
+  //   caption: caption,
+  //   color: 'positive',
+  //   position: 'top',
+  //   icon: 'done',
+  //   timeout: 1500
+  // })
 }
 
 export const notifyError = (message = 'Error', caption) => {
-  Notify.create({
-    message: message,
-    caption: caption,
-    color: 'negative',
-    position: 'top',
-    icon: 'warning',
-    timeout: 2000
-  })
+  alert(caption)
+  // Notify.create({
+  //   message: message,
+  //   caption: caption,
+  //   color: 'negative',
+  //   position: 'top',
+  //   icon: 'warning',
+  //   timeout: 2000
+  // })
 }

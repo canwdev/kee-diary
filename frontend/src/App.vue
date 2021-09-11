@@ -4,8 +4,8 @@
   </div>
 </template>
 
-<style lang="stylus">
+<style lang="scss">
 #app {
-  user-select none
+  //user-select: none
 }
 </style>

@@ -1,63 +1,60 @@
 <template>
-  <q-header elevated class="">
-    <q-toolbar class="home-header" :class="{'_dark': isDarkMode}">
-      <q-btn
-          flat
-          round
-          @click="$emit('onMenuClick')"
-          aria-label="Menu"
-          icon="menu"
-      />
-
-      <q-btn
-          v-show="isShowBack"
-          flat
-          round
-          @click="$emit('onBackClick')"
-          aria-label="Back"
-          icon="arrow_back"
-      />
-
-      <q-toolbar-title class="main-title">
-        {{ title }} <span style="font-size: 12px">{{ isUnlocked ? $t('header.unlocked') : '' }}</span>
-      </q-toolbar-title>
-
-      <template v-if="isUnlocked">
-        <q-btn
-            @click="isDialogSearchVisible = true"
-            flat round icon="search">
-          <q-tooltip>
-            {{ $t('header.search') }}
-          </q-tooltip>
-        </q-btn>
-        <q-btn
-            @click="saveKdbx"
-            :disable="!isNotSave"
-            flat round icon="save">
-          <q-tooltip>{{ $t('header.save') }} (Ctrl+S)</q-tooltip>
-        </q-btn>
-        <q-btn
-            @click="closeKdbx"
-            flat round icon="eject">
-          <q-tooltip>{{ $t('header.close') }} (Ctrl+L)</q-tooltip>
-        </q-btn>
+  <div class="default-header">
+    <TkNavBar
+        :menu="[
+        {title: title},
+        {title: isUnlocked ? $t('header.unlocked') : '' }
+      ]"
+    >
+      <template slot="left">
+        <TkButton
+            v-show="isShowBack"
+            label="Back"
+            @click="$emit('onBackClick')"
+        />
+        <TkButton
+            label="Menu"
+            @click="$emit('onMenuClick')"
+        />
       </template>
-
-    </q-toolbar>
-
+      <template slot="right">
+        <div class="flex items-center justify-end">
+          <!--        <TkSwitch v-model="isDarkTheme" text-on="暗" text-off="明"></TkSwitch>-->
+          <template v-if="isUnlocked">
+            <TkButton
+                @click="isDialogSearchVisible = true"
+            >
+              {{ $t('header.search') }}
+            </TkButton>
+            <TkButton
+                :disabled="!isNotSave"
+                @click="saveKdbx"
+            >
+              {{ $t('header.save') }} (Ctrl+S)
+            </TkButton>
+            <TkButton
+                @click="closeKdbx"
+            >
+              {{ $t('header.close') }} (Ctrl+L)
+            </TkButton>
+          </template>
+        </div>
+      </template>
+    </TkNavBar>
     <DialogSearch
-      :visible.sync="isDialogSearchVisible"
+        :visible.sync="isDialogSearchVisible"
     />
-  </q-header>
+  </div>
+
 </template>
 
 <script>
-import store from "@/store"
-import {closeKdbx, saveKdbx} from "../utils/kdbx-utils"
-import DialogSearch from "./DialogSearch"
+import store from '@/store'
+import {closeKdbx, saveKdbx} from '../utils/kdbx-utils'
+import DialogSearch from './DialogSearch'
 
 export default {
-  name: "DefaultHeader",
+  name: 'DefaultHeader',
   components: {
     DialogSearch
   },
@@ -96,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 
 .home-header {
   .main-title {

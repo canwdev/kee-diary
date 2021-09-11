@@ -1,159 +1,157 @@
 <template>
-  <q-page
+  <div
       class="row justify-center items-center"
   >
-    <q-inner-loading class="_loading" :showing="isLoading">
-      <q-spinner-gears
-          color="secondary"
-          size="5em"
-      />
-    </q-inner-loading>
+    <TkModalDialog v-show="isLoading">
+      <TkLoading class="_loading" :visible="true">
+      </TkLoading>
+    </TkModalDialog>
 
-    <q-dialog v-model="isShowAlertDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="error"/>
-          <span class="text-h6">{{ alertDialog.title || 'Error' }}</span>
-        </q-card-section>
 
-        <q-card-section class="q-pt-none">
+    <TkModalDialog v-show="isShowAlertDialog">
+      <TkCard>
+        <TkCard>
+          <h6>{{ alertDialog.title || 'Error' }}</h6>
+        </TkCard>
+
+        <TkCard>
           {{ alertDialog.content }}
-        </q-card-section>
+        </TkCard>
 
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+        <TkCard>
+          <TkButton @click="isShowAlertDialog = false" label="OK"/>
+        </TkCard>
+      </TkCard>
+    </TkModalDialog>
 
-    <div class="column q-pa-lg">
-      <div class="row">
-        <q-card class="shadow-10" style="width:400px;">
-          <q-card-section class="bg-primary text-center">
-            <q-btn
-                @click="isWelcome = true"
-                v-show="!isWelcome"
-                icon="arrow_back" text-color="white" flat round class="absolute-top-left"/>
+    <div>
+      <TkCard style="width:400px;">
+        <TkCard class="bg-primary text-center">
+          <TkButton
+              v-show="!isWelcome"
+              class="absolute-top-left"
+              @click="isWelcome = true"
+          >Back</TkButton>
 
-            <q-avatar size="64px" color="white">
-              <q-icon name="lock" color="primary"/>
-            </q-avatar>
+          <h4>{{
+              isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+            }}</h4>
+        </TkCard>
 
-            <h4 class="text-h5 text-white q-mb-none q-mt-md">{{
-                isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-              }}</h4>
-          </q-card-section>
+        <div v-show="isWelcome">
+          <TkCard>
+            <TkButton
+                unelevated
+                size="md"
+                color="secondary"
+                class="full-width text-white"
+                :label="$t('login.openDatabase')"
+                @click="chooseNewKdbx"
+            />
+          </TkCard>
 
-          <div v-show="isWelcome">
-            <q-card-actions class="q-px-md">
-              <q-btn
-                  @click="chooseNewKdbx"
-                  unelevated size="md"
+          <TkCard>
+            <div>
+              <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
+              <TkButton
+                  v-show="recentList.length > 0"
+                  dense
+                  flat
+                  :label="$t('login.clear')"
+                  @click="handleClearRecent"
+              />
+            </div>
+            <ul>
+              <li
+                  v-for="(item, index) in recentList"
+                  :key="index"
+                  @click="openRecentItem(item)"
+              >
+
+                <span class="text-overflow" :title="item.dbPath">
+                      {{ item.dbPath }}
+                    </span>
+                <TkButton
+                    dense
+                    flat
+                    icon="close"
+                    color="secondary"
+                    @click.stop="removeRecentItem(item)"
+                />
+              </li>
+
+              <li v-if="recentList.length === 0">{{ $t('login.noRecent') }}</li>
+            </ul>
+          </TkCard>
+        </div>
+
+        <div v-show="!isWelcome">
+          <form
+              @submit="handleUnlock"
+          >
+            <TkCard>
+
+              <TkInput
+                  v-model="form.dbPath"
+                  readonly
+                  type="text"
+                  placeholder="Database file path"
+              >
+              </TkInput>
+              <TkInput
+                  v-model="form.password"
+                  type="password"
+                  :placeholder="$t('login.password')"
+                  autofocus
+              >
+              </TkInput>
+              <div>
+                <TkInput
+                    v-model="form.keyPath"
+                    clearable
+                    type="text"
+                    :placeholder="$t('login.keyFilePath')"
+                >
+                </TkInput>
+                <TkButton
+                    @click="handleChooseFile('keyPath', [
+                        {name: 'All', extensions: ['*']},
+                        {name: '*.key', extensions: ['key']},
+                      ])"
+                >Choose</TkButton>
+              </div>
+            </TkCard>
+
+            <TkCard>
+              <TkButton
+                  type="submit"
+                  unelevated
+                  size="md"
                   color="secondary"
                   class="full-width text-white"
-                  :label="$t('login.openDatabase')"
+                  :label="$t('login.unlock')"
               />
-            </q-card-actions>
+            </TkCard>
+          </form>
+        </div>
 
-            <q-card-section class="q-pt-xs">
-              <div class="row q-mb-xs">
-                <q-checkbox dense v-model="isSaveHistory" :label="$t('login.saveHistory')"/>
-                <q-space/>
-                <q-btn
-                    v-show="recentList.length > 0"
-                    @click="handleClearRecent"
-                    dense flat :label="$t('login.clear')"/>
-              </div>
-              <q-list dense bordered padding class="rounded-borders" style="height: 150px; overflow: auto">
-                <q-item
-                    clickable
-                    v-ripple
-                    v-for="(item, index) in recentList"
-                    :key="index"
-                    @click="openRecentItem(item)"
-                >
-                  <q-item-section avatar>
-                    <q-icon color="secondary" name="lock"/>
-                  </q-item-section>
-                  <q-item-section>
-                      <span class="single-line-hide" :title="item.dbPath">
-                      {{ item.dbPath }}
-                      </span>
-                  </q-item-section>
-                  <q-item-section side>
-                    <q-btn
-                        @click.stop="removeRecentItem(item)"
-                        dense flat icon="close" color="secondary"/>
-                  </q-item-section>
-                </q-item>
-
-                <q-item class="text-grey" v-if="recentList.length === 0">{{ $t('login.noRecent') }}</q-item>
-              </q-list>
-            </q-card-section>
-          </div>
-
-          <div v-show="!isWelcome">
-            <q-form
-                class="q-px-md"
-                @submit="handleUnlock">
-              <q-card-section
-                  class="q-px-sm q-gutter-y-sm q-pt-md">
-
-                <q-input
-                    outlined dense readonly v-model="form.dbPath" type="text" placeholder="Database file path">
-                  <template v-slot:prepend>
-                    <q-icon name="lock"/>
-                  </template>
-                </q-input>
-                <q-input outlined dense clearable v-model="form.password" type="password" :placeholder="$t('login.password')"
-                         autofocus>
-                  <template v-slot:prepend>
-                    <q-icon name="vpn_key"/>
-                  </template>
-                </q-input>
-                <q-input outlined dense clearable v-model="form.keyPath" type="text"
-                         :placeholder="$t('login.keyFilePath')">
-                  <template v-slot:prepend>
-                    <q-icon name="vpn_key"/>
-                  </template>
-                  <template v-slot:after>
-                    <q-btn
-                        @click="handleChooseFile('keyPath', [
-                          {name: 'All', extensions: ['*']},
-                          {name: '*.key', extensions: ['key']},
-                        ])"
-
-                        outline icon="attachment"/>
-                  </template>
-                </q-input>
-              </q-card-section>
-
-              <q-card-actions>
-                <q-btn
-                    type="submit"
-                    unelevated size="md" color="secondary" class="full-width text-white" :label="$t('login.unlock')"/>
-              </q-card-actions>
-            </q-form>
-          </div>
-
-          <q-card-section class="text-center q-pa-sm">
-            <p class="text-grey-6 q-mb-none">
-              <VersionText/>
-            </p>
-          </q-card-section>
-        </q-card>
-      </div>
+        <div class="text-center">
+          <p>
+            <VersionText/>
+          </p>
+        </div>
+      </TkCard>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
-import {decryptKdbx, openKdbx} from "@/utils/kdbx-utils"
-import LocalStorageSettings from "@/utils/settings"
-import {isProd} from "@/utils/is"
-import {notifyError} from "@/utils"
-import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from "@/utils/enum"
-import VersionText from "@/components/VersionText"
+import {decryptKdbx, openKdbx} from '@/utils/kdbx-utils'
+import LocalStorageSettings from '@/utils/settings'
+import {isProd} from '@/utils/is'
+import {notifyError} from '@/utils'
+import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/utils/enum'
+import VersionText from '@/components/VersionText'
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
@@ -286,7 +284,6 @@ export default {
         await this.$router.replace({
           name: 'Home'
         })
-
       } catch (e) {
         console.error(e)
         this.isShowAlertDialog = true
@@ -302,18 +299,17 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 ._loading {
-  z-index 10
+  z-index: 10;
 }
 
-
 .q-item__section--avatar {
-  min-width 32px
+  min-width: 32px;
 }
 
 .single-line-hide {
-  display block
-  max-width 100%
+  display: block;
+  max-width: 100%;
 }
 </style>

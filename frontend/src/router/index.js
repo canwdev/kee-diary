@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
-import Default from "@/layout/Default"
+import Default from '@/layout/Default'
 import store from '@/store'
 
 const validateUnlock = (to, from, next) => {
@@ -14,7 +14,7 @@ const validateUnlock = (to, from, next) => {
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Root',

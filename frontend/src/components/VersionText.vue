@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "VersionText",
+  name: 'VersionText',
   computed: {
     pkg() {
       return this.$store.getters.pkg
@@ -13,6 +13,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

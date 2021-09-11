@@ -1,57 +1,54 @@
 <template>
-  <q-page>
-    <q-splitter
-        v-model="splitterSize"
+  <div>
+    <div
         class="home-page"
     >
-      <template v-slot:before>
-        <div class="nav-tree">
-          <div class="q-pa-md">
-            <GroupTreeWrap
-                :selectedGroupUuid.sync="currentGroupUuid"
-                @onCreateEntry="handleAddEntryFromGroup"
-            />
-          </div>
-          <div style="height: 80px"></div>
+      <div class="nav-tree">
+        <div class="q-pa-md">
+          <GroupTreeWrap
+              :selected-group-uuid.sync="currentGroupUuid"
+              @onCreateEntry="handleAddEntryFromGroup"
+          />
         </div>
-      </template>
+        <div style="height: 80px"></div>
+      </div>
 
-      <template v-slot:after>
+      <div class="home-right">
         <EntryList
             v-if="isListView"
-            :currentGroupUuid="currentGroupUuid"
+            :current-group-uuid="currentGroupUuid"
         />
 
         <CalendarView
             v-else
-            :currentGroupUuid="currentGroupUuid"
+            :current-group-uuid="currentGroupUuid"
         />
-      </template>
+      </div>
 
-    </q-splitter>
+    </div>
 
-    <q-page-sticky position="bottom-left" :offset="[18, 18]">
-      <q-btn fab icon="add" color="secondary" @click="isDialogAddEntryVisible = true" :title="$t('home.add-entry')"/>
-    </q-page-sticky>
+    <div class="sticky-area">
+      <TkButton fab icon="add" color="secondary" :label="$t('home.add-entry')" @click="isDialogAddEntryVisible = true"/>
+    </div>
 
     <DialogAddEntry
         ref="addEntry"
         :visible.sync="isDialogAddEntryVisible"
         @confirm="handleAddEntry"
     />
-  </q-page>
+  </div>
 </template>
 
 <script>
-import store from "@/store"
-import {addEntry} from "@/utils/kdbx-utils"
-import GroupTreeWrap from "./GroupTreeWrap"
-import EntryList from "@/views/Home/EntryList"
-import CalendarView from "@/views/Home/CalendarView"
-import DialogAddEntry from "@/components/DialogAddEntry"
+import store from '@/store'
+import {addEntry} from '@/utils/kdbx-utils'
+import GroupTreeWrap from './GroupTreeWrap'
+import EntryList from '@/views/Home/EntryList'
+import CalendarView from '@/views/Home/CalendarView'
+import DialogAddEntry from '@/components/DialogAddEntry'
 
 export default {
-  name: "DbListView",
+  name: 'DbListView',
   components: {
     EntryList,
     GroupTreeWrap,
@@ -67,10 +64,6 @@ export default {
   computed: {
     database: {
       get: () => store.getters.database
-    },
-    splitterSize: {
-      get: () => store.getters.splitterSize,
-      set: val => store.commit('setSplitterSize', val)
     },
     currentGroupUuid: {
       get: () => store.getters.currentGroupUuid,
@@ -104,12 +97,24 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .home-page {
-  height calc(100vh - 50px)
+  height: calc(100vh - 50px);
+  display: flex;
+
+  .home-right {
+    flex: 1;
+  }
 }
 
 .nav-tree {
-  min-width 350px
+  min-width: 350px;
+}
+
+.sticky-area {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 20;
 }
 </style>

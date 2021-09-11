@@ -1,18 +1,18 @@
 <template>
-  <q-dialog v-model="mVisible" transition-show="scale" transition-hide="scale">
-    <q-card class="q-pa-lg">
+  <TkModalDialog v-model="mVisible">
+    <TkCard class="q-pa-lg">
 
-      <q-card-section class="q-pa-lg text-center">
+      <TkCard class="q-pa-lg text-center">
         <slot></slot>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
+      </TkCard>
+    </TkCard>
+  </TkModalDialog>
 </template>
 
 <script>
 
 export default {
-  name: "DialogPreview",
+  name: 'DialogPreview',
   props: {
     visible: {
       type: Boolean,
@@ -32,6 +32,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>

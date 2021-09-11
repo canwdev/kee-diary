@@ -1,73 +1,71 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card style="width: 420px">
+    <TkCard style="width: 420px">
       <form @submit.prevent="handleSearch">
 
-        <q-card-section>
+        <TkCard>
           <div class="text-h6 row items-center">
             <div class="text-h6 row items-center">
               <q-icon name="search"/>
               <span class="q-ml-sm">搜索</span>
             </div>
             <q-space/>
-            <q-btn icon="close" flat round dense v-close-popup/>
+            <TkButton v-close-popup icon="close" flat round dense/>
           </div>
-        </q-card-section>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-section class="form-wrap q-pa-md q-gutter-md">
+        <TkCard class="form-wrap q-pa-md q-gutter-md">
           <div class="form-row">
             <div class="row-title q-mb-xs">要搜索的群组:</div>
             <div class="row-content flex-1">
-              <q-btn
-                  @click="isDialogChooseGroupVisible = true"
-                  outline
-                  class="list-btn"
+              <TkButton
+                outline
+                class="list-btn"
+                @click="isDialogChooseGroupVisible = true"
               >
                 <IconShow
-                    :item="{icon: groupInfo.iconIndex}"
+                  :item="{icon: groupInfo.iconIndex}"
                 />
                 {{ groupInfo.name }}
-              </q-btn>
+              </TkButton>
             </div>
           </div>
 
           <div class="form-row">
             <div class="row-title q-mb-xs">搜索标题、内容 *</div>
             <div class="row-content">
-              <q-input dense outlined v-model="searchText" autofocus/>
+              <TkInput v-model="searchText" outlined autofocus/>
             </div>
           </div>
 
-        </q-card-section>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-actions class="q-px-md">
+        <TkCard class="q-px-md">
           <q-toggle
-              size="sm"
-              v-model="isDeep"
-              label="搜索子群组"
+            v-model="isDeep"
+            size="sm"
+            label="搜索子群组"
           />
           <q-space/>
-          <q-btn
-              flat
-              label="清除"
-              color="primary"
-              @click="clearSearch"
+          <TkButton
+            flat
+            label="清除"
+            color="primary"
+            @click="clearSearch"
           />
-          <q-btn
-              :disable="!searchText"
-              label="搜索"
-              type="submit"
-              color="primary"
+          <TkButton
+            :disable="!searchText"
+            label="搜索"
+            type="submit"
+            color="primary"
           />
-        </q-card-actions>
+        </TkCard>
       </form>
 
       <q-separator/>
@@ -76,54 +74,53 @@
         无搜索结果
       </div>
       <div v-else class="result-list q-pa-md">
-        <q-btn
-            flat
-            v-for="item in searchResults"
-            :key="item.uuid.id"
-            class="list-btn"
-            @click="handlePreview(item)"
-            :style="{
-                      background: item.bgColor,
-                      color: item.fgColor
-                    }"
+        <TkButton
+          v-for="item in searchResults"
+          :key="item.uuid.id"
+          flat
+          class="list-btn"
+          :style="{
+            background: item.bgColor,
+            color: item.fgColor
+          }"
+          @click="handlePreview(item)"
         >
           <IconShow
-              :item="{iconIndex: item.icon}"
-              size="16px"
-              :icon-scale="1"
+            :item="{iconIndex: item.icon}"
+            size="16px"
+            :icon-scale="1"
           />
           <span class="entry-title q-ml-sm">{{ item.fields.Title }}</span>
-        </q-btn>
+        </TkButton>
       </div>
 
-      <q-inner-loading :showing="isLoading">
-        <q-spinner-gears size="50px" color="primary"/>
-      </q-inner-loading>
+      <TkLoading :visible="isLoading">
+      </TkLoading>
 
-    </q-card>
+    </TkCard>
 
     <DialogPreviewEntry
-        :visible.sync="isDialogPreviewVisible"
-        :entry="currentEntry"
+      :visible.sync="isDialogPreviewVisible"
+      :entry="currentEntry"
     />
 
     <DialogChooseGroup
-        :visible.sync="isDialogChooseGroupVisible"
-        @onChoose="getGroupInfo"
+      :visible.sync="isDialogChooseGroupVisible"
+      @onChoose="getGroupInfo"
     />
 
-  </q-dialog>
+  </TkModalDialog>
 </template>
 
 <script>
-import store from "@/store"
-import DialogPreviewEntry from "@/components/DialogPreviewEntry"
-import DialogChooseGroup from "@/components/DialogChooseGroup"
-import IconShow from "@/components/IconShow"
-import {searchEntries} from "@/utils/kdbx-utils"
+import store from '@/store'
+import DialogPreviewEntry from '@/components/DialogPreviewEntry'
+import DialogChooseGroup from '@/components/DialogChooseGroup'
+import IconShow from '@/components/IconShow'
+import {searchEntries} from '@/utils/kdbx-utils'
 
 export default {
-  name: "DialogSearch",
+  name: 'DialogSearch',
   components: {
     DialogChooseGroup,
     DialogPreviewEntry,
@@ -215,21 +212,21 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .flex-1 {
-  flex 1
+  flex: 1;
 }
 
 .list-btn {
-  width: 100%
+  width: 100%;
 
-  >>> .q-btn__content {
-    justify-content flex-start !important
+  ::v-deep .TkButton__content {
+    justify-content: flex-start !important;
   }
 }
 
 .result-list {
-  max-height 300px
+  max-height: 300px;
   overflow: auto;
 }
 </style>

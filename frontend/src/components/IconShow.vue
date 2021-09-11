@@ -1,26 +1,25 @@
 <template>
-  <q-avatar
-      v-if="item"
-      class="icon-show"
-      :size="size"
-      square
-      :style="{background: item.bgColor}"
+  <div
+    v-if="item"
+    class="icon-show relative-position"
+    :size="size"
+    :style="{background: item.bgColor}"
   >
     <span
-        v-if="item.fgColor"
-        class="color-fg"
-        :style="[{background: item.fgColor}, dotStyle]"
+      v-if="item.fgColor"
+      class="color-fg"
+      :style="[{background: item.fgColor}, dotStyle]"
     ></span>
     <img :src="getIconSrc(item)" :class="{isPixel}" :style="iconImgStyle">
     <slot></slot>
-  </q-avatar>
+  </div>
 </template>
 
 <script>
-import icons from "@/assets/db-icons"
+import icons from '@/assets/db-icons'
 
 export default {
-  name: "IconShow",
+  name: 'IconShow',
   props: {
     item: {
       type: Object,
@@ -70,24 +69,23 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .icon-show {
-  border-radius 5px
+  border-radius: 5px;
 
   .color-fg {
     position: absolute;
-    top: -3px
-    right: -3px
-    display block
-    border-radius 50%
-    width: 8px
-    height 8px
-    border 1px solid rgba(0, 0, 0, 0.3)
+    top: -3px;
+    right: -3px;
+    display: block;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
   }
 
   .isPixel {
-    image-rendering: pixelated
+    image-rendering: pixelated;
   }
 }
-
 </style>

@@ -1,63 +1,61 @@
 <template>
   <div>
-    <q-dialog
-        v-model="mVisible"
-        transition-show="fade"
-        transition-hide="fade"
+    <TkModalDialog
+      v-model="mVisible"
     >
-      <q-card v-if="entry" style="width: 700px; max-width: 80vw;">
-        <q-card-section>
+      <TkCard v-if="entry" style="width: 700px; max-width: 80vw;">
+        <TkCard>
           <div class="text-h6 row items-center">
             <IconShow
-                @click.native="isPreviewIconVisible = true"
-                class="cursor-pointer"
-                :item="entry"
+              class="cursor-pointer"
+              :item="entry"
+              @click.native="isPreviewIconVisible = true"
             />
             <span class="q-ml-md" @dblclick="logEntry">{{ entry.fields.Title }}</span>
             <q-space/>
-            <q-btn icon="close" flat round dense v-close-popup/>
+            <TkButton v-close-popup icon="close" flat round dense/>
           </div>
-        </q-card-section>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-section class="q-py-sm flex justify-between">
-          <span>{{$t('home.created')}}: <DateTimeEdit disabled :date="entry.times.creationTime"/></span>
-          <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date="entry.times.lastModTime"/></span>
-        </q-card-section>
+        <TkCard class="q-py-sm flex justify-between">
+          <span>{{ $t('home.created') }}: <DateTimeEdit disabled :date="entry.times.creationTime"/></span>
+          <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="entry.times.lastModTime"/></span>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-section style="max-height: 78vh" class="scroll">
-          <q-card
-              flat
-              v-html="transformHTML(entry.fields.Notes)"
-              :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+        <TkCard style="max-height: 78vh" class="scroll">
+          <TkCard
+            flat
+            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+            v-html="transformHTML(entry.fields.Notes)"
           />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+        </TkCard>
+      </TkCard>
+    </TkModalDialog>
 
     <DialogPreview
       :visible.sync="isPreviewIconVisible"
     >
       <IconShow
-          size="256px"
-          :item="entry"
+        size="256px"
+        :item="entry"
       />
     </DialogPreview>
   </div>
 </template>
 
 <script>
-import marked from "@/utils/marked"
-import store from "@/store"
-import IconShow from "@/components/IconShow"
-import DateTimeEdit from "@/components/DateTimeEdit"
-import DialogPreview from "./DialogPreview"
+import marked from '@/utils/marked'
+import store from '@/store'
+import IconShow from '@/components/IconShow'
+import DateTimeEdit from '@/components/DateTimeEdit'
+import DialogPreview from './DialogPreview'
 
 export default {
-  name: "DialogPreviewEntry",
+  name: 'DialogPreviewEntry',
   components: {
     IconShow,
     DialogPreview,
@@ -102,6 +100,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>

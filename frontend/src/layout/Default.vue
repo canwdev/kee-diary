@@ -1,28 +1,22 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-inner-loading class="_loading" :showing="isGlobalLoading">
-      <q-spinner-gears
-          color="primary"
-          size="5em"
-      />
-    </q-inner-loading>
+  <div>
+    <TkLoading :visible="isGlobalLoading">
+    </TkLoading>
 
     <DefaultHeader
         :title="pkg.appName"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
         @onBackClick="handleBack"
     />
-    <q-page-container>
-      <router-view/>
-    </q-page-container>
+    <router-view/>
     <DefaultDrawer v-model="leftDrawerOpen"/>
-  </q-layout>
+  </div>
 </template>
 
 <script>
-import DefaultDrawer from "../components/DefaultDrawer"
-import DefaultHeader from "../components/DefaultHeader"
-import {registerKeyShortcuts, unRegisterKeyShortcuts} from "@/utils/key-shortcuts"
+import DefaultDrawer from '../components/DefaultDrawer'
+import DefaultHeader from '../components/DefaultHeader'
+import {registerKeyShortcuts, unRegisterKeyShortcuts} from '@/utils/key-shortcuts'
 
 export default {
   name: 'LayoutDefault',
@@ -59,8 +53,4 @@ export default {
 }
 </script>
 
-<style scoped>
-._loading {
-  z-index: 3000;
-}
-</style>
+

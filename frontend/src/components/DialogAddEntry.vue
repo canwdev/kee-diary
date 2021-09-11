@@ -1,50 +1,48 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card style="width: 320px">
+    <TkCard style="width: 320px">
       <form @submit.prevent="handleSubmit">
-        <q-card-section>
+        <TkCard>
           <div class="text-h6 row items-center">
             <div class="text-h6 row items-center">
               <q-icon name="add"/>
               <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
             </div>
             <q-space/>
-            <q-btn icon="close" flat round dense v-close-popup/>
+            <TkButton v-close-popup icon="close" flat round dense/>
           </div>
-        </q-card-section>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-section class="form-wrap q-pa-md q-gutter-md">
+        <TkCard class="form-wrap q-pa-md q-gutter-md">
           <div class="form-row">
             <div class="row-title q-mb-xs">{{ $t('choose-group') }}:</div>
             <div class="row-content">
-              <q-btn
-                  @click="isDialogChooseGroupVisible = true"
-                  outline
-                  style="width: 100%;"
+              <TkButton
+                outline
+                style="width: 100%;"
+                @click="isDialogChooseGroupVisible = true"
               >
                 <IconShow
-                    :item="{icon: groupInfo.iconIndex}"
+                  :item="{icon: groupInfo.iconIndex}"
                 />
                 {{ groupInfo.name }}
-              </q-btn>
+              </TkButton>
             </div>
           </div>
 
           <div class="form-row">
             <div class="row-title q-mb-xs">{{ $t('home.title') }}:</div>
             <div class="row-content">
-              <q-input
-                  required
-                  dense
-                  outlined
-                  v-model="form.title"
-                  autofocus
+              <TkInput
+                v-model="form.title"
+                required
+                dense
+                outlined
+                autofocus
               />
             </div>
           </div>
@@ -53,16 +51,16 @@
             <div class="form-row text-center">
               <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
               <div class="row-content">
-                <q-btn
-                    flat
-                    round
-                    @click="isDialogChooseIconVisible = true"
+                <TkButton
+                  flat
+                  round
+                  @click="isDialogChooseIconVisible = true"
                 >
                   <IconShow
-                      size="45px"
-                      :item="form"
+                    size="45px"
+                    :item="form"
                   />
-                </q-btn>
+                </TkButton>
               </div>
             </div>
 
@@ -70,8 +68,8 @@
               <div class="row-title q-mb-xs">{{ $t('foreground') + ' ' + $t('color') }}</div>
               <div class="row-content">
                 <ColorItem
-                    @click.native="showColorChooser(true)"
-                    :color="form.fgColor"
+                  :color="form.fgColor"
+                  @click.native="showColorChooser(true)"
                 />
               </div>
             </div>
@@ -80,63 +78,63 @@
               <div class="row-title q-mb-xs">{{ $t('background') + ' ' + $t('color') }}</div>
               <div class="row-content">
                 <ColorItem
-                    @click.native="showColorChooser(false)"
-                    :color="form.bgColor"
+                  :color="form.bgColor"
+                  @click.native="showColorChooser(false)"
                 />
               </div>
             </div>
           </div>
 
-        </q-card-section>
+        </TkCard>
 
         <q-separator/>
 
-        <q-card-actions align="right">
-          <q-btn
-              flat
-              :label="$t('cancel')"
-              color="primary"
-              v-close-popup
+        <TkCard align="right">
+          <TkButton
+            v-close-popup
+            flat
+            :label="$t('cancel')"
+            color="primary"
           />
-          <q-btn
-              :disable="!form.title"
-              flat
-              :label="$t('confirm')"
-              type="submit"
-              color="primary"
-              v-close-popup
+          <TkButton
+            v-close-popup
+            :disable="!form.title"
+            flat
+            :label="$t('confirm')"
+            type="submit"
+            color="primary"
           />
-        </q-card-actions>
+        </TkCard>
       </form>
-    </q-card>
+    </TkCard>
 
     <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="form.iconIndex"
-        @onChoose="handleUpdateIcon"
+      :visible.sync="isDialogChooseIconVisible"
+      :index="form.iconIndex"
+      @onChoose="handleUpdateIcon"
     />
     <DialogChooseGroup
-        :visible.sync="isDialogChooseGroupVisible"
-        @onChoose="handleChooseGroup"
+      :visible.sync="isDialogChooseGroupVisible"
+      @onChoose="handleChooseGroup"
     />
     <DialogChooseColor
-        ref="colorChooser"
-        :item="form"
-        :visible.sync="isDialogChooseColorVisible"
-        @onChoose="handleUpdateColor"
+      ref="colorChooser"
+      :item="form"
+      :visible.sync="isDialogChooseColorVisible"
+      @onChoose="handleUpdateColor"
     />
 
-  </q-dialog>
+  </TkModalDialog>
 </template>
 
 <script>
-import store from "@/store"
+import store from '@/store'
 
-import IconShow from "@/components/IconShow"
-import ColorItem from "./ColorItem"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import DialogChooseGroup from "@/components/DialogChooseGroup"
-import DialogChooseColor from "@/components/DialogChooseColor"
+import IconShow from '@/components/IconShow'
+import ColorItem from './ColorItem'
+import DialogChooseIcon from '@/components/DialogChooseIcon'
+import DialogChooseGroup from '@/components/DialogChooseGroup'
+import DialogChooseColor from '@/components/DialogChooseColor'
 
 const initForm = Object.freeze({
   groupUuid: null,
@@ -146,7 +144,7 @@ const initForm = Object.freeze({
   fgColor: null
 })
 export default {
-  name: "DialogAddEntry",
+  name: 'DialogAddEntry',
   components: {
     IconShow,
     ColorItem,
@@ -232,6 +230,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>

@@ -1,45 +1,47 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card style="min-width: 400px">
-      <q-card-section>
+    <TkCard style="min-width: 400px">
+      <TkCard>
         <div class="text-h6 row items-center">
-          <span>{{$t('choose-group')}}</span>
+          <span>{{ $t('choose-group') }}</span>
         </div>
-      </q-card-section>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md" v-if="mVisible">
-          <p v-if="showTips" class="text-weight-thin">{{$t('tip')}}: {{$t('kdbx.do-not-move-to-the-group-itself')}}</p>
+      <TkCard style="max-height: 70vh" class="scroll">
+        <TkCard v-if="mVisible" flat class="q-gutter-md">
+          <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{ $t('kdbx.do-not-move-to-the-group-itself') }}</p>
           <GroupTree
-              :selectedGroupUuid.sync="selected"
+            :selected-group-uuid.sync="selected"
           />
-        </q-card>
-      </q-card-section>
+        </TkCard>
+      </TkCard>
 
       <q-separator/>
 
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
-        <q-btn
-            :disabled="!selected"
-            @click="handleChoose"
-            flat :label="$t('choose')" color="primary" v-close-popup/>
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      <TkCard>
+        <TkButton v-close-popup flat :label="$t('cancel')" color="primary"/>
+        <TkButton
+          v-close-popup
+          :disabled="!selected"
+          flat
+          :label="$t('choose')"
+          color="primary"
+          @click="handleChoose"
+        />
+      </TkCard>
+    </TkCard>
+  </TkModalDialog>
 </template>
 
 <script>
-import GroupTree from "@/views/Home/GroupTree"
+import GroupTree from '@/views/Home/GroupTree'
 
 export default {
-  name: "DialogChooseGroup",
+  name: 'DialogChooseGroup',
   components: {
     GroupTree
   },
@@ -76,6 +78,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

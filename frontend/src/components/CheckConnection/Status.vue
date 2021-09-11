@@ -1,17 +1,16 @@
 <template>
-  <span class="status-item" v-if="type === ConnectType.CHECKING">
-    <q-spinner-ios />
-  </span>
-  <span class="status-item online" v-else-if="type === ConnectType.ONLINE"><q-icon name="public"/> Online</span>
-  <span class="status-item offline" v-else-if="type === ConnectType.OFFLINE"><q-icon name="public_off"/> Offline</span>
-  <span class="status-item unknown" v-else><q-icon name="help"/> Unknown</span>
+  <TkLoading v-if="type === ConnectType.CHECKING" class="status-item">
+  </TkLoading>
+  <span v-else-if="type === ConnectType.ONLINE" class="status-item online"> Online</span>
+  <span v-else-if="type === ConnectType.OFFLINE" class="status-item offline"> Offline</span>
+  <span v-else class="status-item unknown"> Unknown</span>
 </template>
 
 <script>
-import {ConnectType} from "./enum"
+import {ConnectType} from './enum'
 
 export default {
-  name: "Status",
+  name: 'Status',
   props: {
     type: {
       type: String,
@@ -26,16 +25,18 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .status-item {
   &.online {
-    color $green
+    color: green;
   }
+
   &.offline {
-    color $grey
+    color: gray;
   }
+
   &.unknown {
-    color $yellow
+    color: sandybrown;
   }
 }
 </style>

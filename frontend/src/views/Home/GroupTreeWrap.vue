@@ -1,52 +1,53 @@
 <template>
   <div class="group-tree-wrap">
     <GroupTree
-        ref="groupTree"
-        :selectedGroupUuid.sync="mSelectedGroupUuid"
+      ref="groupTree"
+      :selected-group-uuid.sync="mSelectedGroupUuid"
     >
-      <template v-slot:default="prop">
-        <ContextMenuCommon
-            :is-group="true"
-            :target-data="prop.node"
-            :hidden-items="['preview', 'edit', 'changeColor']"
-            @onCreateEntry="handleCreateEntry"
-            @onCreateGroup="handleCreateGroup"
-            @onRename="handleRename"
-            @onChangeIcon="handleShowChangeIcon"
-            @onMove="handleShowMove"
-            @onDelete="handleDelete"
-        />
-      </template>
+<!--      <template v-slot:default="prop">-->
+<!--        <ContextMenuCommon-->
+<!--          :is-group="true"-->
+<!--          :target-data="prop.node"-->
+<!--          :hidden-items="['preview', 'edit', 'changeColor']"-->
+<!--          @onCreateEntry="handleCreateEntry"-->
+<!--          @onCreateGroup="handleCreateGroup"-->
+<!--          @onRename="handleRename"-->
+<!--          @onChangeIcon="handleShowChangeIcon"-->
+<!--          @onMove="handleShowMove"-->
+<!--          @onDelete="handleDelete"-->
+<!--        />-->
+<!--        -->
+<!--      </template>-->
     </GroupTree>
 
     <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="previewTarget.iconIndex"
-        @onChoose="handleUpdateIcon"
+      :visible.sync="isDialogChooseIconVisible"
+      :index="previewTarget.iconIndex"
+      @onChoose="handleUpdateIcon"
     />
     <DialogChooseGroup
-        :visible.sync="isDialogChooseGroupVisible"
-        :show-tips="true"
-        @onChoose="handleMoveEntry"
+      :visible.sync="isDialogChooseGroupVisible"
+      :show-tips="true"
+      @onChoose="handleMoveEntry"
     />
 
   </div>
 </template>
 
 <script>
-import store from "@/store"
-import GroupTree from "./GroupTree"
-import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import DialogChooseGroup from "@/components/DialogChooseGroup"
-import {addGroup, moveItems} from "@/utils/kdbx-utils"
-import {handleCommonDelete, handleCommonRename} from "./common-action"
+import store from '@/store'
+import GroupTree from './GroupTree'
+// import ContextMenuCommon from '@/components/ContextMenuCommon'
+import DialogChooseIcon from '@/components/DialogChooseIcon'
+import DialogChooseGroup from '@/components/DialogChooseGroup'
+import {addGroup, moveItems} from '@/utils/kdbx-utils'
+import {handleCommonDelete, handleCommonRename} from './common-action'
 
 export default {
-  name: "GroupTreeView",
+  name: 'GroupTreeView',
   components: {
     GroupTree,
-    ContextMenuCommon,
+    // ContextMenuCommon,
     DialogChooseIcon,
     DialogChooseGroup
   },
@@ -120,5 +121,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-</style>

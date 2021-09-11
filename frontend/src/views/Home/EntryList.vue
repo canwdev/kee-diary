@@ -1,44 +1,39 @@
 <template>
-  <div class="q-px-md q-py-sm q-pb-lg">
-    <q-table
-        dense
-        :data="entryList"
-        :columns="entryTableColumns"
-        row-key="id"
-        :pagination.sync="pagination"
-        selection="multiple"
-        :selected-rows-label="getSelectedString"
-        :selected.sync="selected"
-    >
-      <template v-slot:body="props">
-        <q-tr :props="props"
-              @click="handleRowClick(props.row)"
-              @contextmenu="handleRowContextMenu(props.row)"
+  <div class="">
+
+    <div class="entry-table">
+      <div class="table-head">
+        <div class="t-col">★</div>
+        <div class="t-col">{{ $t('home.title') }}</div>
+        <div class="t-col">{{ $t('home.created') }}</div>
+        <div class="t-col">{{ $t('home.modified') }}</div>
+      </div>
+
+      <div class="table-body">
+        <div
+            v-for="item in entryList"
+            :key="item.id"
+            class="relative-position table-row _check"
         >
-          <q-td @click.stop="">
-            <q-checkbox dense v-model="props.selected" color="secondary"/>
-          </q-td>
-          <q-td @click.stop="" key="icon" class="text-center" style="width: 40px">
+
+
+          <div class="t-col">
             <IconShow
                 class="cursor-pointer"
-                :item="props.row"
-                @click.native.stop="handlePreview(props.row)"
+                :item="item"
+                @click.native.stop="handlePreview(item)"
             />
-          </q-td>
-          <q-td class="cursor-pointer" key="title" :props="props">
-            {{ props.row.title }}
-          </q-td>
-          <q-td class="cursor-pointer" key="creationTime" :props="props">{{
-              formatDateLite(props.row.creationTime)
-            }}
-          </q-td>
-          <q-td class="cursor-pointer" key="lastModTime" :props="props">{{
-              formatDateLite(props.row.lastModTime)
-            }}
-          </q-td>
-        </q-tr>
-      </template>
-    </q-table>
+          </div>
+          <div class="t-col">{{ item.title }}</div>
+          <div class="t-col">{{ formatDateLite(item.creationTime) }}</div>
+          <div class="t-col">{{ formatDateLite(item.lastModTime) }}</div>
+        </div>
+
+
+      </div>
+
+
+    </div>
 
     <ContextMenuCommon
         :target-data="selected"
@@ -75,16 +70,16 @@
 </template>
 
 <script>
-import {formatDateLite} from "@/utils"
-import store from "@/store"
-import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogPreviewEntry from "@/components/DialogPreviewEntry"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import DialogChooseColor from "@/components/DialogChooseColor"
-import DialogChooseGroup from "@/components/DialogChooseGroup"
-import IconShow from "@/components/IconShow"
-import {getGroupEntries, moveItems} from "@/utils/kdbx-utils"
-import {handleCommonDelete, handleCommonRename} from "./common-action"
+import {formatDateLite} from '@/utils'
+import store from '@/store'
+import ContextMenuCommon from '@/components/ContextMenuCommon'
+import DialogPreviewEntry from '@/components/DialogPreviewEntry'
+import DialogChooseIcon from '@/components/DialogChooseIcon'
+import DialogChooseColor from '@/components/DialogChooseColor'
+import DialogChooseGroup from '@/components/DialogChooseGroup'
+import IconShow from '@/components/IconShow'
+import {getGroupEntries, moveItems} from '@/utils/kdbx-utils'
+import {handleCommonDelete, handleCommonRename} from './common-action'
 
 export default {
   name: 'EntryList',
@@ -105,24 +100,6 @@ export default {
   data() {
     return {
       entryList: [],
-      entryTableColumns: Object.freeze([
-        {name: 'icon', align: 'center', label: '★', field: 'iconImg'},
-        {name: 'title', align: 'left', label: this.$t('home.title'), field: 'title', sortable: true},
-        {
-          name: 'creationTime',
-          align: 'center',
-          label: this.$t('home.created'),
-          field: 'creationTime',
-          sortable: true
-        },
-        {
-          name: 'lastModTime',
-          align: 'center',
-          label: this.$t('home.modified'),
-          field: 'lastModTime',
-          sortable: true
-        },
-      ]),
       selected: [],
       isDialogChooseIconVisible: false,
       isDialogChooseColorVisible: false,
@@ -242,8 +219,46 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
->>> .q-table--dense .q-table th, .q-table--dense .q-table td {
-  padding: 10px 8px !important;
+<style lang="scss" scoped>
+.entry-table {
+  width: 100%;
+  flex: 1;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .table-head {
+    height: 50px;
+    opacity: 1;
+    border-radius: 4px 4px 0px 0px;
+    flex-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-body {
+    flex: 1;
+    overflow: auto;
+    overflow-y: overlay; // 滚动条覆盖
+
+    ::v-deep .table-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 50px;
+      border-bottom: 1px solid gray;
+    }
+  }
+
+  ::v-deep .t-col {
+    //&._check {
+    //  width: 107px;
+    //  text-align: center;
+    //}
+
+  }
 }
+
 </style>
