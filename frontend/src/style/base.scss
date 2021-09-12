@@ -7,19 +7,15 @@ body {
   margin: 0;
 }
 
-
-.single-line-hide {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+button, input, textarea, a, {
+  &:focus {
+    //outline: 1px solid $primary;
+    outline: none;
+    box-shadow: 0 0 0 0.12rem $primary inset;
+  }
 }
 
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(160, 174, 192, 0.4);
+hr {
+  border-top: none;
+  border-color: $border-color;
 }

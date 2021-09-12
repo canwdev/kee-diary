@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import GroupTree from '@/views/Home/GroupTree'
+import GroupTree from '@/components/GroupTree'
 
 export default {
   name: 'DialogChooseGroup',

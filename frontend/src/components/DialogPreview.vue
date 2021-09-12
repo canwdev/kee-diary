@@ -1,10 +1,7 @@
 <template>
-  <TkModalDialog v-model="mVisible">
-    <TkCard class="q-pa-lg">
-
-      <TkCard class="q-pa-lg text-center">
-        <slot></slot>
-      </TkCard>
+  <TkModalDialog show-close v-model="mVisible">
+    <TkCard class="text-center overflow-hidden">
+      <slot></slot>
     </TkCard>
   </TkModalDialog>
 </template>

@@ -11,13 +11,13 @@
               placeholder="entry.fields.Title"
           >
             <template v-slot:prepend>
-              <IconShow
+              <ItemIcon
                   class="cursor-pointer"
                   :item="currentEntry"
                   @click.native="isDialogPreviewVisible = true"
               >
                 {{ $t('preview') }} (Ctrl+/)
-              </IconShow>
+              </ItemIcon>
             </template>
 
             <ContextMenuCommon
@@ -98,10 +98,6 @@
       </TkCard>
     </div>
 
-    <DialogPreviewEntry
-        :visible.sync="isDialogPreviewVisible"
-        :entry="currentEntry"
-    />
 
     <DialogChooseIcon
         :visible.sync="isDialogChooseIconVisible"
@@ -142,11 +138,10 @@ import 'codemirror/theme/the-matrix.css'
 
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
 import DateTimeEdit from '../components/DateTimeEdit'
-import DialogPreviewEntry from '@/components/DialogPreviewEntry'
 import {notifyError, notifySuccess} from '../utils'
 import ContextMenuCommon from '@/components/ContextMenuCommon'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
-import IconShow from '@/components/IconShow'
+import ItemIcon from '@/components/ItemIcon'
 import DialogChooseColor from '@/components/DialogChooseColor'
 
 import {textFilters as filters} from '@/enum'
@@ -155,10 +150,9 @@ export default {
   name: 'Detail',
   components: {
     DateTimeEdit,
-    DialogPreviewEntry,
     ContextMenuCommon,
     DialogChooseIcon,
-    IconShow,
+    ItemIcon,
     DialogChooseColor
   },
   data() {

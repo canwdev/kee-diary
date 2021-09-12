@@ -4,7 +4,7 @@
     :class="{active: isActive, 'no-color': !color}"
     :style="{background: color}"
   >
-    <q-tooltip v-if="name">{{ name }}</q-tooltip>
+    {{ name }}
   </span>
 </template>
 

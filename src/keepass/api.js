@@ -30,11 +30,21 @@ const checkIsOpen = () => {
   return !!kInstance.db
 }
 
+const getGroupTree = async (groupUuid) => {
+  return kInstance.getGroupTree(groupUuid)
+}
+
+const getGroupEntries = async (groupUuid) => {
+  return kInstance.getGroupEntries(groupUuid)
+}
+
 const api = {
   openDatabase,
   closeDatabase,
   saveDatabase,
-  checkIsOpen
+  checkIsOpen,
+  getGroupTree,
+  getGroupEntries,
 }
 
 const apiList = []

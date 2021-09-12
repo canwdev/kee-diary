@@ -9,7 +9,8 @@
     "settings": "Settings",
     "listView": "List View",
     "calendarView": "Calendar View",
-    "darkMode": "Dark Mode"
+    "darkMode": "Dark Mode",
+    "language": "Language"
   },
   "header": {
     "unlocked": "(Unlocked)",

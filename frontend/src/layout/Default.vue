@@ -2,13 +2,13 @@
   <div class="default-layout">
     <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
-    <DefaultHeader
+    <NavHeader
         title="KeeDiary"
         @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
         @onBackClick="handleBack"
     />
 
-    <DefaultDrawer v-model="leftDrawerOpen"/>
+    <NavDrawer v-model="leftDrawerOpen"/>
 
     <div class="main-content">
       <router-view/>
@@ -17,15 +17,15 @@
 </template>
 
 <script>
-import DefaultDrawer from '../components/DefaultDrawer'
-import DefaultHeader from '../components/DefaultHeader'
+import NavDrawer from '../components/NavDrawer'
+import NavHeader from '../components/NavHeader'
 import {registerKeyShortcuts, unRegisterKeyShortcuts} from '@/utils/key-shortcuts'
 
 export default {
   name: 'LayoutDefault',
   components: {
-    DefaultDrawer,
-    DefaultHeader,
+    NavDrawer,
+    NavHeader,
   },
   data() {
     return {

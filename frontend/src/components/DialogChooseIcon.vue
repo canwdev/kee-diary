@@ -5,7 +5,7 @@
     <TkCard>
       <TkCard>
         <div class="text-h6 row items-center">
-          <IconShow
+          <ItemIcon
             :item="{icon:index}"
           />
           <span class="q-ml-md">{{ $t('choose-icon') }}</span>
@@ -25,13 +25,11 @@
             @click="handleSelect(i)"
             @contextmenu="handlePreview(i)"
           >
-            <IconShow
+            <ItemIcon
               :item="{icon:i}"
               :icon-scale="1"
             />
-            <q-tooltip>
-              {{ item.name }}
-            </q-tooltip>
+            {{ item.name }}
           </TkButton>
         </TkCard>
       </TkCard>
@@ -53,7 +51,7 @@
     <DialogPreview
       :visible.sync="isPreviewIconVisible"
     >
-      <IconShow
+      <ItemIcon
         size="256px"
         :item="{icon:previewIndex}"
         :icon-scale="1"
@@ -64,12 +62,12 @@
 
 <script>
 import icons from '@/assets/db-icons'
-import IconShow from './IconShow'
+import ItemIcon from './ItemIcon'
 import DialogPreview from './DialogPreview'
 
 export default {
   components: {
-    IconShow,
+    ItemIcon,
     DialogPreview
   },
   props: {

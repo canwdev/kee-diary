@@ -26,7 +26,7 @@
                 class="list-btn"
                 @click="isDialogChooseGroupVisible = true"
               >
-                <IconShow
+                <ItemIcon
                   :item="{icon: groupInfo.iconIndex}"
                 />
                 {{ groupInfo.name }}
@@ -83,7 +83,7 @@
           }"
           @click="handlePreview(item)"
         >
-          <IconShow
+          <ItemIcon
             :item="{iconIndex: item.icon}"
             size="16px"
             :icon-scale="1"
@@ -97,11 +97,6 @@
 
     </TkCard>
 
-    <DialogPreviewEntry
-      :visible.sync="isDialogPreviewVisible"
-      :entry="currentEntry"
-    />
-
     <DialogChooseGroup
       :visible.sync="isDialogChooseGroupVisible"
       @onChoose="getGroupInfo"
@@ -112,17 +107,15 @@
 
 <script>
 import store from '@/store'
-import DialogPreviewEntry from '@/components/DialogPreviewEntry'
 import DialogChooseGroup from '@/components/DialogChooseGroup'
-import IconShow from '@/components/IconShow'
+import ItemIcon from '@/components/ItemIcon'
 import {searchEntries} from '@/utils/kdbx-utils'
 
 export default {
   name: 'DialogSearch',
   components: {
     DialogChooseGroup,
-    DialogPreviewEntry,
-    IconShow
+    ItemIcon
   },
   props: {
     visible: {

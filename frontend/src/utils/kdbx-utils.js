@@ -223,7 +223,7 @@ export function addEntry(db, groupUuid, config = {}) {
 
     // console.log(entry)
 
-    store.commit('setCurrentGroupUuid', group.uuid)
+    store.commit('setSelectedGroup', group.uuid)
     store.commit('setCurrentEntry', entry)
     store.commit('setIsNotSave')
 
@@ -286,7 +286,7 @@ export function moveItems(db, items, groupUuid) {
       db.move(items, group)
     }
     store.commit('setIsNotSave')
-    // store.commit('setCurrentGroupUuid', groupUuid)
+    // store.commit('setSelectedGroup', groupUuid)
     return true
   } catch (e) {
     notifyError(e.message)

@@ -1,6 +1,6 @@
 {
-  "name": "KeeDiary3",
-  "version": "0.1.0",
+  "name": "kee-diary-frontend",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,20 +8,21 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@canwdev/tank-ui": "https://github.com/canwdev/tank-ui.git",
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
+    "@canwdev/tank-ui": "^0.2.6",
     "axios": "^0.21.0",
     "codemirror": "^5.57.0",
+    "core-js": "^3.6.5",
     "hypermd": "^0.3.11",
     "kdbxweb": "https://gitee.com/canwdev/kdbxweb.git",
     "lodash": "^4.17.20",
     "marked": "^1.1.1",
+    "normalize.css": "^8.0.1",
     "solarlunar": "^2.0.7",
     "v-calendar": "^1.1.1",
-    "vue-i18n": "^8.22.0"
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.22.0",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

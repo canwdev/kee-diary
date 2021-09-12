@@ -19,3 +19,11 @@ export function saveDatabase() {
 export function checkIsOpen() {
   return ipcSendEventSync('ipcKdbx_checkIsOpen')
 }
+
+export function getGroupTree(groupUuid) {
+  return ipcSendEventAsync('ipcKdbx_getGroupTree', groupUuid)
+}
+
+export function getGroupEntries(groupUuid) {
+  return ipcSendEventAsync('ipcKdbx_getGroupEntries', groupUuid)
+}

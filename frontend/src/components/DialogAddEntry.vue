@@ -25,7 +25,7 @@
                 style="width: 100%;"
                 @click="isDialogChooseGroupVisible = true"
               >
-                <IconShow
+                <ItemIcon
                   :item="{icon: groupInfo.iconIndex}"
                 />
                 {{ groupInfo.name }}
@@ -55,7 +55,7 @@
                   round
                   @click="isDialogChooseIconVisible = true"
                 >
-                  <IconShow
+                  <ItemIcon
                     size="45px"
                     :item="form"
                   />
@@ -129,7 +129,7 @@
 <script>
 import store from '@/store'
 
-import IconShow from '@/components/IconShow'
+import ItemIcon from '@/components/ItemIcon'
 import ColorItem from './ColorItem'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
 import DialogChooseGroup from '@/components/DialogChooseGroup'
@@ -145,7 +145,7 @@ const initForm = Object.freeze({
 export default {
   name: 'DialogAddEntry',
   components: {
-    IconShow,
+    ItemIcon,
     ColorItem,
     DialogChooseIcon,
     DialogChooseGroup,

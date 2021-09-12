@@ -1,24 +1,25 @@
 <template>
   <div class="default-header">
-    <TkNavBar
-        :menu="[
-        {title: title},
-        {title: isUnlocked ? $t('header.unlocked') : '' }
-      ]"
-    >
+    <TkNavBar>
       <template slot="left">
-        <TkButton
-            v-show="isShowBack"
-            label="Back"
-            @click="$emit('onBackClick')"
-        />
-        <TkButton
-            label="Menu"
-            @click="$emit('onMenuClick')"
-        />
+        <div class="actions-btn">
+          <TkButton
+              label="Menu"
+              @click="$emit('onMenuClick')"
+          />
+          <TkButton
+              v-show="isShowBack"
+              label="Back"
+              @click="$emit('onBackClick')"
+          />
+        </div>
+
+      </template>
+      <template slot="center">
+        <div class="main-title">{{ title }}</div> {{ isUnlocked ? $t('header.unlocked') : '' }}
       </template>
       <template slot="right">
-        <div class="flex items-center justify-end">
+        <div class="actions-btn flex items-center justify-end">
           <template v-if="isUnlocked">
             <TkButton
                 @click="isDialogSearchVisible = true"
@@ -49,11 +50,11 @@
 
 <script>
 import store from '@/store'
-import {closeKdbx, saveKdbx} from '../utils/kdbx-utils'
+import {closeDatabase, checkIsOpen} from '@/api'
 import DialogSearch from './DialogSearch'
 
 export default {
-  name: 'DefaultHeader',
+  name: 'NavHeader',
   components: {
     DialogSearch
   },
@@ -84,19 +85,30 @@ export default {
     }
   },
   methods: {
-    closeKdbx() {
-      closeKdbx()
+    async closeKdbx() {
+      await closeDatabase()
+      store.commit('setIsUnlocked', checkIsOpen())
+      await this.$router.replace({
+        name: 'Login'
+      })
     },
-    saveKdbx
+    saveKdbx() {
+
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
-.home-header {
+.default-header {
   .main-title {
     font-weight: bold;
+  }
+  .actions-btn {
+    button + button {
+      margin-left: 10px;
+    }
   }
 }
 </style>

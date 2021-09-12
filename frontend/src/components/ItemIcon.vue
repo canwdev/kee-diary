@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="item"
-    class="icon-show relative-position"
+    class="item-icon relative-position"
     :size="size"
     :style="{background: item.bgColor}"
   >
@@ -19,7 +19,7 @@
 import icons from '@/assets/db-icons'
 
 export default {
-  name: 'IconShow',
+  name: 'ItemIcon',
   props: {
     item: {
       type: Object,
@@ -41,7 +41,7 @@ export default {
   methods: {
     getIconSrc(item) {
       const index = item.iconIndex !== undefined ? item.iconIndex : item.icon
-      return icons.list[index].file
+      return icons.list[index] && icons.list[index].file
     }
   },
   computed: {
@@ -70,8 +70,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-show {
+.item-icon {
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .color-fg {
     position: absolute;
@@ -79,9 +82,9 @@ export default {
     right: -3px;
     display: block;
     border-radius: 50%;
-    width: 8px;
-    height: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    width: 7px;
+    height: 7px;
+    border: 1px solid rgba(114, 114, 114, 0.5);
   }
 
   .isPixel {

@@ -9,7 +9,7 @@ module.exports = {
     sourceMap: false,
     loaderOptions: {
       sass: {
-        prependData: `@import "@/style/base.scss";`
+        prependData: `@import "@/style/variables.scss";`
       }
     }
   },

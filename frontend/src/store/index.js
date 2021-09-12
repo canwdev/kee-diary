@@ -33,7 +33,7 @@ export default new Vuex.Store({
     isGlobalLoading: false, // 全局加载中
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isNotSave: false, // 有未保存的变更
-    currentGroupUuid: null, // 当前选中的群组 Uuid 对象
+    selectedGroup: null, // 当前选中的群组
     currentEntry: null, // 当前打开的条目对象
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
     calendarDate: new Date() // 日历视图
@@ -50,7 +50,7 @@ export default new Vuex.Store({
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
     isNotSave: state => state.isNotSave,
-    currentGroupUuid: state => state.currentGroupUuid,
+    selectedGroup: state => state.selectedGroup,
     currentEntry: state => state.currentEntry,
     currentEntryPagination: state => state.currentEntryPagination,
     isEntryOpen: state => {
@@ -105,14 +105,8 @@ export default new Vuex.Store({
       window.electronAPI.setShowExitPrompt(val)
       state.isNotSave = val
     },
-    setCurrentGroupUuid: (state, val) => {
-      if (state.currentGroupUuid && val) {
-        // prevent double set
-        if (state.currentGroupUuid.id === val.id) {
-          return
-        }
-      }
-      state.currentGroupUuid = val
+    setSelectedGroup: (state, val) => {
+      state.selectedGroup = val
       state.currentEntryPagination = initEntryListPagination
       // console.log('resetPagination', state.currentEntryPagination)
     },

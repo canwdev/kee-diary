@@ -1,81 +1,95 @@
 <template>
-  <div>
-    <div
-        class="home-page"
-    >
-      <div class="nav-tree">
-        <div class="">
-          <GroupTreeWrap
-              :selected-group-uuid.sync="currentGroupUuid"
-              @onCreateEntry="handleAddEntryFromGroup"
-          />
-        </div>
-        <div style="height: 80px"></div>
-      </div>
-
-      <div v-if="false" class="home-right">
-        <EntryList
-            v-if="isListView"
-            :current-group-uuid="currentGroupUuid"
-        />
-
-        <CalendarView
-            v-else
-            :current-group-uuid="currentGroupUuid"
+  <div
+      class="home-page"
+  >
+    <div class="nav-tree">
+      <div class="">
+        <GroupView
+            :selected.sync="selectedGroup"
+            @onCreateEntry="handleAddEntryFromGroup"
         />
       </div>
+      <div style="height: 80px"></div>
+    </div>
 
+    <div class="home-right">
+      <EntryList
+          v-if="isListView"
+          :selectedGroup="selectedGroup"
+      />
+
+<!--      <CalendarView-->
+<!--          v-else-->
+<!--          :current-group-uuid="selectedGroup"-->
+<!--      />-->
     </div>
 
     <div class="sticky-area">
-      <TkButton fab icon="add" color="secondary" :label="$t('home.add-entry')" @click="isDialogAddEntryVisible = true"/>
+      <TkButton fab icon="add" color="secondary" :label="$t('home.add-entry')" @click="isShowAddEntry = true"/>
     </div>
 
     <DialogAddEntry
         ref="addEntry"
-        :visible.sync="isDialogAddEntryVisible"
+        :visible.sync="isShowAddEntry"
         @confirm="handleAddEntry"
     />
+
+    <DialogEntryPreview
+      :visible.sync="isShowPreview"
+      :item="previewItem"
+    />
+
   </div>
 </template>
 
 <script>
 import store from '@/store'
 import {addEntry} from '@/utils/kdbx-utils'
-import GroupTreeWrap from './GroupTreeWrap'
-import EntryList from '@/views/Home/EntryList'
-import CalendarView from '@/views/Home/CalendarView'
+import GroupView from './GroupView'
+import EntryList from '@/components/EntryList'
+// import CalendarView from '@/views/Home/CalendarView'
 import DialogAddEntry from '@/components/DialogAddEntry'
+import DialogEntryPreview from '@/components/DialogEntryPreview'
+import mainBus, {BUS_SHOW_PREVIEW} from "@/utils/bus"
 
 export default {
-  name: 'DbListView',
+  name: 'MainView',
   components: {
     EntryList,
-    GroupTreeWrap,
-    CalendarView,
-    DialogAddEntry
+    GroupView,
+    // CalendarView,
+    DialogAddEntry,
+    DialogEntryPreview
   },
   data() {
     return {
       isList: false,
-      isDialogAddEntryVisible: false
+      isShowAddEntry: false,
+      isShowPreview: false,
+      previewItem: null
     }
   },
   computed: {
     database: {
       get: () => store.getters.database
     },
-    currentGroupUuid: {
-      get: () => store.getters.currentGroupUuid,
-      set: val => store.commit('setCurrentGroupUuid', val)
+    selectedGroup: {
+      get: () => store.getters.selectedGroup,
+      set: val => store.commit('setSelectedGroup', val)
     },
     isListView: {
       get: () => store.getters.isListView,
     }
   },
+  mounted() {
+    mainBus.$on(BUS_SHOW_PREVIEW, this.handlePreviewItem)
+  },
+  beforeDestroy() {
+    mainBus.$off(BUS_SHOW_PREVIEW, this.handlePreviewItem)
+  },
   methods: {
     handleAddEntry(data) {
-      const result = addEntry(this.database, data.groupUuid || this.currentGroupUuid, {
+      const result = addEntry(this.database, data.groupUuid || this.selectedGroup, {
         title: data.title,
         icon: data.iconIndex,
         bgColor: data.bgColor,
@@ -88,10 +102,14 @@ export default {
       }
     },
     handleAddEntryFromGroup(group) {
-      this.isDialogAddEntryVisible = true
+      this.isShowAddEntry = true
       this.$nextTick(() => {
         this.$refs.addEntry.getGroupInfo(group)
       })
+    },
+    handlePreviewItem(item) {
+      this.isShowPreview = true
+      this.previewItem = item
     }
   }
 }
@@ -104,6 +122,7 @@ export default {
 
   .home-right {
     flex: 1;
+    border-left: $layout-border;
   }
 }
 

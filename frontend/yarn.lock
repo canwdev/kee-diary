@@ -908,9 +908,10 @@
   resolved "https://registry.nlark.com/@braintree/sanitize-url/download/@braintree/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
   integrity sha1-j/cdUQU81e5JgeWlAdgKU2JE9/0=
 
-"@canwdev/tank-ui@https://github.com/canwdev/tank-ui.git":
-  version "0.2.3"
-  resolved "https://github.com/canwdev/tank-ui.git#379917eeb92259b5fbbb4ca1b280d6c2cef69df6"
+"@canwdev/tank-ui@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.nlark.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.6.tgz?cache=0&sync_timestamp=1631414737309&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40canwdev%2Ftank-ui%2Fdownload%2F%40canwdev%2Ftank-ui-0.2.6.tgz#1bda6664b1fc26eda5fa9481d92b37c76c069d2c"
+  integrity sha1-G9pmZLH8Ju2l+pSB2Ss3x2wGnSw=
   dependencies:
     vue "^2.6.14"
 
@@ -6210,6 +6211,11 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.nlark.com/normalize-url/download/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha1-suHE3E98bVd0PfczpPWXjRhlBVk=
+
+normalize.css@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.npm.taobao.org/normalize.css/download/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
+  integrity sha1-m5iiCHOLnMJjTKrLxC0THJdIe/M=
 
 npm-run-path@^2.0.0:
   version "2.0.2"

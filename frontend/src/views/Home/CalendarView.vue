@@ -28,7 +28,7 @@
                   @click="handlePreview(attr)"
                   @contextmenu="handleAttrContextMenu(attr)"
                 >
-                  <IconShow
+                  <ItemIcon
                     :item="{iconIndex: attr.customData.iconIndex}"
                     size="16px"
                     :icon-scale="1"
@@ -62,11 +62,6 @@
       @onDelete="handleDelete"
     />
 
-    <DialogPreviewEntry
-      :visible.sync="isDialogPreviewVisible"
-      :entry="currentEntry"
-    />
-
     <DialogChooseIcon
       :visible.sync="isDialogChooseIconVisible"
       :index="currentEntry && currentEntry.icon"
@@ -93,11 +88,10 @@ import solarLunar from 'solarlunar'
 import store from '@/store'
 
 import ContextMenuCommon from '@/components/ContextMenuCommon'
-import DialogPreviewEntry from '@/components/DialogPreviewEntry'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
 import DialogChooseColor from '@/components/DialogChooseColor'
 import DialogChooseGroup from '@/components/DialogChooseGroup'
-import IconShow from '@/components/IconShow'
+import ItemIcon from '@/components/ItemIcon'
 import DayDetail from '@/components/DayDetail'
 
 import {handleCommonDelete, handleCommonRename} from '@/views/Home/common-action'
@@ -112,9 +106,8 @@ export default {
     DialogChooseIcon,
     DialogChooseColor,
     ContextMenuCommon,
-    DialogPreviewEntry,
     DialogChooseGroup,
-    IconShow,
+    ItemIcon,
     DayDetail
   },
   props: {
