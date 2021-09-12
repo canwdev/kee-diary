@@ -30,6 +30,13 @@ const checkIsOpen = () => {
   return !!kInstance.db
 }
 
+const getMeta = () => {
+  return {
+    // header: kInstance.db.header,
+    meta: kInstance.db.meta
+  }
+}
+
 const getGroupTree = async (groupUuid) => {
   return kInstance.getGroupTree(groupUuid)
 }
@@ -38,13 +45,19 @@ const getGroupEntries = async (groupUuid) => {
   return kInstance.getGroupEntries(groupUuid)
 }
 
+const getCurEntryMap = async () => {
+  return kInstance.curEntryMap
+}
+
 const api = {
   openDatabase,
   closeDatabase,
   saveDatabase,
   checkIsOpen,
+  getMeta,
   getGroupTree,
   getGroupEntries,
+  getCurEntryMap
 }
 
 const apiList = []

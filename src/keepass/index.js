@@ -34,6 +34,7 @@ class KdbxInstance {
   resetInstance() {
     this.db = null
     this.dbPath = null
+    this.curEntryMap = {}
   }
 
   async open(options = {}) {
@@ -104,12 +105,14 @@ class KdbxInstance {
     }
 
     const list = []
+    this.curEntryMap = {}
     const group = this.db.getGroup(groupUuid)
     // console.log('getGroup', group)
 
     if (group) {
       for (let i = group.entries.length - 1; i >= 0; i--) {
         let entry = group.entries[i]
+        this.curEntryMap[entry.uuid.id] = entry
         list.push(new EntryItem(entry))
       }
     }
