@@ -10,22 +10,13 @@
       </div>
 
       <div class="table-body">
-        <div
+        <ListItem
           v-for="item in entryList"
           :key="item.uuid"
-          class="relative-position table-row _check"
-        >
-          <div class="t-col _icon">
-            <ItemIcon
-              class="cursor-pointer"
-              :item="item"
-              @click.native.stop="previewItem(item)"
-            />
-          </div>
-          <div class="t-col _title">{{ item.title }}</div>
-          <div class="t-col _time">{{ formatDateLite(item.creationTime) }}</div>
-          <div class="t-col _time">{{ formatDateLite(item.lastModTime) }}</div>
-        </div>
+          :item="item"
+          @preview="previewItem"
+          @itemClick="handleItemClick"
+        />
 
         <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
@@ -35,16 +26,15 @@
 </template>
 
 <script>
-import {formatDateLite} from '@/utils'
 import store from '@/store'
-import ItemIcon from '@/components/ItemIcon'
+import ListItem from './ListItem'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 
 export default {
   name: 'EntryList',
   components: {
-    ItemIcon
+    ListItem
   },
   props: {
     selectedGroup: {
@@ -74,7 +64,6 @@ export default {
     }
   },
   methods: {
-    formatDateLite,
     async loadEntryList() {
       if (!(this.selectedGroup && this.selectedGroup.data)) {
         return
@@ -87,6 +76,14 @@ export default {
     },
     previewItem(item) {
       mainBus.$emit(BUS_SHOW_PREVIEW, item)
+    },
+    handleItemClick(item) {
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          uuid: item.uuid
+        }
+      })
     }
   }
 }

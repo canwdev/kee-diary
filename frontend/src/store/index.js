@@ -34,7 +34,6 @@ export default new Vuex.Store({
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isChanged: false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
-    currentEntry: null, // 当前打开的条目对象
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
     calendarDate: new Date() // 日历视图
   },
@@ -51,11 +50,7 @@ export default new Vuex.Store({
     isUnlocked: state => state.isUnlocked,
     isChanged: state => state.isChanged,
     selectedGroup: state => state.selectedGroup,
-    currentEntry: state => state.currentEntry,
     currentEntryPagination: state => state.currentEntryPagination,
-    isEntryOpen: state => {
-      return Boolean(state.currentEntry)
-    },
     calendarDate: state => state.calendarDate,
   },
   mutations: {
@@ -109,9 +104,6 @@ export default new Vuex.Store({
       state.selectedGroup = val
       state.currentEntryPagination = initEntryListPagination
       // console.log('resetPagination', state.currentEntryPagination)
-    },
-    setCurrentEntry: (state, val) => {
-      state.currentEntry = val
     },
     setCurrentEntryPagination: (state, val) => {
       // console.log('setCurrentEntryPagination', val)

@@ -22,15 +22,14 @@ class EntryItem {
     this.uuid = entry.uuid.id
     this.icon = entry.icon
     this.title = getMapValue(entry.fields, 'Title')
-    this.url = getMapValue(entry.fields, 'URL')
     this.bgColor = entry.bgColor
     this.fgColor = entry.fgColor
     this.creationTime = entry.times.creationTime
     this.lastModTime = entry.times.lastModTime
     if (isDetailed) {
-      this.notes = entry.fields.Notes
+      this.notes = getMapValue(entry.fields, 'Notes')
+      this._origin = entry
     }
-    // this._origin = entry
   }
 }
 

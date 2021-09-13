@@ -27,3 +27,7 @@ export function getGroupTree(groupUuid) {
 export function getGroupEntries(groupUuid) {
   return ipcSendEventAsync('ipcKdbx_getGroupEntries', groupUuid)
 }
+
+export function getEntryDetail(uuid) {
+  return ipcSendEventAsync('ipcKdbx_getEntryDetail', uuid)
+}

@@ -10,7 +10,7 @@
 
     <NavDrawer v-model="leftDrawerOpen"/>
 
-    <div class="main-content">
+    <div class="default-layout-content">
       <router-view/>
     </div>
   </div>
@@ -59,7 +59,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .main-content {
+  .default-layout-content {
     flex: 1;
   }
 }

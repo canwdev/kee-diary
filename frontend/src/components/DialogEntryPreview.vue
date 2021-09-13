@@ -1,34 +1,39 @@
 <template>
-  <div>
+  <div class="dialog-entry-preview">
     <TkModalDialog
       v-model="mVisible"
       show-close
     >
-      <TkCard v-if="item" style="width: 700px; max-width: 80vw;">
-        <div class="flex items-center justify-between">
-          <ItemIcon
-            class="cursor-pointer"
-            :item="item"
-            @click.native="isShowPreviewIcon = true"
+      <TkCard v-if="previewItem" style="width: 700px; max-width: 80vw;" class="preview-container">
+        <div class="preview-head">
+          <div class="flex items-center justify-between">
+            <ItemIcon
+              class="cursor-pointer"
+              :item="previewItem"
+              @click.native="isShowPreviewIcon = true"
+            />
+            <span class="_title" @dblclick="logEntry">{{ previewItem.title }}</span>
+
+            <span></span>
+          </div>
+
+          <hr/>
+
+          <div class="flex justify-between">
+            <span>{{ $t('home.created') }}: {{ formatDate(previewItem.creationTime) }}</span>
+            <span>{{ $t('home.modified') }}: {{ formatDate(previewItem.lastModTime) }}</span>
+          </div>
+
+          <hr/>
+        </div>
+
+        <div class="preview-body">
+          <div
+            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+            v-html="transformHTML(previewItem.notes || '')"
           />
-          <span class="q-ml-md" @dblclick="logEntry">{{ item.title }}</span>
-
-          <span></span>
         </div>
 
-        <hr/>
-
-        <div class="flex justify-between">
-          <span>{{ $t('home.created') }}: {{ formatDate(item.creationTime) }}</span>
-          <span>{{ $t('home.modified') }}: {{ formatDate(item.lastModTime) }}</span>
-        </div>
-
-        <hr/>
-
-        <div
-          :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
-          v-html="transformHTML(item.notes || '')"
-        />
       </TkCard>
     </TkModalDialog>
 
@@ -46,6 +51,7 @@
 <script>
 import marked from '@/utils/marked'
 import {formatDate} from '@/utils'
+import {getEntryDetail} from '@/api'
 import store from '@/store'
 import ItemIcon from '@/components/ItemIcon'
 import DialogPreview from './DialogPreview'
@@ -66,6 +72,12 @@ export default {
       default: null
     }
   },
+  data() {
+    return {
+      isShowPreviewIcon: false,
+      pItem: null
+    }
+  },
   computed: {
     isDarkMode: {
       get: () => store.getters.isDarkMode,
@@ -77,11 +89,21 @@ export default {
       set(nv) {
         this.$emit('update:visible', nv)
       }
+    },
+    previewItem() {
+      return this.pItem || this.item
     }
   },
-  data() {
-    return {
-      isShowPreviewIcon: false
+  watch: {
+    item: {
+      async handler(val) {
+        this.pItem = null
+        if (!val) {
+          return
+        }
+        this.pItem = await getEntryDetail(val.uuid)
+      },
+      immediate: true
     }
   },
   methods: {
@@ -90,9 +112,33 @@ export default {
       return marked(text)
     },
     logEntry() {
-      console.log(this.item)
+      console.log(this.previewItem)
     }
   }
 }
 </script>
 
+<style lang="scss" scoped>
+.dialog-entry-preview {
+
+  .preview-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow: hidden;
+
+    .preview-head {
+      ._title {
+        font-weight: bold;
+        font-size: 18px;
+      }
+    }
+
+    .preview-body {
+      flex: 1;
+      overflow: auto;
+      padding: 20px 20px;
+    }
+  }
+}
+</style>

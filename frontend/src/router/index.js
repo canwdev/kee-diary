@@ -36,13 +36,13 @@ const routes = [
         component: Home
       },
       {
-        path: 'detail',
+        path: 'detail/:uuid',
         name: 'Detail',
         beforeEnter: validateUnlock,
         component: () => import('@/views/Detail.vue')
       },
       {
-        path: '/about',
+        path: 'about',
         name: 'About',
         component: () => import('@/views/About.vue')
       }

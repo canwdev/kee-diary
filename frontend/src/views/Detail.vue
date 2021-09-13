@@ -1,114 +1,78 @@
 <template>
-  <q-page class="row justify-center">
-    <div class="col-sm-12 col-md-10 q-pa-lg">
-      <TkCard style="height: 100%">
-        <TkCard class="q-gutter-y-xs">
-          <TkInput
-            v-if="isEntryOpen"
-            v-model="editing.title"
+  <div class="flex justify-center">
+    <TkCard style="height: 100%" class="q-gutter-y-xs">
+      <div>
+        <div class="row q-gutter-x-md">
+          <TkSwitch
+            v-model="isEditWYSIWYG"
+          >
+            {{ $t('detail.iswysiwyg') }}
+          </TkSwitch>
+          <TkDropdown
+            v-model="editorTheme"
             dense
             color="secondary"
-            placeholder="entry.fields.Title"
+            :options="themeOptions"
+            style="width: 150px"
           >
             <template v-slot:prepend>
-              <ItemIcon
-                class="cursor-pointer"
-                :item="currentEntry"
-                @click.native="isDialogPreviewVisible = true"
-              >
-                {{ $t('preview') }} (Ctrl+/)
-              </ItemIcon>
+              <q-icon name="style"/>
             </template>
+          </TkDropdown>
+          <TkButton
+            dense
+            icon="text_fields"
+            @click="handleChangeFont"
+          >
+            {{ $t('detail.changeFontFamily') }}
+          </TkButton>
+          <TkButton
+            dense
+            icon="archive"
+            @click="handleLoad"
+          >
+            {{
+              $t('detail.load-outer-text-file')
+            }}
+          </TkButton>
+          <TkButton
+            dense
+            icon="unarchive"
+            @click="handleExport"
+          >
+            {{ $t('detail.export-to-text-file') }}
+          </TkButton>
+          <TkButton
+            dense
+            icon="open_in_browser"
+          >
+            {{ $t('detail.edit-with-external') }}
+          </TkButton>
+        </div>
 
-            <ContextMenuCommon
-              :target-data="currentEntry"
-              :hidden-items="['edit', 'rename']"
-              @onPreview="handlePreview"
-              @onChangeIcon="isDialogChooseIconVisible = true"
-              @onChangeColor="isDialogChooseColorVisible = true"
-            />
-          </TkInput>
+        <div class="date-display text-right">
+          <span>{{ $t('home.created') }}: {{ editingObj.creationTime }}</span>
+          <span>{{ $t('home.modified') }}: {{ lastModTime }}></span>
+        </div>
+      </div>
 
-          <div style="overflow: auto; height: calc(100vh - 230px)">
-            <textarea id="input-area"></textarea>
-          </div>
+      <ItemIcon
+        class="cursor-pointer"
+        @click.native="isDialogPreviewVisible = true"
+      >
+        {{ $t('preview') }} (Ctrl+/)
+      </ItemIcon>
 
-          <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
-            <div class="row q-gutter-x-md">
-              <TkSwitch
-                v-model="isEditWYSIWYG"
-              >
-                {{ $t('detail.iswysiwyg') }}
-              </TkSwitch>
-              <q-select
-                v-model="editorTheme"
-                dense
-                color="secondary"
-                :options="themeOptions"
-                style="width: 150px"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="style"/>
-                </template>
-              </q-select>
-              <TkButton-group flat>
-                <TkButton
-                  dense
-                  icon="text_fields"
-                  @click="handleChangeFont"
-                >
-                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.changeFontFamily') }}</q-tooltip>
-                </TkButton>
-              </TkButton-group>
-              <TkButton-group flat>
-                <TkButton
-                  dense
-                  icon="archive"
-                  @click="handleLoad"
-                >
-                  <q-tooltip anchor="top middle" self="center middle">{{
-                    $t('detail.load-outer-text-file')
-                  }}
-                  </q-tooltip>
-                </TkButton>
-                <TkButton
-                  dense
-                  icon="unarchive"
-                  @click="handleExport"
-                >
-                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.export-to-text-file') }}</q-tooltip>
-                </TkButton>
-                <TkButton
-                  dense
-                  icon="open_in_browser"
-                >
-                  <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.edit-with-external') }}
-                  </q-tooltip>
-                </TkButton>
-              </TkButton-group>
-            </div>
+      <TkInput
+        v-model="editingObj.title"
+        placeholder="Title"
+      />
 
-            <div v-if="isEntryOpen" class="date-display text-right">
-              <span>{{ $t('home.created') }}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="lastModTime"/></span>
-            </div>
-          </q-toolbar>
-        </TkCard>
-      </TkCard>
-    </div>
-
-    <DialogChooseIcon
-      :visible.sync="isDialogChooseIconVisible"
-      :index="currentEntry.icon"
-      @onChoose="handleUpdateIcon"
-    />
-
-    <DialogChooseColor
-      :item="currentEntry"
-      :visible.sync="isDialogChooseColorVisible"
-      @onChoose="handleUpdateColor"
-    />
-  </q-page>
+      <div style="overflow: auto; height: calc(100vh - 230px)">
+        <textarea id="input-area"></textarea>
+      </div>
+    </TkCard>
+  </div>
 </template>
 
 <script>
@@ -135,27 +99,20 @@ import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
-import DateTimeEdit from '../components/DateTimeEdit'
 import {notifyError, notifySuccess} from '../utils'
-import ContextMenuCommon from '@/components/ContextMenuCommon'
-import DialogChooseIcon from '@/components/DialogChooseIcon'
 import ItemIcon from '@/components/ItemIcon'
-import DialogChooseColor from '@/components/DialogChooseColor'
+import {getEntryDetail} from '@/api'
 
 import {textFilters as filters} from '@/enum'
 
 export default {
   name: 'Detail',
   components: {
-    DateTimeEdit,
-    ContextMenuCommon,
-    DialogChooseIcon,
     ItemIcon,
-    DialogChooseColor
   },
   data() {
     return {
-      editing: {
+      editingObj: {
         title: '',
         creationTime: '',
       },
@@ -188,7 +145,6 @@ export default {
     isDarkMode: {
       get: () => store.getters.isDarkMode,
     },
-    isEntryOpen: () => store.getters.isEntryOpen,
     isGlobalLoading: () => store.getters.isGlobalLoading,
     isEditWYSIWYG: {
       get: () => store.getters.isEditWYSIWYG,
@@ -206,30 +162,11 @@ export default {
       get: () => store.getters.editorFontFamily,
       set: val => store.commit('setEditorFontFamily', val)
     },
-    currentEntry: {
-      get: () => store.getters.currentEntry,
-      set: val => store.commit('setCurrentEntry', val)
-    },
     lockEsc() {
       return this.isDialogPreviewVisible || this.isDialogChooseIconVisible || this.isGlobalLoading || this.isDisableEsc
     }
   },
   watch: {
-    currentEntry: {
-      handler(nv) {
-        if (!nv) {
-          this.editor && this.editor.setValue('')
-          return
-        }
-        this.editing = {
-          title: nv.fields.Title,
-          creationTime: nv.times.creationTime,
-        }
-        this.lastModTime = nv.times.lastModTime
-        this.editor && this.editor.setValue(nv.fields.Notes)
-      },
-      immediate: true,
-    },
     isEditWYSIWYG(nv) {
       if (nv) {
         HyperMD.switchToHyperMD(this.editor)
@@ -241,27 +178,34 @@ export default {
     editorTheme(nv) {
       this.editor.setOption('theme', nv)
     },
-    editing: {
+    editingObj: {
       handler() {
         store.commit('setIsChanged')
-        const entry = this.currentEntry
-        entry.fields.Title = this.editing.title
-        entry.times.creationTime = this.editing.creationTime
-        this.updateTime()
+        // const entry = this.currentEntry
+        // entry.fields.Title = this.editingObj.title
+        // entry.times.creationTime = this.editingObj.creationTime
+        // this.updateTime()
       },
       deep: true
     }
   },
-  mounted() {
-    if (!this.isEntryOpen) {
-      console.warn('Entry is not open')
-      this.$router.push({
-        name: 'Home'
-      })
+  async mounted() {
+    const uuid = this.$route.params.uuid
+    if (!uuid) {
+      alert('uuid is not exist!')
       return
     }
 
-    this.initHyperMD()
+    const entry = await getEntryDetail(uuid)
+
+    if (!entry) {
+      alert('entry is not exist!')
+      return
+    }
+
+    this.initHyperMD(entry)
+    this.editingObj.title = entry.title
+
     bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
       this.syncNotes()
       resolve()
@@ -272,12 +216,11 @@ export default {
   beforeDestroy() {
     this.syncNotes()
     bus.$off(BUS_SAVE_NOTES_START)
-    this.currentEntry = null
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
   },
   methods: {
-    initHyperMD() {
+    initHyperMD(entry) {
       const textarea = document.getElementById('input-area')
       const editor = HyperMD.fromTextArea(textarea, {
         lineNumbers: false
@@ -294,8 +237,8 @@ export default {
           store.commit('setIsChanged')
         }
       })
-      if (this.currentEntry) {
-        editor.setValue(this.currentEntry.fields.Notes)
+      if (entry && entry.notes) {
+        editor.setValue(entry.notes)
       }
       this.editor = editor
     },
@@ -316,18 +259,18 @@ export default {
       editor.refresh()
     },
     syncNotes() {
-      const entry = this.currentEntry
-      if (entry) {
-        const newNotes = this.editor.getValue()
-        if (entry.fields.Notes !== newNotes) {
-          this.updateTime()
-          entry.fields.Notes = newNotes
-        }
-      }
+      // const entry = this.currentEntry
+      // if (entry) {
+      //   const newNotes = this.editor.getValue()
+      //   if (entry.fields.Notes !== newNotes) {
+      //     this.updateTime()
+      //     entry.fields.Notes = newNotes
+      //   }
+      // }
     },
     updateTime() {
-      this.currentEntry.times.update()
-      this.lastModTime = this.currentEntry.times.lastModTime
+      // this.currentEntry.times.update()
+      // this.lastModTime = this.currentEntry.times.lastModTime
     },
     handleChangeFont() {
       this.$q.dialog({
@@ -404,7 +347,7 @@ export default {
 
         }).onOk(() => {
           const title = path.substring(path.lastIndexOf(`\\`) + 1)
-          this.editing.title = title.replace(/\.[^.$]+$/, '')
+          this.editingObj.title = title.replace(/\.[^.$]+$/, '')
           this.editor.setValue(txt)
         }).onCancel(() => {
           this.editor.replaceSelection(txt)
@@ -423,7 +366,7 @@ export default {
 
       window.electronAPI.showSaveDialog(this.editor.getValue(), {
         title: this.$t('export-file'),
-        defaultPath: this.editing.title + '.txt',
+        defaultPath: this.editingObj.title + '.txt',
         filters
       }).then(result => {
         if (result) {

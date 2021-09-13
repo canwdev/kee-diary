@@ -248,7 +248,6 @@ export default {
       this.isDialogPreviewVisible = true
     },
     handleEdit(attr) {
-      store.commit('setCurrentEntry', this.getEntry(attr))
       this.$router.push({
         name: 'Detail'
       })
