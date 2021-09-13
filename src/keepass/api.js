@@ -45,8 +45,12 @@ const getGroupEntries = async (groupUuid) => {
   return kInstance.getGroupEntries(groupUuid)
 }
 
-const getCurEntryMap = async () => {
-  return kInstance.curEntryMap
+const getEntryDetail = async (uuid) => {
+  return kInstance.getEntryDetail(uuid)
+}
+
+const updateEntry = async (uuid, update) => {
+  return kInstance.updateEntry(uuid, update)
 }
 
 const api = {
@@ -57,7 +61,8 @@ const api = {
   getMeta,
   getGroupTree,
   getGroupEntries,
-  getCurEntryMap
+  getEntryDetail,
+  updateEntry
 }
 
 const apiList = []

@@ -120,6 +120,50 @@ class KdbxInstance {
 
     return list
   }
+
+  /**
+   * 在 curEntryMap 哈希表中获取 entry
+   * @param uuid
+   * @returns {*}
+   */
+  getEntry(uuid) {
+    if (!uuid) {
+      throw new Error('uuid is required!')
+    }
+
+    if (!this.curEntryMap[uuid]) {
+      throw new Error('entry not found in current map')
+    }
+    return this.curEntryMap[uuid]
+  }
+
+  /**
+   * 获取 entry 详情
+   * @param uuid
+   * @returns {EntryItem}
+   */
+  getEntryDetail(uuid) {
+    const entry = this.getEntry(uuid)
+    return new EntryItem(entry, true)
+  }
+
+  /**
+   * 更新一个 entry 对象
+   * @param uuid
+   * @param update 数组
+   * @returns {EntryItem}
+   */
+  updateEntry(uuid, update) {
+    if (!update) {
+      throw new Error('update is required!')
+    }
+    const entry = this.getEntry(uuid)
+    update.forEach(obj => {
+      const {path, value} = obj
+
+    })
+    return new EntryItem(entry, true)
+  }
 }
 
 module.exports = {
