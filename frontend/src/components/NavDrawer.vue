@@ -1,12 +1,11 @@
 <template>
   <TkDrawer :visible.sync="mValue" :menu="menuList">
-    <TkButton size="no-style" class="menu-item" @click="isListView = !isListView">
-      <span v-if="isUnlocked" class="menu-item-title">
+    <TkButton v-if="isUnlocked" size="no-style" class="menu-item" @click="isListView = !isListView">
+      <span class="menu-item-title">
         {{ isListView ? $t('drawer.listView') : $t('drawer.calendarView') }}
         <TkSwitch :value="isListView"/>
       </span>
     </TkButton>
-
 
     <TkButton size="no-style" class="menu-item" @click="isDarkMode = !isDarkMode">
       <span class="menu-item-title">
@@ -19,9 +18,10 @@
       <span class="menu-item-title">
         {{ $t('drawer.language') }}
         <TkDropdown
-            v-model="locate" :options="languages"
-            option-label="name"
-            option-value="locate"
+          v-model="locate"
+          :options="languages"
+          option-label="name"
+          option-value="locate"
         />
       </span>
     </TkButton>
@@ -74,18 +74,18 @@ export default {
       return [
         {name: this.$t('drawer.navigation'), subtitle: true},
         this.isUnlocked
-            ? {
-              name: this.$t('pages.home'), action: () => {
-                router.push({name: 'Home'})
-                this.mValue = false
-              }
+          ? {
+            name: this.$t('pages.home'), action: () => {
+              router.push({name: 'Home'})
+              this.mValue = false
             }
-            : {
-              name: this.$t('pages.login'), action: () => {
-                router.push({name: 'Login'})
-                this.mValue = false
-              }
-            },
+          }
+          : {
+            name: this.$t('pages.login'), action: () => {
+              router.push({name: 'Login'})
+              this.mValue = false
+            }
+          },
         {
           name: this.$t('pages.about'), action: () => {
             router.push({name: 'About'})

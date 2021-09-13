@@ -6,8 +6,8 @@
       <TkCard>
         <div class="text-h6 row items-center">
           <span class="q-ml-md">{{ $t('choose') }} {{
-            isFgColor ? $t('foreground') : $t('background')
-          }} {{ $t('color') }}</span>
+              isFgColor ? $t('foreground') : $t('background')
+            }} {{ $t('color') }}</span>
 
           <TkSwitch
             v-model="isFgColor"

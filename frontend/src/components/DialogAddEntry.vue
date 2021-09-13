@@ -90,13 +90,13 @@
 
         <TkCard align="right">
           <TkButton
-              @click="mVisible = false"
+            @click="mVisible = false"
             flat
             :label="$t('cancel')"
             color="primary"
           />
           <TkButton
-              @click="mVisible = false"
+            @click="mVisible = false"
             :disable="!form.title"
             flat
             :label="$t('confirm')"

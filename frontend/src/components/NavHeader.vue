@@ -4,36 +4,37 @@
       <template slot="left">
         <div class="actions-btn">
           <TkButton
-              label="Menu"
-              @click="$emit('onMenuClick')"
+            label="Menu"
+            @click="$emit('onMenuClick')"
           />
           <TkButton
-              v-show="isShowBack"
-              label="Back"
-              @click="$emit('onBackClick')"
+            v-show="isShowBack"
+            label="Back"
+            @click="$emit('onBackClick')"
           />
         </div>
 
       </template>
       <template slot="center">
-        <div class="main-title">{{ title }}</div> {{ isUnlocked ? $t('header.unlocked') : '' }}
+        <div class="main-title">{{ title }}</div>
+        {{ isUnlocked ? $t('header.unlocked') : '' }}
       </template>
       <template slot="right">
         <div class="actions-btn flex items-center justify-end">
           <template v-if="isUnlocked">
             <TkButton
-                @click="isDialogSearchVisible = true"
+              @click="isDialogSearchVisible = true"
             >
               {{ $t('header.search') }}
             </TkButton>
             <TkButton
-                :disabled="!isNotSave"
-                @click="saveKdbx"
+              :disabled="!isChanged"
+              @click="saveKdbx"
             >
               {{ $t('header.save') }} (Ctrl+S)
             </TkButton>
             <TkButton
-                @click="closeKdbx"
+              @click="closeKdbx"
             >
               {{ $t('header.close') }} (Ctrl+L)
             </TkButton>
@@ -42,7 +43,7 @@
       </template>
     </TkNavBar>
     <DialogSearch
-        :visible.sync="isDialogSearchVisible"
+      :visible.sync="isDialogSearchVisible"
     />
   </div>
 
@@ -76,8 +77,8 @@ export default {
     isUnlocked: {
       get: () => store.getters.isUnlocked
     },
-    isNotSave: {
-      get: () => store.getters.isNotSave
+    isChanged: {
+      get: () => store.getters.isChanged
     },
     isShowBack() {
       const r = this.$route.name
@@ -105,6 +106,7 @@ export default {
   .main-title {
     font-weight: bold;
   }
+
   .actions-btn {
     button + button {
       margin-left: 10px;

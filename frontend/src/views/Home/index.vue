@@ -1,12 +1,12 @@
 <template>
   <div
-      class="home-page"
+    class="home-page"
   >
     <div class="nav-tree">
       <div class="">
         <GroupView
-            :selected.sync="selectedGroup"
-            @onCreateEntry="handleAddEntryFromGroup"
+          :selected.sync="selectedGroup"
+          @onCreateEntry="handleAddEntryFromGroup"
         />
       </div>
       <div style="height: 80px"></div>
@@ -14,14 +14,14 @@
 
     <div class="home-right">
       <EntryList
-          v-if="isListView"
-          :selectedGroup="selectedGroup"
+        v-if="isListView"
+        :selected-group="selectedGroup"
       />
 
-<!--      <CalendarView-->
-<!--          v-else-->
-<!--          :current-group-uuid="selectedGroup"-->
-<!--      />-->
+      <!--      <CalendarView-->
+      <!--          v-else-->
+      <!--          :current-group-uuid="selectedGroup"-->
+      <!--      />-->
     </div>
 
     <div class="sticky-area">
@@ -29,9 +29,9 @@
     </div>
 
     <DialogAddEntry
-        ref="addEntry"
-        :visible.sync="isShowAddEntry"
-        @confirm="handleAddEntry"
+      ref="addEntry"
+      :visible.sync="isShowAddEntry"
+      @confirm="handleAddEntry"
     />
 
     <DialogEntryPreview
@@ -50,7 +50,7 @@ import EntryList from '@/components/EntryList'
 // import CalendarView from '@/views/Home/CalendarView'
 import DialogAddEntry from '@/components/DialogAddEntry'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
-import mainBus, {BUS_SHOW_PREVIEW} from "@/utils/bus"
+import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 
 export default {
   name: 'MainView',

@@ -16,8 +16,8 @@ export function doCloseKdbx() {
 }
 
 export function closeKdbx(isExit = false) {
-  const isNotSave = store.getters.isNotSave
-  if (isNotSave) {
+  const isChanged = store.getters.isChanged
+  if (isChanged) {
     const andExit = isExit ? i18n.t('and-exit') : ''
 
     alert('TODO: Dialog')
@@ -73,7 +73,7 @@ function doSaveKdbx(dbPath, db) {
       db.save().then(dataAsArrayBuffer => {
         try {
           electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
-          store.commit('setIsNotSave', false)
+          store.commit('setIsChanged', false)
           notifySuccess(i18n.t('kdbx.saved-successfully'))
           return resolve()
         } catch (e) {
@@ -96,9 +96,9 @@ export function saveKdbx() {
   const db = store.getters.database
   const isEntryOpen = store.getters.isEntryOpen
   const isGlobalLoading = store.getters.isGlobalLoading
-  const isNotSave = store.getters.isNotSave
+  const isChanged = store.getters.isChanged
 
-  if (isGlobalLoading || !isNotSave) {
+  if (isGlobalLoading || !isChanged) {
     return
   }
 
@@ -182,7 +182,7 @@ export function addGroup(db, groupUuid, name = formatDate(new Date(), true)) {
     const group = db.getGroup(groupUuid)
 
     db.createGroup(group, name)
-    store.commit('setIsNotSave')
+    store.commit('setIsChanged')
 
     return true
   } catch (e) {
@@ -225,7 +225,7 @@ export function addEntry(db, groupUuid, config = {}) {
 
     store.commit('setSelectedGroup', group.uuid)
     store.commit('setCurrentEntry', entry)
-    store.commit('setIsNotSave')
+    store.commit('setIsChanged')
 
     return true
   } catch (e) {
@@ -251,7 +251,7 @@ export function removeItems(db, items) {
       db.remove(items)
     }
 
-    store.commit('setIsNotSave')
+    store.commit('setIsChanged')
     return true
   } catch (e) {
     notifyError(e.message)
@@ -285,7 +285,7 @@ export function moveItems(db, items, groupUuid) {
       checkIllegal(items)
       db.move(items, group)
     }
-    store.commit('setIsNotSave')
+    store.commit('setIsChanged')
     // store.commit('setSelectedGroup', groupUuid)
     return true
   } catch (e) {

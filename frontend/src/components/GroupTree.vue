@@ -1,13 +1,13 @@
 <template>
   <div class="group-tree-wrap">
     <TkTree
-        :nodes="treeData"
-        :selected-id="mSelected && mSelected.id"
-        @onItemClick="handleNodeClick"
+      :nodes="treeData"
+      :selected-id="mSelected && mSelected.id"
+      @onItemClick="handleNodeClick"
     >
       <template v-slot:icon="{data: {item}}">
         <ItemIcon
-            :item="item && item.data"
+          :item="item && item.data"
         />
       </template>
 

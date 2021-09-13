@@ -13,7 +13,9 @@
 
       <TkCard style="max-height: 70vh" class="scroll">
         <TkCard v-if="mVisible" flat class="q-gutter-md">
-          <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{ $t('kdbx.do-not-move-to-the-group-itself') }}</p>
+          <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{
+              $t('kdbx.do-not-move-to-the-group-itself')
+            }}</p>
           <GroupTree
             :selected-group-uuid.sync="selected"
           />

@@ -3,9 +3,9 @@
     <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
     <NavHeader
-        title="KeeDiary"
-        @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
-        @onBackClick="handleBack"
+      title="KeeDiary"
+      @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
+      @onBackClick="handleBack"
     />
 
     <NavDrawer v-model="leftDrawerOpen"/>
@@ -58,6 +58,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+
   .main-content {
     flex: 1;
   }

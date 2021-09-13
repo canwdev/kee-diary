@@ -5,16 +5,16 @@
       show-close
     >
       <TkCard v-if="item" style="width: 700px; max-width: 80vw;">
-          <div class="flex items-center justify-between">
-            <ItemIcon
-              class="cursor-pointer"
-              :item="item"
-              @click.native="isShowPreviewIcon = true"
-            />
-            <span class="q-ml-md" @dblclick="logEntry">{{ item.title }}</span>
+        <div class="flex items-center justify-between">
+          <ItemIcon
+            class="cursor-pointer"
+            :item="item"
+            @click.native="isShowPreviewIcon = true"
+          />
+          <span class="q-ml-md" @dblclick="logEntry">{{ item.title }}</span>
 
-            <span></span>
-          </div>
+          <span></span>
+        </div>
 
         <hr/>
 
@@ -26,8 +26,8 @@
         <hr/>
 
         <div
-            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
-            v-html="transformHTML(item.notes || '')"
+          :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+          v-html="transformHTML(item.notes || '')"
         />
       </TkCard>
     </TkModalDialog>

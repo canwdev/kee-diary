@@ -11,15 +11,15 @@
 
       <div class="table-body">
         <div
-            v-for="item in entryList"
-            :key="item.uuid"
-            class="relative-position table-row _check"
+          v-for="item in entryList"
+          :key="item.uuid"
+          class="relative-position table-row _check"
         >
           <div class="t-col _icon">
             <ItemIcon
-                class="cursor-pointer"
-                :item="item"
-                @click.native.stop="previewItem(item)"
+              class="cursor-pointer"
+              :item="item"
+              @click.native.stop="previewItem(item)"
             />
           </div>
           <div class="t-col _title">{{ item.title }}</div>
@@ -147,11 +147,13 @@ export default {
       width: 50px;
       text-align: center;
     }
+
     &._title {
       flex: 1;
       padding: 0 30px;
       box-sizing: border-box;
     }
+
     &._time {
       width: 150px;
     }

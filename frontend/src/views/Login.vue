@@ -1,6 +1,6 @@
 <template>
   <div
-      class="full-height row justify-center items-center"
+    class="full-height row justify-center items-center"
   >
     <TkLoading class="_loading" :visible="isLoading" fixed/>
 
@@ -11,7 +11,7 @@
         <p>{{ alertDialog.content }}</p>
 
         <div>
-          <TkButton @click="isShowAlertDialog = false" label="OK"/>
+          <TkButton label="OK" @click="isShowAlertDialog = false"/>
         </div>
       </TkCard>
     </TkModalDialog>
@@ -19,9 +19,9 @@
     <TkCard solid style="width:400px;">
       <TkCard class=" text-center">
         <TkButton
-            v-show="!isWelcome"
-            class="absolute-top-left"
-            @click="isWelcome = true"
+          v-show="!isWelcome"
+          class="absolute-top-left"
+          @click="isWelcome = true"
         >Back
         </TkButton>
 
@@ -33,12 +33,12 @@
       <div v-show="isWelcome">
         <TkCard>
           <TkButton
-              unelevated
-              size="md"
-              color="secondary"
-              class="full-width "
-              :label="$t('login.openDatabase')"
-              @click="chooseNewKdbx"
+            unelevated
+            size="md"
+            color="secondary"
+            class="full-width "
+            :label="$t('login.openDatabase')"
+            @click="chooseNewKdbx"
           />
         </TkCard>
 
@@ -46,27 +46,27 @@
           <div>
             <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
             <TkButton
-                v-show="recentList.length > 0"
-                dense
-                flat
-                :label="$t('login.clear')"
-                @click="handleClearRecent"
+              v-show="recentList.length > 0"
+              dense
+              flat
+              :label="$t('login.clear')"
+              @click="handleClearRecent"
             />
           </div>
           <ul>
             <li
-                v-for="(item, index) in recentList"
-                :key="index"
-                @click="openRecentItem(item)"
-                class="cursor-pointer"
+              v-for="(item, index) in recentList"
+              :key="index"
+              class="cursor-pointer"
+              @click="openRecentItem(item)"
             >
 
-                <span class="text-overflow" :title="item.dbPath">
+              <span class="text-overflow" :title="item.dbPath">
                 {{ item.dbPath }}
-                </span>
+              </span>
               <TkButton
-                  label="X"
-                  @click.stop="removeRecentItem(item)"
+                label="X"
+                @click.stop="removeRecentItem(item)"
               />
             </li>
 
@@ -77,39 +77,39 @@
 
       <div v-show="!isWelcome">
         <form
-            @submit="handleUnlock"
+          @submit="handleUnlock"
         >
           <TkCard>
 
             <TkInput
-                v-model="form.dbPath"
-                readonly
-                type="text"
-                placeholder="Database file path"
+              v-model="form.dbPath"
+              readonly
+              type="text"
+              placeholder="Database file path"
             >
             </TkInput>
             <TkInput
-                v-model="form.password"
-                type="password"
-                :placeholder="$t('login.password')"
-                autofocus
+              v-model="form.password"
+              type="password"
+              :placeholder="$t('login.password')"
+              autofocus
             >
             </TkInput>
             <div>
               <TkInput
-                  v-model="form.keyPath"
-                  clearable
-                  readonly
-                  type="text"
-                  :placeholder="$t('login.keyFilePath')"
+                v-model="form.keyPath"
+                clearable
+                readonly
+                type="text"
+                :placeholder="$t('login.keyFilePath')"
               >
               </TkInput>
               <TkButton
-                  type="button"
-                  @click="handleChooseFile('keyPath', [
-                        {name: 'All', extensions: ['*']},
-                        {name: '*.key', extensions: ['key']},
-                      ])"
+                type="button"
+                @click="handleChooseFile('keyPath', [
+                  {name: 'All', extensions: ['*']},
+                  {name: '*.key', extensions: ['key']},
+                ])"
               >Choose
               </TkButton>
             </div>
@@ -117,12 +117,12 @@
 
           <TkCard>
             <TkButton
-                type="submit"
-                unelevated
-                size="md"
-                color="secondary"
-                class="full-width "
-                :label="$t('login.unlock')"
+              type="submit"
+              unelevated
+              size="md"
+              color="secondary"
+              class="full-width "
+              :label="$t('login.unlock')"
             />
           </TkCard>
         </form>

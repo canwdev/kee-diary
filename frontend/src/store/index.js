@@ -32,7 +32,7 @@ export default new Vuex.Store({
     },
     isGlobalLoading: false, // 全局加载中
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
-    isNotSave: false, // 有未保存的变更
+    isChanged: false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
     currentEntry: null, // 当前打开的条目对象
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
@@ -49,7 +49,7 @@ export default new Vuex.Store({
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
     isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
-    isNotSave: state => state.isNotSave,
+    isChanged: state => state.isChanged,
     selectedGroup: state => state.selectedGroup,
     currentEntry: state => state.currentEntry,
     currentEntryPagination: state => state.currentEntryPagination,
@@ -98,12 +98,12 @@ export default new Vuex.Store({
     setIsGlobalLoading: (state, val = true) => {
       state.isGlobalLoading = val
     },
-    setIsNotSave: (state, val = true) => {
-      if (state.isNotSave === val) {
+    setIsChanged: (state, val = true) => {
+      if (state.isChanged === val) {
         return
       }
       window.electronAPI.setShowExitPrompt(val)
-      state.isNotSave = val
+      state.isChanged = val
     },
     setSelectedGroup: (state, val) => {
       state.selectedGroup = val

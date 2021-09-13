@@ -268,7 +268,7 @@ export default {
     handleUpdateIcon(iconIndex) {
       this.currentAttr.customData.iconIndex = iconIndex
       this.currentEntry.icon = iconIndex
-      store.commit('setIsNotSave')
+      store.commit('setIsChanged')
     },
     handleShowChangeColor(attr) {
       this.currentAttr = attr
@@ -279,7 +279,7 @@ export default {
       const {type, value} = result
       this.currentAttr.customData[type] = value
       this.currentEntry[type] = value
-      store.commit('setIsNotSave')
+      store.commit('setIsChanged')
     },
     handleMoveEntry(groupUuid) {
       const result = moveItems(this.database, this.currentEntry, groupUuid)

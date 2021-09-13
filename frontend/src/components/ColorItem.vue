@@ -44,7 +44,7 @@ export default {
     transform: scale(1.1);
   }
 
-  &:active,&.active {
+  &:active, &.active {
     border-color: rgba(0, 0, 0, 0.5);
   }
 

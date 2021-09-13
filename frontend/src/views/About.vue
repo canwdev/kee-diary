@@ -12,8 +12,8 @@
 
       <div class="content">
         <CheckConnection
-            class=""
-            @onMessage="updateMessage"
+          class=""
+          @onMessage="updateMessage"
         />
 
         <div class="column q-gutter-sm">
@@ -21,10 +21,10 @@
             <TkLink href="/home">{{ $t('about.btnHome') }}</TkLink>
           </TkButton>
           <TkButton
-              outline
-              color="secondary"
-              title="Ctrl+Shift+I"
-              @click="logDatabase"
+            outline
+            color="secondary"
+            title="Ctrl+Shift+I"
+            @click="logDatabase"
           >{{ $t('about.btnLogDatabase') }}
           </TkButton>
         </div>

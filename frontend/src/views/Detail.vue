@@ -4,28 +4,28 @@
       <TkCard style="height: 100%">
         <TkCard class="q-gutter-y-xs">
           <TkInput
-              v-if="isEntryOpen"
-              v-model="editing.title"
-              dense
-              color="secondary"
-              placeholder="entry.fields.Title"
+            v-if="isEntryOpen"
+            v-model="editing.title"
+            dense
+            color="secondary"
+            placeholder="entry.fields.Title"
           >
             <template v-slot:prepend>
               <ItemIcon
-                  class="cursor-pointer"
-                  :item="currentEntry"
-                  @click.native="isDialogPreviewVisible = true"
+                class="cursor-pointer"
+                :item="currentEntry"
+                @click.native="isDialogPreviewVisible = true"
               >
                 {{ $t('preview') }} (Ctrl+/)
               </ItemIcon>
             </template>
 
             <ContextMenuCommon
-                :target-data="currentEntry"
-                :hidden-items="['edit', 'rename']"
-                @onPreview="handlePreview"
-                @onChangeIcon="isDialogChooseIconVisible = true"
-                @onChangeColor="isDialogChooseColorVisible = true"
+              :target-data="currentEntry"
+              :hidden-items="['edit', 'rename']"
+              @onPreview="handlePreview"
+              @onChangeIcon="isDialogChooseIconVisible = true"
+              @onChangeColor="isDialogChooseColorVisible = true"
             />
           </TkInput>
 
@@ -36,16 +36,16 @@
           <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
             <div class="row q-gutter-x-md">
               <TkSwitch
-                  v-model="isEditWYSIWYG"
+                v-model="isEditWYSIWYG"
               >
                 {{ $t('detail.iswysiwyg') }}
               </TkSwitch>
               <q-select
-                  v-model="editorTheme"
-                  dense
-                  color="secondary"
-                  :options="themeOptions"
-                  style="width: 150px"
+                v-model="editorTheme"
+                dense
+                color="secondary"
+                :options="themeOptions"
+                style="width: 150px"
               >
                 <template v-slot:prepend>
                   <q-icon name="style"/>
@@ -53,18 +53,18 @@
               </q-select>
               <TkButton-group flat>
                 <TkButton
-                    dense
-                    icon="text_fields"
-                    @click="handleChangeFont"
+                  dense
+                  icon="text_fields"
+                  @click="handleChangeFont"
                 >
                   <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.changeFontFamily') }}</q-tooltip>
                 </TkButton>
               </TkButton-group>
               <TkButton-group flat>
                 <TkButton
-                    dense
-                    icon="archive"
-                    @click="handleLoad"
+                  dense
+                  icon="archive"
+                  @click="handleLoad"
                 >
                   <q-tooltip anchor="top middle" self="center middle">{{
                       $t('detail.load-outer-text-file')
@@ -72,15 +72,15 @@
                   </q-tooltip>
                 </TkButton>
                 <TkButton
-                    dense
-                    icon="unarchive"
-                    @click="handleExport"
+                  dense
+                  icon="unarchive"
+                  @click="handleExport"
                 >
                   <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.export-to-text-file') }}</q-tooltip>
                 </TkButton>
                 <TkButton
-                    dense
-                    icon="open_in_browser"
+                  dense
+                  icon="open_in_browser"
                 >
                   <q-tooltip anchor="top middle" self="center middle">{{ $t('detail.edit-with-external') }}
                   </q-tooltip>
@@ -100,15 +100,15 @@
 
 
     <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="currentEntry.icon"
-        @onChoose="handleUpdateIcon"
+      :visible.sync="isDialogChooseIconVisible"
+      :index="currentEntry.icon"
+      @onChoose="handleUpdateIcon"
     />
 
     <DialogChooseColor
-        :item="currentEntry"
-        :visible.sync="isDialogChooseColorVisible"
-        @onChoose="handleUpdateColor"
+      :item="currentEntry"
+      :visible.sync="isDialogChooseColorVisible"
+      @onChoose="handleUpdateColor"
     />
   </q-page>
 </template>
@@ -245,7 +245,7 @@ export default {
     },
     editing: {
       handler() {
-        store.commit('setIsNotSave')
+        store.commit('setIsChanged')
         const entry = this.currentEntry
         entry.fields.Title = this.editing.title
         entry.times.creationTime = this.editing.creationTime
@@ -293,7 +293,7 @@ export default {
       editor.setOption('theme', this.editorTheme)
       editor.on('change', () => {
         if (this.editor) {
-          store.commit('setIsNotSave')
+          store.commit('setIsChanged')
         }
       })
       if (this.currentEntry) {
@@ -440,12 +440,12 @@ export default {
     },
     handleUpdateIcon(iconIndex) {
       this.currentEntry.icon = iconIndex
-      store.commit('setIsNotSave')
+      store.commit('setIsChanged')
     },
     handleUpdateColor(result) {
       const {type, value} = result
       this.currentEntry[type] = value
-      store.commit('setIsNotSave')
+      store.commit('setIsChanged')
     },
     handleCtrlScroll(event) {
       if (event.ctrlKey) {

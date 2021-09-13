@@ -49,7 +49,8 @@
           <TkSwitch
             v-model="isDeep"
             size="sm"
-          >搜索子群组</TkSwitch>
+          >搜索子群组
+          </TkSwitch>
 
           <TkButton
             flat
@@ -179,10 +180,10 @@ export default {
       try {
         this.isLoading = true
         this.searchResults = searchEntries(
-            this.database,
-            this.groupInfo.groupUuid,
-            this.searchText,
-            this.isDeep
+          this.database,
+          this.groupInfo.groupUuid,
+          this.searchText,
+          this.isDeep
         )
         // console.log('this.searchResults', this.searchResults)
       } catch (e) {

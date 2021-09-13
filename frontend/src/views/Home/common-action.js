@@ -18,7 +18,7 @@ export function handleCommonRename(context, target, isGroup = false) {
       } else {
         target._origin.fields.Title = data
       }
-      context.$store.commit('setIsNotSave')
+      context.$store.commit('setIsChanged')
       resolve(data)
     }).onCancel(() => {
       reject()
@@ -30,7 +30,8 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
   return new Promise((resolve) => {
     const getTitle = (v) => `<li><span class="text-red">${isGroup ? v.name : v.fields.Title}</span></li>`
 
-    let msgTitles = ''; let isRecycleBin = false
+    let msgTitles = '';
+    let isRecycleBin = false
 
     if (Array.isArray(originTarget)) {
       msgTitles = originTarget.map(i => getTitle(i)).join('')

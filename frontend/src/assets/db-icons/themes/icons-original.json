@@ -1,283 +1,283 @@
 {
-  "name": "Keepass",
-  "dir": "icons-original",
-  "isPixel": true,
-  "list": [
-    {
-      "file": "C00_Password.png",
-      "name": "C00_Password"
-    },
-    {
-      "file": "C01_Package_Network.png",
-      "name": "C01_Package_Network"
-    },
-    {
-      "file": "C02_MessageBox_Warning.png",
-      "name": "C02_MessageBox_Warning"
-    },
-    {
-      "file": "C03_Server.png",
-      "name": "C03_Server"
-    },
-    {
-      "file": "C04_Klipper.png",
-      "name": "C04_Klipper"
-    },
-    {
-      "file": "C05_Edu_Languages.png",
-      "name": "C05_Edu_Languages"
-    },
-    {
-      "file": "C06_KCMDF.png",
-      "name": "C06_KCMDF"
-    },
-    {
-      "file": "C07_Kate.png",
-      "name": "C07_Kate"
-    },
-    {
-      "file": "C08_Socket.png",
-      "name": "C08_Socket"
-    },
-    {
-      "file": "C09_Identity.png",
-      "name": "C09_Identity"
-    },
-    {
-      "file": "C10_Kontact.png",
-      "name": "C10_Kontact"
-    },
-    {
-      "file": "C11_Camera.png",
-      "name": "C11_Camera"
-    },
-    {
-      "file": "C12_IRKickFlash.png",
-      "name": "C12_IRKickFlash"
-    },
-    {
-      "file": "C13_KGPG_Key3.png",
-      "name": "C13_KGPG_Key3"
-    },
-    {
-      "file": "C14_Laptop_Power.png",
-      "name": "C14_Laptop_Power"
-    },
-    {
-      "file": "C15_Scanner.png",
-      "name": "C15_Scanner"
-    },
-    {
-      "file": "C16_Mozilla_Firebird.png",
-      "name": "C16_Mozilla_Firebird"
-    },
-    {
-      "file": "C17_CDROM_Unmount.png",
-      "name": "C17_CDROM_Unmount"
-    },
-    {
-      "file": "C18_Display.png",
-      "name": "C18_Display"
-    },
-    {
-      "file": "C19_Mail_Generic.png",
-      "name": "C19_Mail_Generic"
-    },
-    {
-      "file": "C20_Misc.png",
-      "name": "C20_Misc"
-    },
-    {
-      "file": "C21_KOrganizer.png",
-      "name": "C21_KOrganizer"
-    },
-    {
-      "file": "C22_ASCII.png",
-      "name": "C22_ASCII"
-    },
-    {
-      "file": "C23_Icons.png",
-      "name": "C23_Icons"
-    },
-    {
-      "file": "C24_Connect_Established.png",
-      "name": "C24_Connect_Established"
-    },
-    {
-      "file": "C25_Folder_Mail.png",
-      "name": "C25_Folder_Mail"
-    },
-    {
-      "file": "C26_FileSave.png",
-      "name": "C26_FileSave"
-    },
-    {
-      "file": "C27_NFS_Unmount.png",
-      "name": "C27_NFS_Unmount"
-    },
-    {
-      "file": "C28_QuickTime.png",
-      "name": "C28_QuickTime"
-    },
-    {
-      "file": "C29_KGPG_Term.png",
-      "name": "C29_KGPG_Term"
-    },
-    {
-      "file": "C30_Konsole.png",
-      "name": "C30_Konsole"
-    },
-    {
-      "file": "C31_FilePrint.png",
-      "name": "C31_FilePrint"
-    },
-    {
-      "file": "C32_FSView.png",
-      "name": "C32_FSView"
-    },
-    {
-      "file": "C33_Run.png",
-      "name": "C33_Run"
-    },
-    {
-      "file": "C34_Configure.png",
-      "name": "C34_Configure"
-    },
-    {
-      "file": "C35_KRFB.png",
-      "name": "C35_KRFB"
-    },
-    {
-      "file": "C36_Ark.png",
-      "name": "C36_Ark"
-    },
-    {
-      "file": "C37_KPercentage.png",
-      "name": "C37_KPercentage"
-    },
-    {
-      "file": "C38_Samba_Unmount.png",
-      "name": "C38_Samba_Unmount"
-    },
-    {
-      "file": "C39_History.png",
-      "name": "C39_History"
-    },
-    {
-      "file": "C40_Mail_Find.png",
-      "name": "C40_Mail_Find"
-    },
-    {
-      "file": "C41_VectorGfx.png",
-      "name": "C41_VectorGfx"
-    },
-    {
-      "file": "C42_KCMMemory.png",
-      "name": "C42_KCMMemory"
-    },
-    {
-      "file": "C43_EditTrash.png",
-      "name": "C43_EditTrash"
-    },
-    {
-      "file": "C44_KNotes.png",
-      "name": "C44_KNotes"
-    },
-    {
-      "file": "C45_Cancel.png",
-      "name": "C45_Cancel"
-    },
-    {
-      "file": "C46_Help.png",
-      "name": "C46_Help"
-    },
-    {
-      "file": "C47_KPackage.png",
-      "name": "C47_KPackage"
-    },
-    {
-      "file": "C48_Folder.png",
-      "name": "C48_Folder"
-    },
-    {
-      "file": "C49_Folder_Blue_Open.png",
-      "name": "C49_Folder_Blue_Open"
-    },
-    {
-      "file": "C50_Folder_Tar.png",
-      "name": "C50_Folder_Tar"
-    },
-    {
-      "file": "C51_Decrypted.png",
-      "name": "C51_Decrypted"
-    },
-    {
-      "file": "C52_Encrypted.png",
-      "name": "C52_Encrypted"
-    },
-    {
-      "file": "C53_Apply.png",
-      "name": "C53_Apply"
-    },
-    {
-      "file": "C54_Signature.png",
-      "name": "C54_Signature"
-    },
-    {
-      "file": "C55_Thumbnail.png",
-      "name": "C55_Thumbnail"
-    },
-    {
-      "file": "C56_KAddressBook.png",
-      "name": "C56_KAddressBook"
-    },
-    {
-      "file": "C57_View_Text.png",
-      "name": "C57_View_Text"
-    },
-    {
-      "file": "C58_KGPG.png",
-      "name": "C58_KGPG"
-    },
-    {
-      "file": "C59_Package_Development.png",
-      "name": "C59_Package_Development"
-    },
-    {
-      "file": "C60_KFM_Home.png",
-      "name": "C60_KFM_Home"
-    },
-    {
-      "file": "C61_Services.png",
-      "name": "C61_Services"
-    },
-    {
-      "file": "C62_Tux.png",
-      "name": "C62_Tux"
-    },
-    {
-      "file": "C63_Feather.png",
-      "name": "C63_Feather"
-    },
-    {
-      "file": "C64_Apple.png",
-      "name": "C64_Apple"
-    },
-    {
-      "file": "C65_W.png",
-      "name": "C65_W"
-    },
-    {
-      "file": "C66_Money.png",
-      "name": "C66_Money"
-    },
-    {
-      "file": "C67_Certificate.png",
-      "name": "C67_Certificate"
-    },
-    {
-      "file": "C68_BlackBerry.png",
-      "name": "C68_BlackBerry"
-    }
-  ]
+ "name": "Keepass",
+ "dir": "icons-original",
+ "isPixel": true,
+ "list": [
+  {
+   "file": "C00_Password.png",
+   "name": "C00_Password"
+  },
+  {
+   "file": "C01_Package_Network.png",
+   "name": "C01_Package_Network"
+  },
+  {
+   "file": "C02_MessageBox_Warning.png",
+   "name": "C02_MessageBox_Warning"
+  },
+  {
+   "file": "C03_Server.png",
+   "name": "C03_Server"
+  },
+  {
+   "file": "C04_Klipper.png",
+   "name": "C04_Klipper"
+  },
+  {
+   "file": "C05_Edu_Languages.png",
+   "name": "C05_Edu_Languages"
+  },
+  {
+   "file": "C06_KCMDF.png",
+   "name": "C06_KCMDF"
+  },
+  {
+   "file": "C07_Kate.png",
+   "name": "C07_Kate"
+  },
+  {
+   "file": "C08_Socket.png",
+   "name": "C08_Socket"
+  },
+  {
+   "file": "C09_Identity.png",
+   "name": "C09_Identity"
+  },
+  {
+   "file": "C10_Kontact.png",
+   "name": "C10_Kontact"
+  },
+  {
+   "file": "C11_Camera.png",
+   "name": "C11_Camera"
+  },
+  {
+   "file": "C12_IRKickFlash.png",
+   "name": "C12_IRKickFlash"
+  },
+  {
+   "file": "C13_KGPG_Key3.png",
+   "name": "C13_KGPG_Key3"
+  },
+  {
+   "file": "C14_Laptop_Power.png",
+   "name": "C14_Laptop_Power"
+  },
+  {
+   "file": "C15_Scanner.png",
+   "name": "C15_Scanner"
+  },
+  {
+   "file": "C16_Mozilla_Firebird.png",
+   "name": "C16_Mozilla_Firebird"
+  },
+  {
+   "file": "C17_CDROM_Unmount.png",
+   "name": "C17_CDROM_Unmount"
+  },
+  {
+   "file": "C18_Display.png",
+   "name": "C18_Display"
+  },
+  {
+   "file": "C19_Mail_Generic.png",
+   "name": "C19_Mail_Generic"
+  },
+  {
+   "file": "C20_Misc.png",
+   "name": "C20_Misc"
+  },
+  {
+   "file": "C21_KOrganizer.png",
+   "name": "C21_KOrganizer"
+  },
+  {
+   "file": "C22_ASCII.png",
+   "name": "C22_ASCII"
+  },
+  {
+   "file": "C23_Icons.png",
+   "name": "C23_Icons"
+  },
+  {
+   "file": "C24_Connect_Established.png",
+   "name": "C24_Connect_Established"
+  },
+  {
+   "file": "C25_Folder_Mail.png",
+   "name": "C25_Folder_Mail"
+  },
+  {
+   "file": "C26_FileSave.png",
+   "name": "C26_FileSave"
+  },
+  {
+   "file": "C27_NFS_Unmount.png",
+   "name": "C27_NFS_Unmount"
+  },
+  {
+   "file": "C28_QuickTime.png",
+   "name": "C28_QuickTime"
+  },
+  {
+   "file": "C29_KGPG_Term.png",
+   "name": "C29_KGPG_Term"
+  },
+  {
+   "file": "C30_Konsole.png",
+   "name": "C30_Konsole"
+  },
+  {
+   "file": "C31_FilePrint.png",
+   "name": "C31_FilePrint"
+  },
+  {
+   "file": "C32_FSView.png",
+   "name": "C32_FSView"
+  },
+  {
+   "file": "C33_Run.png",
+   "name": "C33_Run"
+  },
+  {
+   "file": "C34_Configure.png",
+   "name": "C34_Configure"
+  },
+  {
+   "file": "C35_KRFB.png",
+   "name": "C35_KRFB"
+  },
+  {
+   "file": "C36_Ark.png",
+   "name": "C36_Ark"
+  },
+  {
+   "file": "C37_KPercentage.png",
+   "name": "C37_KPercentage"
+  },
+  {
+   "file": "C38_Samba_Unmount.png",
+   "name": "C38_Samba_Unmount"
+  },
+  {
+   "file": "C39_History.png",
+   "name": "C39_History"
+  },
+  {
+   "file": "C40_Mail_Find.png",
+   "name": "C40_Mail_Find"
+  },
+  {
+   "file": "C41_VectorGfx.png",
+   "name": "C41_VectorGfx"
+  },
+  {
+   "file": "C42_KCMMemory.png",
+   "name": "C42_KCMMemory"
+  },
+  {
+   "file": "C43_EditTrash.png",
+   "name": "C43_EditTrash"
+  },
+  {
+   "file": "C44_KNotes.png",
+   "name": "C44_KNotes"
+  },
+  {
+   "file": "C45_Cancel.png",
+   "name": "C45_Cancel"
+  },
+  {
+   "file": "C46_Help.png",
+   "name": "C46_Help"
+  },
+  {
+   "file": "C47_KPackage.png",
+   "name": "C47_KPackage"
+  },
+  {
+   "file": "C48_Folder.png",
+   "name": "C48_Folder"
+  },
+  {
+   "file": "C49_Folder_Blue_Open.png",
+   "name": "C49_Folder_Blue_Open"
+  },
+  {
+   "file": "C50_Folder_Tar.png",
+   "name": "C50_Folder_Tar"
+  },
+  {
+   "file": "C51_Decrypted.png",
+   "name": "C51_Decrypted"
+  },
+  {
+   "file": "C52_Encrypted.png",
+   "name": "C52_Encrypted"
+  },
+  {
+   "file": "C53_Apply.png",
+   "name": "C53_Apply"
+  },
+  {
+   "file": "C54_Signature.png",
+   "name": "C54_Signature"
+  },
+  {
+   "file": "C55_Thumbnail.png",
+   "name": "C55_Thumbnail"
+  },
+  {
+   "file": "C56_KAddressBook.png",
+   "name": "C56_KAddressBook"
+  },
+  {
+   "file": "C57_View_Text.png",
+   "name": "C57_View_Text"
+  },
+  {
+   "file": "C58_KGPG.png",
+   "name": "C58_KGPG"
+  },
+  {
+   "file": "C59_Package_Development.png",
+   "name": "C59_Package_Development"
+  },
+  {
+   "file": "C60_KFM_Home.png",
+   "name": "C60_KFM_Home"
+  },
+  {
+   "file": "C61_Services.png",
+   "name": "C61_Services"
+  },
+  {
+   "file": "C62_Tux.png",
+   "name": "C62_Tux"
+  },
+  {
+   "file": "C63_Feather.png",
+   "name": "C63_Feather"
+  },
+  {
+   "file": "C64_Apple.png",
+   "name": "C64_Apple"
+  },
+  {
+   "file": "C65_W.png",
+   "name": "C65_W"
+  },
+  {
+   "file": "C66_Money.png",
+   "name": "C66_Money"
+  },
+  {
+   "file": "C67_Certificate.png",
+   "name": "C67_Certificate"
+  },
+  {
+   "file": "C68_BlackBerry.png",
+   "name": "C68_BlackBerry"
+  }
+ ]
 }
