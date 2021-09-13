@@ -1,6 +1,5 @@
 <template>
-  <div
-  >
+  <div>
     <div style="min-width: 100px">
 
       <template v-for="(item, index) in menuListFiltered">

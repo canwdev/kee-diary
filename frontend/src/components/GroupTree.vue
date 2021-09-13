@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {getGroupTree} from "../api"
+import {getGroupTree} from '../api'
 import ItemIcon from '@/components/ItemIcon'
 
 // TODO

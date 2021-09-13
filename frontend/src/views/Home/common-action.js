@@ -30,7 +30,7 @@ export function handleCommonDelete(context, originTarget, isGroup = false) {
   return new Promise((resolve) => {
     const getTitle = (v) => `<li><span class="text-red">${isGroup ? v.name : v.fields.Title}</span></li>`
 
-    let msgTitles = '';
+    let msgTitles = ''
     let isRecycleBin = false
 
     if (Array.isArray(originTarget)) {

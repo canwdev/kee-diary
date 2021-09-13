@@ -11,7 +11,7 @@
               <span class="q-ml-sm">搜索</span>
             </div>
 
-            <TkButton @click="mVisible = false" icon="close" flat round dense/>
+            <TkButton icon="close" flat round dense @click="mVisible = false"/>
           </div>
         </TkCard>
 

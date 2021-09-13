@@ -1,5 +1,5 @@
 <template>
-  <TkModalDialog show-close v-model="mVisible">
+  <TkModalDialog v-model="mVisible" show-close>
     <TkCard class="text-center overflow-hidden">
       <slot></slot>
     </TkCard>

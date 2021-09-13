@@ -67,8 +67,8 @@
                   @click="handleLoad"
                 >
                   <q-tooltip anchor="top middle" self="center middle">{{
-                      $t('detail.load-outer-text-file')
-                    }}
+                    $t('detail.load-outer-text-file')
+                  }}
                   </q-tooltip>
                 </TkButton>
                 <TkButton
@@ -88,7 +88,6 @@
               </TkButton-group>
             </div>
 
-
             <div v-if="isEntryOpen" class="date-display text-right">
               <span>{{ $t('home.created') }}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
               <span>{{ $t('home.modified') }}: <DateTimeEdit disabled :date="lastModTime"/></span>
@@ -97,7 +96,6 @@
         </TkCard>
       </TkCard>
     </div>
-
 
     <DialogChooseIcon
       :visible.sync="isDialogChooseIconVisible"

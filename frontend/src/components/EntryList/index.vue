@@ -30,7 +30,6 @@
         <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
 
-
     </div>
   </div>
 </template>
@@ -39,8 +38,8 @@
 import {formatDateLite} from '@/utils'
 import store from '@/store'
 import ItemIcon from '@/components/ItemIcon'
-import {getGroupEntries} from "@/api"
-import mainBus, {BUS_SHOW_PREVIEW} from "@/utils/bus"
+import {getGroupEntries} from '@/api'
+import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 
 export default {
   name: 'EntryList',
@@ -88,7 +87,6 @@ export default {
     },
     previewItem(item) {
       mainBus.$emit(BUS_SHOW_PREVIEW, item)
-
     }
   }
 }

@@ -26,8 +26,8 @@
         </TkButton>
 
         <h4>{{
-            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-          }}</h4>
+          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+        }}</h4>
       </TkCard>
 
       <div v-show="isWelcome">

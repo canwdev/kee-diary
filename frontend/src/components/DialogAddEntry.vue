@@ -10,7 +10,7 @@
               <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
             </div>
 
-            <TkButton @click="mVisible = false" icon="close" flat round dense/>
+            <TkButton icon="close" flat round dense @click="mVisible = false"/>
           </div>
         </TkCard>
 
@@ -90,18 +90,18 @@
 
         <TkCard align="right">
           <TkButton
-            @click="mVisible = false"
             flat
             :label="$t('cancel')"
             color="primary"
+            @click="mVisible = false"
           />
           <TkButton
-            @click="mVisible = false"
             :disable="!form.title"
             flat
             :label="$t('confirm')"
             type="submit"
             color="primary"
+            @click="mVisible = false"
           />
         </TkCard>
       </form>

@@ -37,7 +37,7 @@
       <hr/>
 
       <TkCard>
-        <TkButton @click="mVisible = false" flat :label="$t('cancel')" color="primary"/>
+        <TkButton flat :label="$t('cancel')" color="primary" @click="mVisible = false"/>
         <TkButton
           :disabled="index === selectedIndex"
           flat
