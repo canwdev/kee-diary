@@ -97,12 +97,6 @@ export default {
     }
   },
   watch: {
-    isDarkMode: {
-      handler(nv) {
-        console.log('isDarkMode', nv)
-      },
-      immediate: true
-    },
     locate: {
       handler(nv) {
         this.$i18n.locale = nv
@@ -111,8 +105,6 @@ export default {
     },
   },
   methods: {
-    toggleFullscreen() {
-    }
   }
 }
 </script>

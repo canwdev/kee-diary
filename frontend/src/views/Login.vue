@@ -77,7 +77,7 @@
 
       <div v-show="!isWelcome">
         <form
-          @submit="handleUnlock"
+          @submit.prevent="handleUnlock"
         >
           <TkCard>
 
