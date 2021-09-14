@@ -217,9 +217,7 @@ export default {
      * filters：File filter: [{name: 'KeePass KDBX 文件', extensions: ['kdbx']}]
      **/
     async handleChooseFile(name, filters) {
-      this.$store.commit('setIsGlobalLoading')
       const results = await window.electronAPI.showFileChooser({filters})
-      this.$store.commit('setIsGlobalLoading', false)
       // console.log(results)
       if (results && results[0]) {
         this.form[name] = results[0]

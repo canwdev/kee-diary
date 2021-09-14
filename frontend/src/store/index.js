@@ -30,7 +30,6 @@ export default new Vuex.Store({
       editorFontSize: 16, // px
       editorFontFamily: null,
     },
-    isGlobalLoading: false, // 全局加载中
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isChanged: false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
@@ -46,7 +45,6 @@ export default new Vuex.Store({
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
-    isGlobalLoading: state => state.isGlobalLoading,
     isUnlocked: state => state.isUnlocked,
     isChanged: state => state.isChanged,
     selectedGroup: state => state.selectedGroup,
@@ -89,9 +87,6 @@ export default new Vuex.Store({
     },
     setIsUnlocked: (state, val) => {
       state.isUnlocked = val
-    },
-    setIsGlobalLoading: (state, val = true) => {
-      state.isGlobalLoading = val
     },
     setIsChanged: (state, val = true) => {
       if (state.isChanged === val) {
