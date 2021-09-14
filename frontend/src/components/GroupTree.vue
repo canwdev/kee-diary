@@ -10,7 +10,6 @@
         <ItemIcon
           :item="item && item.data"
         />
-        {{ item.id }}
       </template>
 
     </TkTree>

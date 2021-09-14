@@ -1,72 +1,77 @@
 <template>
-  <div class="flex justify-center">
-    <TkCard style="height: 100%" class="q-gutter-y-xs">
-      <div>
-        <div class="row q-gutter-x-md">
-          <TkSwitch
-            v-model="isEditWYSIWYG"
-          >
-            {{ $t('detail.iswysiwyg') }}
-          </TkSwitch>
-          <TkDropdown
-            v-model="editorTheme"
-            dense
-            color="secondary"
-            :options="themeOptions"
-            style="width: 150px"
-          >
-            <template v-slot:prepend>
-              <q-icon name="style"/>
-            </template>
-          </TkDropdown>
-          <TkButton
-            dense
-            icon="text_fields"
-            @click="handleChangeFont"
-          >
-            {{ $t('detail.changeFontFamily') }}
-          </TkButton>
-          <TkButton
-            dense
-            icon="archive"
-            @click="handleLoad"
-          >
-            {{
-              $t('detail.load-outer-text-file')
-            }}
-          </TkButton>
-          <TkButton
-            dense
-            icon="unarchive"
-            @click="handleExport"
-          >
-            {{ $t('detail.export-to-text-file') }}
-          </TkButton>
-          <TkButton
-            dense
-            icon="open_in_browser"
-          >
-            {{ $t('detail.edit-with-external') }}
-          </TkButton>
-        </div>
+  <div class="detail-view flex items-center justify-center">
+    <TkCard class="edit-card">
+      <div class="title-row flex">
+        <ItemIcon
+          class="cursor-pointer"
+        >
+          {{ $t('preview') }} (Ctrl+/)
+        </ItemIcon>
 
-        <div class="date-display text-right">
-          <span>{{ $t('home.created') }}: {{ editingObj.creationTime }}</span>
-          <span>{{ $t('home.modified') }}: {{ lastModTime }}></span>
-        </div>
+        <TkInput
+          v-model="editData.title"
+          placeholder="Title"
+          class="title-input"
+          size="lg"
+        />
       </div>
 
-      <ItemIcon
-        class="cursor-pointer"
-        @click.native="isDialogPreviewVisible = true"
-      >
-        {{ $t('preview') }} (Ctrl+/)
-      </ItemIcon>
+      <hr>
 
-      <TkInput
-        v-model="editingObj.title"
-        placeholder="Title"
-      />
+      <div class="settings-row">
+        <TkSwitch
+          v-model="isEditWYSIWYG"
+        >
+          {{ $t('detail.iswysiwyg') }}
+        </TkSwitch>
+        <TkDropdown
+          v-model="editorTheme"
+          dense
+          color="secondary"
+          :options="themeOptions"
+          style="width: 150px"
+        >
+          <template v-slot:prepend>
+            <q-icon name="style"/>
+          </template>
+        </TkDropdown>
+        <TkButton
+          dense
+          icon="text_fields"
+          @click="handleChangeFont"
+        >
+          {{ $t('detail.changeFontFamily') }}
+        </TkButton>
+        <TkButton
+          dense
+          icon="archive"
+          @click="handleLoad"
+        >
+          {{
+            $t('detail.load-outer-text-file')
+          }}
+        </TkButton>
+        <TkButton
+          dense
+          icon="unarchive"
+          @click="handleExport"
+        >
+          {{ $t('detail.export-to-text-file') }}
+        </TkButton>
+        <TkButton
+          dense
+          icon="open_in_browser"
+        >
+          {{ $t('detail.edit-with-external') }}
+        </TkButton>
+      </div>
+
+      <div class="date-row">
+        <span>{{ $t('home.created') }}: {{ editData.creationTime }}</span>
+        <span>{{ $t('home.modified') }}: {{ lastModTime }}</span>
+      </div>
+
+      <hr>
 
       <div style="overflow: auto; height: calc(100vh - 230px)">
         <textarea id="input-area"></textarea>
@@ -82,7 +87,6 @@ import * as HyperMD from 'hypermd'
 import 'codemirror/mode/htmlmixed/htmlmixed' // Markdown 内嵌HTML
 import 'codemirror/mode/stex/stex' // TeX 数学公式
 import 'codemirror/mode/yaml/yaml' // Front Matter
-
 // CodeMirror Theme
 import 'codemirror/theme/idea.css'
 import 'codemirror/theme/elegant.css'
@@ -104,6 +108,24 @@ import {getEntryDetail} from '@/api'
 
 import {textFilters as filters} from '@/enum'
 
+const themeOptions = [
+  'hypermd-light',
+  'default',
+  'idea',
+  'elegant',
+  'yeti',
+  'darcula',
+  'dracula',
+  'gruvbox-dark',
+  'lesser-dark',
+  'material',
+  'monokai',
+  'mdn-like',
+  'rubyblue',
+  'solarized dark',
+  'solarized light',
+  'the-matrix',]
+
 export default {
   name: 'Detail',
   components: {
@@ -111,32 +133,12 @@ export default {
   },
   data() {
     return {
-      editingObj: {
+      editData: {
         title: '',
         creationTime: '',
       },
       lastModTime: '',
-      isDialogPreviewVisible: false,
-      isDialogChooseIconVisible: false,
-      isDialogChooseColorVisible: false,
-      themeOptions: [
-        'hypermd-light',
-        'default',
-        'idea',
-        'elegant',
-        'yeti',
-        'darcula',
-        'dracula',
-        'gruvbox-dark',
-        'lesser-dark',
-        'material',
-        'monokai',
-        'mdn-like',
-        'rubyblue',
-        'solarized dark',
-        'solarized light',
-        'the-matrix',
-      ],
+      themeOptions,
       isDisableEsc: false
     }
   },
@@ -160,9 +162,6 @@ export default {
     editorFontFamily: {
       get: () => store.getters.editorFontFamily,
       set: val => store.commit('setEditorFontFamily', val)
-    },
-    lockEsc() {
-      return this.isDialogPreviewVisible || this.isDialogChooseIconVisible || this.isGlobalLoading || this.isDisableEsc
     }
   },
   watch: {
@@ -177,12 +176,12 @@ export default {
     editorTheme(nv) {
       this.editor.setOption('theme', nv)
     },
-    editingObj: {
+    editData: {
       handler() {
         store.commit('setIsChanged')
         // const entry = this.currentEntry
-        // entry.fields.Title = this.editingObj.title
-        // entry.times.creationTime = this.editingObj.creationTime
+        // entry.fields.Title = this.editData.title
+        // entry.times.creationTime = this.editData.creationTime
         // this.updateTime()
       },
       deep: true
@@ -203,7 +202,7 @@ export default {
     }
 
     this.initHyperMD(entry)
-    this.editingObj.title = entry.title
+    this.editData.title = entry.title
 
     bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
       this.syncNotes()
@@ -272,18 +271,8 @@ export default {
       // this.lastModTime = this.currentEntry.times.lastModTime
     },
     handleChangeFont() {
-      this.$q.dialog({
-        title: this.$t('detail.changeFontFamily'),
-        prompt: {
-          model: this.editorFontFamily,
-          type: 'text'
-        },
-        cancel: true,
-        persistent: false
-      }).onOk(data => {
-        this.editorFontFamily = data
-        this.setFontFamily()
-      })
+      this.editorFontFamily = prompt(this.$t('detail.changeFontFamily'), this.editorFontFamily)
+      this.setFontFamily()
     },
     handleKeyDown(event) {
       if (event.key === 'Escape' && !this.lockEsc) {
@@ -305,7 +294,6 @@ export default {
     },
     handlePreview() {
       this.syncNotes()
-      this.isDialogPreviewVisible = !this.isDialogPreviewVisible
     },
     async handleLoad() {
       this.$store.commit('setIsGlobalLoading')
@@ -346,7 +334,7 @@ export default {
 
         }).onOk(() => {
           const title = path.substring(path.lastIndexOf(`\\`) + 1)
-          this.editingObj.title = title.replace(/\.[^.$]+$/, '')
+          this.editData.title = title.replace(/\.[^.$]+$/, '')
           this.editor.setValue(txt)
         }).onCancel(() => {
           this.editor.replaceSelection(txt)
@@ -365,7 +353,7 @@ export default {
 
       window.electronAPI.showSaveDialog(this.editor.getValue(), {
         title: this.$t('export-file'),
-        defaultPath: this.editingObj.title + '.txt',
+        defaultPath: this.editData.title + '.txt',
         filters
       }).then(result => {
         if (result) {
@@ -410,12 +398,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.date-display {
-  display: flex;
-  flex-direction: column;
+.detail-view {
+  height: 100%;
 
-  .TkButton {
-    line-height: 1;
+  .edit-card {
+    width: 800px;
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .date-row {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+
+    .title-input {
+      flex: 1;
+    }
   }
 }
 </style>

@@ -52,8 +52,8 @@ function createMainWindow() {
   mainWindow.on('close', (e) => {
     if (app.showExitPrompt) {
       console.log('prevent close')
-      e.preventDefault() // Prevents the window from closing
-      mainWindow.webContents.send('app-closing')
+      // e.preventDefault() // Prevents the window from closing
+      // mainWindow.webContents.send('app-closing')
     }
   })
 
