@@ -84,3 +84,7 @@ for (const key in api) {
 ipcOnEventSync('getAvailableApi', () => {
   return apiList
 })
+
+module.exports = {
+  kInstance
+}

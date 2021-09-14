@@ -44,7 +44,7 @@
 
 <script>
 import store from '@/store'
-import {addEntry} from '@/utils/kdbx-utils'
+// import {addEntry} from '@/utils/kdbx-utils'
 import GroupView from './GroupView'
 import EntryList from '@/components/EntryList'
 // import CalendarView from '@/views/Home/CalendarView'
@@ -88,17 +88,17 @@ export default {
   },
   methods: {
     handleAddEntry(data) {
-      const result = addEntry(this.database, data.groupUuid || this.selectedGroup, {
-        title: data.title,
-        icon: data.iconIndex,
-        bgColor: data.bgColor,
-        fgColor: data.fgColor
-      })
-      if (result) {
-        this.$router.push({
-          name: 'Detail'
-        })
-      }
+      // const result = addEntry(this.database, data.groupUuid || this.selectedGroup, {
+      //   title: data.title,
+      //   icon: data.iconIndex,
+      //   bgColor: data.bgColor,
+      //   fgColor: data.fgColor
+      // })
+      // if (result) {
+      //   this.$router.push({
+      //     name: 'Detail'
+      //   })
+      // }
     },
     handleAddEntryFromGroup(group) {
       this.isShowAddEntry = true

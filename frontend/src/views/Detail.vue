@@ -102,7 +102,7 @@ import 'codemirror/theme/rubyblue.css'
 import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
-import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
+import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import ItemIcon from '@/components/ItemIcon'
 import {getEntryDetail} from '@/api'
 
@@ -124,7 +124,8 @@ const themeOptions = [
   'rubyblue',
   'solarized dark',
   'solarized light',
-  'the-matrix',]
+  'the-matrix'
+]
 
 export default {
   name: 'Detail',
@@ -162,6 +163,9 @@ export default {
     editorFontFamily: {
       get: () => store.getters.editorFontFamily,
       set: val => store.commit('setEditorFontFamily', val)
+    },
+    uuid() {
+      return this.$route.params.uuid
     }
   },
   watch: {
@@ -188,7 +192,7 @@ export default {
     }
   },
   async mounted() {
-    const uuid = this.$route.params.uuid
+    const uuid = this.uuid
     if (!uuid) {
       alert('uuid is not exist!')
       return
@@ -204,16 +208,16 @@ export default {
     this.initHyperMD(entry)
     this.editData.title = entry.title
 
-    bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
+    mainBus.$on(BUS_SYNC_ENTRY_DETAIL, (cb) => {
       this.syncNotes()
-      resolve()
+      cb && cb()
     })
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
   },
   beforeDestroy() {
+    mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
     this.syncNotes()
-    bus.$off(BUS_SAVE_NOTES_START)
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
   },
@@ -271,8 +275,15 @@ export default {
       // this.lastModTime = this.currentEntry.times.lastModTime
     },
     handleChangeFont() {
-      this.editorFontFamily = prompt(this.$t('detail.changeFontFamily'), this.editorFontFamily)
-      this.setFontFamily()
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('detail.changeFontFamily'),
+          content: this.editorFontFamily
+        }
+      }).onConfirm(() => {
+        // this.editorFontFamily = ''
+        // this.setFontFamily()
+      })
     },
     handleKeyDown(event) {
       if (event.key === 'Escape' && !this.lockEsc) {

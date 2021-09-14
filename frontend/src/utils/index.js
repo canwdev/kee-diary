@@ -17,8 +17,3 @@ export function formatDateLite(d) {
   return d.toISOString().substr(0, 10)
 }
 
-export const getNodeUuid = (node) => {
-  if (node && node.data && node.data.uuid) {
-    return node.data.uuid
-  }
-}

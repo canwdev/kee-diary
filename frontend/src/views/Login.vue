@@ -4,7 +4,7 @@
   >
     <TkLoading class="_loading" :visible="isLoading" fixed/>
 
-    <TkModalDialog v-show="isShowAlertDialog">
+    <TkModalDialog v-model="isShowAlertDialog">
       <TkCard>
         <h2>{{ alertDialog.title || 'Error' }}</h2>
 

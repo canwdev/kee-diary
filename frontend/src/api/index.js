@@ -3,6 +3,7 @@ const {
   ipcSendEventSync,
   ipcSendEventAsync
 } = electronAPI
+import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 
 export function openDatabase(data) {
   return ipcSendEventAsync('ipcKdbx_openDatabase', data)
@@ -30,4 +31,16 @@ export function getGroupEntries(groupUuid) {
 
 export function getEntryDetail(uuid) {
   return ipcSendEventAsync('ipcKdbx_getEntryDetail', uuid)
+}
+
+export function getNodeUuid(node) {
+  if (node && node.data && node.data.uuid) {
+    return node.data.uuid
+  }
+}
+
+export function handleSaveDatabase() {
+  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, () => {
+    console.log('sync complete')
+  })
 }

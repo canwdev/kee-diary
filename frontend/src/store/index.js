@@ -97,7 +97,6 @@ export default new Vuex.Store({
       if (state.isChanged === val) {
         return
       }
-      window.electronAPI.setShowExitPrompt(val)
       state.isChanged = val
     },
     setSelectedGroup: (state, val) => {

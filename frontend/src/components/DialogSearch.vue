@@ -110,7 +110,7 @@
 import store from '@/store'
 import DialogChooseGroup from '@/components/DialogChooseGroup'
 import ItemIcon from '@/components/ItemIcon'
-import {searchEntries} from '@/utils/kdbx-utils'
+// import {searchEntries} from '@/utils/kdbx-utils'
 
 export default {
   name: 'DialogSearch',
@@ -179,12 +179,12 @@ export default {
       }
       try {
         this.isLoading = true
-        this.searchResults = searchEntries(
-          this.database,
-          this.groupInfo.groupUuid,
-          this.searchText,
-          this.isDeep
-        )
+        // this.searchResults = searchEntries(
+        //   this.database,
+        //   this.groupInfo.groupUuid,
+        //   this.searchText,
+        //   this.isDeep
+        // )
         // console.log('this.searchResults', this.searchResults)
       } catch (e) {
         console.error(e)

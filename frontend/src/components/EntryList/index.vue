@@ -30,7 +30,7 @@ import store from '@/store'
 import ListItem from './ListItem'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {getNodeUuid} from '@/utils'
+import {getNodeUuid} from '@/api'
 
 export default {
   name: 'EntryList',

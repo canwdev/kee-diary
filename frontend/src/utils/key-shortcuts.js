@@ -1,4 +1,3 @@
-import {saveKdbx, closeKdbx} from './kdbx-utils'
 import _debounce from 'lodash/debounce'
 import {isOutboundURL} from '@/utils/is'
 
@@ -18,7 +17,7 @@ export function unRegisterKeyShortcuts() {
 }
 
 function _closeKdbx() {
-  closeKdbx(true)
+  // closeKdbx(true)
 }
 
 // _debounce function prevents repeated execution in an instant
@@ -32,11 +31,11 @@ function handleKey(event) {
     switch (String.fromCharCode(event.which).toLowerCase()) {
       case 's':
         event.preventDefault()
-        saveKdbx()
+        // saveKdbx()
         break
       case 'l':
         event.preventDefault()
-        closeKdbx()
+        // closeKdbx()
         break
       default:
         return

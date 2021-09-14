@@ -17,9 +17,8 @@
 </template>
 
 <script>
-import {getGroupTree} from '../api'
+import {getGroupTree, getNodeUuid} from '@/api'
 import ItemIcon from '@/components/ItemIcon'
-import {getNodeUuid} from '@/utils'
 
 // TODO
 const TreeNode = window.tankUI.default.enum.TreeNode

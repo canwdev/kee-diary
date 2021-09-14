@@ -6,12 +6,7 @@ const ipcHelper = require('../utils/ipc-helper/ipc-helper-render')
 const self = {
   ...fsUtil,
   ...util,
-  ...ipcHelper,
-  // 退出前提示
-  getShowExitPrompt: remote.app.showExitPrompt,
-  setShowExitPrompt: (flag = true) => {
-    remote.app.showExitPrompt = flag
-  }
+  ...ipcHelper
 }
 
 module.exports = self

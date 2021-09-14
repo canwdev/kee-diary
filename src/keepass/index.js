@@ -35,6 +35,7 @@ class KdbxInstance {
     this.db = null
     this.dbPath = null
     this.curEntryMap = {}
+    this.isChanged = false
   }
 
   async open(options = {}) {

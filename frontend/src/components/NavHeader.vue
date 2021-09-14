@@ -51,7 +51,7 @@
 
 <script>
 import store from '@/store'
-import {closeDatabase, checkIsOpen} from '@/api'
+import {closeDatabase, checkIsOpen, handleSaveDatabase} from '@/api'
 import DialogSearch from './DialogSearch'
 
 export default {
@@ -94,7 +94,7 @@ export default {
       })
     },
     saveKdbx() {
-
+      handleSaveDatabase()
     }
   }
 }

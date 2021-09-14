@@ -5,7 +5,7 @@ const url = require('url')
 const windowStateKeeper = require('electron-window-state');
 const {isElectionDevMode} = require('./utils')
 const isDev = isElectionDevMode()
-require('./keepass/api')
+const {kInstance} = require('./keepass/api')
 
 let mainWindow
 
@@ -48,9 +48,8 @@ function createMainWindow() {
   }
 
   // 退出前询问
-  app.showExitPrompt = false
   mainWindow.on('close', (e) => {
-    if (app.showExitPrompt) {
+    if (kInstance.isChanged) {
       console.log('prevent close')
       // e.preventDefault() // Prevents the window from closing
       // mainWindow.webContents.send('app-closing')
