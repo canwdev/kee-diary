@@ -1,5 +1,5 @@
 <template>
-  <TkLoading v-if="type === ConnectType.CHECKING" class="status-item">
+  <TkLoading v-if="type === ConnectType.CHECKING" visible size="xs" class="status-item">
   </TkLoading>
   <span v-else-if="type === ConnectType.ONLINE" class="status-item online"> Online</span>
   <span v-else-if="type === ConnectType.OFFLINE" class="status-item offline"> Offline</span>
@@ -28,15 +28,15 @@ export default {
 <style lang="scss" scoped>
 .status-item {
   &.online {
-    color: green;
+    color: $color-green;
   }
 
   &.offline {
-    color: gray;
+    color: $color-gray;
   }
 
   &.unknown {
-    color: sandybrown;
+    color: $warning;
   }
 }
 </style>

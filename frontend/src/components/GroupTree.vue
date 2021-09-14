@@ -76,7 +76,7 @@ export default {
       this.$nextTick(() => {
         if (uuid) {
           const node = this.getNodeByUuid(this.treeData, uuid)
-          console.log('node', node)
+          // console.log('node', node)
           if (node) {
             node.$click()
             this.openNode(node)
@@ -88,13 +88,13 @@ export default {
     },
     getNodeByUuid(node, uuid, deep = 0) {
       deep++
-      console.log('getNodeByUuid', node, node.id, deep)
+      // console.log('getNodeByUuid', node, node.id, deep)
       if (!node || !uuid) {
         return null
       }
       const uid = getNodeUuid(node)
       if (uid === uuid) {
-        console.log('found1', node.id)
+        // console.log('found1', node.id)
         return node
       }
       if (node.children) {

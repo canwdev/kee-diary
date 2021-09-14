@@ -19,12 +19,12 @@
   "close": "Close Database"
  },
  "about": {
-  "info": "Trusted offline diary \n Offline for better security.",
+  "info": "Encrypted Note Editor",
   "btnHome": "Home",
   "btnLogDatabase": "Log Database"
  },
  "login": {
-  "welcome": "Welcome to KeeDiary",
+  "welcome": "Welcome to KeeNote",
   "openDatabase": "Open database",
   "saveHistory": "Save history",
   "clear": "Clear",

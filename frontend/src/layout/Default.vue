@@ -3,7 +3,7 @@
     <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
     <NavHeader
-      title="KeeDiary"
+      title="KeeNote"
       @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
       @onBackClick="handleBack"
     />
@@ -11,7 +11,9 @@
     <NavDrawer v-model="leftDrawerOpen"/>
 
     <div class="default-layout-content">
-      <router-view/>
+      <keep-alive :include="['HomeView']">
+        <router-view/>
+      </keep-alive>
     </div>
   </div>
 </template>

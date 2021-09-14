@@ -1,56 +1,20 @@
-# KeeDiary
+# KeeNote
 
 ## Introduction
 
-A diary editor application that uses KeePass technology to encrypt storage. With Syncthing, you can easily synchronize on different devices.
+A note editor application that uses KeePass technology to encrypt storage.
 
 The following techniques are used:
 
 - Electron
-- Vue / Quasar UI
+- Vue
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
-
-## Features
-
-Under development...
-
-- [ ] Create database
-- [x] Open a database (`password`/`password+key`)
-- [x] Save database/close database
-- [ ] Full database search
-- [x] Dark mode
-- [x] Welcome page
-- [x] About page
-- [x] i18n support
-- [x] Check Internet connection (Offline for better security)
-- Groups
-    - [x] Create new entry
-    - [x] Create new group
-    - [x] Rename group
-    - [x] Change icon
-    - [x] Move group
-    - [x] Move to the recycle bin
-    - [x] Empty trash
-- Entries
-    - [x] List view (sort)
-    - [x] Calendar view
-    - [x] Change icon
-    - [x] Change color
-    - [x] Markdown support
-    - [x] Preview
-    - [x] Rename entry
-    - [x] Edit (CodeMirror)
-    - [ ] Edit with external tools
-    - [x] Import/Export
-    - [x] Move entry
-    - [x] Delete entry
 
 ## Development
 
 ```sh
 # Install dependencies
-yarn install
-yarn install --cwd "./frontend"
+yarn ist
 
 # Run development
 yarn run dev
@@ -68,11 +32,3 @@ yarn run build:frontend
 # Build electron executable file
 yarn run build:electron
 ```
-
-## Remarks
-
-- `kdbxweb` It is a function library for operating the kdbx database. Due to domestic network problems, [copy version](https://gitee.com/canwdev/kdbxweb) is used，there are no other changes.
-- last KeeDiary version: [kee-diary-react-electron](https://github.com/canwdev/kee-diary-react-electron)
-
-
-

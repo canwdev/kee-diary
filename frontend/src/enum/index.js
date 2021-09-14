@@ -30,7 +30,7 @@ export const palette = [
   {name: 'none', color: null},
 ]
 
-export const META_NAME = '__keediary_meta__'
+export const META_NAME = '__keenote_meta__'
 export const NOTE_TYPE = {
   binary: 'binary',
   text: 'text',

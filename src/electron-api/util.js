@@ -1,12 +1,13 @@
 const {shell, remote} = require('electron')
+const fetch = require('node-fetch');
+
+const checkUrl = 'http://developers.google.cn/generate_204'
+const checkUrlOrigin = 'http://developers.google.cn'
 
 const checkConnectivity = () => {
-  const url = 'http://developers.google.cn/generate_204'
-  const origin = 'http://developers.google.cn'
-  const fetch = require('node-fetch');
   return new Promise((resolve) => {
-    fetch(url, {
-      headers: {'Origin': origin},
+    fetch(checkUrl, {
+      headers: {'Origin': checkUrlOrigin},
     }).then(() => {
       resolve(true)
     }).catch(() => {

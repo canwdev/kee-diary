@@ -2,7 +2,7 @@
  "about": {
   "btnHome": "ホームページに戻ります",
   "btnLogDatabase": "データベースをコンソールに出力",
-  "info": "信頼できる日記編集者"
+  "info": "暗号化されたエッセイエディター"
  },
  "and-exit": "次に終了します",
  "background": "バックグラウンド",
@@ -62,7 +62,7 @@
   "password": "パスワード",
   "saveHistory": "履歴を保存",
   "unlock": "ロックを解除する",
-  "welcome": "KeeDiaryへようこそ"
+  "welcome": "KeeNote へようこそ"
  },
  "menu": {
   "are-you-sure": "よろしいですか",

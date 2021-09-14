@@ -1,6 +1,6 @@
 <template>
-  <TkCard class="check-connection q-py-md q-px-lg">
-    <div class="text-h6 flex items-center justify-between"><abbr>Internet Connection</abbr>
+  <TkCard neon="info" class="check-connection">
+    <div class="flex items-center justify-between"><b>Internet Connection</b>
       <TkButton flat color="secondary" no-caps @click="check">Check</TkButton>
     </div>
 
@@ -8,10 +8,10 @@
       <li><abbr title="window.navigator.onLine">System</abbr>
         <Status :type="status.navigator"/>
       </li>
-      <li><abbr title="Electron BrowserWindow test: v1.hitokoto.cn">Frontend</abbr>
+      <li><abbr title="Electron BrowserWindow test: v1.hitokoto.cn">Render</abbr>
         <Status :type="status.frontend"/>
       </li>
-      <li><abbr title="Electron Node.js test: developers.google.cn">Backend</abbr>
+      <li><abbr title="Electron Node.js test: developers.google.cn">Electron</abbr>
         <Status :type="status.backend"/>
       </li>
     </ul>
@@ -54,6 +54,9 @@ export default {
 
       axios.get('https://v1.hitokoto.cn/', {
         timeout: 5000,
+        params: {
+          c: ['k', 'i', 'c']
+        }
       }).then(({data}) => {
         this.status.frontend = ConnectType.ONLINE
         if (data && data.hitokoto) {

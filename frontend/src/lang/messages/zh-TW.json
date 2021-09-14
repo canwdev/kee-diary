@@ -2,7 +2,7 @@
  "about": {
   "btnHome": "返回首頁",
   "btnLogDatabase": "輸出數據庫到控制台",
-  "info": "可信任的日記編輯器"
+  "info": "加密隨筆編輯器"
  },
  "and-exit": "然後退出",
  "background": "背景",
@@ -62,7 +62,7 @@
   "password": "密碼",
   "saveHistory": "保存歷史記錄",
   "unlock": "解 鎖",
-  "welcome": "歡迎來到 KeeDiary"
+  "welcome": "歡迎來到 KeeNote"
  },
  "menu": {
   "are-you-sure": "你確定要",

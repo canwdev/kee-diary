@@ -1,29 +1,29 @@
 <template>
   <div class="flex items-center justify-center bg-wall">
     <div class="text-center">
-      <h5 class="text-primary">{{ $t('pages.about') }}</h5>
+      <h1 class="text-primary">{{ $t('pages.about') }}</h1>
 
-      <TkCard class="">
-        <div class="">{{ message || $t('about.info') }}</div>
-        <div class="">
-          <VersionText/>
-        </div>
+      <TkCard class="about-card" solid>
+        <h3>{{ $t('about.info') }}</h3>
+        <hr>
+        <VersionText/>
+        <template v-if="message">
+          <hr>
+          <div>{{ message }}</div>
+        </template>
       </TkCard>
 
       <div class="content">
         <CheckConnection
-          class=""
           @onMessage="updateMessage"
         />
 
-        <div class="column q-gutter-sm">
-          <TkButton>
-            <TkLink href="/home">{{ $t('about.btnHome') }}</TkLink>
-          </TkButton>
+        <div class="about-buttons">
+          <TkLink class="tk-button" href="/home">
+            {{ $t('about.btnHome') }}
+          </TkLink>
           <TkButton
-            outline
-            color="secondary"
-            title="Ctrl+Shift+I"
+            theme="secondary"
             @click="logDatabase"
           >{{ $t('about.btnLogDatabase') }}
           </TkButton>
@@ -62,13 +62,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bg-wood {
-  user-select: text;
-  white-space: pre-line;
+.about-card {
+  margin-bottom: 10px;
 }
 
 .content {
   margin: 0 auto;
   width: 300px;
+
+  .about-buttons {
+    a, button {
+      color: inherit;
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
 }
 </style>

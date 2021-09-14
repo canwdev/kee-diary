@@ -1,8 +1,8 @@
 {
-  "name": "kee-diary",
-  "appName": "KeeDiary3",
+  "name": "kee-note",
+  "appName": "KeeNote",
   "version": "3.0.1",
-  "description": "A diary app that use kdbx to encrypt your diary",
+  "description": "A note editor application that uses KeePass.",
   "repository": "",
   "private": true,
   "author": "canwdev",
@@ -28,6 +28,7 @@
   "dependencies": {
     "electron-window-state": "^5.0.3",
     "fs-extra": "^10.0.0",
-    "kdbxweb": "^2.1.1"
+    "kdbxweb": "^2.1.1",
+    "node-fetch": "2.6.2"
   }
 }

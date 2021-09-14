@@ -18,12 +18,12 @@
   "darkMode": "黑暗模式"
  },
  "about": {
-  "info": "可信任的日记编辑器 \n本程序不会主动联网，断网使用以获得最佳安全性",
+  "info": "加密随笔编辑器",
   "btnHome": "返回首页",
   "btnLogDatabase": "输出数据库到控制台"
  },
  "login": {
-  "welcome": "欢迎来到 KeeDiary",
+  "welcome": "欢迎来到 KeeNote",
   "openDatabase": "打开数据库",
   "saveHistory": "保存历史记录",
   "clear": "清空历史记录",

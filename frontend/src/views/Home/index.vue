@@ -3,7 +3,7 @@
     class="home-page"
   >
     <div class="nav-tree">
-      <div class="">
+      <div >
         <GroupView
           :selected.sync="selectedGroup"
           @onCreateEntry="handleAddEntryFromGroup"
