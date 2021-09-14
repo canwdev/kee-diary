@@ -99,7 +99,6 @@ import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
 import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
-import {notifyError, notifySuccess} from '../utils'
 import ItemIcon from '@/components/ItemIcon'
 import {getEntryDetail} from '@/api'
 
@@ -355,7 +354,7 @@ export default {
           this.isDisableEsc = false
         })
       } catch (e) {
-        notifyError(e.message)
+        this.$toast.error({message: e})
         console.error(e)
       } finally {
         this.$store.commit('setIsGlobalLoading', false)
@@ -370,10 +369,10 @@ export default {
         filters
       }).then(result => {
         if (result) {
-          notifySuccess()
+          this.$toast.success({message: 'Success'})
         }
       }).catch(e => {
-        notifyError(e.message)
+        this.$toast.error({message: e.message})
         console.error(e)
       }).finally(() => {
         this.$store.commit('setIsGlobalLoading', false)

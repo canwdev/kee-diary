@@ -26,8 +26,8 @@
         </TkButton>
 
         <h4>{{
-          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-        }}</h4>
+            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+          }}</h4>
       </TkCard>
 
       <div v-show="isWelcome">
@@ -141,7 +141,6 @@
 
 import LocalStorageSettings from '@/utils/settings'
 import {isProd} from '@/utils/is'
-import {notifyError} from '@/utils'
 import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/enum'
 import VersionText from '@/components/VersionText'
 import {
@@ -250,11 +249,11 @@ export default {
     async handleUnlock() {
       const {dbPath, password, keyPath} = this.form
       if (!dbPath) {
-        notifyError('The database path cannot be empty')
+        this.$toast.error({message: 'The database path cannot be empty'})
         return
       }
       if (!password && !keyPath) {
-        notifyError('Password or key path cannot be empty')
+        this.$toast.error({message: 'Password or key path cannot be empty'})
         return
       }
 

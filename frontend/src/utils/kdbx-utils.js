@@ -2,7 +2,7 @@ import kdbxweb from 'kdbxweb'
 import store from '@/store'
 import router from '@/router'
 
-import {notifyError, notifySuccess} from '@/utils'
+
 import {busEmitSaveNotes} from './bus'
 import {formatDate} from '@/utils/index'
 
@@ -74,10 +74,10 @@ function doSaveKdbx(dbPath, db) {
         try {
           electronAPI.saveFileSyncAsArrayBuffer(dbPath, dataAsArrayBuffer)
           store.commit('setIsChanged', false)
-          notifySuccess(i18n.t('kdbx.saved-successfully'))
+          this.$toast.success({message: i18n.t('kdbx.saved-successfully')})
           return resolve()
         } catch (e) {
-          notifyError(e)
+          this.$toast.error({message: e})
           return reject(e)
         }
       }).finally(() => {
@@ -85,7 +85,7 @@ function doSaveKdbx(dbPath, db) {
       })
     } else {
       const errMsg = i18n.t('kdbx.database-not-exist')
-      notifyError(errMsg)
+      this.$toast.error({message: errMsg})
       return reject(errMsg)
     }
   })
@@ -186,7 +186,7 @@ export function addGroup(db, groupUuid, name = formatDate(new Date(), true)) {
 
     return true
   } catch (e) {
-    notifyError(e.message)
+    this.$toast.error({message: e})
     console.error(e)
     return false
   }
@@ -229,7 +229,7 @@ export function addEntry(db, groupUuid, config = {}) {
 
     return true
   } catch (e) {
-    notifyError(e.message)
+    this.$toast.error({message: e})
     console.error(e)
     return false
   }
@@ -254,7 +254,7 @@ export function removeItems(db, items) {
     store.commit('setIsChanged')
     return true
   } catch (e) {
-    notifyError(e.message)
+    this.$toast.error({message: e})
     console.error(e)
     return false
   }
@@ -289,7 +289,7 @@ export function moveItems(db, items, groupUuid) {
     // store.commit('setSelectedGroup', groupUuid)
     return true
   } catch (e) {
-    notifyError(e.message)
+    this.$toast.error({message: e})
     console.error(e)
     return false
   }

@@ -18,7 +18,7 @@
           @itemClick="handleItemClick"
         />
 
-        <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
+        <TkEmpty v-if="!(entryList && entryList.length)" :img="null" text="Empty"></TkEmpty>
       </div>
 
     </div>
@@ -30,6 +30,7 @@ import store from '@/store'
 import ListItem from './ListItem'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
+import {getNodeUuid} from '@/utils'
 
 export default {
   name: 'EntryList',
@@ -65,14 +66,18 @@ export default {
   },
   methods: {
     async loadEntryList() {
-      if (!(this.selectedGroup && this.selectedGroup.data)) {
-        return
+      try {
+        const uuid = getNodeUuid(this.selectedGroup)
+        if (!uuid) {
+          this.entryList = []
+          return
+        }
+        // console.log('gg', this.selectedGroup)
+        this.entryList = await getGroupEntries(uuid) || []
+      } catch (e) {
+        console.error(e)
+        this.$toast.error({message: e})
       }
-      const {data} = this.selectedGroup
-      if (!data) {
-        return
-      }
-      this.entryList = await getGroupEntries(data.uuid) || []
     },
     previewItem(item) {
       mainBus.$emit(BUS_SHOW_PREVIEW, item)

@@ -17,26 +17,8 @@ export function formatDateLite(d) {
   return d.toISOString().substr(0, 10)
 }
 
-export const notifySuccess = (message = 'Success', caption) => {
-  alert(message)
-  // Notify.create({
-  //   message: message,
-  //   caption: caption,
-  //   color: 'positive',
-  //   position: 'top',
-  //   icon: 'done',
-  //   timeout: 1500
-  // })
-}
-
-export const notifyError = (message = 'Error', caption) => {
-  alert(message)
-  // Notify.create({
-  //   message: message,
-  //   caption: caption,
-  //   color: 'negative',
-  //   position: 'top',
-  //   icon: 'warning',
-  //   timeout: 2000
-  // })
+export const getNodeUuid = (node) => {
+  if (node && node.data && node.data.uuid) {
+    return node.data.uuid
+  }
 }

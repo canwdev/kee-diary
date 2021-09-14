@@ -53,7 +53,7 @@ import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 
 export default {
-  name: 'MainView',
+  name: 'HomeView',
   components: {
     EntryList,
     GroupView,
@@ -63,7 +63,6 @@ export default {
   },
   data() {
     return {
-      isList: false,
       isShowAddEntry: false,
       isShowPreview: false,
       previewItem: null

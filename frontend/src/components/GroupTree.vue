@@ -1,6 +1,7 @@
 <template>
   <div class="group-tree-wrap">
     <TkTree
+      ref="treeRef"
       :nodes="treeData"
       :selected-id="mSelected && mSelected.id"
       @onItemClick="handleNodeClick"
@@ -9,6 +10,7 @@
         <ItemIcon
           :item="item && item.data"
         />
+        {{ item.id }}
       </template>
 
     </TkTree>
@@ -18,9 +20,12 @@
 <script>
 import {getGroupTree} from '../api'
 import ItemIcon from '@/components/ItemIcon'
+import {getNodeUuid} from '@/utils'
 
 // TODO
 const TreeNode = window.tankUI.default.enum.TreeNode
+
+const rootItem = new TreeNode()
 
 export default {
   name: 'GroupTree',
@@ -35,7 +40,7 @@ export default {
   },
   data() {
     return {
-      treeData: {},
+      treeData: rootItem,
       self_selected: null
     }
   },
@@ -53,18 +58,61 @@ export default {
   },
   watch: {},
   mounted() {
-    this.getTree()
+    this.getTreeData()
   },
   methods: {
     handleNodeClick(node) {
       this.mSelected = node
     },
-    async getTree() {
-      this.treeData = {}
+    async getTreeData() {
+      this.treeData = rootItem
+      const uuid = getNodeUuid(this.mSelected)
+      // console.log('uuid', this.mSelected, uuid)
+
       const res = await getGroupTree()
       if (res && res[0]) {
-        // console.log(res[0])
         this.treeData = TreeNode.generateTree(res[0])
+      }
+      this.$nextTick(() => {
+        if (uuid) {
+          const node = this.getNodeByUuid(this.treeData, uuid)
+          console.log('node', node)
+          if (node) {
+            node.$click()
+            this.openNode(node)
+            return
+          }
+        }
+        this.$refs.treeRef.getRootItem().handleClick()
+      })
+    },
+    getNodeByUuid(node, uuid, deep = 0) {
+      deep++
+      console.log('getNodeByUuid', node, node.id, deep)
+      if (!node || !uuid) {
+        return null
+      }
+      const uid = getNodeUuid(node)
+      if (uid === uuid) {
+        console.log('found1', node.id)
+        return node
+      }
+      if (node.children) {
+        const len = node.children.length
+        for (let i = 0; i < len; i++) {
+          const n = node.children[i]
+          const result = this.getNodeByUuid(n, uuid)
+          if (result) {
+            return result
+          }
+        }
+      }
+      return null
+    },
+    openNode(node) {
+      node.isOpen = true
+      if (node.parent) {
+        this.openNode(node.parent)
       }
     }
   }
