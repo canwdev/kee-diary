@@ -147,7 +147,6 @@ export default {
     isDarkMode: {
       get: () => store.getters.isDarkMode,
     },
-    isGlobalLoading: () => store.getters.isGlobalLoading,
     isEditWYSIWYG: {
       get: () => store.getters.isEditWYSIWYG,
       set: val => store.commit('setIsEditWYSIWYG', val)
@@ -310,8 +309,6 @@ export default {
       this.syncNotes()
     },
     async handleLoad() {
-      this.$store.commit('setIsGlobalLoading')
-
       try {
         const paths = await window.electronAPI.showFileChooser({
           sizeLimit: 1024000,
@@ -358,13 +355,9 @@ export default {
       } catch (e) {
         this.$toast.error({message: e})
         console.error(e)
-      } finally {
-        this.$store.commit('setIsGlobalLoading', false)
       }
     },
     handleExport() {
-      this.$store.commit('setIsGlobalLoading')
-
       window.electronAPI.showSaveDialog(this.editor.getValue(), {
         title: this.$t('export-file'),
         defaultPath: this.editData.title + '.txt',
@@ -376,8 +369,6 @@ export default {
       }).catch(e => {
         this.$toast.error({message: e.message})
         console.error(e)
-      }).finally(() => {
-        this.$store.commit('setIsGlobalLoading', false)
       })
     },
     handleUpdateIcon(iconIndex) {
