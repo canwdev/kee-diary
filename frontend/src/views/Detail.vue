@@ -104,7 +104,7 @@ import 'codemirror/theme/the-matrix.css'
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import ItemIcon from '@/components/ItemIcon'
-import {getEntryDetail} from '@/api'
+import {getEntryDetail, updateEntry} from '@/api'
 
 import {textFilters as filters} from '@/enum'
 
@@ -260,15 +260,18 @@ export default {
       }
       editor.refresh()
     },
-    syncNotes() {
-      // const entry = this.currentEntry
-      // if (entry) {
-      //   const newNotes = this.editor.getValue()
-      //   if (entry.fields.Notes !== newNotes) {
-      //     this.updateTime()
-      //     entry.fields.Notes = newNotes
-      //   }
-      // }
+    async syncNotes() {
+      if (!this.uuid) {
+        return
+      }
+      const res = await updateEntry({
+        uuid: this.uuid,
+        updates: [
+          {path: 'fields.Title', value: this.editData.title},
+          {path: 'fields.Notes', value: this.editor.getValue()},
+        ]
+      })
+      console.log(res)
     },
     updateTime() {
       // this.currentEntry.times.update()

@@ -1,7 +1,7 @@
 <template>
   <div class="group-tree-wrap">
     <GroupTree
-      ref="groupTree"
+      ref="treeRef"
       :selected.sync="mSelected"
     >
     </GroupTree>
@@ -36,7 +36,11 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    updateTree() {
+      this.$refs.treeRef.getTreeData()
+    }
+  }
 }
 </script>
 

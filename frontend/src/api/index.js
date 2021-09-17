@@ -33,6 +33,12 @@ export function getEntryDetail(uuid) {
   return ipcSendEventAsync('ipcKdbx_getEntryDetail', uuid)
 }
 
+export function updateEntry(params) {
+  return ipcSendEventAsync('ipcKdbx_updateEntry', params)
+}
+
+// custom frontend api
+
 export function getNodeUuid(node) {
   if (node && node.data && node.data.uuid) {
     return node.data.uuid
@@ -42,5 +48,6 @@ export function getNodeUuid(node) {
 export function handleSaveDatabase() {
   mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, () => {
     console.log('sync complete')
+    saveDatabase()
   })
 }

@@ -5,6 +5,7 @@
     <div class="nav-tree">
       <div >
         <GroupView
+          ref="groupRef"
           :selected.sync="selectedGroup"
           @onCreateEntry="handleAddEntryFromGroup"
         />
@@ -85,6 +86,9 @@ export default {
   },
   beforeDestroy() {
     mainBus.$off(BUS_SHOW_PREVIEW, this.handlePreviewItem)
+  },
+  activated() {
+    this.$refs.groupRef.updateTree()
   },
   methods: {
     handleAddEntry(data) {

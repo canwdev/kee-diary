@@ -88,7 +88,7 @@ export default {
   methods: {
     async closeKdbx() {
       await closeDatabase()
-      store.commit('setIsUnlocked', checkIsOpen())
+      store.commit('setIsUnlocked', false)
       await this.$router.replace({
         name: 'Login'
       })

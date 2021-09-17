@@ -88,6 +88,9 @@ export default new Vuex.Store({
       settings.set(state.settings)
     },
     setIsUnlocked: (state, val) => {
+      if (!val) {
+        state.isChanged = false
+      }
       state.isUnlocked = val
     },
     setIsGlobalLoading: (state, val = true) => {

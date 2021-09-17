@@ -49,8 +49,8 @@ const getEntryDetail = async (uuid) => {
   return kInstance.getEntryDetail(uuid)
 }
 
-const updateEntry = async (uuid, update) => {
-  return kInstance.updateEntry(uuid, update)
+const updateEntry = async (params) => {
+  return kInstance.updateEntry(params)
 }
 
 const api = {

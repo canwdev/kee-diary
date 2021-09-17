@@ -6,7 +6,8 @@ const {
 } = require('./enum')
 const {
   readFileAsArrayBuffer,
-  saveFileFromArrayBuffer
+  saveFileFromArrayBuffer,
+  setValDot
 } = require('../utils')
 
 /**
@@ -80,7 +81,7 @@ class KdbxInstance {
     }
 
     console.log('[db] saving database...')
-    const buffer = await db.save()
+    const buffer = await this.db.save()
     await saveFileFromArrayBuffer(this.dbPath, buffer)
     console.log('[db] database saved')
   }
@@ -128,6 +129,7 @@ class KdbxInstance {
    * @returns {*}
    */
   getEntry(uuid) {
+    console.log(`[db] getEntry ${uuid}`)
     if (!uuid) {
       throw new Error('uuid is required!')
     }
@@ -150,19 +152,24 @@ class KdbxInstance {
 
   /**
    * 更新一个 entry 对象
-   * @param uuid
-   * @param update 数组
    * @returns {EntryItem}
    */
-  updateEntry(uuid, update) {
-    if (!update) {
-      throw new Error('update is required!')
+  updateEntry(params) {
+    const {
+      uuid,
+      updates // 数组
+    } = params || {}
+    if (!updates) {
+      throw new Error('updates is required!')
     }
+    console.log({uuid, updates})
     const entry = this.getEntry(uuid)
-    update.forEach(obj => {
+    updates.forEach(obj => {
       const {path, value} = obj
-
+      console.log({path, value})
+      setValDot(entry, path, value)
     })
+    entry.times.update()
     return new EntryItem(entry, true)
   }
 }
