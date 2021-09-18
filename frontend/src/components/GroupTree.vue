@@ -48,7 +48,7 @@ export default {
         return this.selected || this.self_selected
       },
       set(val) {
-        console.log('mSelected', val)
+        // console.log('mSelected', val)
         this.$emit('update:selected', val)
         this.$emit('onSelect', val)
         this.self_selected = val
@@ -61,13 +61,13 @@ export default {
   },
   methods: {
     handleNodeClick(node) {
-      console.log('handleNodeClick', node)
+      // console.log('handleNodeClick', node)
       this.mSelected = node
     },
     async getTreeData() {
       this.treeData = rootItem
       const uuid = getNodeUuid(this.mSelected)
-      console.log('uuid', this.mSelected, uuid)
+      // console.log('uuid', this.mSelected, uuid)
 
       const res = await getGroupTree()
       if (res && res[0]) {

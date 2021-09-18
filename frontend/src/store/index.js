@@ -91,10 +91,7 @@ export default new Vuex.Store({
       }
       state.isUnlocked = val
     },
-    setIsChanged: (state, val = true) => {
-      if (state.isChanged === val) {
-        return
-      }
+    setIsChanged: (state, val = false) => {
       state.isChanged = val
     },
     setSelectedGroup: (state, val) => {

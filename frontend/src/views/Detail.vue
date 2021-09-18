@@ -35,46 +35,37 @@
             <q-icon name="style"/>
           </template>
         </TkDropdown>
-        <TkButton
-          dense
-          icon="text_fields"
-          @click="handleChangeFont"
-        >
-          {{ $t('detail.changeFontFamily') }}
-        </TkButton>
-        <TkButton
-          dense
-          icon="archive"
-          @click="handleLoad"
-        >
-          {{
-            $t('detail.load-outer-text-file')
-          }}
-        </TkButton>
-        <TkButton
-          dense
-          icon="unarchive"
-          @click="handleExport"
-        >
-          {{ $t('detail.export-to-text-file') }}
-        </TkButton>
-        <TkButton
-          dense
-          icon="open_in_browser"
-        >
-          {{ $t('detail.edit-with-external') }}
-        </TkButton>
-      </div>
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="text_fields"-->
+        <!--          @click="handleChangeFont"-->
+        <!--        >-->
+        <!--          {{ $t('detail.changeFontFamily') }}-->
+        <!--        </TkButton>-->
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="archive"-->
+        <!--          @click="handleLoad"-->
+        <!--        >-->
+        <!--          {{-->
+        <!--            $t('detail.load-outer-text-file')-->
+        <!--          }}-->
+        <!--        </TkButton>-->
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="unarchive"-->
+        <!--          @click="handleExport"-->
+        <!--        >-->
+        <!--          {{ $t('detail.export-to-text-file') }}-->
+        <!--        </TkButton>-->
 
-      <div class="date-row">
-        <span>{{ $t('home.created') }}: {{ editData.creationTime }}</span>
-        <span>{{ $t('home.modified') }}: {{ lastModTime }}</span>
+        <span>{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
       </div>
 
       <hr>
 
       <div style="overflow: auto; height: calc(100vh - 230px)">
-        <textarea id="input-area"></textarea>
+        <textarea v-show="false" id="input-area"></textarea>
       </div>
     </TkCard>
   </div>
@@ -103,6 +94,7 @@ import 'codemirror/theme/solarized.css'
 import 'codemirror/theme/the-matrix.css'
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
+import {formatDate} from '@/utils'
 import ItemIcon from '@/components/ItemIcon'
 import {getEntryDetail, updateEntry} from '@/api'
 
@@ -138,9 +130,9 @@ export default {
         title: '',
         creationTime: '',
       },
-      lastModTime: '',
       themeOptions,
-      isDisableEsc: false
+      isDisableEsc: false,
+      isLoading: false
     }
   },
   computed: {
@@ -181,31 +173,16 @@ export default {
     },
     editData: {
       handler() {
-        store.commit('setIsChanged')
-        // const entry = this.currentEntry
-        // entry.fields.Title = this.editData.title
-        // entry.times.creationTime = this.editData.creationTime
-        // this.updateTime()
+        if (this.isLoading) {
+          return
+        }
+        store.commit('setIsChanged', true)
       },
       deep: true
     }
   },
   async mounted() {
-    const uuid = this.uuid
-    if (!uuid) {
-      alert('uuid is not exist!')
-      return
-    }
-
-    const entry = await getEntryDetail(uuid)
-
-    if (!entry) {
-      alert('entry is not exist!')
-      return
-    }
-
-    this.initHyperMD(entry)
-    this.editData.title = entry.title
+    await this.initEntryData()
 
     mainBus.$on(BUS_SYNC_ENTRY_DETAIL, (cb) => {
       this.syncNotes()
@@ -214,13 +191,47 @@ export default {
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
   },
+  async beforeRouteLeave(to, from, next) {
+    // console.log('beforeRouteLeave')
+    await this.syncNotes()
+    next()
+  },
   beforeDestroy() {
+    console.log('beforeDestroy')
+
     mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
-    this.syncNotes()
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
   },
   methods: {
+    formatDate,
+    async initEntryData() {
+      try {
+        this.isLoading = true
+
+        const uuid = this.uuid
+        if (!uuid) {
+          alert('uuid is not exist!')
+          return
+        }
+
+        const entry = await getEntryDetail(uuid)
+
+        if (!entry) {
+          alert('entry is not exist!')
+          return
+        }
+        this.editData.title = entry.title
+        this.editData.creationTime = entry.creationTime
+        this.initHyperMD(entry)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.$nextTick(() => {
+          this.isLoading = false
+        })
+      }
+    },
     initHyperMD(entry) {
       const textarea = document.getElementById('input-area')
       const editor = HyperMD.fromTextArea(textarea, {
@@ -235,7 +246,7 @@ export default {
       editor.setOption('theme', this.editorTheme)
       editor.on('change', () => {
         if (this.editor) {
-          store.commit('setIsChanged')
+          store.commit('setIsChanged', true)
         }
       })
       if (entry && entry.notes) {
@@ -260,6 +271,8 @@ export default {
       editor.refresh()
     },
     async syncNotes() {
+      console.log('syncNotes1', this.uuid)
+
       if (!this.uuid) {
         return
       }
@@ -270,11 +283,7 @@ export default {
           {path: 'fields.Notes', value: this.editor.getValue()},
         ]
       })
-      console.log(res)
-    },
-    updateTime() {
-      // this.currentEntry.times.update()
-      // this.lastModTime = this.currentEntry.times.lastModTime
+      console.log('syncNotes2', res)
     },
     handleChangeFont() {
       this.$prompt.create({
@@ -373,12 +382,10 @@ export default {
     },
     handleUpdateIcon(iconIndex) {
       this.currentEntry.icon = iconIndex
-      store.commit('setIsChanged')
     },
     handleUpdateColor(result) {
       const {type, value} = result
       this.currentEntry[type] = value
-      store.commit('setIsChanged')
     },
     handleCtrlScroll(event) {
       if (event.ctrlKey) {
@@ -414,12 +421,6 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-  }
-
-  .date-row {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
   }
 

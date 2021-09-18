@@ -11,14 +11,14 @@
       />
     </div>
     <div class="t-col _title">{{ item.title }}</div>
-    <div class="t-col _time">{{ formatDateLite(item.creationTime) }}</div>
-    <div class="t-col _time">{{ formatDateLite(item.lastModTime) }}</div>
+    <div class="t-col _time">{{ formatDate(item.creationTime) }}</div>
+    <div class="t-col _time">{{ formatDate(item.lastModTime) }}</div>
   </div>
 </template>
 
 <script>
 import ItemIcon from '@/components/ItemIcon'
-import {formatDateLite} from '@/utils'
+import {formatDate} from '@/utils'
 
 export default {
   name: 'ListItem',
@@ -33,7 +33,7 @@ export default {
     }
   },
   methods: {
-    formatDateLite,
+    formatDate,
   }
 }
 </script>
