@@ -47,7 +47,23 @@ const ipcSendEventAsync = (eventName, data, timeout = 30000) => {
   })
 }
 
+
+/**
+ * 监听消息更新事件
+ * @param channel
+ * @param listener 回调函数
+ */
+const ipcOnMessage = (channel, listener) => {
+  ipcRenderer.on(channel, listener)
+}
+
+const ipcOffMessage = (channel, listener) => {
+  ipcRenderer.off(channel, listener)
+}
+
 module.exports = {
   ipcSendEventSync,
-  ipcSendEventAsync
+  ipcSendEventAsync,
+  ipcOnMessage,
+  ipcOffMessage,
 }

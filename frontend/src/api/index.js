@@ -4,6 +4,7 @@ const {
   ipcSendEventAsync
 } = electronAPI
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
+import store from '@/store'
 
 export function openDatabase(data) {
   return ipcSendEventAsync('ipcKdbx_openDatabase', data)
@@ -19,6 +20,10 @@ export function saveDatabase() {
 
 export function checkIsOpen() {
   return ipcSendEventSync('ipcKdbx_checkIsOpen')
+}
+
+export function getIsChanged() {
+  return ipcSendEventSync('ipcKdbx_getIsChanged')
 }
 
 export function getGroupTree(groupUuid) {
@@ -37,7 +42,8 @@ export function updateEntry(params) {
   return ipcSendEventAsync('ipcKdbx_updateEntry', params)
 }
 
-// custom frontend api
+
+// ====== custom frontend api ======
 
 export function getNodeUuid(node) {
   if (node && node.data && node.data.uuid) {
@@ -49,5 +55,6 @@ export function handleSaveDatabase() {
   mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, () => {
     console.log('sync complete')
     saveDatabase()
+    store.commit('setIsChanged', getIsChanged())
   })
 }

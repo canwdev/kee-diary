@@ -22,11 +22,11 @@
       <template slot="right">
         <div class="actions-btn flex items-center justify-end">
           <template v-if="isUnlocked">
-            <TkButton
-              @click="isDialogSearchVisible = true"
-            >
-              {{ $t('header.search') }}
-            </TkButton>
+<!--            <TkButton-->
+<!--              @click="isDialogSearchVisible = true"-->
+<!--            >-->
+<!--              {{ $t('header.search') }}-->
+<!--            </TkButton>-->
             <TkButton
               :disabled="!isChanged"
               @click="saveKdbx"
@@ -42,9 +42,9 @@
         </div>
       </template>
     </TkNavBar>
-    <DialogSearch
-      :visible.sync="isDialogSearchVisible"
-    />
+<!--    <DialogSearch-->
+<!--      :visible.sync="isDialogSearchVisible"-->
+<!--    />-->
   </div>
 
 </template>
@@ -52,12 +52,12 @@
 <script>
 import store from '@/store'
 import {closeDatabase, checkIsOpen, handleSaveDatabase} from '@/api'
-import DialogSearch from './DialogSearch'
+// import DialogSearch from './DialogSearch'
 
 export default {
   name: 'NavHeader',
   components: {
-    DialogSearch
+    // DialogSearch
   },
   props: {
     title: {

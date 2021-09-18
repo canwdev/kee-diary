@@ -30,6 +30,10 @@ const checkIsOpen = () => {
   return !!kInstance.db
 }
 
+const getIsChanged = () => {
+  return kInstance.isChanged
+}
+
 const getMeta = () => {
   return {
     // header: kInstance.db.header,

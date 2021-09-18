@@ -51,8 +51,8 @@ function createMainWindow() {
   mainWindow.on('close', (e) => {
     if (kInstance.isChanged) {
       console.log('prevent close')
-      // e.preventDefault() // Prevents the window from closing
-      // mainWindow.webContents.send('app-closing')
+      e.preventDefault() // Prevents the window from closing
+      mainWindow.webContents.send('IPC_APP_CLOSING')
     }
   })
 

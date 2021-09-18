@@ -83,6 +83,7 @@ class KdbxInstance {
     console.log('[db] saving database...')
     const buffer = await this.db.save()
     await saveFileFromArrayBuffer(this.dbPath, buffer)
+    this.isChanged = false
     console.log('[db] database saved')
   }
 
@@ -109,7 +110,6 @@ class KdbxInstance {
     const list = []
     this.curEntryMap = {}
     const group = this.db.getGroup(groupUuid)
-    // console.log('getGroup', group)
 
     if (group) {
       for (let i = group.entries.length - 1; i >= 0; i--) {
@@ -118,7 +118,6 @@ class KdbxInstance {
         list.push(new EntryItem(entry))
       }
     }
-    // console.log('getGroupEntries', list)
 
     return list
   }
@@ -162,14 +161,14 @@ class KdbxInstance {
     if (!updates) {
       throw new Error('updates is required!')
     }
-    console.log({uuid, updates})
+    console.log(`[db] updateEntry ${uuid}`)
     const entry = this.getEntry(uuid)
     updates.forEach(obj => {
       const {path, value} = obj
-      console.log({path, value})
       setValDot(entry, path, value)
     })
     entry.times.update()
+    this.isChanged = true
     return new EntryItem(entry, true)
   }
 }
