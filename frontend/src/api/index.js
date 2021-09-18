@@ -52,9 +52,9 @@ export function getNodeUuid(node) {
 }
 
 export function handleSaveDatabase() {
-  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, () => {
+  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, async () => {
     console.log('sync complete')
-    saveDatabase()
-    store.commit('setIsChanged', getIsChanged())
+    await saveDatabase()
+    store.commit('setIsChanged', false)
   })
 }
