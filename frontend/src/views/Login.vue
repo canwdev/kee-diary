@@ -1,8 +1,8 @@
 <template>
   <div
-    class="full-height row justify-center items-center"
+    class="login-view full-height flex justify-center items-center"
   >
-    <TkLoading class="_loading" :visible="isLoading" fixed/>
+    <TkLoading :visible="isLoading" fixed/>
 
     <TkModalDialog v-model="isShowAlertDialog">
       <TkCard>
@@ -16,48 +16,45 @@
       </TkCard>
     </TkModalDialog>
 
-    <TkCard solid style="width:400px;">
-      <TkCard class=" text-center">
+    <TkCard solid class="login-card-main">
+      <div class="header-area text-center">
         <TkButton
           v-show="!isWelcome"
-          class="absolute-top-left"
+          class="btn-back"
           @click="isWelcome = true"
         >Back
         </TkButton>
 
-        <h4>{{
+        <div class="_title">{{
             isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-          }}</h4>
-      </TkCard>
+          }}
+        </div>
+      </div>
 
       <div v-show="isWelcome">
-        <TkCard>
+        <div class="buttons-row">
           <TkButton
-            unelevated
-            size="md"
-            color="secondary"
-            class="full-width "
+            size="lg"
+            class="full-width"
             :label="$t('login.openDatabase')"
             @click="chooseNewKdbx"
           />
-        </TkCard>
-
+        </div>
         <TkCard>
-          <div>
+          <div class="history-actions">
             <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
             <TkButton
               v-show="recentList.length > 0"
-              dense
-              flat
+              size="sm"
               :label="$t('login.clear')"
               @click="handleClearRecent"
             />
           </div>
-          <ul>
-            <li
+          <div class="history-list">
+            <div
               v-for="(item, index) in recentList"
               :key="index"
-              class="cursor-pointer"
+              class="list-item"
               @click="openRecentItem(item)"
             >
 
@@ -66,12 +63,13 @@
               </span>
               <TkButton
                 label="X"
+                size="xs"
                 @click.stop="removeRecentItem(item)"
               />
-            </li>
+            </div>
 
             <li v-if="recentList.length === 0">{{ $t('login.noRecent') }}</li>
-          </ul>
+          </div>
         </TkCard>
       </div>
 
@@ -79,23 +77,26 @@
         <form
           @submit.prevent="handleUnlock"
         >
-          <TkCard>
+          <TkCard class="form-card">
+            <div class="input-row">
+              <TkInput
+                v-model="form.dbPath"
+                readonly
+                type="text"
+                placeholder="Database file path"
+              />
+            </div>
 
-            <TkInput
-              v-model="form.dbPath"
-              readonly
-              type="text"
-              placeholder="Database file path"
-            >
-            </TkInput>
-            <TkInput
-              v-model="form.password"
-              type="password"
-              :placeholder="$t('login.password')"
-              autofocus
-            >
-            </TkInput>
-            <div>
+            <div class="input-row">
+              <TkInput
+                v-model="form.password"
+                type="password"
+                :placeholder="$t('login.password')"
+                autofocus
+              />
+            </div>
+
+            <div class="input-row">
               <TkInput
                 v-model="form.keyPath"
                 clearable
@@ -106,6 +107,8 @@
               </TkInput>
               <TkButton
                 type="button"
+                class="btn-choose"
+                size="sm"
                 @click="handleChooseFile('keyPath', [
                   {name: 'All', extensions: ['*']},
                   {name: '*.key', extensions: ['key']},
@@ -113,25 +116,22 @@
               >Choose
               </TkButton>
             </div>
-          </TkCard>
 
-          <TkCard>
-            <TkButton
-              type="submit"
-              unelevated
-              size="md"
-              color="secondary"
-              class="full-width "
-              :label="$t('login.unlock')"
-            />
+            <div class="input-row">
+              <TkButton
+                size="lg"
+                type="submit"
+                class="btn-submit"
+                :label="$t('login.unlock')"
+              />
+            </div>
           </TkCard>
         </form>
+
       </div>
 
-      <div class="text-center">
-        <p>
-          <VersionText/>
-        </p>
+      <div class="version-wrap text-center">
+        <VersionText/>
       </div>
     </TkCard>
   </div>
@@ -294,16 +294,84 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-._loading {
-  z-index: 10;
+.login-view {
+  .login-card-main {
+    max-width: 400px;
+  }
+
+  .header-area {
+    position: relative;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .btn-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    ._title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .form-card {
+    .input-row {
+      width: 100%;
+      display: flex;
+      input {
+        flex: 1;
+      }
+      &+.input-row {
+        margin-top: 10px;
+      }
+      .btn-choose {
+        margin-left: 10px;
+      }
+      .btn-submit {
+        width: 100%;
+      }
+    }
+  }
+
+  .buttons-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .history-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .history-list {
+    margin-top: 10px;
+    .list-item {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 5px 5px;
+      border-top: $layout-border;
+      &:hover {
+        background-color: $border-color;
+      }
+    }
+  }
+
+  .version-wrap {
+    margin-top: 20px;
+  }
 }
 
-.q-item__section--avatar {
-  min-width: 32px;
-}
-
-.single-line-hide {
-  display: block;
-  max-width: 100%;
-}
 </style>
