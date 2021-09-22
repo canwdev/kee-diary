@@ -45,11 +45,6 @@ export default new Vuex.Store({
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
-    isUnlocked: state => state.isUnlocked,
-    isChanged: state => state.isChanged,
-    selectedGroup: state => state.selectedGroup,
-    currentEntryPagination: state => state.currentEntryPagination,
-    calendarDate: state => state.calendarDate,
   },
   mutations: {
     setLocate: (state, val) => {

@@ -1,4 +1,4 @@
-const path = require('path')
+const isProd = process.env.NODE_ENV === 'production' // 'development'
 
 module.exports = {
   publicPath: './',
@@ -12,5 +12,12 @@ module.exports = {
         prependData: `@import "@/style/variables.scss";`
       }
     }
+  },
+  configureWebpack: {
+    externals: isProd ? [] : [
+      {
+        '@canwdev/tank-ui': 'tankUI',
+      }
+    ]
   },
 }

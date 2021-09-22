@@ -5,6 +5,7 @@ const {
 } = electronAPI
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import store from '@/store'
+import router from "@/router"
 
 export function openDatabase(data) {
   return ipcSendEventAsync('ipcKdbx_openDatabase', data)
@@ -51,10 +52,18 @@ export function getNodeUuid(node) {
   }
 }
 
-export function handleSaveDatabase() {
-  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, async () => {
-    console.log('sync complete')
+export async function handleSaveDatabase() {
+  const saveDb = async () => {
     await saveDatabase()
     store.commit('setIsChanged', false)
+  }
+
+  if (router.currentRoute.name !== 'Detail') {
+    await saveDb()
+    return
+  }
+  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, async () => {
+    console.log('sync complete')
+    await saveDb()
   })
 }

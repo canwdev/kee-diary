@@ -64,7 +64,7 @@ export default {
       set: val => store.commit('setIsDarkMode', val)
     },
     isUnlocked: {
-      get: () => store.getters.isUnlocked
+      get: () => store.state.isUnlocked
     },
     isListView: {
       get: () => store.getters.isListView,

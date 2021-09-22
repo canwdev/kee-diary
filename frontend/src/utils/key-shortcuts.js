@@ -1,6 +1,6 @@
 import _debounce from 'lodash/debounce'
 import {isOutboundURL} from '@/utils/is'
-
+import main from '@/main'
 // 注册键盘快捷键
 export function registerKeyShortcuts() {
   window.addEventListener('keydown', handleKey)
@@ -16,12 +16,13 @@ export function unRegisterKeyShortcuts() {
   window.electronAPI.ipcOffMessage('IPC_APP_CLOSING', handleAppClose)
 }
 
-function _closeKdbx() {
-  // closeKdbx(true)
+function _handleAppClose() {
+  console.log('_handleAppClose', main)
+  main.$toast.warning('数据库尚未保存，请先保存再退出')
 }
 
 // _debounce function prevents repeated execution in an instant
-export const handleAppClose = _debounce(_closeKdbx, 1000, {
+export const handleAppClose = _debounce(_handleAppClose, 1000, {
   'leading': true,
   'trailing': false
 })

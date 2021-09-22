@@ -6,7 +6,7 @@ import Default from '@/layout/Default'
 import store from '@/store'
 
 const validateUnlock = (to, from, next) => {
-  if (store.getters.isUnlocked) {
+  if (store.state.isUnlocked) {
     next()
   } else {
     router.replace({name: 'Login'})

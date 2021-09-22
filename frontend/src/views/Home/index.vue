@@ -74,7 +74,7 @@ export default {
       get: () => store.getters.database
     },
     selectedGroup: {
-      get: () => store.getters.selectedGroup,
+      get: () => store.state.selectedGroup,
       set: val => store.commit('setSelectedGroup', val)
     },
     isListView: {

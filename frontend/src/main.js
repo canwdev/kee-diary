@@ -7,15 +7,19 @@ import './style/base.scss'
 import './style/github-markdown.css'
 import './style/github-markdown-dark.css'
 import i18n from './lang/i18n'
-// import tankUI from '@canwdev/tank-ui'
-// import '@canwdev/tank-ui/dist/tank-ui.css'
-const {tankUI: {default: tankUI}} = window
+const isProd = process.env.NODE_ENV === 'production' // 'development'
+
+import tankUI from '@canwdev/tank-ui'
+
+if (isProd) {
+  require('@canwdev/tank-ui/dist/tank-ui.css')
+}
 
 Vue.use(tankUI)
 
 Vue.config.productionTip = false
 
-new Vue({
+export default new Vue({
   i18n,
   router,
   store,

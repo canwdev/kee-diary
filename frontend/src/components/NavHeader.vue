@@ -75,10 +75,10 @@ export default {
       get: () => store.getters.isDarkMode
     },
     isUnlocked: {
-      get: () => store.getters.isUnlocked
+      get: () => store.state.isUnlocked
     },
     isChanged: {
-      get: () => store.getters.isChanged
+      get: () => store.state.isChanged
     },
     isShowBack() {
       const r = this.$route.name

@@ -143,6 +143,10 @@ export default {
       get: () => store.getters.isEditWYSIWYG,
       set: val => store.commit('setIsEditWYSIWYG', val)
     },
+    isChanged: {
+      get: () => store.state.isChanged,
+      set: val => store.commit('setIsChanged', val)
+    },
     editorTheme: {
       get: () => store.getters.editorTheme || 'hypermd-light',
       set: val => store.commit('setEditorTheme', val)
@@ -176,7 +180,7 @@ export default {
         if (this.isLoading) {
           return
         }
-        store.commit('setIsChanged', true)
+        this.isChanged = true
       },
       deep: true
     }
@@ -193,11 +197,13 @@ export default {
   },
   async beforeRouteLeave(to, from, next) {
     // console.log('beforeRouteLeave')
-    await this.syncNotes()
+    if (this.isChanged) {
+      await this.syncNotes()
+    }
     next()
   },
   beforeDestroy() {
-    console.log('beforeDestroy')
+    // console.log('beforeDestroy')
 
     mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
     document.removeEventListener('keydown', this.handleKeyDown)
@@ -246,7 +252,7 @@ export default {
       editor.setOption('theme', this.editorTheme)
       editor.on('change', () => {
         if (this.editor) {
-          store.commit('setIsChanged', true)
+          this.isChanged = true
         }
       })
       if (entry && entry.notes) {
