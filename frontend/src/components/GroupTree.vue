@@ -20,8 +20,8 @@
 import {getGroupTree, getNodeUuid} from '@/api'
 import ItemIcon from '@/components/ItemIcon'
 
-// TODO
-const TreeNode = window.tankUI.default.enum.TreeNode
+import tankUI from '@canwdev/tank-ui'
+const TreeNode = tankUI.enum.TreeNode
 
 const rootItem = new TreeNode()
 

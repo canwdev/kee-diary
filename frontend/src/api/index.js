@@ -5,7 +5,9 @@ const {
 } = electronAPI
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import store from '@/store'
-import router from "@/router"
+import router from '@/router'
+import main from '@/main'
+import i18n from '@/lang/i18n'
 
 export function openDatabase(data) {
   return ipcSendEventAsync('ipcKdbx_openDatabase', data)
@@ -56,14 +58,22 @@ export async function handleSaveDatabase() {
   const saveDb = async () => {
     await saveDatabase()
     store.commit('setIsChanged', false)
+    main.$toast.success(i18n.t('kdbx.saved-successfully'))
   }
-
-  if (router.currentRoute.name !== 'Detail') {
-    await saveDb()
-    return
+  try {
+    store.commit('setIsGlobalLoading', true)
+    if (router.currentRoute.name !== 'Detail') {
+      await saveDb()
+      return
+    }
+    mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, async () => {
+      console.log('sync complete')
+      await saveDb()
+    })
+  } catch (e) {
+    console.error(e)
+    main.$toast.error(e)
+  } finally {
+    store.commit('setIsGlobalLoading', false)
   }
-  mainBus.$emit(BUS_SYNC_ENTRY_DETAIL, async () => {
-    console.log('sync complete')
-    await saveDb()
-  })
 }

@@ -3,8 +3,7 @@ appId: "com.canwdev.keenote"
 
 files:
   - ./dist-frontend/**/*
-  - ./src/electron/**/*
-  - ./src/index.js
+  - ./src/**/*
 extraMetadata:
   main: ./src/index.js
 
@@ -27,7 +26,7 @@ dmg:
 # Windows configuration
 win:
   target:
-#    - "zip"
+    #    - "zip"
     - "nsis"
 
 # Config for the windows installer
@@ -43,6 +42,7 @@ nsis:
 linux:
   category: Tools
   target:
-    - "AppImage"
-    - "deb"
-    - "rpm"
+    - "dir"
+#    - "AppImage"
+#    - "deb"
+#    - "rpm"

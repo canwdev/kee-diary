@@ -1,88 +1,89 @@
 {
- "about": {
-  "btnHome": "ホームページに戻ります",
-  "btnLogDatabase": "データベースをコンソールに出力",
-  "info": "暗号化されたエッセイエディター"
- },
- "and-exit": "次に終了します",
- "background": "バックグラウンド",
- "cancel": "キャンセル",
- "choose": "選択する",
- "choose-group": "グループを選択",
- "choose-icon": "アイコンを選択",
- "close": "シャットダウン",
- "color": "色",
- "confirm": "確認",
- "delete": "削除",
- "detail": {
-  "changeFontFamily": "フォントを設定する",
-  "confirm-not-empty": "テキスト領域は空ではありません。上書きしますか？",
-  "edit-with-external": "外部エディターとのコラボレーション",
-  "export-to-text-file": "テキストファイルをエクスポートする",
-  "iswysiwyg": "視覚的な編集を有効にする",
-  "load-outer-text-file": "テキストファイルをインポートする"
- },
- "don-t-save": "保存しない",
- "drawer": {
-  "calendarView": "カレンダービュー",
-  "darkMode": "ダークモード",
-  "listView": "リストビュー",
-  "navigation": "ナビゲーション",
-  "settings": "セットアップ"
- },
- "edit": "編集",
- "exit": "脱落",
- "export-file": "ファイルのエクスポート",
- "foreground": "見込み",
- "header": {
-  "close": "データベースを閉じる",
+  "about": {
+    "btnHome": "ホームページに戻ります",
+    "btnLogDatabase": "データベースをコンソールに出力",
+    "info": "暗号化されたエッセイエディター"
+  },
+  "and-exit": "次に終了します",
+  "background": "バックグラウンド",
+  "cancel": "キャンセル",
+  "choose": "選択する",
+  "choose-group": "グループを選択",
+  "choose-icon": "アイコンを選択",
+  "close": "シャットダウン",
+  "color": "色",
+  "confirm": "確認",
+  "delete": "削除",
+  "detail": {
+    "changeFontFamily": "フォントを設定する",
+    "confirm-not-empty": "テキスト領域は空ではありません。上書きしますか？",
+    "edit-with-external": "外部エディターとのコラボレーション",
+    "export-to-text-file": "テキストファイルをエクスポートする",
+    "iswysiwyg": "視覚的な編集を有効にする",
+    "load-outer-text-file": "テキストファイルをインポートする"
+  },
+  "don-t-save": "保存しない",
+  "drawer": {
+    "calendarView": "カレンダービュー",
+    "darkMode": "ダークモード",
+    "listView": "リストビュー",
+    "navigation": "ナビゲーション",
+    "settings": "セットアップ",
+    "language": "言語"
+  },
+  "edit": "編集",
+  "exit": "脱落",
+  "export-file": "ファイルのエクスポート",
+  "foreground": "見込み",
+  "header": {
+    "close": "データベースを閉じる",
+    "save": "保存する",
+    "search": "検索する",
+    "unlocked": "（ロック解除）"
+  },
+  "home": {
+    "add-entry": "エントリを追加",
+    "created": "作成時間",
+    "modified": "時間を変更する",
+    "title": "題名"
+  },
+  "insert": "インサート",
+  "kdbx": {
+    "database-not-exist": "データベースインスタンスが存在しません",
+    "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。\nこのバグは一時的に解決できません。",
+    "not-allowed-move-group-itself": "グループ自体への移動は許可されていません",
+    "saved-successfully": "正常に保存されました",
+    "there-are-unsaved": "保存されていない変更があります。保存しますか？"
+  },
+  "login": {
+    "clear": "履歴をクリア",
+    "keyFilePath": "キーファイルパス（オプション）",
+    "noRecent": "最近開いたアイテムはありません",
+    "openDatabase": "データベースを開く",
+    "password": "パスワード",
+    "saveHistory": "履歴を保存",
+    "unlock": "ロックを解除する",
+    "welcome": "KeeNote へようこそ"
+  },
+  "menu": {
+    "are-you-sure": "よろしいですか",
+    "change-color": "色を変更する",
+    "change-icon": "編集アイコン",
+    "create-entry": "エントリを作成する",
+    "create-group": "グループを作成します",
+    "empty-recycle-bin": "ゴミ箱を空にする",
+    "log-to-console": "コンソールへの出力",
+    "move-to-recycle-bin": "ゴミ箱に移動"
+  },
+  "move": "モバイル",
+  "overwrite": "カバー",
+  "pages": {
+    "about": "オン",
+    "home": "ホーム",
+    "login": "ログインする"
+  },
+  "preview": "プレビュー",
+  "rename": "名前を変更",
   "save": "保存する",
-  "search": "検索する",
-  "unlocked": "（ロック解除）"
- },
- "home": {
-  "add-entry": "エントリを追加",
-  "created": "作成時間",
-  "modified": "時間を変更する",
-  "title": "題名"
- },
- "insert": "インサート",
- "kdbx": {
-  "database-not-exist": "データベースインスタンスが存在しません",
-  "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。\nこのバグは一時的に解決できません。",
-  "not-allowed-move-group-itself": "グループ自体への移動は許可されていません",
-  "saved-successfully": "正常に保存されました",
-  "there-are-unsaved": "保存されていない変更があります。保存しますか？"
- },
- "login": {
-  "clear": "履歴をクリア",
-  "keyFilePath": "キーファイルパス（オプション）",
-  "noRecent": "最近開いたアイテムはありません",
-  "openDatabase": "データベースを開く",
-  "password": "パスワード",
-  "saveHistory": "履歴を保存",
-  "unlock": "ロックを解除する",
-  "welcome": "KeeNote へようこそ"
- },
- "menu": {
-  "are-you-sure": "よろしいですか",
-  "change-color": "色を変更する",
-  "change-icon": "編集アイコン",
-  "create-entry": "エントリを作成する",
-  "create-group": "グループを作成します",
-  "empty-recycle-bin": "ゴミ箱を空にする",
-  "log-to-console": "コンソールへの出力",
-  "move-to-recycle-bin": "ゴミ箱に移動"
- },
- "move": "モバイル",
- "overwrite": "カバー",
- "pages": {
-  "about": "オン",
-  "home": "ホーム",
-  "login": "ログインする"
- },
- "preview": "プレビュー",
- "rename": "名前を変更",
- "save": "保存する",
- "tip": "促す"
+  "tip": "促す"
 }

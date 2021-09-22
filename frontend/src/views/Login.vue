@@ -62,13 +62,13 @@
                 {{ item.dbPath }}
               </span>
               <TkButton
-                label="X"
+                label="✖"
                 size="xs"
                 @click.stop="removeRecentItem(item)"
               />
             </div>
 
-            <li v-if="recentList.length === 0">{{ $t('login.noRecent') }}</li>
+            <TkEmpty v-if="recentList.length === 0" :text="$t('login.noRecent')"></TkEmpty>
           </div>
         </TkCard>
       </div>
@@ -296,7 +296,7 @@ export default {
 <style lang="scss" scoped>
 .login-view {
   .login-card-main {
-    max-width: 400px;
+    width: 400px;
   }
 
   .header-area {

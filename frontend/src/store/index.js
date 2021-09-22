@@ -30,6 +30,7 @@ export default new Vuex.Store({
       editorFontSize: 16, // px
       editorFontFamily: null,
     },
+    isGlobalLoading: false,
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isChanged: false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
@@ -100,6 +101,9 @@ export default new Vuex.Store({
     },
     setCalendarDate(state, val) {
       state.calendarDate = val
+    },
+    setIsGlobalLoading(state, val) {
+      state.isGlobalLoading = val
     }
   },
   actions: {},

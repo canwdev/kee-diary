@@ -1,5 +1,6 @@
 <template>
   <div class="default-layout">
+    <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
     <NavHeader
       title="KeeNote"
@@ -31,6 +32,11 @@ export default {
   data() {
     return {
       leftDrawerOpen: false
+    }
+  },
+  computed: {
+    isGlobalLoading() {
+      return this.$store.state.isGlobalLoading
     }
   },
   mounted() {
