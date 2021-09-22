@@ -1,29 +1,24 @@
 <template>
   <TkModalDialog
     v-model="mVisible"
+    show-close
   >
     <TkCard style="width: 320px">
       <form @submit.prevent="handleSubmit">
-        <TkCard>
-          <div class="text-h6 row items-center">
-            <div class="text-h6 row items-center">
-              <span class="q-ml-sm">{{ $t('home.add-entry') }}</span>
-            </div>
-
-            <TkButton icon="close" flat round dense @click="mVisible = false"/>
-          </div>
-        </TkCard>
+        <div>
+          {{ $t('home.add-entry') }}
+        </div>
 
         <hr/>
 
-        <TkCard class="form-wrap  q-gutter-md">
+        <div class="form-wrap">
           <div class="form-row">
-            <div class="row-title q-mb-xs">{{ $t('choose-group') }}:</div>
+            <div class="row-title">{{ $t('choose-group') }}:</div>
             <div class="row-content">
               <TkButton
                 outline
                 style="width: 100%;"
-                @click="isDialogChooseGroupVisible = true"
+                @click="isShowChooseGroup = true"
               >
                 <ItemIcon
                   :item="{icon: groupInfo.iconIndex}"
@@ -46,14 +41,14 @@
             </div>
           </div>
 
-          <div class="flex justify-between">
-            <div class="form-row text-center">
+          <div class="form-row flex justify-between">
+            <div class="text-center">
               <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
               <div class="row-content">
                 <TkButton
                   flat
                   round
-                  @click="isDialogChooseIconVisible = true"
+                  @click="isShowChooseIcon = true"
                 >
                   <ItemIcon
                     size="45px"
@@ -63,7 +58,7 @@
               </div>
             </div>
 
-            <div class="form-row text-center">
+            <div class="text-center">
               <div class="row-title q-mb-xs">{{ $t('foreground') + ' ' + $t('color') }}</div>
               <div class="row-content">
                 <ColorItem
@@ -73,7 +68,7 @@
               </div>
             </div>
 
-            <div class="form-row text-center">
+            <div class="text-center">
               <div class="row-title q-mb-xs">{{ $t('background') + ' ' + $t('color') }}</div>
               <div class="row-content">
                 <ColorItem
@@ -84,11 +79,11 @@
             </div>
           </div>
 
-        </TkCard>
+        </div>
 
         <hr/>
 
-        <TkCard align="right">
+        <div align="right">
           <TkButton
             flat
             :label="$t('cancel')"
@@ -103,23 +98,23 @@
             color="primary"
             @click="mVisible = false"
           />
-        </TkCard>
+        </div>
       </form>
     </TkCard>
 
     <DialogChooseIcon
-      :visible.sync="isDialogChooseIconVisible"
+      :visible.sync="isShowChooseIcon"
       :index="form.iconIndex"
       @onChoose="handleUpdateIcon"
     />
     <DialogChooseGroup
-      :visible.sync="isDialogChooseGroupVisible"
+      :visible.sync="isShowChooseGroup"
       @onChoose="handleChooseGroup"
     />
     <DialogChooseColor
       ref="colorChooser"
       :item="form"
-      :visible.sync="isDialogChooseColorVisible"
+      :visible.sync="isShowChooseColor"
       @onChoose="handleUpdateColor"
     />
 
@@ -163,9 +158,9 @@ export default {
         iconIndex: 0,
         name: '',
       },
-      isDialogChooseIconVisible: false,
-      isDialogChooseGroupVisible: false,
-      isDialogChooseColorVisible: false,
+      isShowChooseIcon: false,
+      isShowChooseGroup: false,
+      isShowChooseColor: false,
       form: {...initForm}
     }
   },
@@ -198,11 +193,11 @@ export default {
   },
   methods: {
     getGroupInfo(groupUuid) {
-      const group = this.database.getGroup(groupUuid)
-      this.groupInfo.name = group.name
-      this.groupInfo.iconIndex = group.icon
-      this.form.iconIndex = group.icon
-      this.form.groupUuid = groupUuid
+      // const group = this.database.getGroup(groupUuid)
+      // this.groupInfo.name = group.name
+      // this.groupInfo.iconIndex = group.icon
+      // this.form.iconIndex = group.icon
+      // this.form.groupUuid = groupUuid
     },
     handleUpdateIcon(iconIndex) {
       this.form.iconIndex = iconIndex
@@ -217,7 +212,7 @@ export default {
     },
     showColorChooser(isFgColor) {
       this.$refs.colorChooser.isFgColor = isFgColor
-      this.isDialogChooseColorVisible = true
+      this.isShowChooseColor = true
     },
     handleSubmit() {
       if (!this.form.title) {
@@ -228,4 +223,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-wrap {
+  .form-row {
+    & + .form-row {
+      margin-top: 10px;
+    }
+  }
+}
+</style>
 
