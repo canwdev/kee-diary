@@ -2,7 +2,7 @@
   <div class="default-header">
     <TkNavBar>
       <template slot="left">
-        <div class="actions-btn">
+        <div class="header-left actions-btn-wrap">
           <TkButton
             label="Menu"
             @click="$emit('onMenuClick')"
@@ -12,21 +12,19 @@
             label="Back"
             @click="$emit('onBackClick')"
           />
+
+          <div class="title-wrap">
+            <span class="main-title">{{ title }}</span>
+            {{ isUnlocked ? $t('header.unlocked') : '' }}
+          </div>
+
         </div>
 
       </template>
       <template slot="center">
-        <div class="main-title">{{ title }}</div>
-        {{ isUnlocked ? $t('header.unlocked') : '' }}
-      </template>
-      <template slot="right">
-        <div class="actions-btn flex items-center justify-end">
+        <div class="header-center actions-btn-wrap flex items-center justify-end">
           <template v-if="isUnlocked">
-<!--            <TkButton-->
-<!--              @click="isDialogSearchVisible = true"-->
-<!--            >-->
-<!--              {{ $t('header.search') }}-->
-<!--            </TkButton>-->
+
             <TkButton
               :disabled="!isChanged"
               @click="saveKdbx"
@@ -41,10 +39,19 @@
           </template>
         </div>
       </template>
+      <template slot="right">
+        <template v-if="isUnlocked">
+          <TkButton
+            @click="isDialogSearchVisible = true"
+          >
+            {{ $t('header.search') }}
+          </TkButton>
+        </template>
+      </template>
     </TkNavBar>
-<!--    <DialogSearch-->
-<!--      :visible.sync="isDialogSearchVisible"-->
-<!--    />-->
+    <!--    <DialogSearch-->
+    <!--      :visible.sync="isDialogSearchVisible"-->
+    <!--    />-->
   </div>
 
 </template>
@@ -103,14 +110,32 @@ export default {
 <style lang="scss" scoped>
 
 .default-header {
-  .main-title {
-    font-weight: bold;
+  .header-left {
+    display: flex;
+    align-items: center;
+
+    .title-wrap {
+      margin-left: 10px;
+
+      .main-title {
+        font-weight: bold;
+      }
+    }
   }
 
-  .actions-btn {
+  .actions-btn-wrap {
+
     button + button {
       margin-left: 10px;
     }
+  }
+
+  .header-center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 </style>

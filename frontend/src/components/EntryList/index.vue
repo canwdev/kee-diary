@@ -11,11 +11,17 @@
 
       <div class="table-body">
         <ListItem
-          v-for="item in entryList"
+          v-for="item in pagedList"
           :key="item.uuid"
           :item="item"
           @preview="previewItem"
           @itemClick="handleItemClick"
+        />
+
+        <TkPager
+          :page-size="pagerOptions.pageSize"
+          :offset.sync="pagerOptions.offset"
+          :total="pagerOptions.allCount"
         />
 
         <TkEmpty v-if="!(entryList && entryList.length)" :img="null" text="Empty"></TkEmpty>
@@ -47,13 +53,25 @@ export default {
     return {
       entryList: [],
       selected: [],
-      previewTarget: {},
+      pagerOptions: {
+        pageSize: 10,
+        offset: 0,
+        allCount: 100
+      }
     }
   },
   computed: {
     pagination: {
       get: () => store.getters.currentEntryPagination,
       set: val => store.commit('setCurrentEntryPagination', val)
+    },
+    pagedList() {
+      const {
+        offset,
+        pageSize
+      } = this.pagerOptions
+      const start = (offset) * pageSize
+      return this.entryList.slice(start, start + pageSize)
     }
   },
   watch: {
@@ -74,6 +92,8 @@ export default {
         }
         // console.log('gg', this.selectedGroup)
         this.entryList = await getGroupEntries(uuid) || []
+        this.pagerOptions.offset = 0
+        this.pagerOptions.allCount = this.entryList.length
       } catch (e) {
         console.error(e)
         this.$toast.error({message: e})

@@ -182,7 +182,7 @@ class KdbxInstance {
       groupUuid, // 群组 Uuid 对象
       config
     } = params || {}
-    console.log(`[db] addEntry uuid=${groupUuid}`, config)
+    console.log(`[db] addEntry uuid=${groupUuid}`)
 
     if (!groupUuid || !config) {
       throw new Error('groupUuid and config is required!')
