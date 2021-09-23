@@ -232,6 +232,7 @@ export default {
         this.initHyperMD(entry)
       } catch (e) {
         console.error(e)
+        this.$toast.error({message: e})
       } finally {
         this.$nextTick(() => {
           this.isLoading = false
@@ -279,7 +280,7 @@ export default {
     async syncNotes() {
       console.log('syncNotes1', this.uuid)
 
-      if (!this.uuid) {
+      if (!this.uuid || !this.editor) {
         return
       }
       const res = await updateEntry({

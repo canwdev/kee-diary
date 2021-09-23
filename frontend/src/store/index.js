@@ -5,7 +5,8 @@ import {KEE_DIARY_VUE_SETTINGS} from '@/enum'
 import languages from '@/lang/languages'
 
 import {
-  checkIsOpen
+  checkIsOpen,
+  getIsChanged
 } from '@/api'
 
 Vue.use(Vuex)
@@ -32,7 +33,7 @@ export default new Vuex.Store({
     },
     isGlobalLoading: false,
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
-    isChanged: false, // 有未保存的变更
+    isChanged: getIsChanged() || false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
     currentEntryPagination: initEntryListPagination, // 条目列表分页配置
     calendarDate: new Date() // 日历视图

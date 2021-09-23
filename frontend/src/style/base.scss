@@ -19,3 +19,12 @@ hr {
   border-top: none;
   border-color: $border-color;
 }
+
+// ---
+
+.action-btn-row {
+  text-align: right;
+  button + button {
+    margin-left: 8px;
+  }
+}

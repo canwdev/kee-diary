@@ -3,8 +3,8 @@
     class="color-item"
     :class="{active: isActive, 'no-color': !color}"
     :style="{background: color}"
+    :title="`${name} (${color})`"
   >
-    {{ name }}
   </span>
 </template>
 
@@ -31,8 +31,8 @@ export default {
 <style lang="scss" scoped>
 .color-item {
   display: inline-block;
-  width: 45px;
-  height: 45px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   overflow: hidden;
   transition: all 0.3s;

@@ -171,6 +171,52 @@ class KdbxInstance {
     this.isChanged = true
     return new EntryItem(entry, true)
   }
+
+  /**
+   * 向群组内添加条目
+   * @param params
+   * @returns {EntryItem}
+   */
+  addEntry(params) {
+    const {
+      groupUuid, // 群组 Uuid 对象
+      config
+    } = params || {}
+    console.log(`[db] addEntry uuid=${groupUuid}`, config)
+
+    if (!groupUuid || !config) {
+      throw new Error('groupUuid and config is required!')
+    }
+
+    const {
+      title,
+      icon,
+      bgColor,
+      fgColor
+    } = config || {}
+
+
+    const group = this.db.getGroup(groupUuid)
+    const entry = this.db.createEntry(group)
+
+    entry.fields.set('Title', title)
+
+    // 48 is default folder icon, 0 is default entry icon
+    entry.icon = icon === undefined ? (group.icon === 48 ? 0 : group.icon) : icon
+
+    if (bgColor) {
+      entry.bgColor = bgColor
+    }
+    if (fgColor) {
+      entry.fgColor = fgColor
+    }
+
+    this.isChanged = true
+
+    this.curEntryMap[entry.uuid.id] = entry
+
+    return new EntryItem(entry)
+  }
 }
 
 module.exports = {

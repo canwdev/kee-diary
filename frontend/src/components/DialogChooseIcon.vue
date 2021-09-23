@@ -1,52 +1,50 @@
 <template>
-  <TkModalDialog
-    v-model="mVisible"
-  >
-    <TkCard>
-      <TkCard>
-        <div class="text-h6 row items-center">
+  <div>
+    <TkModalDialog
+      v-model="mVisible"
+      show-close
+    >
+      <TkCard class="card-choose-icon">
+        <div class="flex items-center">
           <ItemIcon
             :item="{icon:index}"
           />
-          <span class="q-ml-md">{{ $t('choose-icon') }}</span>
+          <span class="">{{ $t('choose-icon') }}</span>
         </div>
-      </TkCard>
 
-      <hr/>
+        <hr/>
 
-      <TkCard style="max-height: 70vh" class="scroll">
-        <TkCard flat class="q-gutter-md">
+        <div class="icon-palette">
           <TkButton
             v-for="(item, i) in icons"
             :key="i"
-            :flat="i !== selectedIndex"
-            color="primary"
-            round
+            :title="item.name"
+            size="no-style"
+            class="icon-item"
+            :class="{active: i === selectedIndex }"
             @click="handleSelect(i)"
             @contextmenu="handlePreview(i)"
           >
             <ItemIcon
               :item="{icon:i}"
-              :icon-scale="1"
+              :icon-scale="1.2"
             />
-            {{ item.name }}
           </TkButton>
-        </TkCard>
+        </div>
+
+        <hr/>
+        <div class="action-btn-row">
+          <TkButton :label="$t('cancel')" @click="mVisible = false"/>
+          <TkButton
+            :disabled="index === selectedIndex"
+            :label="$t('choose')"
+
+            @click="handleChoose"
+          />
+        </div>
       </TkCard>
 
-      <hr/>
-
-      <TkCard>
-        <TkButton flat :label="$t('cancel')" color="primary" @click="mVisible = false"/>
-        <TkButton
-          :disabled="index === selectedIndex"
-          flat
-          :label="$t('choose')"
-          color="primary"
-          @click="handleChoose"
-        />
-      </TkCard>
-    </TkCard>
+    </TkModalDialog>
 
     <DialogPreview
       :visible.sync="isPreviewIconVisible"
@@ -57,7 +55,7 @@
         :icon-scale="1"
       />
     </DialogPreview>
-  </TkModalDialog>
+  </div>
 </template>
 
 <script>
@@ -96,6 +94,11 @@ export default {
         this.selectedIndex = nv
       },
       immediate: true
+    },
+    mVisible(val) {
+      if (!val) {
+        this.selectedIndex = this.index
+      }
     }
   },
   data() {
@@ -125,3 +128,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-choose-icon {
+  max-width: 500px;
+
+  .icon-palette {
+    max-height: 70vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    padding: 10px 0;
+
+    .icon-item {
+      margin: 5px;
+      padding: 2px;
+
+      &.active {
+        outline: 2px dashed $primary;
+      }
+    }
+  }
+}
+</style>

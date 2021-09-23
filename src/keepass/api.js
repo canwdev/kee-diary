@@ -31,7 +31,7 @@ const checkIsOpen = () => {
 }
 
 const getIsChanged = () => {
-  return kInstance.isChanged
+  return !!kInstance.isChanged
 }
 
 const getMeta = () => {
@@ -57,16 +57,22 @@ const updateEntry = async (params) => {
   return kInstance.updateEntry(params)
 }
 
+const addEntry = async (params) => {
+  return kInstance.addEntry(params)
+}
+
 const api = {
   openDatabase,
   closeDatabase,
   saveDatabase,
   checkIsOpen,
+  getIsChanged,
   getMeta,
   getGroupTree,
   getGroupEntries,
   getEntryDetail,
-  updateEntry
+  updateEntry,
+  addEntry
 }
 
 const apiList = []

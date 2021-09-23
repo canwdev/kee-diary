@@ -1,48 +1,45 @@
 <template>
   <TkModalDialog
     v-model="mVisible"
+    show-close
   >
-    <TkCard>
-      <TkCard>
-        <div class="text-h6 row items-center">
-          <span class="q-ml-md">{{ $t('choose') }} {{
-            isFgColor ? $t('foreground') : $t('background')
-          }} {{ $t('color') }}</span>
+    <TkCard class="card-choose-color">
+      <div class="flex items-center">
+        <span class="">{{ $t('choose') }} {{
+          isFgColor ? $t('foreground') : $t('background')
+        }} {{ $t('color') }}</span>
 
-          <TkSwitch
-            v-model="isFgColor"
-          >
-          </TkSwitch>
-        </div>
-      </TkCard>
+        <TkSwitch
+          v-model="isFgColor"
+        >
+        </TkSwitch>
+      </div>
 
       <hr/>
 
-      <TkCard style="max-height: 70vh" class="scroll">
-        <TkCard flat class="q-gutter-md">
-          <ColorItem
-            v-for="(item, i) in palette"
-            :key="i"
-            :color="item.color"
-            :name="item.name"
-            :is-active="selectedColor === item.color"
-            @click.native="handleSelect(item.color)"
-          />
-        </TkCard>
-      </TkCard>
+      <div class="color-palette">
+        <ColorItem
+          v-for="(item, i) in palette"
+          :key="i"
+          :color="item.color"
+          :name="item.name"
+          :is-active="selectedColor === item.color"
+          @click.native="handleSelect(item.color)"
+        />
+      </div>
 
       <hr/>
 
-      <TkCard>
-        <TkButton flat :label="$t('cancel')" color="primary" @click="mVisible = false"/>
+      <div class="action-btn-row" >
+        <TkButton :label="$t('cancel')"  @click="mVisible = false"/>
         <TkButton
           :disabled="selectedColor === color"
-          flat
           :label="$t('choose')"
-          color="primary"
+
           @click="handleChoose"
         />
-      </TkCard>
+      </div>
+
     </TkCard>
   </TkModalDialog>
 </template>
@@ -107,6 +104,11 @@ export default {
     },
     isFgColor(nv) {
       this.selectedColor = getTypeColor(nv, this.item)
+    },
+    mVisible(val) {
+      if (!val) {
+        this.selectedColor = getTypeColor(this.isFgColor, this.item)
+      }
     }
   },
   data() {
@@ -134,4 +136,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-choose-color {
+  max-width: 500px;
+
+  .color-palette {
+    max-height: 70vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    padding: 10px 0;
+
+    .color-item {
+      margin: 5px;
+    }
+  }
+}
+</style>
 

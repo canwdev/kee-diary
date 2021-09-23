@@ -3,7 +3,7 @@
     class="home-page"
   >
     <div class="nav-tree">
-      <div >
+      <div>
         <GroupView
           ref="groupRef"
           :selected.sync="selectedGroup"
@@ -32,7 +32,7 @@
     <DialogAddEntry
       ref="addEntry"
       :visible.sync="isShowAddEntry"
-      @confirm="handleAddEntry"
+      @addSuccess="handleAddSuccess"
     />
 
     <DialogEntryPreview
@@ -45,7 +45,6 @@
 
 <script>
 import store from '@/store'
-// import {addEntry} from '@/utils/kdbx-utils'
 import GroupView from './GroupView'
 import EntryList from '@/components/EntryList'
 // import CalendarView from '@/views/Home/CalendarView'
@@ -91,18 +90,14 @@ export default {
     this.$refs.groupRef.updateTree()
   },
   methods: {
-    handleAddEntry(data) {
-      // const result = addEntry(this.database, data.groupUuid || this.selectedGroup, {
-      //   title: data.title,
-      //   icon: data.iconIndex,
-      //   bgColor: data.bgColor,
-      //   fgColor: data.fgColor
-      // })
-      // if (result) {
-      //   this.$router.push({
-      //     name: 'Detail'
-      //   })
-      // }
+    handleAddSuccess({entry, group}) {
+      this.$store.commit('setSelectedGroup', group)
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          uuid: entry.uuid
+        }
+      })
     },
     handleAddEntryFromGroup(group) {
       this.isShowAddEntry = true

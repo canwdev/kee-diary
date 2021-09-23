@@ -1,110 +1,109 @@
 <template>
-  <TkModalDialog
-    v-model="mVisible"
-    show-close
-  >
-    <TkCard style="width: 320px">
-      <form @submit.prevent="handleSubmit">
-        <div>
-          {{ $t('home.add-entry') }}
-        </div>
-
-        <hr/>
-
-        <div class="form-wrap">
-          <div class="form-row">
-            <div class="row-title">{{ $t('choose-group') }}:</div>
-            <div class="row-content">
-              <TkButton
-                outline
-                style="width: 100%;"
-                @click="isShowChooseGroup = true"
-              >
-                <ItemIcon
-                  :item="{icon: groupInfo.iconIndex}"
-                />
-                {{ groupInfo.name }}
-              </TkButton>
-            </div>
+  <div>
+    <TkModalDialog
+      v-model="mVisible"
+      show-close
+    >
+      <TkCard class="card-add-entry">
+        <form @submit.prevent="handleSubmit">
+          <div>
+            {{ $t('home.add-entry') }}
           </div>
 
-          <div class="form-row">
-            <div class="row-title q-mb-xs">{{ $t('home.title') }}:</div>
-            <div class="row-content">
-              <TkInput
-                v-model="form.title"
-                required
-                dense
-                outlined
-                autofocus
-              />
-            </div>
-          </div>
+          <hr/>
 
-          <div class="form-row flex justify-between">
-            <div class="text-center">
-              <div class="row-title q-mb-xs">{{ $t('choose-icon') }}</div>
+          <div class="form-wrap">
+            <div class="form-row">
+              <div class="row-title">{{ $t('choose-group') }}:</div>
               <div class="row-content">
                 <TkButton
-                  flat
-                  round
-                  @click="isShowChooseIcon = true"
+                  type="button"
+                  theme="outline"
+                  class="full-width flex items-center"
+                  @click="isShowChooseGroup = true"
                 >
                   <ItemIcon
-                    size="45px"
-                    :item="form"
+                    :item="{icon: groupInfo.icon}"
                   />
+                  <span class="text-overflow">{{ groupInfo.name }}</span>
                 </TkButton>
               </div>
             </div>
 
-            <div class="text-center">
-              <div class="row-title q-mb-xs">{{ $t('foreground') + ' ' + $t('color') }}</div>
+            <div class="form-row">
+              <div class="row-title ">{{ $t('home.title') }}:</div>
               <div class="row-content">
-                <ColorItem
-                  :color="form.fgColor"
-                  @click.native="showColorChooser(true)"
+                <TkInput
+                  v-model="form.title"
+                  required
+                  class="full-width"
+                  autofocus
+                  size="lg"
                 />
               </div>
             </div>
 
-            <div class="text-center">
-              <div class="row-title q-mb-xs">{{ $t('background') + ' ' + $t('color') }}</div>
-              <div class="row-content">
-                <ColorItem
-                  :color="form.bgColor"
-                  @click.native="showColorChooser(false)"
-                />
+            <div class="form-row flex justify-between">
+              <div class="choose-btn-wrap">
+                <div class="row-title ">{{ $t('choose-icon') }}</div>
+                <div class="row-content">
+                  <TkButton
+                    type="button"
+                    size="no-style"
+                    @click="isShowChooseIcon = true"
+                  >
+                    <ItemIcon
+                      size="45px"
+                      :item="form"
+                    />
+                  </TkButton>
+                </div>
+              </div>
+
+              <div class="choose-btn-wrap">
+                <div class="row-title ">{{ $t('foreground') + ' ' + $t('color') }}</div>
+                <div class="row-content">
+                  <ColorItem
+                    :color="form.fgColor"
+                    @click.native="showColorChooser(true)"
+                  />
+                </div>
+              </div>
+
+              <div class="choose-btn-wrap">
+                <div class="row-title ">{{ $t('background') + ' ' + $t('color') }}</div>
+                <div class="row-content">
+                  <ColorItem
+                    :color="form.bgColor"
+                    @click.native="showColorChooser(false)"
+                  />
+                </div>
               </div>
             </div>
+
           </div>
 
-        </div>
+          <hr/>
 
-        <hr/>
-
-        <div align="right">
-          <TkButton
-            flat
-            :label="$t('cancel')"
-            color="primary"
-            @click="mVisible = false"
-          />
-          <TkButton
-            :disable="!form.title"
-            flat
-            :label="$t('confirm')"
-            type="submit"
-            color="primary"
-            @click="mVisible = false"
-          />
-        </div>
-      </form>
-    </TkCard>
+          <div class="action-btn-row">
+            <TkButton
+              type="button"
+              :label="$t('cancel')"
+              @click="mVisible = false"
+            />
+            <TkButton
+              :disable="!form.title"
+              type="submit"
+              :label="$t('confirm')"
+            />
+          </div>
+        </form>
+      </TkCard>
+    </TkModalDialog>
 
     <DialogChooseIcon
       :visible.sync="isShowChooseIcon"
-      :index="form.iconIndex"
+      :index="form.icon"
       @onChoose="handleUpdateIcon"
     />
     <DialogChooseGroup
@@ -117,13 +116,13 @@
       :visible.sync="isShowChooseColor"
       @onChoose="handleUpdateColor"
     />
+  </div>
 
-  </TkModalDialog>
 </template>
 
 <script>
 import store from '@/store'
-
+import {addEntry} from '@/api'
 import ItemIcon from '@/components/ItemIcon'
 import ColorItem from './ColorItem'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
@@ -133,7 +132,7 @@ import DialogChooseColor from '@/components/DialogChooseColor'
 const initForm = Object.freeze({
   groupUuid: null,
   title: '',
-  iconIndex: 0,
+  icon: 0,
   bgColor: null,
   fgColor: null
 })
@@ -155,8 +154,9 @@ export default {
   data() {
     return {
       groupInfo: {
-        iconIndex: 0,
+        icon: 0,
         name: '',
+        groupItem: null,
       },
       isShowChooseIcon: false,
       isShowChooseGroup: false,
@@ -165,8 +165,8 @@ export default {
     }
   },
   computed: {
-    currentGroupUuid: {
-      get: () => store.getters.currentGroupUuid,
+    selectedGroup: {
+      get: () => store.state.selectedGroup,
     },
     database: {
       get: () => store.getters.database
@@ -185,25 +185,28 @@ export default {
       handler(nv) {
         if (nv) {
           this.form.title = new Date().toLocaleString()
-          this.getGroupInfo(this.currentGroupUuid)
+          this.setGroupInfo(this.selectedGroup)
         }
       },
       immediate: true
     }
   },
   methods: {
-    getGroupInfo(groupUuid) {
-      // const group = this.database.getGroup(groupUuid)
-      // this.groupInfo.name = group.name
-      // this.groupInfo.iconIndex = group.icon
-      // this.form.iconIndex = group.icon
-      // this.form.groupUuid = groupUuid
+    setGroupInfo(item) {
+      console.log(item)
+      const {data} = item
+      this.groupInfo.name = item.title
+      this.groupInfo.icon = data.icon
+      this.groupInfo.groupItem = item
+      this.form.icon = data.icon
+      this.form.groupUuid = data.uuid
     },
-    handleUpdateIcon(iconIndex) {
-      this.form.iconIndex = iconIndex
+    handleUpdateIcon(icon) {
+      this.form.icon = icon
     },
-    handleChooseGroup(groupUuid) {
-      this.getGroupInfo(groupUuid)
+    handleChooseGroup(group) {
+      this.setGroupInfo(group)
+      this.isShowChooseGroup = false
     },
     handleUpdateColor(result) {
       console.log(result)
@@ -214,11 +217,31 @@ export default {
       this.$refs.colorChooser.isFgColor = isFgColor
       this.isShowChooseColor = true
     },
-    handleSubmit() {
+    async handleSubmit() {
       if (!this.form.title) {
         return
       }
-      this.$emit('confirm', this.form)
+
+      try {
+        this.$store.commit('setIsGlobalLoading', true)
+        const entry = await addEntry({
+          groupUuid: this.form.groupUuid,
+          config: this.form
+        })
+
+        this.$store.commit('setIsChanged', true)
+        this.mVisible = false
+        this.$emit('addSuccess', {
+          form: this.form,
+          entry,
+          group: this.groupInfo.groupItem
+        })
+      } catch (e) {
+        console.error(e)
+        this.$toast.error({message: e})
+      } finally {
+        this.$store.commit('setIsGlobalLoading', false)
+      }
     }
   }
 }
@@ -228,8 +251,23 @@ export default {
 .form-wrap {
   .form-row {
     & + .form-row {
-      margin-top: 10px;
+      margin-top: 15px;
     }
+
+    .row-title {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.card-add-entry {
+  width: 400px;
+
+  .choose-btn-wrap {
+    text-align: center;
+    padding: 10px;
+
+
   }
 }
 </style>

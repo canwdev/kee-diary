@@ -1,7 +1,7 @@
 <template>
   <TkCard solid class="check-connection">
     <div class="flex items-center justify-between"><b>Internet Connection</b>
-      <TkButton flat color="secondary" no-caps @click="check">Check</TkButton>
+      <TkButton color="secondary" no-caps @click="check">Check</TkButton>
     </div>
 
     <ul>

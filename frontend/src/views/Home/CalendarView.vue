@@ -111,7 +111,7 @@ export default {
     DayDetail
   },
   props: {
-    currentGroupUuid: {
+    selectedGroup: {
       type: Object,
       default: null,
     }
@@ -129,7 +129,7 @@ export default {
     }
   },
   watch: {
-    currentGroupUuid: {
+    selectedGroup: {
       handler() {
         this.refreshCalendarData()
       },
@@ -202,13 +202,13 @@ export default {
       this.calendarDate = new Date(year, month - 1, 1)
     },
     refreshCalendarData() {
-      if (!this.database || !this.currentGroupUuid) {
+      if (!this.database || !this.selectedGroup) {
         this.calendarData = null
         return
       }
 
       const data = {}
-      const group = this.database.getGroup(this.currentGroupUuid)
+      const group = this.database.getGroup(this.selectedGroup)
 
       let creationTime, year, month
 

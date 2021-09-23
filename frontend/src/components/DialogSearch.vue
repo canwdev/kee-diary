@@ -11,7 +11,7 @@
               <span class="q-ml-sm">搜索</span>
             </div>
 
-            <TkButton icon="close" flat round dense @click="mVisible = false"/>
+            <TkButton icon="close" @click="mVisible = false"/>
           </div>
         </TkCard>
 
@@ -53,16 +53,15 @@
           </TkSwitch>
 
           <TkButton
-            flat
             label="清除"
-            color="primary"
+
             @click="clearSearch"
           />
           <TkButton
             :disable="!searchText"
             label="搜索"
             type="submit"
-            color="primary"
+
           />
         </TkCard>
       </form>
@@ -76,7 +75,6 @@
         <TkButton
           v-for="item in searchResults"
           :key="item.uuid.id"
-          flat
           class="list-btn"
           :style="{
             background: item.bgColor,
@@ -149,8 +147,8 @@ export default {
         this.$emit('update:visible', nv)
       }
     },
-    currentGroupUuid: {
-      get: () => store.getters.currentGroupUuid,
+    selectedGroup: {
+      get: () => store.state.selectedGroup,
     },
     database: {
       get: () => store.getters.database
@@ -160,7 +158,7 @@ export default {
     mVisible: {
       handler(nv) {
         if (nv) {
-          this.getGroupInfo(this.currentGroupUuid)
+          this.getGroupInfo(this.selectedGroup)
         }
       },
       immediate: true

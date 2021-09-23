@@ -1,39 +1,35 @@
 <template>
   <TkModalDialog
     v-model="mVisible"
+    show-close
   >
-    <TkCard style="min-width: 400px">
-      <TkCard>
-        <div class="text-h6 row items-center">
-          <span>{{ $t('choose-group') }}</span>
-        </div>
-      </TkCard>
+    <TkCard class="card-choose-group">
+      <div class="flex items-center">
+        <span>{{ $t('choose-group') }}</span>
+      </div>
 
       <hr/>
 
-      <TkCard style="max-height: 70vh" class="scroll">
-        <TkCard v-if="mVisible" flat class="q-gutter-md">
-          <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{
-            $t('kdbx.do-not-move-to-the-group-itself')
-          }}</p>
-          <GroupTree
-            :selected-group-uuid.sync="selected"
-          />
-        </TkCard>
-      </TkCard>
+      <div v-if="mVisible" class="card-tree">
+        <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{
+          $t('kdbx.do-not-move-to-the-group-itself')
+        }}</p>
+        <GroupTree
+          :selected.sync="selected"
+        />
+      </div>
 
       <hr/>
 
-      <TkCard>
-        <TkButton flat :label="$t('cancel')" color="primary" @click="mVisible = false"/>
+      <div class="action-btn-row" >
+
+        <TkButton flat :label="$t('cancel')"  @click="mVisible = false"/>
         <TkButton
           :disabled="!selected"
-          flat
           :label="$t('choose')"
-          color="primary"
           @click="handleChoose"
         />
-      </TkCard>
+      </div>
     </TkCard>
   </TkModalDialog>
 </template>
@@ -78,4 +74,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-choose-group {
+  min-width: 400px;
+
+  .card-tree {
+    max-height: 70vh;
+    overflow: auto;
+  }
+
+}
+</style>
 

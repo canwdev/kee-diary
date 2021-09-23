@@ -45,6 +45,9 @@ export function updateEntry(params) {
   return ipcSendEventAsync('ipcKdbx_updateEntry', params)
 }
 
+export function addEntry(params) {
+  return ipcSendEventAsync('ipcKdbx_addEntry', params)
+}
 
 // ====== custom frontend api ======
 
