@@ -16,16 +16,23 @@
           :item="item"
           @preview="previewItem"
           @itemClick="handleItemClick"
+          @itemContextMenu="handleContextMenu"
         />
 
         <TkPager
+          v-show="pagerOptions.allCount && pagerOptions.allCount > pagerOptions.pageSize"
           :page-size="pagerOptions.pageSize"
           :offset.sync="pagerOptions.offset"
           :total="pagerOptions.allCount"
+          show-extra-info
         />
 
-        <TkEmpty v-if="!(entryList && entryList.length)" :img="null" text="Empty"></TkEmpty>
+        <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
+
+      <ContextMenuCommon
+        ref="ctxMenu"
+      />
 
     </div>
   </div>
@@ -37,11 +44,13 @@ import ListItem from './ListItem'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 import {getNodeUuid} from '@/api'
+import ContextMenuCommon from '@/components/ContextMenuCommon'
 
 export default {
   name: 'EntryList',
   components: {
-    ListItem
+    ListItem,
+    ContextMenuCommon
   },
   props: {
     selectedGroup: {
@@ -52,18 +61,13 @@ export default {
   data() {
     return {
       entryList: [],
-      selected: [],
-      pagerOptions: {
-        pageSize: 10,
-        offset: 0,
-        allCount: 100
-      }
+      selected: []
     }
   },
   computed: {
-    pagination: {
-      get: () => store.getters.currentEntryPagination,
-      set: val => store.commit('setCurrentEntryPagination', val)
+    pagerOptions: {
+      get: () => store.state.pagerOptions,
+      set: val => store.commit('setPagerOptions', val)
     },
     pagedList() {
       const {
@@ -109,6 +113,9 @@ export default {
           uuid: item.uuid
         }
       })
+    },
+    handleContextMenu(item) {
+      this.$refs.ctxMenu.open(item)
     }
   }
 }

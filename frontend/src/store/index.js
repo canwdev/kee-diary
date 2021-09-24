@@ -13,11 +13,10 @@ Vue.use(Vuex)
 
 const settings = new LocalStorageSettings(KEE_DIARY_VUE_SETTINGS)
 
-const initEntryListPagination = {
-  sortBy: 'lastModTime',
-  descending: true,
-  rowsPerPage: 10,
-  page: 1
+const pagerOptions = {
+  pageSize: 15,
+  offset: 0,
+  allCount: 0
 }
 
 export default new Vuex.Store({
@@ -35,7 +34,7 @@ export default new Vuex.Store({
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isChanged: getIsChanged() || false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
-    currentEntryPagination: initEntryListPagination, // 条目列表分页配置
+    pagerOptions: {...pagerOptions}, // 条目列表分页配置
     calendarDate: new Date() // 日历视图
   },
   getters: {
@@ -92,11 +91,11 @@ export default new Vuex.Store({
       state.isChanged = val
     },
     setSelectedGroup: (state, val) => {
+      // console.log('setSelectedGroup', state.selectedGroup === val)
       state.selectedGroup = val
-      state.currentEntryPagination = initEntryListPagination
-      // console.log('resetPagination', state.currentEntryPagination)
+      // state.pagerOptions = {...pagerOptions}
     },
-    setCurrentEntryPagination: (state, val) => {
+    setPagerOptions: (state, val) => {
       // console.log('setCurrentEntryPagination', val)
       state.currentEntryPagination = val
     },

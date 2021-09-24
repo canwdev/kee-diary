@@ -8,7 +8,10 @@
       @onBackClick="handleBack"
     />
 
-    <NavDrawer v-model="leftDrawerOpen"/>
+    <NavDrawer
+      v-model="leftDrawerOpen"
+      title="KeeNote"
+    />
 
     <div class="default-layout-content">
       <keep-alive :include="['HomeView']">

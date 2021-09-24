@@ -1,24 +1,21 @@
 <template>
-  <div>
-    <div style="min-width: 100px">
-
-      <template v-for="(item, index) in menuListFiltered">
-        <hr
-          v-if="item.isSeparator"
-          :key="index"
-        />
-        <div
-          v-else-if="!item.hidden"
-          :key="index"
-          class="row items-center"
-          @click="item.action"
-        >
-          [{{ item.icon }}]
-          {{ item.label }}
-        </div>
-      </template>
-    </div>
-  </div>
+  <TkContextMenu class="common-menu" ref="ctxMenu">
+    <template v-for="(item, index) in menuListFiltered">
+      <hr
+        v-if="item.isSeparator"
+        :key="index"
+      />
+      <li
+        v-else-if="!item.hidden"
+        :key="index"
+        class="menu-item"
+        @click="item.action"
+      >
+        <i class="material-icons text-primary">{{ item.icon }}</i>
+        {{ item.label }}
+      </li>
+    </template>
+  </TkContextMenu>
 </template>
 
 <script>
@@ -28,7 +25,7 @@ function isHiddenGroupRoot(isGroup, targetData) {
     return false
   }
   try {
-    return !(targetData._origin.parentGroup)
+    return !(targetData.parent)
   } catch {
     return false
   }
@@ -37,10 +34,6 @@ function isHiddenGroupRoot(isGroup, targetData) {
 export default {
   name: 'ContextMenuCommon',
   props: {
-    targetData: {
-      type: [Object, Array],
-      default: null
-    },
     hiddenItems: {
       type: Array,
       default() {
@@ -54,7 +47,15 @@ export default {
   },
   data() {
     return {
-      menuList: [
+      targetData: null,
+    }
+  },
+  computed: {
+    isTargetArray() {
+      return Array.isArray(this.targetData)
+    },
+    menuList() {
+      return [
         {
           id: 'createEntry',
           hidden: !this.isGroup,
@@ -126,11 +127,6 @@ export default {
           }
         }
       ]
-    }
-  },
-  computed: {
-    isTargetArray() {
-      return Array.isArray(this.targetData)
     },
     menuListFiltered() {
       if (!this.targetData || this.targetData.length === 0) {
@@ -143,6 +139,10 @@ export default {
     }
   },
   methods: {
+    open(data) {
+      this.targetData = data
+      this.$refs.ctxMenu.open()
+    },
     emitEvent(eventName) {
       this.$emit(eventName, this.targetData)
     },
@@ -156,3 +156,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.common-menu {
+  ::v-deep .menu-item {
+    &:hover {
+      i {
+        color: white !important;
+      }
+    }
+  }
+}
+
+</style>

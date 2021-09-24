@@ -26,7 +26,9 @@
     </div>
 
     <div class="sticky-area">
-      <TkButton fab icon="add" color="secondary" :label="$t('home.add-entry')" @click="isShowAddEntry = true"/>
+      <TkButton theme="accent" round :title="$t('home.add-entry')" @click="isShowAddEntry = true">
+        <i class="material-icons">add</i>
+      </TkButton>
     </div>
 
     <DialogAddEntry
@@ -81,13 +83,13 @@ export default {
     }
   },
   mounted() {
+    this.$refs.groupRef.updateTree()
     mainBus.$on(BUS_SHOW_PREVIEW, this.handlePreviewItem)
   },
   beforeDestroy() {
     mainBus.$off(BUS_SHOW_PREVIEW, this.handlePreviewItem)
   },
   activated() {
-    this.$refs.groupRef.updateTree()
   },
   methods: {
     handleAddSuccess({entry, group}) {

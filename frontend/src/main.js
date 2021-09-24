@@ -3,9 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'normalize.css'
-import './style/base.scss'
 import './style/github-markdown.css'
 import './style/github-markdown-dark.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import './style/base.scss'
+
 import i18n from './lang/i18n'
 const isProd = process.env.NODE_ENV === 'production' // 'development'
 

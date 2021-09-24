@@ -5780,6 +5780,11 @@ marked@^1.1.1:
   resolved "https://registry.nlark.com/marked/download/marked-1.2.9.tgz?cache=0&sync_timestamp=1631132591806&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmarked%2Fdownload%2Fmarked-1.2.9.tgz#53786f8b05d4c01a2a5a76b7d1ec9943d29d72dc"
   integrity sha1-U3hviwXUwBoqWna30eyZQ9Kdctw=
 
+material-design-icons-iconfont@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npm.taobao.org/material-design-icons-iconfont/download/material-design-icons-iconfont-6.1.0.tgz#ffad21a71f2000336fd410cbeba36ddbf301f0f2"
+  integrity sha1-/60hpx8gADNv1BDL66Nt2/MB8PI=
+
 mathjax@^2.7.0:
   version "2.7.9"
   resolved "https://registry.nlark.com/mathjax/download/mathjax-2.7.9.tgz#d6b67955c173e7d719fcb2fc0288662884eb7d3d"

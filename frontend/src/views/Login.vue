@@ -20,14 +20,20 @@
       <div class="header-area text-center">
         <TkButton
           v-show="!isWelcome"
+          size="no-style"
           class="btn-back"
           @click="isWelcome = true"
-        >Back
+        >
+          <i class="material-icons">arrow_back</i>
         </TkButton>
 
+        <div class="logo-icon">
+          <i class="material-icons">lock</i>
+        </div>
+
         <div class="_title">{{
-            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-          }}
+          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+        }}
         </div>
       </div>
 
@@ -108,12 +114,12 @@
               <TkButton
                 type="button"
                 class="btn-choose"
-                size="sm"
+                size="no-style"
                 @click="handleChooseFile('keyPath', [
                   {name: 'All', extensions: ['*']},
                   {name: '*.key', extensions: ['key']},
                 ])"
-              >Choose
+              ><i class="material-icons">attachment</i>
               </TkButton>
             </div>
 
@@ -301,10 +307,17 @@ export default {
 
   .header-area {
     position: relative;
-    height: 80px;
+    height: 100px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    .logo-icon {
+      margin-bottom: 8px;
+      i {
+        font-size: 32px;
+      }
+    }
 
     .btn-back {
       position: absolute;

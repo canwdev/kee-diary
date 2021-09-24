@@ -5,6 +5,7 @@
       :nodes="treeData"
       :selected-id="mSelected && mSelected.id"
       @onItemClick="handleNodeClick"
+      @onItemContextMenu="$emit('onItemContextMenu', $event)"
     >
       <template v-slot:icon="{data: {item}}">
         <ItemIcon
@@ -13,6 +14,8 @@
       </template>
 
     </TkTree>
+
+
   </div>
 </template>
 

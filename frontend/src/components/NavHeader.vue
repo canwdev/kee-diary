@@ -1,21 +1,28 @@
 <template>
   <div class="default-header">
-    <TkNavBar>
+    <TkNavBar full-width>
       <template slot="left">
         <div class="header-left actions-btn-wrap">
           <TkButton
-            label="Menu"
+            round
+            flat
             @click="$emit('onMenuClick')"
-          />
+          >
+            <i class="material-icons">menu</i>
+          </TkButton>
           <TkButton
             v-show="isShowBack"
-            label="Back"
+            title="Back"
+            round
+            flat
             @click="$emit('onBackClick')"
-          />
+          >
+            <i class="material-icons text-lg">arrow_back</i>
+          </TkButton>
 
           <div class="title-wrap">
             <span class="main-title">{{ title }}</span>
-            {{ isUnlocked ? $t('header.unlocked') : '' }}
+            <i v-if="isUnlocked" class="material-icons text-inherit" :title="$t('header.unlocked') ">lock_open</i>
           </div>
 
         </div>
@@ -26,15 +33,22 @@
           <template v-if="isUnlocked">
 
             <TkButton
+              round
+              flat
               :disabled="!isChanged"
+              :title="`${$t('header.save')} (Ctrl+S)`"
               @click="saveKdbx"
             >
-              {{ $t('header.save') }} (Ctrl+S)
+              <i class="material-icons">save</i>
             </TkButton>
             <TkButton
+              round
+              flat
+              :title="`${$t('header.close')} (Ctrl+L)`"
+
               @click="closeKdbx"
             >
-              {{ $t('header.close') }} (Ctrl+L)
+              <i class="material-icons">eject</i>
             </TkButton>
           </template>
         </div>
@@ -42,9 +56,12 @@
       <template slot="right">
         <template v-if="isUnlocked">
           <TkButton
+            round
+            flat
+            :title="$t('header.search')"
             @click="isDialogSearchVisible = true"
           >
-            {{ $t('header.search') }}
+            <i class="material-icons">search</i>
           </TkButton>
         </template>
       </template>
@@ -116,9 +133,12 @@ export default {
 
     .title-wrap {
       margin-left: 10px;
+      display: flex;
+      align-items: center;
 
       .main-title {
         font-weight: bold;
+        margin-right: 5px
       }
     }
   }

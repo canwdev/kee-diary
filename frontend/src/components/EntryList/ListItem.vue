@@ -2,6 +2,7 @@
   <div
     class="relative-position table-row"
     @click="$emit('itemClick', item)"
+    @contextmenu="$emit('itemContextMenu', item)"
   >
     <div class="t-col _icon">
       <ItemIcon
