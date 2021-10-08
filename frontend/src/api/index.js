@@ -53,6 +53,14 @@ export function createGroup(params) {
   return ipcSendEventAsync('ipcKdbx_createGroup', params)
 }
 
+export function removeGroup(params) {
+  return ipcSendEventAsync('ipcKdbx_removeGroup', params)
+}
+
+export function moveItems(params) {
+  return ipcSendEventAsync('ipcKdbx_moveItems', params)
+}
+
 // ====== custom frontend api ======
 
 export function getNodeUuid(node) {

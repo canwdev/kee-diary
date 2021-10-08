@@ -8,6 +8,7 @@
         :selected.sync="selectedGroup"
         @onCreateEntry="handleAddEntry"
         @onCreateGroup="handleAddGroup"
+        @onDelete="handleDeleteGroup"
       />
 
     </div>
@@ -36,7 +37,7 @@
       :visible.sync="isShowDialogAdd"
       :is-add-group="isAddGroup"
       @addEntrySuccess="addEntrySuccess"
-      @addGroupSuccess="addGroupSuccess"
+      @addGroupSuccess="updateGroup"
     />
 
     <DialogEntryPreview
@@ -55,6 +56,7 @@ import EntryList from '@/components/EntryList'
 import DialogAdd from '@/components/DialogAdd'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
+import {removeGroup} from '@/api'
 
 export default {
   name: 'HomeView',
@@ -107,7 +109,7 @@ export default {
         }
       })
     },
-    addGroupSuccess() {
+    updateGroup() {
       this.$refs.groupView.updateTree()
     },
     handleAddEntry(group) {
@@ -124,6 +126,21 @@ export default {
       this.isShowDialogAdd = true
       this.$nextTick(() => {
         this.$refs.dialogAdd.setGroupInfo(group)
+      })
+    },
+    handleDeleteGroup(item) {
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('confirm'),
+          content: this.$t('menu.are-you-sure'),
+        },
+        parentEl: this.$el
+      }).onConfirm(async () => {
+        await removeGroup({
+          groupUuid: item.data.uuid
+        })
+        this.$store.commit('setIsChanged', true)
+        this.updateGroup()
       })
     },
     handlePreviewItem(item) {
@@ -146,7 +163,7 @@ export default {
 }
 
 .nav-tree {
-  min-width: 350px;
+  width: 350px;
 }
 
 .sticky-area {

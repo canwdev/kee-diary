@@ -1,5 +1,5 @@
 <template>
-  <div class="group-tree-wrap">
+  <div class="group-view">
     <GroupTree
       ref="treeRef"
       :selected.sync="mSelected"
@@ -57,4 +57,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.group-view {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+</style>
 
