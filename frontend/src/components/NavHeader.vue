@@ -75,7 +75,7 @@
 
 <script>
 import store from '@/store'
-import {closeDatabase, checkIsOpen, handleSaveDatabase} from '@/api'
+import {handleCloseDatabase, handleSaveDatabase} from '@/api'
 // import DialogSearch from './DialogSearch'
 
 export default {
@@ -111,8 +111,7 @@ export default {
   },
   methods: {
     async closeKdbx() {
-      await closeDatabase()
-      store.commit('setIsUnlocked', false)
+      handleCloseDatabase()
       await this.$router.replace({
         name: 'Login'
       })

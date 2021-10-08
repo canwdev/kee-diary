@@ -34,7 +34,7 @@
     "unlock": "解锁"
   },
   "home": {
-    "add-entry": "添加条目",
+    "create-entry": "创建条目",
     "title": "标题",
     "created": "创建时间",
     "modified": "修改时间"

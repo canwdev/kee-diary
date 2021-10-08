@@ -11,6 +11,7 @@
       ref="ctxMenu"
       :is-group="true"
       :hidden-items="['preview', 'edit', 'changeColor']"
+      v-on="$listeners"
     />
   </div>
 </template>

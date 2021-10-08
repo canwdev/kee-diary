@@ -177,12 +177,12 @@ class KdbxInstance {
    * @param params
    * @returns {EntryItem}
    */
-  addEntry(params) {
+  createEntry(params) {
     const {
-      groupUuid, // 群组 Uuid 对象
+      groupUuid,
       config
     } = params || {}
-    console.log(`[db] addEntry uuid=${groupUuid}`)
+    console.log(`[db] createEntry uuid=${groupUuid}`)
 
     if (!groupUuid || !config) {
       throw new Error('groupUuid and config is required!')
@@ -217,6 +217,64 @@ class KdbxInstance {
 
     return new EntryItem(entry)
   }
+
+  /**
+   * 向群组内添加群组
+   * @param params
+   */
+  createGroup(params) {
+    const {
+      groupUuid,
+      name
+    } = params || {}
+
+    const group = this.db.getGroup(groupUuid)
+    const newGroup = this.db.createGroup(group, name)
+    this.isChanged = true
+
+    return new GroupItem(newGroup)
+  }
+
+  /**
+   * 删除多条(entry|group)，如果有回收站则移动至回收站
+   * @param items entries[] or groups[]
+   */
+  removeItems(items) {
+    if (Array.isArray(items)) {
+      items.forEach(items => {
+        this.db.remove(items)
+      })
+    } else {
+      this.db.remove(items)
+    }
+    this.isChanged = true
+  }
+
+  /**
+   * 移动多条(entry|group)
+   * @param items entries[] or groups[]
+   * @param groupUuid 群组 Uuid
+   */
+  moveItems(items, groupUuid) {
+    const checkIllegal = (item) => {
+      if (item.uuid.id === groupUuid) {
+        throw new Error('Not allowed to move to the group itself')
+      }
+    }
+
+    const group = this.db.getGroup(groupUuid)
+    if (Array.isArray(items)) {
+      items.forEach(item => {
+        checkIllegal(item)
+        this.db.move(item, group);
+      })
+    } else {
+      checkIllegal(items)
+      this.db.move(items, group);
+    }
+    this.isChanged = true
+  }
+
 }
 
 module.exports = {

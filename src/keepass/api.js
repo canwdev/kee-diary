@@ -57,8 +57,20 @@ const updateEntry = async (params) => {
   return kInstance.updateEntry(params)
 }
 
-const addEntry = async (params) => {
-  return kInstance.addEntry(params)
+const createEntry = async (params) => {
+  return kInstance.createEntry(params)
+}
+
+const createGroup = async (params) => {
+  return kInstance.createGroup(params)
+}
+
+const removeItems = async (params) => {
+  return kInstance.removeItems(params)
+}
+
+const moveItems = async (params) => {
+  return kInstance.moveItems(params)
 }
 
 const api = {
@@ -72,7 +84,10 @@ const api = {
   getGroupEntries,
   getEntryDetail,
   updateEntry,
-  addEntry
+  createEntry,
+  createGroup,
+  removeItems,
+  moveItems,
 }
 
 const apiList = []

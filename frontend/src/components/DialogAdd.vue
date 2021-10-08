@@ -7,7 +7,7 @@
       <TkCard class="card-add-entry">
         <form @submit.prevent="handleSubmit">
           <div>
-            {{ $t('home.add-entry') }}
+            {{ isAddGroup ? $t('home.create-group') : $t('home.create-entry') }}
           </div>
 
           <hr/>
@@ -43,7 +43,7 @@
               </div>
             </div>
 
-            <div class="form-row flex justify-between">
+            <div v-if="!isAddGroup" class="form-row flex justify-between">
               <div class="choose-btn-wrap">
                 <div class="row-title ">{{ $t('choose-icon') }}</div>
                 <div class="row-content">
@@ -122,7 +122,7 @@
 
 <script>
 import store from '@/store'
-import {addEntry} from '@/api'
+import {createEntry, createGroup} from '@/api'
 import ItemIcon from '@/components/ItemIcon'
 import ColorItem from './ColorItem'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
@@ -137,7 +137,7 @@ const initForm = Object.freeze({
   fgColor: null
 })
 export default {
-  name: 'DialogAddEntry',
+  name: 'DialogAdd',
   components: {
     ItemIcon,
     ColorItem,
@@ -147,6 +147,10 @@ export default {
   },
   props: {
     visible: {
+      type: Boolean,
+      default: false
+    },
+    isAddGroup: {
       type: Boolean,
       default: false
     }
@@ -193,7 +197,6 @@ export default {
   },
   methods: {
     setGroupInfo(item) {
-      console.log(item)
       const {data} = item
       this.groupInfo.name = item.title
       this.groupInfo.icon = data.icon
@@ -222,20 +225,45 @@ export default {
         return
       }
 
+      if (this.isAddGroup) {
+        await this.doCreateGroup()
+      } else {
+        await this.doCreateEntry()
+      }
+    },
+    async doCreateEntry() {
       try {
         this.$store.commit('setIsGlobalLoading', true)
-        const entry = await addEntry({
+        const entry = await createEntry({
           groupUuid: this.form.groupUuid,
           config: this.form
         })
 
         this.$store.commit('setIsChanged', true)
         this.mVisible = false
-        this.$emit('addSuccess', {
+        this.$emit('addEntrySuccess', {
           form: this.form,
           entry,
           group: this.groupInfo.groupItem
         })
+      } catch (e) {
+        console.error(e)
+        this.$toast.error({message: e})
+      } finally {
+        this.$store.commit('setIsGlobalLoading', false)
+      }
+    },
+    async doCreateGroup() {
+      try {
+        this.$store.commit('setIsGlobalLoading', true)
+        const group = await createGroup({
+          groupUuid: this.form.groupUuid,
+          name: this.form.title
+        })
+
+        this.$store.commit('setIsChanged', true)
+        this.mVisible = false
+        this.$emit('addGroupSuccess', group)
       } catch (e) {
         console.error(e)
         this.$toast.error({message: e})

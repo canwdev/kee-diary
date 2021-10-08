@@ -93,7 +93,7 @@ export default {
           : {
             iconClass,
             iconName: 'login',
-            name: this.$t('pages.login'), action: () => {
+            name: this.$t('login.openDatabase'), action: () => {
               router.push({name: 'Login'})
               this.mValue = false
             }

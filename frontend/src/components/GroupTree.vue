@@ -46,6 +46,9 @@ export default {
     }
   },
   computed: {
+    isUnlocked() {
+      return this.$store.state.isUnlocked
+    },
     mSelected: {
       get() {
         return this.selected || this.self_selected
@@ -58,9 +61,15 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    isUnlocked: {
+      handler() {
+        this.getTreeData()
+      },
+      immediate: true
+    }
+  },
   mounted() {
-    this.getTreeData()
   },
   methods: {
     handleNodeClick(node) {
@@ -69,6 +78,9 @@ export default {
     },
     async getTreeData() {
       this.treeData = rootItem
+      if (!this.isUnlocked) {
+        return
+      }
       const uuid = getNodeUuid(this.mSelected)
       // console.log('uuid', this.mSelected, uuid)
 

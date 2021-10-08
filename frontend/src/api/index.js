@@ -45,8 +45,12 @@ export function updateEntry(params) {
   return ipcSendEventAsync('ipcKdbx_updateEntry', params)
 }
 
-export function addEntry(params) {
-  return ipcSendEventAsync('ipcKdbx_addEntry', params)
+export function createEntry(params) {
+  return ipcSendEventAsync('ipcKdbx_createEntry', params)
+}
+
+export function createGroup(params) {
+  return ipcSendEventAsync('ipcKdbx_createGroup', params)
 }
 
 // ====== custom frontend api ======
@@ -79,4 +83,13 @@ export async function handleSaveDatabase() {
   } finally {
     store.commit('setIsGlobalLoading', false)
   }
+}
+
+export async function handleCloseDatabase() {
+  await closeDatabase()
+
+  store.commit('setIsUnlocked', false)
+  store.commit('setIsChanged', false)
+  store.commit('setSelectedGroup', null)
+
 }

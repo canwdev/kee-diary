@@ -3,19 +3,19 @@
     class="home-page"
   >
     <div class="nav-tree">
-      <div>
-        <GroupView
-          ref="groupRef"
-          :selected.sync="selectedGroup"
-          @onCreateEntry="handleAddEntryFromGroup"
-        />
-      </div>
-      <div style="height: 80px"></div>
+      <GroupView
+        ref="groupView"
+        :selected.sync="selectedGroup"
+        @onCreateEntry="handleAddEntry"
+        @onCreateGroup="handleAddGroup"
+      />
+
     </div>
 
     <div class="home-right">
       <EntryList
         v-if="isListView"
+        ref="entryList"
         :selected-group="selectedGroup"
       />
 
@@ -26,15 +26,17 @@
     </div>
 
     <div class="sticky-area">
-      <TkButton theme="accent" round :title="$t('home.add-entry')" @click="isShowAddEntry = true">
+      <TkButton theme="accent" round :title="$t('home.create-entry')" @click="handleAddEntry()">
         <i class="material-icons">add</i>
       </TkButton>
     </div>
 
-    <DialogAddEntry
-      ref="addEntry"
-      :visible.sync="isShowAddEntry"
-      @addSuccess="handleAddSuccess"
+    <DialogAdd
+      ref="dialogAdd"
+      :visible.sync="isShowDialogAdd"
+      :is-add-group="isAddGroup"
+      @addEntrySuccess="addEntrySuccess"
+      @addGroupSuccess="addGroupSuccess"
     />
 
     <DialogEntryPreview
@@ -50,7 +52,7 @@ import store from '@/store'
 import GroupView from './GroupView'
 import EntryList from '@/components/EntryList'
 // import CalendarView from '@/views/Home/CalendarView'
-import DialogAddEntry from '@/components/DialogAddEntry'
+import DialogAdd from '@/components/DialogAdd'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 
@@ -60,13 +62,14 @@ export default {
     EntryList,
     GroupView,
     // CalendarView,
-    DialogAddEntry,
+    DialogAdd,
     DialogEntryPreview
   },
   data() {
     return {
-      isShowAddEntry: false,
+      isShowDialogAdd: false,
       isShowPreview: false,
+      isAddGroup: false,
       previewItem: null
     }
   },
@@ -83,7 +86,7 @@ export default {
     }
   },
   mounted() {
-    this.$refs.groupRef.updateTree()
+    this.$refs.groupView.updateTree()
     mainBus.$on(BUS_SHOW_PREVIEW, this.handlePreviewItem)
   },
   beforeDestroy() {
@@ -92,8 +95,11 @@ export default {
   activated() {
   },
   methods: {
-    handleAddSuccess({entry, group}) {
+    addEntrySuccess({entry, group}) {
       this.$store.commit('setSelectedGroup', group)
+      this.$nextTick(() => {
+        this.$refs.entryList.loadEntryList()
+      })
       this.$router.push({
         name: 'Detail',
         params: {
@@ -101,10 +107,23 @@ export default {
         }
       })
     },
-    handleAddEntryFromGroup(group) {
-      this.isShowAddEntry = true
+    addGroupSuccess() {
+      this.$refs.groupView.updateTree()
+    },
+    handleAddEntry(group) {
+      this.isAddGroup = false
+      this.isShowDialogAdd = true
+      if (group) {
+        this.$nextTick(() => {
+          this.$refs.dialogAdd.setGroupInfo(group)
+        })
+      }
+    },
+    handleAddGroup(group) {
+      this.isAddGroup = true
+      this.isShowDialogAdd = true
       this.$nextTick(() => {
-        this.$refs.addEntry.getGroupInfo(group)
+        this.$refs.dialogAdd.setGroupInfo(group)
       })
     },
     handlePreviewItem(item) {

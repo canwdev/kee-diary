@@ -144,6 +144,7 @@ export default {
       this.$refs.ctxMenu.open()
     },
     emitEvent(eventName) {
+      console.log('emitEvent', eventName)
       this.$emit(eventName, this.targetData)
     },
     // show when only one targetData is selected

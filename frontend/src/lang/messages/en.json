@@ -34,7 +34,8 @@
   "unlock": "Unlock"
  },
  "home": {
-  "add-entry": "Add entry",
+  "create-entry": "Create entry",
+  "create-group": "Create group",
   "title": "Title",
   "created": "Created",
   "modified": "Modified"
