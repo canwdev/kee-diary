@@ -185,6 +185,12 @@ export default {
       width: 150px;
     }
 
+    @media screen and (max-width: $mq_tablet_width) {
+      &._time {
+        display: none;
+      }
+    }
+
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="detail-view flex items-center justify-center">
-    <TkCard class="edit-card">
+    <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
           class="cursor-pointer"
@@ -64,7 +64,7 @@
 
       <hr>
 
-      <div style="overflow: auto; height: calc(100vh - 230px)">
+      <div class="edit-wrap">
         <textarea v-show="false" id="input-area"></textarea>
       </div>
     </TkCard>
@@ -422,6 +422,12 @@ export default {
 
   .edit-card {
     width: 800px;
+
+    @media screen and (max-width: $mq_mobile_width) {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   }
 
   .settings-row {
@@ -437,6 +443,14 @@ export default {
 
     .title-input {
       flex: 1;
+    }
+  }
+
+  .edit-wrap {
+    overflow: auto;
+    height: calc(100vh - 230px);
+    @media screen and (max-width: $mq_mobile_width) {
+      height: calc(100vh - 200px);
     }
   }
 }

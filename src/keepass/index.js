@@ -172,6 +172,20 @@ class KdbxInstance {
     return new EntryItem(entry, true)
   }
 
+  updateGroup(params) {
+    const {
+      uuid,
+      updates // 数组
+    } = params || {}
+    const group = this.db.getGroup(uuid)
+    updates.forEach(obj => {
+      const {path, value} = obj
+      setValDot(group, path, value)
+    })
+    this.isChanged = true
+    return new GroupItem(group)
+  }
+
   /**
    * 向群组内添加条目
    * @param params

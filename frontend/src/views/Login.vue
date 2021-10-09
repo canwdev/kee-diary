@@ -32,8 +32,8 @@
         </div>
 
         <div class="_title">{{
-          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-        }}
+            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+          }}
         </div>
       </div>
 
@@ -303,6 +303,10 @@ export default {
 .login-view {
   .login-card-main {
     width: 400px;
+
+    @media screen and (max-width: 400px) {
+      width: 95%;
+    }
   }
 
   .header-area {
@@ -312,8 +316,10 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     .logo-icon {
       margin-bottom: 8px;
+
       i {
         font-size: 32px;
       }
@@ -335,15 +341,19 @@ export default {
     .input-row {
       width: 100%;
       display: flex;
+
       input {
         flex: 1;
       }
-      &+.input-row {
+
+      & + .input-row {
         margin-top: 10px;
       }
+
       .btn-choose {
         margin-left: 10px;
       }
+
       .btn-submit {
         width: 100%;
       }
@@ -369,6 +379,7 @@ export default {
 
   .history-list {
     margin-top: 10px;
+
     .list-item {
       cursor: pointer;
       display: flex;
@@ -376,6 +387,7 @@ export default {
       overflow: hidden;
       padding: 5px 5px;
       border-top: $layout-border;
+
       &:hover {
         background-color: $border-color;
       }

@@ -45,6 +45,10 @@ export function updateEntry(params) {
   return ipcSendEventAsync('ipcKdbx_updateEntry', params)
 }
 
+export function updateGroup(params) {
+  return ipcSendEventAsync('ipcKdbx_updateGroup', params)
+}
+
 export function createEntry(params) {
   return ipcSendEventAsync('ipcKdbx_createEntry', params)
 }

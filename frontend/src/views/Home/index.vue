@@ -9,6 +9,7 @@
         @onCreateEntry="handleAddEntry"
         @onCreateGroup="handleAddGroup"
         @onDelete="handleDeleteGroup"
+        @onRename="handleRename"
       />
 
     </div>
@@ -56,7 +57,7 @@ import EntryList from '@/components/EntryList'
 import DialogAdd from '@/components/DialogAdd'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup} from '@/api'
+import {removeGroup, updateGroup} from '@/api'
 
 export default {
   name: 'HomeView',
@@ -146,6 +147,28 @@ export default {
     handlePreviewItem(item) {
       this.isShowPreview = true
       this.previewItem = item
+    },
+    handleRename(item) {
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('rename'),
+          input: {
+            value: item.title,
+            required: true,
+            placeholder: item.title,
+          }
+        },
+        parentEl: this.$el
+      }).onConfirm(async (context) => {
+        await updateGroup({
+          uuid: item.data.uuid,
+          updates: [
+            {path: 'fields.Title', value: context.inputValue},
+          ]
+        })
+        item.title = context.inputValue
+        this.$store.commit('setIsChanged', true)
+      })
     }
   }
 }
@@ -156,20 +179,54 @@ export default {
   height: calc(100vh - 50px);
   display: flex;
 
+  .nav-tree {
+    transition: $common-transition;
+    width: 350px;
+  }
+
   .home-right {
     flex: 1;
+    border-radius: 0;
+    border: none;
     border-left: $layout-border;
+    background: $color-white;
+  }
+  @media screen and (max-width: $mq_tablet_width) {
+    .nav-tree {
+      width: 240px;
+    }
+  }
+
+  @media screen and (max-width: $mq_mobile_width) {
+    flex-direction: column;
+    .nav-tree {
+      width: 100%;
+      height: 150px;
+    }
+    .home-right {
+      height: 100%;
+      overflow: hidden;
+      border-left: none;
+      border-top: $layout-border;
+    }
+  }
+
+  .sticky-area {
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    z-index: 20;
+    button {
+      box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.3);
+    }
   }
 }
 
-.nav-tree {
-  width: 350px;
-}
-
-.sticky-area {
-  position: fixed;
-  bottom: 18px;
-  left: 18px;
-  z-index: 20;
+.tk-dark-theme {
+  .home-page {
+    .home-right {
+      background: $dark-page;
+    }
+  }
 }
 </style>

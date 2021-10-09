@@ -57,6 +57,10 @@ const updateEntry = async (params) => {
   return kInstance.updateEntry(params)
 }
 
+const updateGroup = async (params) => {
+  return kInstance.updateGroup(params)
+}
+
 const createEntry = async (params) => {
   return kInstance.createEntry(params)
 }
@@ -86,6 +90,7 @@ const api = {
   getGroupEntries,
   getEntryDetail,
   updateEntry,
+  updateGroup,
   createEntry,
   createGroup,
   removeGroup,
