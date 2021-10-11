@@ -10,6 +10,8 @@
         @onCreateGroup="handleAddGroup"
         @onDelete="handleDeleteGroup"
         @onRename="handleRename"
+        @onChangeIcon="handleChangeIcon"
+        @onMove="handleMove"
       />
 
     </div>
@@ -38,12 +40,24 @@
       :visible.sync="isShowDialogAdd"
       :is-add-group="isAddGroup"
       @addEntrySuccess="addEntrySuccess"
-      @addGroupSuccess="updateGroup"
+      @addGroupSuccess="refreshGroup"
     />
 
     <DialogEntryPreview
       :visible.sync="isShowPreview"
       :item="previewItem"
+    />
+
+    <DialogChooseIcon
+      :visible.sync="isShowChooseIcon"
+      :index="curIcon"
+      @onChoose="updateIcon"
+    />
+
+    <DialogChooseGroup
+      :visible.sync="isShowChooseGroup"
+      :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+      @onChoose="changeGroup"
     />
 
   </div>
@@ -57,7 +71,9 @@ import EntryList from '@/components/EntryList'
 import DialogAdd from '@/components/DialogAdd'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup, updateGroup} from '@/api'
+import {removeGroup, updateGroup, moveGroup} from '@/api'
+import DialogChooseIcon from '@/components/DialogChooseIcon'
+import DialogChooseGroup from '@/components/DialogChooseGroup'
 
 export default {
   name: 'HomeView',
@@ -66,14 +82,20 @@ export default {
     GroupView,
     // CalendarView,
     DialogAdd,
-    DialogEntryPreview
+    DialogEntryPreview,
+    DialogChooseIcon,
+    DialogChooseGroup,
   },
   data() {
     return {
       isShowDialogAdd: false,
       isShowPreview: false,
       isAddGroup: false,
-      previewItem: null
+      previewItem: null,
+      isShowChooseIcon: false,
+      isShowChooseGroup: false,
+      curIcon: null,
+      curItem: null
     }
   },
   computed: {
@@ -110,7 +132,7 @@ export default {
         }
       })
     },
-    updateGroup() {
+    refreshGroup() {
       this.$refs.groupView.updateTree()
     },
     handleAddEntry(group) {
@@ -141,7 +163,7 @@ export default {
           groupUuid: item.data.uuid
         })
         this.$store.commit('setIsChanged', true)
-        this.updateGroup()
+        this.refreshGroup()
       })
     },
     handlePreviewItem(item) {
@@ -160,15 +182,55 @@ export default {
         },
         parentEl: this.$el
       }).onConfirm(async (context) => {
+        if (context.inputValue === item.title) {
+          return
+        }
         await updateGroup({
           uuid: item.data.uuid,
           updates: [
-            {path: 'fields.Title', value: context.inputValue},
+            {path: 'name', value: context.inputValue},
           ]
         })
         item.title = context.inputValue
         this.$store.commit('setIsChanged', true)
       })
+    },
+    async updateIcon(icon) {
+      const item = this.curItem
+
+      await updateGroup({
+        uuid: item.data.uuid,
+        updates: [
+          {path: 'icon', value: icon},
+        ]
+      })
+
+      item.data.icon = icon
+      this.$store.commit('setIsChanged', true)
+      this.curIcon = null
+      this.curItem = null
+    },
+    handleChangeIcon(item) {
+      this.isShowChooseIcon = true
+      this.curIcon = item.data.icon
+      this.curItem = item
+    },
+    async changeGroup(group) {
+      console.log(group)
+
+      await moveGroup({
+        uuid: this.curItem.data.uuid,
+        targetUuid: group.data.uuid,
+      })
+
+      this.refreshGroup()
+      this.$store.commit('setIsChanged', true)
+      this.isShowChooseGroup = false
+      this.curItem = null
+    },
+    handleMove(item) {
+      this.isShowChooseGroup = true
+      this.curItem = item
     }
   }
 }
@@ -191,6 +253,7 @@ export default {
     border-left: $layout-border;
     background: $color-white;
   }
+
   @media screen and (max-width: $mq_tablet_width) {
     .nav-tree {
       width: 240px;
@@ -216,6 +279,7 @@ export default {
     bottom: 18px;
     left: 18px;
     z-index: 20;
+
     button {
       box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.3);
     }

@@ -266,10 +266,13 @@ class KdbxInstance {
 
   /**
    * 移动多条(entry|group)
-   * @param items entries[] or groups[]
-   * @param groupUuid 群组 Uuid
    */
-  moveItems(items, groupUuid) {
+  moveItems(params) {
+    const {
+      groupUuid, // 群组 Uuid
+      items // entries[] or groups[]
+    } = params || {}
+
     const checkIllegal = (item) => {
       if (item.uuid.id === groupUuid) {
         throw new Error('Not allowed to move to the group itself')

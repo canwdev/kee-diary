@@ -75,6 +75,15 @@ const removeGroup = async (params) => {
   return kInstance.removeItems(group)
 }
 
+const moveGroup = async (params) => {
+  const {uuid, targetUuid} = params || {}
+  const group = kInstance.db.getGroup(uuid)
+  return kInstance.moveItems({
+    groupUuid: targetUuid,
+    items: group
+  })
+}
+
 const moveItems = async (params) => {
   return kInstance.moveItems(params)
 }
@@ -94,6 +103,7 @@ const api = {
   createEntry,
   createGroup,
   removeGroup,
+  moveGroup,
   moveItems,
 }
 

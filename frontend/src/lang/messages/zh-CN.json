@@ -60,7 +60,7 @@
     "not-allowed-move-group-itself": "不允许移动到群组本身",
     "saved-successfully": "保存成功",
     "there-are-unsaved": "有未保存的更改，您要保存吗？",
-    "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。此 bug 暂时无法解决。"
+    "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。"
   },
   "save": "保存",
   "and-exit": "然后退出",

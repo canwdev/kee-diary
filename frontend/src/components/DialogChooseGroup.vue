@@ -11,8 +11,8 @@
       <hr/>
 
       <div v-if="mVisible" class="card-tree">
-        <p v-if="showTips" class="text-weight-thin">{{ $t('tip') }}: {{
-          $t('kdbx.do-not-move-to-the-group-itself')
+        <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
+          tips
         }}</p>
         <GroupTree
           :selected.sync="selected"
@@ -21,9 +21,9 @@
 
       <hr/>
 
-      <div class="action-btn-row" >
+      <div class="action-btn-row">
 
-        <TkButton flat :label="$t('cancel')"  @click="mVisible = false"/>
+        <TkButton flat :label="$t('cancel')" @click="mVisible = false"/>
         <TkButton
           :disabled="!selected"
           :label="$t('choose')"
@@ -47,9 +47,9 @@ export default {
       type: Boolean,
       default: false
     },
-    showTips: {
-      type: Boolean,
-      default: false
+    tips: {
+      type: String,
+      default: null
     }
   },
   data() {

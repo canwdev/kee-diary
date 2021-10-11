@@ -49,7 +49,7 @@
   "insert": "插入",
   "kdbx": {
     "database-not-exist": "數據庫實例不存在",
-    "do-not-move-to-the-group-itself": "請勿移動群組到它本身或子群組，否則該群組將消失。\n此 bug 暫時無法解決。",
+    "do-not-move-to-the-group-itself": "請勿移動群組到它本身或子群組，否則該群組將消失。",
     "not-allowed-move-group-itself": "不允許移動到群組本身",
     "saved-successfully": "保存成功",
     "there-are-unsaved": "有未保存的更改，您要保存嗎？"

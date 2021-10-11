@@ -49,7 +49,7 @@
   "insert": "インサート",
   "kdbx": {
     "database-not-exist": "データベースインスタンスが存在しません",
-    "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。\nこのバグは一時的に解決できません。",
+    "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。",
     "not-allowed-move-group-itself": "グループ自体への移動は許可されていません",
     "saved-successfully": "正常に保存されました",
     "there-are-unsaved": "保存されていない変更があります。保存しますか？"
