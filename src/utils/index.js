@@ -1,15 +1,7 @@
 const fs = require('fs-extra')
-
-function isElectionDevMode() {
-  const electron = require('electron');
-
-  const app = electron.app || electron.remote.app;
-
-  const isEnvSet = 'ELECTRON_IS_DEV' in process.env;
-  const getFromEnv = parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;
-
-  return isEnvSet ? getFromEnv : !app.isPackaged;
-}
+const {
+  isDev
+} = require('@canwdev/electron-utils')
 
 async function readFileAsArrayBuffer(path) {
   const file = fs.readFileSync(path)
@@ -64,7 +56,7 @@ function setValDot(obj, strPath, val) {
 }
 
 module.exports = {
-  isElectionDevMode,
+  isDev,
   readFileAsArrayBuffer,
   saveFileFromArrayBuffer,
   getVal,

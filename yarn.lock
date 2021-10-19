@@ -7,6 +7,11 @@
   resolved "https://registry.npm.taobao.org/7zip-bin/download/7zip-bin-5.0.3.tgz#bc5b5532ecafd923a61f2fb097e3b108c0106a3f"
   integrity sha1-vFtVMuyv2SOmHy+wl+OxCMAQaj8=
 
+"@canwdev/electron-utils@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmmirror.com/@canwdev/electron-utils/download/@canwdev/electron-utils-0.1.0.tgz#e1b74a34f1234f927509c53c10d8b02ccfe9d26e"
+  integrity sha1-4bdKNPEjT5J1CcU8ENiwLM/p0m4=
+
 "@develar/schema-utils@~2.6.5":
   version "2.6.5"
   resolved "https://registry.npm.taobao.org/@develar/schema-utils/download/@develar/schema-utils-2.6.5.tgz#3ece22c5838402419a6e0425f85742b961d9b6c6"

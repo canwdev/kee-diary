@@ -1,7 +1,7 @@
 const {
   ipcOnEventSync,
   ipcOnEventAsync
-} = require('../utils/ipc-helper/ipc-helper-main')
+} = require('@canwdev/electron-utils/ipc/ipc-helper-main')
 const {
   KdbxInstance
 } = require('./index')

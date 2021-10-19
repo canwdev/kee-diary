@@ -3,8 +3,7 @@ const {app, BrowserWindow, session} = require('electron')
 const path = require('path')
 const url = require('url')
 const windowStateKeeper = require('electron-window-state');
-const {isElectionDevMode} = require('./utils')
-const isDev = isElectionDevMode()
+const {isDev} = require('./utils')
 const {kInstance} = require('./keepass/api')
 
 let mainWindow
