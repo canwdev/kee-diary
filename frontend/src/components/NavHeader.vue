@@ -110,11 +110,8 @@ export default {
     }
   },
   methods: {
-    async closeKdbx() {
+    closeKdbx() {
       handleCloseDatabase()
-      await this.$router.replace({
-        name: 'Login'
-      })
     },
     saveKdbx() {
       handleSaveDatabase()

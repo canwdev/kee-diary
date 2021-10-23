@@ -1,6 +1,8 @@
 import _debounce from 'lodash/debounce'
 import {isOutboundURL} from '@/utils/is'
 import main from '@/main'
+import {handleCloseDatabase, handleSaveDatabase} from '@/api'
+
 // 注册键盘快捷键
 export function registerKeyShortcuts() {
   window.addEventListener('keydown', handleKey)
@@ -17,7 +19,6 @@ export function unRegisterKeyShortcuts() {
 }
 
 function _handleAppClose() {
-  console.log('_handleAppClose', main)
   main.$toast.warning('数据库尚未保存，请先保存再退出')
 }
 
@@ -32,11 +33,11 @@ function handleKey(event) {
     switch (String.fromCharCode(event.which).toLowerCase()) {
       case 's':
         event.preventDefault()
-        // saveKdbx()
+        handleSaveDatabase()
         break
       case 'l':
         event.preventDefault()
-        // closeKdbx()
+        handleCloseDatabase()
         break
       default:
         return

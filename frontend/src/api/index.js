@@ -97,13 +97,17 @@ export function getNodeUuid(node) {
   }
 }
 
+const saveDb = async () => {
+  await saveDatabase()
+  store.commit('setIsChanged', false)
+  main.$toast.success(i18n.t('kdbx.saved-successfully'))
+}
+
 export async function handleSaveDatabase() {
-  const saveDb = async () => {
-    await saveDatabase()
-    store.commit('setIsChanged', false)
-    main.$toast.success(i18n.t('kdbx.saved-successfully'))
-  }
   try {
+    if (!store.state.isChanged || !store.state.isUnlocked) {
+      return
+    }
     store.commit('setIsGlobalLoading', true)
     if (router.currentRoute.name !== 'Detail') {
       await saveDb()
@@ -121,11 +125,46 @@ export async function handleSaveDatabase() {
   }
 }
 
-export async function handleCloseDatabase() {
+async function doCloseDatabase() {
   await closeDatabase()
 
   store.commit('setIsUnlocked', false)
   store.commit('setIsChanged', false)
   store.commit('setSelectedGroup', null)
+  await router.replace({
+    name: 'Login'
+  })
+}
 
+export async function handleCloseDatabase() {
+  if (!store.state.isUnlocked) {
+    return
+  }
+  if (!store.state.isChanged) {
+    await doCloseDatabase()
+    return
+  }
+  main.$prompt.create({
+    propsData: {
+      title: 'Confirm Lock',
+      content: 'Do you want to save database?',
+      btnConfirm: null,
+      btnCancel: null,
+      multipleActions: [
+        {label: 'Save and Lock', value: 1},
+        {label: 'Don\'t Save', value: 2},
+        {label: 'Cancel', value: 3},
+      ]
+    }
+  }).onAction((context, val) => {
+    if (val === 1) {
+      handleSaveDatabase().then(() => {
+        doCloseDatabase()
+      })
+    } else if (val === 2) {
+      doCloseDatabase()
+    } else if (val === 3) {
+      console.log('cancel')
+    }
+  })
 }
