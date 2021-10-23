@@ -4,9 +4,12 @@
       <h1 class="text-primary">{{ $t('pages.about') }}</h1>
 
       <TkCard class="about-card" solid>
-        <h3>{{ $t('about.info') }}</h3>
+        <h3><VersionText/></h3>
         <hr>
-        <VersionText/>
+        <div>
+          {{ $t('about.info') }}
+        </div>
+
         <template v-if="message">
           <hr>
           <div>{{ message }}</div>

@@ -8,7 +8,7 @@
     "unlocked": "(已解锁)",
     "search": "搜索",
     "save": "保存",
-    "close": "关闭数据库"
+    "lock": "关闭数据库"
   },
   "drawer": {
     "navigation": "导航",

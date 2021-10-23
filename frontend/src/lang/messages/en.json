@@ -16,7 +16,8 @@
   "unlocked": "(Unlocked)",
   "search": "Search",
   "save": "Save",
-  "close": "Close Database"
+  "lock": "Close Database",
+  "close": "Close"
  },
  "about": {
   "info": "Encrypted Note Editor",

@@ -63,9 +63,11 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .default-layout-content {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>

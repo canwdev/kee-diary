@@ -36,7 +36,7 @@
   "export-file": "ファイルのエクスポート",
   "foreground": "見込み",
   "header": {
-    "close": "データベースを閉じる",
+    "lock": "データベースを閉じる",
     "save": "保存する",
     "search": "検索する",
     "unlocked": "（ロック解除）"

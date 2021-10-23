@@ -32,8 +32,8 @@
         </div>
 
         <div class="_title">{{
-            isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-          }}
+          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+        }}
         </div>
       </div>
 
@@ -45,6 +45,10 @@
             :label="$t('login.openDatabase')"
             @click="chooseNewKdbx"
           />
+          <TkLink
+            href="https://keepass.info/help/base/firststeps.html"
+            target="_blank"
+          >Create Database...</TkLink>
         </div>
         <TkCard>
           <div class="history-actions">
@@ -361,13 +365,17 @@ export default {
   }
 
   .buttons-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 0;
+    padding: 10px 0 20px;
 
-    button {
+    button, a {
       width: 100%;
+    }
+
+    a {
+      text-align: center;
+      color: inherit;
+      margin-top: 10px;
+      font-size: 12px;
     }
   }
 

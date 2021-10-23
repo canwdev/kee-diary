@@ -136,7 +136,7 @@ async function doCloseDatabase() {
   })
 }
 
-const closeWindow = () => {
+export const closeWindow = () => {
   window.electronAPI.closeWindow()
 }
 
@@ -152,7 +152,7 @@ export async function handleCloseDatabase({isExit = false} = {}) {
 
   main.$prompt.create({
     propsData: {
-      title: i18n.t('confirm') + ' ' + (isExit ? i18n.t('exit') : i18n.t('header.close')),
+      title: i18n.t('confirm') + ' ' + (isExit ? i18n.t('exit') : i18n.t('header.lock')),
       content: i18n.t('kdbx.there-are-unsaved'),
       btnConfirm: null,
       btnCancel: null,

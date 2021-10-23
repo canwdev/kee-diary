@@ -20,6 +20,14 @@ hr {
   border-color: $border-color;
 }
 
+.__dragable {
+  -webkit-app-region: drag;
+}
+
+.__dragable-disabled {
+  -webkit-app-region: no-drag;
+}
+
 // ---
 
 .action-btn-row {

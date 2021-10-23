@@ -36,7 +36,7 @@
   "export-file": "導出文件",
   "foreground": "前景",
   "header": {
-    "close": "關閉數據庫",
+    "lock": "關閉數據庫",
     "save": "保存",
     "search": "搜索",
     "unlocked": "(已解鎖)"
