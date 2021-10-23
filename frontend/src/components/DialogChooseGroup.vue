@@ -10,11 +10,12 @@
 
       <hr/>
 
-      <div v-if="mVisible" class="card-tree">
+      <div class="card-tree">
         <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
-          tips
-        }}</p>
+            tips
+          }}</p>
         <GroupTree
+          ref="treeRef"
           :selected.sync="selected"
         />
       </div>
@@ -37,6 +38,19 @@
 <script>
 import GroupTree from '@/components/GroupTree'
 
+const checkParent = (node, uuid) => {
+  if (!node) {
+    return false
+  }
+  if (uuid === node.data.uuid) {
+    return true
+  }
+  if (node.parent) {
+    return checkParent(node.parent, uuid)
+  }
+  return false
+}
+
 export default {
   name: 'DialogChooseGroup',
   components: {
@@ -50,7 +64,15 @@ export default {
     tips: {
       type: String,
       default: null
-    }
+    },
+    autoExpandUuid: {
+      type: String,
+      default: null
+    },
+    notAllowSelectSub: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -67,9 +89,42 @@ export default {
       }
     }
   },
+  watch: {
+    mVisible: {
+      handler(val) {
+        if (val && this.autoExpandUuid) {
+          // console.log('autoExpandUuid', this.autoExpandUuid)
+          this.$nextTick(() => {
+            this.expandNodeByUuid(this.autoExpandUuid)
+          })
+        }
+      }
+    }
+  },
   methods: {
+    updateTree() {
+      this.$refs.treeRef.getTreeData()
+    },
     handleChoose() {
+      if (this.notAllowSelectSub) {
+        const isSub = checkParent(this.selected, this.autoExpandUuid)
+        if (isSub) {
+          if (this.tips) {
+            this.$toast.warning(this.tips)
+          }
+          return
+        }
+      }
       this.$emit('onChoose', this.selected)
+    },
+    expandNodeByUuid(uuid) {
+      const node = this.$refs.treeRef.findNode(uuid)
+      console.log('node', node)
+      if (!node) {
+        return
+      }
+      node.$click()
+      this.$refs.treeRef.openNode(node)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <TkContextMenu class="common-menu" ref="ctxMenu">
+  <TkContextMenu ref="ctxMenu" class="common-menu">
     <template v-for="(item, index) in menuListFiltered">
       <hr
         v-if="item.isSeparator"
@@ -10,6 +10,7 @@
         :key="index"
         class="menu-item"
         @click="item.action"
+        @contextmenu.prevent="item.action"
       >
         <i class="material-icons text-primary">{{ item.icon }}</i>
         {{ item.label }}

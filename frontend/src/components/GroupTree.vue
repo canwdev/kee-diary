@@ -102,6 +102,7 @@ export default {
       })
     },
     getNodeByUuid(node, uuid, deep = 0) {
+      // console.log('getNodeByUuid', node, uuid, deep)
       deep++
       // console.log('getNodeByUuid', node, node.id, deep)
       if (!node || !uuid) {
@@ -123,6 +124,9 @@ export default {
         }
       }
       return null
+    },
+    findNode(uuid) {
+      return this.getNodeByUuid(this.treeData, uuid)
     },
     openNode(node) {
       node.isOpen = true

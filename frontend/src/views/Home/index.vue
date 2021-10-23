@@ -55,8 +55,11 @@
     />
 
     <DialogChooseGroup
+      ref="groupChooser"
       :visible.sync="isShowChooseGroup"
       :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+      :auto-expand-uuid="autoExpandUuid"
+      not-allow-select-sub
       @onChoose="changeGroup"
     />
 
@@ -108,6 +111,13 @@ export default {
     },
     isListView: {
       get: () => store.getters.isListView,
+    },
+    autoExpandUuid() {
+      const item = this.curItem
+      if (item) {
+        return item.data.uuid
+      }
+      return null
     }
   },
   mounted() {
@@ -134,6 +144,7 @@ export default {
     },
     refreshGroup() {
       this.$refs.groupView.updateTree()
+      this.$refs.groupChooser.updateTree()
     },
     handleAddEntry(group) {
       this.isAddGroup = false

@@ -101,21 +101,25 @@
       </TkCard>
     </TkModalDialog>
 
-    <DialogChooseIcon
-      :visible.sync="isShowChooseIcon"
-      :index="form.icon"
-      @onChoose="handleUpdateIcon"
-    />
-    <DialogChooseGroup
-      :visible.sync="isShowChooseGroup"
-      @onChoose="handleChooseGroup"
-    />
-    <DialogChooseColor
-      ref="colorChooser"
-      :item="form"
-      :visible.sync="isShowChooseColor"
-      @onChoose="handleUpdateColor"
-    />
+    <template v-if="mVisible">
+      <DialogChooseIcon
+        :visible.sync="isShowChooseIcon"
+        :index="form.icon"
+        @onChoose="handleUpdateIcon"
+      />
+      <DialogChooseGroup
+        :visible.sync="isShowChooseGroup"
+        :auto-expand-uuid="autoExpandUuid"
+        @onChoose="handleChooseGroup"
+      />
+      <DialogChooseColor
+        ref="colorChooser"
+        :item="form"
+        :visible.sync="isShowChooseColor"
+        @onChoose="handleUpdateColor"
+      />
+    </template>
+
   </div>
 
 </template>
@@ -182,6 +186,13 @@ export default {
       set(nv) {
         this.$emit('update:visible', nv)
       }
+    },
+    autoExpandUuid() {
+      const item = this.groupInfo.groupItem
+      if (item) {
+        return item.data.uuid
+      }
+      return null
     }
   },
   watch: {
