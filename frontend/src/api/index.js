@@ -136,7 +136,11 @@ async function doCloseDatabase() {
   })
 }
 
-export async function handleCloseDatabase() {
+const closeWindow = () => {
+  window.electronAPI.closeWindow()
+}
+
+export async function handleCloseDatabase({isExit = false} = {}) {
   if (!store.state.isUnlocked) {
     return
   }
@@ -144,25 +148,29 @@ export async function handleCloseDatabase() {
     await doCloseDatabase()
     return
   }
+  const andExit = isExit ? i18n.t('and-exit') : ''
+
   main.$prompt.create({
     propsData: {
-      title: 'Confirm Lock',
-      content: 'Do you want to save database?',
+      title: i18n.t('confirm') + ' ' + (isExit ? i18n.t('exit') : i18n.t('header.close')),
+      content: i18n.t('kdbx.there-are-unsaved'),
       btnConfirm: null,
       btnCancel: null,
       multipleActions: [
-        {label: 'Save and Lock', value: 1},
-        {label: 'Don\'t Save', value: 2},
-        {label: 'Cancel', value: 3},
+        {label: i18n.t('save') + andExit, value: 1},
+        {label: i18n.t('don-t-save') + andExit, value: 2},
+        {label: i18n.t('cancel'), value: 3},
       ]
     }
   }).onAction((context, val) => {
     if (val === 1) {
       handleSaveDatabase().then(() => {
         doCloseDatabase()
+        isExit && closeWindow()
       })
     } else if (val === 2) {
       doCloseDatabase()
+      isExit && closeWindow()
     } else if (val === 3) {
       console.log('cancel')
     }

@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@canwdev/electron-utils": "^0.1.0",
-    "electron-window-state": "^5.0.3",
+    "@canwdev/electron-window-manager": "^0.1.7",
     "fs-extra": "^10.0.0",
     "kdbxweb": "^2.1.1",
     "node-fetch": "2.6.2"

@@ -20,6 +20,7 @@ export function unRegisterKeyShortcuts() {
 
 function _handleAppClose() {
   main.$toast.warning('数据库尚未保存，请先保存再退出')
+  handleCloseDatabase({isExit: true})
 }
 
 // _debounce function prevents repeated execution in an instant

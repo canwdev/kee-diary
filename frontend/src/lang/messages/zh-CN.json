@@ -63,7 +63,7 @@
     "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。"
   },
   "save": "保存",
-  "and-exit": "然后退出",
+  "and-exit": "并退出",
   "delete": "删除",
   "rename": "重命名",
   "edit": "编辑",
