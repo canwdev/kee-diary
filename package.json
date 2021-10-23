@@ -1,7 +1,7 @@
 {
   "name": "kee-note",
   "appName": "KeeNote",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A note editor application that uses KeePass.",
   "repository": "",
   "private": true,

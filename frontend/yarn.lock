@@ -908,10 +908,10 @@
   resolved "https://registry.nlark.com/@braintree/sanitize-url/download/@braintree/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
   integrity sha1-j/cdUQU81e5JgeWlAdgKU2JE9/0=
 
-"@canwdev/tank-ui@^0.2.16":
-  version "0.2.16"
-  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.16.tgz#22eeeab57c9f3de607ec8205b95207b87bbbfc8b"
-  integrity sha1-Iu7qtXyfPeYH7IIFuVIHuHu7/Is=
+"@canwdev/tank-ui@^0.2.17":
+  version "0.2.17"
+  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.17.tgz#116f0b33330e1a58374ed34d8cbd383a60d91dc8"
+  integrity sha1-EW8LMzMOGlg3TtNNjL04OmDZHcg=
   dependencies:
     vue "^2.6.14"
 
