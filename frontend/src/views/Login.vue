@@ -4,18 +4,6 @@
   >
     <TkLoading :visible="isLoading" fixed/>
 
-    <TkModalDialog v-model="isShowAlertDialog">
-      <TkCard>
-        <h2>{{ alertDialog.title || 'Error' }}</h2>
-
-        <p>{{ alertDialog.content }}</p>
-
-        <div>
-          <TkButton label="OK" @click="isShowAlertDialog = false"/>
-        </div>
-      </TkCard>
-    </TkModalDialog>
-
     <TkCard solid class="login-card-main">
       <div class="header-area text-center">
         <TkButton
@@ -170,11 +158,6 @@ export default {
     return {
       isWelcome: true,
       isLoading: false,
-      isShowAlertDialog: false,
-      alertDialog: {
-        title: 'Alert',
-        content: 'Content'
-      },
       form: {
         dbPath: '',
         keyPath: '',
@@ -290,11 +273,15 @@ export default {
         })
       } catch (e) {
         console.error(e)
-        this.isShowAlertDialog = true
-        this.alertDialog = {
-          title: e.code,
-          content: e.message
-        }
+
+        this.$prompt.create({
+          propsData: {
+            title: e.code,
+            content: e.message,
+            btnCancel: null,
+            showClose: false
+          }
+        })
       } finally {
         this.isLoading = false
       }

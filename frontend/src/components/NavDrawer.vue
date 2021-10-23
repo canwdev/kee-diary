@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss" scoped>
 .custom-drawer {
-  $offsetTop: 50px;
+  $offsetTop: 51px;
 
   ::v-deep .bg-shade {
     top: $offsetTop;
@@ -132,6 +132,10 @@ export default {
 
   ::v-deep .menu-wrap {
     top: $offsetTop;
+  }
+
+  button {
+    border-radius: 0;
   }
 }
 </style>
