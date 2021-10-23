@@ -21,6 +21,8 @@
 
 <script>
 // hidden when root group
+import {getMeta, getRecycleText} from "@/api"
+
 function isHiddenGroupRoot(isGroup, targetData) {
   if (!isGroup) {
     return false
@@ -56,6 +58,10 @@ export default {
       return Array.isArray(this.targetData)
     },
     menuList() {
+      let uuid
+      if (this.isGroup && this.targetData) {
+        uuid = this.targetData.data.uuid
+      }
       return [
         {
           id: 'createEntry',
@@ -123,7 +129,7 @@ export default {
         {
           id: 'delete',
           hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
-          icon: 'delete', label: this.$t('delete'), action: () => {
+          icon: 'delete', label: getRecycleText(uuid), action: () => {
             this.emitEvent('onDelete')
           }
         }

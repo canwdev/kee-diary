@@ -9,9 +9,11 @@ import router from '@/router'
 import main from '@/main'
 import i18n from '@/lang/i18n'
 
+const API_PREFIX = 'ipcKdbx_'
+
 const callSync = (name, data) => {
   try {
-    return ipcSendEventSync('ipcKdbx_' + name, data)
+    return ipcSendEventSync(API_PREFIX + name, data)
   } catch (e) {
     main.$toast.error(e)
     throw e
@@ -20,7 +22,7 @@ const callSync = (name, data) => {
 
 const callAsync = async (name, data) => {
   try {
-    return await ipcSendEventAsync('ipcKdbx_' + name, data)
+    return await ipcSendEventAsync(API_PREFIX + name, data)
   } catch (e) {
     main.$toast.error({
       message: e
@@ -47,6 +49,10 @@ export function checkIsOpen() {
 
 export function getIsChanged() {
   return callSync('getIsChanged')
+}
+
+export function getMeta() {
+  return callSync('getMeta')
 }
 
 export function getGroupTree(groupUuid) {
@@ -175,4 +181,19 @@ export async function handleCloseDatabase({isExit = false} = {}) {
       console.log('cancel')
     }
   })
+}
+
+export function getRecycleText(uuid) {
+  const {meta} = getMeta()
+  const rUuid = meta.recycleBinUuid && meta.recycleBinUuid.id
+
+  let text
+  if (rUuid === uuid) {
+    text = i18n.t('menu.empty-recycle-bin')
+  } else if (meta.recycleBinEnabled) {
+    text = i18n.t('menu.move-to-recycle-bin')
+  } else {
+    text = i18n.t('delete')
+  }
+  return text
 }

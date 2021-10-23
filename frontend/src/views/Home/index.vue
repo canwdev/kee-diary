@@ -74,7 +74,7 @@ import EntryList from '@/components/EntryList'
 import DialogAdd from '@/components/DialogAdd'
 import DialogEntryPreview from '@/components/DialogEntryPreview'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup, updateGroup, moveGroup} from '@/api'
+import {removeGroup, updateGroup, moveGroup, getRecycleText} from '@/api'
 import DialogChooseIcon from '@/components/DialogChooseIcon'
 import DialogChooseGroup from '@/components/DialogChooseGroup'
 
@@ -163,10 +163,12 @@ export default {
       })
     },
     handleDeleteGroup(item) {
+      const msgAction = getRecycleText(item.data.uuid)
       this.$prompt.create({
         propsData: {
           title: this.$t('confirm'),
-          content: this.$t('menu.are-you-sure'),
+          useHTML: true,
+          content: `${this.$t('menu.are-you-sure')} <b>${msgAction}</b>?<br><p>${item.title}</p>`,
         },
         parentEl: this.$el
       }).onConfirm(async () => {
@@ -193,16 +195,16 @@ export default {
         },
         parentEl: this.$el
       }).onConfirm(async (context) => {
-        if (context.inputValue === item.title) {
+        if (this.inputValue === item.title) {
           return
         }
         await updateGroup({
           uuid: item.data.uuid,
           updates: [
-            {path: 'name', value: context.inputValue},
+            {path: 'name', value: this.inputValue},
           ]
         })
-        item.title = context.inputValue
+        item.title = this.inputValue
         this.$store.commit('setIsChanged', true)
       })
     },

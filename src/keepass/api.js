@@ -35,9 +35,13 @@ const getIsChanged = () => {
 }
 
 const getMeta = () => {
+  const meta = (kInstance.db && kInstance.db.meta) || {}
   return {
     // header: kInstance.db.header,
-    meta: kInstance.db.meta
+    meta: {
+      recycleBinEnabled: meta.recycleBinEnabled,
+      recycleBinUuid: meta.recycleBinUuid
+    }
   }
 }
 
