@@ -1,19 +1,24 @@
-/**
- * 将设置保存到 LocalStorage
- * 用法： const settings = new LocalStorageSettings('KEE_DIARY_VUE_SETTINGS')
- * @param key 存储对象键值
- * @constructor
- */
-function LocalStorageSettings(key = 'TEST_SETTINGS') {
-  this.key = key
+const LS_KEY_LOCWEB_SETTINGS = 'KEE_DIARY_VUE_SETTINGS'
+import languages from '@/lang/languages'
 
-  this.get = function () {
-    return JSON.parse(localStorage.getItem(this.key))
-  }
+const isSystemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 
-  this.set = function (obj = {}) {
-    localStorage.setItem(this.key, JSON.stringify(obj))
-  }
+const defaultSettings = {
+  locate: languages[0].locate,
+  isDarkMode: isSystemDarkMode,
+  isListView: true, // 是列表视图还是日历视图
+  isEditWYSIWYG: true,
+  editorTheme: 'hypermd-light',
+  editorFontSize: 16, // px
+  editorFontFamily: null,
+  themeColor: '#ff7847',
 }
 
-export default LocalStorageSettings
+export function loadSettings() {
+  const settings = JSON.parse(localStorage.getItem(LS_KEY_LOCWEB_SETTINGS) || '{}')
+  return {...defaultSettings, ...settings}
+}
+
+export function saveSettings(obj = {}) {
+  localStorage.setItem(LS_KEY_LOCWEB_SETTINGS, JSON.stringify(obj))
+}
