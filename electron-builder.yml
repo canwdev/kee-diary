@@ -38,6 +38,7 @@ nsis:
   installerSidebar: "build/installerSidebar.bmp"
   shortcutName: "KeeNote 3"
   deleteAppDataOnUninstall: true
+#  include: "build/installer.nsh"
 
 # Linux configuration
 linux:

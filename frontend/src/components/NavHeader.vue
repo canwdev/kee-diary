@@ -150,13 +150,6 @@ export default {
 
 .default-header {
   -webkit-user-select: none;
-  border: 2px solid transparent;
-  border-right-width: 3px;
-  border-bottom: 0;
-
-  &.is-maximized {
-    border: 0;
-  }
 
   ::v-deep .tk-navbar {
     -webkit-app-region: drag;
