@@ -8,7 +8,7 @@
       <li><abbr title="window.navigator.onLine">System</abbr>
         <Status :type="status.navigator"/>
       </li>
-      <li><abbr title="Electron BrowserWindow test: v1.hitokoto.cn">Render</abbr>
+      <li><abbr title="Electron BrowserWindow">Render</abbr>
         <Status :type="status.frontend"/>
       </li>
       <li><abbr title="Electron Node.js test: developers.google.cn">Electron</abbr>
@@ -52,15 +52,14 @@ export default {
         this.status.backend = flag ? ConnectType.ONLINE : ConnectType.OFFLINE
       })
 
-      axios.get('https://v1.hitokoto.cn/', {
+      axios.get('https://v1.jinrishici.com/all.json', {
         timeout: 5000,
-        params: {
-          c: ['k', 'i', 'c']
-        }
+        params: {}
       }).then(({data}) => {
         this.status.frontend = ConnectType.ONLINE
-        if (data && data.hitokoto) {
-          this.$emit('onMessage', data.hitokoto)
+        console.log(data)
+        if (data && data.content) {
+          this.$emit('onMessage', data.content)
         }
       }).catch(() => {
         this.status.frontend = ConnectType.OFFLINE

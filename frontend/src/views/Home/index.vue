@@ -264,7 +264,7 @@ export default {
     border-radius: 0;
     border: none;
     border-left: $layout-border;
-    background: $color-white;
+    background: rgba(255,255,255,.5);
   }
 
   @media screen and (max-width: $mq_tablet_width) {
@@ -302,7 +302,7 @@ export default {
 .tk-dark-theme {
   .home-page {
     .home-right {
-      background: $dark-page;
+      background: transparent;
     }
   }
 }

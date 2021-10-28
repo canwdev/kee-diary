@@ -16,7 +16,7 @@ button, input, textarea, a, {
   &:focus {
     //outline: 1px solid $primary;
     outline: none;
-    box-shadow: 0 0 0 0.12rem $primary inset;
+    box-shadow: 0 0 0 0.12rem rgba(255, 255, 255, 0.3) inset;
   }
 }
 
