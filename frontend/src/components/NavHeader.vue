@@ -158,6 +158,7 @@ export default {
     }
     .nav-right {
       margin-left: 20px;
+      min-width: 0;
     }
   }
 

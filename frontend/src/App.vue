@@ -32,7 +32,7 @@ export default {
 <style lang="scss">
 #app {
   height: 100%;
-  border-radius: 8px;
+  //border-radius: 8px;
   overflow: hidden;
   //user-select: none
 }
