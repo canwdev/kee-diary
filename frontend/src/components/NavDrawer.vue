@@ -17,11 +17,20 @@
     </TkButton>
 
     <TkButton size="no-style cursor-default" class="menu-item">
+      <span class="material-icons">color_lens</span>
+      <span class="menu-item-title">
+        {{ $t('drawer.themeColor') }}
+        <input class="tk-button-no-style color-input" type="color" :value="themeColor" @change="handleThemeColorChange">
+      </span>
+    </TkButton>
+
+    <TkButton size="no-style cursor-default" class="menu-item">
       <span class="material-icons">translate</span>
       <span class="menu-item-title">
         {{ $t('drawer.language') }}
         <TkDropdown
           v-model="locate"
+          size="sm"
           :options="languages"
           option-label="name"
           option-value="locate"
@@ -35,6 +44,7 @@
 import store from '@/store'
 import router from '@/router'
 import languages from '@/lang/languages'
+import {hexToRgb} from '@/utils/color'
 
 export default {
   name: 'NavDrawer',
@@ -70,6 +80,9 @@ export default {
       get: () => store.getters.isDarkMode,
       set: val => store.commit('setIsDarkMode', val)
     },
+    themeColor() {
+      return this.$store.getters.themeColor
+    },
     isUnlocked: {
       get: () => store.state.isUnlocked
     },
@@ -82,22 +95,22 @@ export default {
       return [
         {name: this.$t('drawer.navigation'), subtitle: true},
         this.isUnlocked
-          ? {
-            iconClass,
-            iconName: 'home',
-            name: this.$t('pages.home'), action: () => {
-              router.push({name: 'Home'})
-              this.mValue = false
+            ? {
+              iconClass,
+              iconName: 'home',
+              name: this.$t('pages.home'), action: () => {
+                router.push({name: 'Home'})
+                this.mValue = false
+              }
             }
-          }
-          : {
-            iconClass,
-            iconName: 'login',
-            name: this.$t('login.openDatabase'), action: () => {
-              router.push({name: 'Login'})
-              this.mValue = false
-            }
-          },
+            : {
+              iconClass,
+              iconName: 'login',
+              name: this.$t('login.openDatabase'), action: () => {
+                router.push({name: 'Login'})
+                this.mValue = false
+              }
+            },
         {
           iconClass,
           iconName: 'info',
@@ -118,7 +131,21 @@ export default {
       immediate: true
     },
   },
-  methods: {}
+  methods: {
+
+    handleThemeColorChange(event) {
+      const colorHex = event.target.value
+      const {r, g, b} = hexToRgb(colorHex)
+      console.log(colorHex)
+
+      const root = document.documentElement
+      root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
+      this.$store.commit('updateSettings', {
+        key: 'themeColor',
+        value: colorHex
+      })
+    }
+  }
 }
 </script>
 
@@ -136,6 +163,12 @@ export default {
 
   button {
     border-radius: 0;
+  }
+
+  .color-input {
+    width: 30px;
+    height: 30px;
+    padding: 0;
   }
 }
 </style>

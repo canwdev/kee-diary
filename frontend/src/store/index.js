@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import LocalStorageSettings from '@/utils/settings'
-import {KEE_DIARY_VUE_SETTINGS} from '@/enum'
-import languages from '@/lang/languages'
+import {loadSettings, saveSettings} from '../utils/settings'
 
 import {
   checkIsOpen,
@@ -10,8 +8,6 @@ import {
 } from '@/api'
 
 Vue.use(Vuex)
-
-const settings = new LocalStorageSettings(KEE_DIARY_VUE_SETTINGS)
 
 const pagerOptions = {
   pageSize: 15,
@@ -21,15 +17,7 @@ const pagerOptions = {
 
 export default new Vuex.Store({
   state: {
-    settings: settings.get() || {
-      locate: languages[0].locate,
-      isDarkMode: false,
-      isListView: true, // 是列表视图还是日历视图
-      isEditWYSIWYG: true,
-      editorTheme: 'hypermd-light',
-      editorFontSize: 16, // px
-      editorFontFamily: null,
-    },
+    settings: loadSettings(),
     isGlobalLoading: false,
     isUnlocked: checkIsOpen() || false, // 数据库是否已解锁
     isChanged: getIsChanged() || false, // 有未保存的变更
@@ -40,6 +28,7 @@ export default new Vuex.Store({
   getters: {
     locate: state => state.settings.locate,
     isDarkMode: state => state.settings.isDarkMode,
+    themeColor: state => state.settings.themeColor,
     isListView: state => state.settings.isListView,
     isEditWYSIWYG: state => state.settings.isEditWYSIWYG,
     editorTheme: state => state.settings.editorTheme,
@@ -50,36 +39,36 @@ export default new Vuex.Store({
   mutations: {
     setLocate: (state, val) => {
       state.settings.locate = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setIsDarkMode: (state, val) => {
       state.settings.isDarkMode = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setIsListView: (state, val) => {
       state.settings.isListView = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setIsEditWYSIWYG: (state, val) => {
       state.settings.isEditWYSIWYG = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setEditorTheme: (state, val) => {
       state.settings.editorTheme = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setEditorFontSize: (state, val) => {
       state.settings.editorFontSize = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setEditorFontFamily: (state, val) => {
       state.settings.editorFontFamily = val
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     updateSettings(state, kv) {
       const {key, value} = kv
       this.state.settings[key] = value
-      settings.set(state.settings)
+      saveSettings(state.settings)
     },
     setIsUnlocked: (state, val) => {
       if (!val) {

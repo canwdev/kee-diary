@@ -137,7 +137,7 @@
 
 <script>
 
-import LocalStorageSettings from '@/utils/settings'
+import LocalStorageSettings from '@/utils/login-settings'
 import {isProd} from '@/utils/is'
 import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/enum'
 import VersionText from '@/components/VersionText'

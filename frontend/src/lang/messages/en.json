@@ -10,6 +10,7 @@
   "listView": "List View",
   "calendarView": "Calendar View",
   "darkMode": "Dark Mode",
+  "themeColor": "Theme Color",
   "language": "Language"
  },
  "header": {
