@@ -6,7 +6,7 @@ html, body {
 body {
   margin: 0;
   &.body-bordered {
-    padding: 2px;
+    //padding: 2px;
     background: linear-gradient(to bottom, #ff7847, #00eaff);
     box-sizing: border-box;
   }
