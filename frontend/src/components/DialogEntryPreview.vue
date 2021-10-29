@@ -49,10 +49,10 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import marked from '@/utils/marked'
 import {formatDate} from '@/utils'
 import {getEntryDetail} from '@/api'
-import store from '@/store'
 import ItemIcon from '@/components/ItemIcon.vue'
 import DialogPreview from './DialogPreview.vue'
 
@@ -79,9 +79,9 @@ export default {
     }
   },
   computed: {
-    isDarkMode: {
-      get: () => store.getters.isDarkMode,
-    },
+    ...mapGetters([
+      'isDarkMode'
+    ]),
     mVisible: {
       get() {
         return this.visible

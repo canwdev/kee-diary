@@ -1,26 +1,26 @@
 <template>
   <div
-    class="home-page"
+      class="home-page"
   >
     <div class="nav-tree">
       <GroupView
-        ref="groupView"
-        :selected.sync="selectedGroup"
-        @onCreateEntry="handleAddEntry"
-        @onCreateGroup="handleAddGroup"
-        @onDelete="handleDeleteGroup"
-        @onRename="handleRename"
-        @onChangeIcon="handleChangeIcon"
-        @onMove="handleMove"
+          ref="groupView"
+          :selected.sync="selectedGroup"
+          @onCreateEntry="handleAddEntry"
+          @onCreateGroup="handleAddGroup"
+          @onDelete="handleDeleteGroup"
+          @onRename="handleRename"
+          @onChangeIcon="handleChangeIcon"
+          @onMove="handleMove"
       />
 
     </div>
 
     <div class="home-right">
       <EntryList
-        v-if="isListView"
-        ref="entryList"
-        :selected-group="selectedGroup"
+          v-if="isListView"
+          ref="entryList"
+          :selected-group="selectedGroup"
       />
 
       <!--      <CalendarView-->
@@ -36,38 +36,37 @@
     </div>
 
     <DialogAdd
-      ref="dialogAdd"
-      :visible.sync="isShowDialogAdd"
-      :is-add-group="isAddGroup"
-      @addEntrySuccess="addEntrySuccess"
-      @addGroupSuccess="refreshGroup"
+        ref="dialogAdd"
+        :visible.sync="isShowDialogAdd"
+        :is-add-group="isAddGroup"
+        @addEntrySuccess="addEntrySuccess"
+        @addGroupSuccess="refreshGroup"
     />
 
     <DialogEntryPreview
-      :visible.sync="isShowPreview"
-      :item="previewItem"
+        :visible.sync="isShowPreview"
+        :item="previewItem"
     />
 
     <DialogChooseIcon
-      :visible.sync="isShowChooseIcon"
-      :index="curIcon"
-      @onChoose="updateIcon"
+        :visible.sync="isShowChooseIcon"
+        :index="curIcon"
+        @onChoose="updateIcon"
     />
 
     <DialogChooseGroup
-      ref="groupChooser"
-      :visible.sync="isShowChooseGroup"
-      :tips="$t('kdbx.do-not-move-to-the-group-itself')"
-      :auto-expand-uuid="autoExpandUuid"
-      not-allow-select-sub
-      @onChoose="changeGroup"
+        ref="groupChooser"
+        :visible.sync="isShowChooseGroup"
+        :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+        :auto-expand-uuid="autoExpandUuid"
+        not-allow-select-sub
+        @onChoose="changeGroup"
     />
 
   </div>
 </template>
 
 <script>
-import store from '@/store'
 import GroupView from './GroupView.vue'
 import EntryList from '@/components/EntryList/index.vue'
 // import CalendarView from '@/views/Home/CalendarView.vue'
@@ -103,14 +102,22 @@ export default {
   },
   computed: {
     database: {
-      get: () => store.getters.database
+      get() {
+        return this.$store.getters.database
+      }
     },
     selectedGroup: {
-      get: () => store.state.selectedGroup,
-      set: val => store.commit('setSelectedGroup', val)
+      get() {
+        return this.$store.state.selectedGroup
+      },
+      set(val) {
+        this.$store.commit('setSelectedGroup', val)
+      }
     },
     isListView: {
-      get: () => store.getters.isListView,
+      get() {
+        return this.$store.getters.isListView
+      },
     },
     autoExpandUuid() {
       const item = this.curItem
@@ -264,7 +271,7 @@ export default {
     border-radius: 0;
     border: none;
     border-left: $layout-border;
-    background: rgba(255,255,255,.5);
+    background: rgba(255, 255, 255, .5);
   }
 
   @media screen and (max-width: $mq_tablet_width) {

@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import {mapGetters} from 'vuex'
 import {createEntry, createGroup} from '@/api'
 import ItemIcon from '@/components/ItemIcon.vue'
 import ColorItem from './ColorItem.vue'
@@ -173,12 +173,9 @@ export default {
     }
   },
   computed: {
-    selectedGroup: {
-      get: () => store.state.selectedGroup,
-    },
-    database: {
-      get: () => store.getters.database
-    },
+    ...mapGetters([
+      'selectedGroup'
+    ]),
     mVisible: {
       get() {
         return this.visible

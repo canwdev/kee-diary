@@ -145,7 +145,6 @@ import {
   openDatabase,
   checkIsOpen
 } from '@/api'
-import store from '@/store'
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
@@ -267,7 +266,7 @@ export default {
           this.saveSettings()
         }
 
-        store.commit('setIsUnlocked', true)
+        this.$store.commit('setIsUnlocked', true)
         await this.$router.replace({
           name: 'Home'
         })

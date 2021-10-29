@@ -11,27 +11,27 @@
 
       <div class="table-body">
         <ListItem
-          v-for="item in pagedList"
-          :key="item.uuid"
-          :item="item"
-          @preview="previewItem"
-          @itemClick="handleItemClick"
-          @itemContextMenu="handleContextMenu"
+            v-for="item in pagedList"
+            :key="item.uuid"
+            :item="item"
+            @preview="previewItem"
+            @itemClick="handleItemClick"
+            @itemContextMenu="handleContextMenu"
         />
 
         <TkPager
-          v-show="pagerOptions.allCount && pagerOptions.allCount > pagerOptions.pageSize"
-          :page-size="pagerOptions.pageSize"
-          :offset.sync="pagerOptions.offset"
-          :total="pagerOptions.allCount"
-          show-extra-info
+            v-show="pagerOptions.allCount && pagerOptions.allCount > pagerOptions.pageSize"
+            :page-size="pagerOptions.pageSize"
+            :offset.sync="pagerOptions.offset"
+            :total="pagerOptions.allCount"
+            show-extra-info
         />
 
         <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
 
       <ContextMenuCommon
-        ref="ctxMenu"
+          ref="ctxMenu"
       />
 
     </div>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import store from '@/store'
 import ListItem from './ListItem.vue'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
@@ -66,8 +65,12 @@ export default {
   },
   computed: {
     pagerOptions: {
-      get: () => store.state.pagerOptions,
-      set: val => store.commit('setPagerOptions', val)
+      get() {
+        return this.$store.state.pagerOptions
+      },
+      set(val) {
+        this.$store.commit('setPagerOptions', val)
+      }
     },
     pagedList() {
       const {

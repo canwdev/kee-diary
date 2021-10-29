@@ -7,7 +7,6 @@ const defaultSettings = {
   locate: languages[0].locate,
   isDarkMode: isSystemDarkMode,
   isListView: true, // 是列表视图还是日历视图
-  isEditWYSIWYG: true,
   editorTheme: 'hypermd-light',
   editorFontSize: 16, // px
   editorFontFamily: null,

@@ -3,33 +3,28 @@
     <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
-          class="cursor-pointer"
+            class="cursor-pointer"
         >
-          {{ $t('preview') }} (Ctrl+/)
+          {{ $t('preview') + '1' }} (Ctrl+/)
         </ItemIcon>
 
         <TkInput
-          v-model="editData.title"
-          placeholder="Title"
-          class="title-input"
-          size="lg"
+            v-model="editData.title"
+            placeholder="Title"
+            class="title-input"
+            size="lg"
         />
       </div>
 
       <hr>
 
       <div class="settings-row">
-        <TkSwitch
-          v-model="isEditWYSIWYG"
-        >
-          {{ $t('detail.iswysiwyg') }}
-        </TkSwitch>
         <TkDropdown
-          v-model="editorTheme"
-          dense
-          color="secondary"
-          :options="themeOptions"
-          style="width: 150px"
+            v-model="editorTheme"
+            dense
+            color="secondary"
+            :options="themeOptions"
+            style="width: 150px"
         >
           <template v-slot:prepend>
             <q-icon name="style"/>
@@ -64,34 +59,16 @@
 
       <hr>
 
-      <div class="edit-wrap">
-        <textarea v-show="false" id="input-area"></textarea>
+      <div class="editor-wrap">
+        <div id="code-container" style="height:100%;"></div>
       </div>
     </TkCard>
   </div>
 </template>
 
 <script>
-import store from '@/store'
-import * as HyperMD from 'hypermd'
-// 语法高亮
-import 'codemirror/mode/htmlmixed/htmlmixed' // Markdown 内嵌HTML
-import 'codemirror/mode/stex/stex' // TeX 数学公式
-import 'codemirror/mode/yaml/yaml' // Front Matter
-// CodeMirror Theme
-import 'codemirror/theme/idea.css'
-import 'codemirror/theme/elegant.css'
-import 'codemirror/theme/yeti.css'
-import 'codemirror/theme/darcula.css'
-import 'codemirror/theme/dracula.css'
-import 'codemirror/theme/gruvbox-dark.css'
-import 'codemirror/theme/lesser-dark.css'
-import 'codemirror/theme/material.css'
-import 'codemirror/theme/monokai.css'
-import 'codemirror/theme/mdn-like.css'
-import 'codemirror/theme/rubyblue.css'
-import 'codemirror/theme/solarized.css'
-import 'codemirror/theme/the-matrix.css'
+import {mapGetters} from 'vuex'
+import * as monaco from 'monaco-editor';
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
@@ -101,22 +78,7 @@ import {getEntryDetail, updateEntry} from '@/api'
 import {textFilters as filters} from '@/enum'
 
 const themeOptions = [
-  'hypermd-light',
   'default',
-  'idea',
-  'elegant',
-  'yeti',
-  'darcula',
-  'dracula',
-  'gruvbox-dark',
-  'lesser-dark',
-  'material',
-  'monokai',
-  'mdn-like',
-  'rubyblue',
-  'solarized dark',
-  'solarized light',
-  'the-matrix'
 ]
 
 export default {
@@ -136,42 +98,46 @@ export default {
     }
   },
   computed: {
-    isDarkMode: {
-      get: () => store.getters.isDarkMode,
-    },
-    isEditWYSIWYG: {
-      get: () => store.getters.isEditWYSIWYG,
-      set: val => store.commit('setIsEditWYSIWYG', val)
-    },
+    ...mapGetters([
+      'isDarkMode'
+    ]),
     isChanged: {
-      get: () => store.state.isChanged,
-      set: val => store.commit('setIsChanged', val)
+      get() {
+        return store.state.isChanged
+      },
+      set(val) {
+        store.commit('setIsChanged', val)
+      }
     },
     editorTheme: {
-      get: () => store.getters.editorTheme || 'hypermd-light',
-      set: val => store.commit('setEditorTheme', val)
+      get() {
+        return store.getters.editorTheme || 'default'
+      },
+      set(val) {
+        store.commit('setEditorTheme', val)
+      }
     },
     editorFontSize: {
-      get: () => store.getters.editorFontSize,
-      set: val => store.commit('setEditorFontSize', val)
+      get() {
+        return store.getters.editorFontSize
+      },
+      set(val) {
+        store.commit('setEditorFontSize', val)
+      }
     },
     editorFontFamily: {
-      get: () => store.getters.editorFontFamily,
-      set: val => store.commit('setEditorFontFamily', val)
+      get() {
+        return store.getters.editorFontFamily
+      },
+      set(val) {
+        store.commit('setEditorFontFamily', val)
+      }
     },
     uuid() {
       return this.$route.params.uuid
     }
   },
   watch: {
-    isEditWYSIWYG(nv) {
-      if (nv) {
-        HyperMD.switchToHyperMD(this.editor)
-      } else {
-        HyperMD.switchToNormal(this.editor)
-      }
-      this.editor.setOption('theme', this.editorTheme)
-    },
     editorTheme(nv) {
       this.editor.setOption('theme', nv)
     },
@@ -229,7 +195,7 @@ export default {
         }
         this.editData.title = entry.title
         this.editData.creationTime = entry.creationTime
-        this.initHyperMD(entry)
+        this.initCodeEditor(entry)
       } catch (e) {
         console.error(e)
         this.$toast.error({message: e})
@@ -239,33 +205,32 @@ export default {
         })
       }
     },
-    initHyperMD(entry) {
-      const textarea = document.getElementById('input-area')
-      const editor = HyperMD.fromTextArea(textarea, {
-        lineNumbers: false
+    initCodeEditor(entry) {
+      const container = document.getElementById('code-container')
+
+      const value = entry && entry.notes || ''
+      const editor = monaco.editor.create(container, {
+        value,
+        lineNumbers: "off",
+        language: 'markdown'
       })
-      if (!this.isEditWYSIWYG) {
-        HyperMD.switchToNormal(editor)
-      }
-      editor.setSize(null, '100%') // set height
-      this.setFontFamily(editor)
-      this.setFontSize(editor)
-      editor.setOption('theme', this.editorTheme)
-      editor.on('change', () => {
-        if (this.editor) {
-          this.isChanged = true
-        }
-      })
-      if (entry && entry.notes) {
-        editor.setValue(entry.notes)
-      }
+
+      // editor.setSize(null, '100%') // set height
+      // this.setFontFamily(editor)
+      // this.setFontSize(editor)
+      // editor.setOption('theme', this.editorTheme)
+      // editor.on('change', () => {
+      //   if (this.editor) {
+      //     this.isChanged = true
+      //   }
+      // })
       this.editor = editor
     },
     setFontSize(editor) {
       editor = this.editor || editor
-      const el = editor.display.wrapper
-      el.style.fontSize = this.editorFontSize + 'px'
-      editor.refresh()
+      editor.updateOptions({
+        lineNumbers: "off"
+      });
     },
     setFontFamily(editor) {
       editor = this.editor || editor
@@ -446,8 +411,8 @@ export default {
     }
   }
 
-  .edit-wrap {
-    overflow: auto;
+  .editor-wrap {
+    //overflow: auto;
     height: calc(100vh - 230px);
     @media screen and (max-width: $mq_mobile_width) {
       height: calc(100vh - 200px);

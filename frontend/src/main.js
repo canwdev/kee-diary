@@ -1,6 +1,8 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+
 import App from './App.vue'
-import router from './router'
+import routes from './router'
 import store from './store'
 import 'normalize.css'
 import './style/github-markdown.css'
@@ -22,6 +24,12 @@ if (isProd) {
 }
 
 Vue.use(tankUI)
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+  mode: 'hash',
+  routes
+})
 
 Vue.config.productionTip = false
 

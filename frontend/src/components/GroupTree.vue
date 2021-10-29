@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import {getGroupTree, getNodeUuid} from '@/api'
 import ItemIcon from '@/components/ItemIcon.vue'
 
@@ -46,9 +47,9 @@ export default {
     }
   },
   computed: {
-    isUnlocked() {
-      return this.$store.state.isUnlocked
-    },
+    ...mapGetters([
+      'isUnlocked'
+    ]),
     mSelected: {
       get() {
         return this.selected || this.self_selected

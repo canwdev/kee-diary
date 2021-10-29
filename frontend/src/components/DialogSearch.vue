@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import {mapGetters} from 'vuex'
 import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 import ItemIcon from '@/components/ItemIcon.vue'
 // import {searchEntries} from '@/utils/kdbx-utils'
@@ -139,6 +139,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'selectedGroup'
+    ]),
     mVisible: {
       get() {
         return this.visible
@@ -146,12 +149,6 @@ export default {
       set(nv) {
         this.$emit('update:visible', nv)
       }
-    },
-    selectedGroup: {
-      get: () => store.state.selectedGroup,
-    },
-    database: {
-      get: () => store.getters.database
     },
   },
   watch: {

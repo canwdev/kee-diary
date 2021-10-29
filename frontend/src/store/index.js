@@ -26,11 +26,12 @@ export default new Vuex.Store({
     calendarDate: new Date() // 日历视图
   },
   getters: {
+    isUnlocked: state => state.isUnlocked,
+    isChanged: state => state.isChanged,
     locate: state => state.settings.locate,
     isDarkMode: state => state.settings.isDarkMode,
     themeColor: state => state.settings.themeColor,
     isListView: state => state.settings.isListView,
-    isEditWYSIWYG: state => state.settings.isEditWYSIWYG,
     editorTheme: state => state.settings.editorTheme,
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
@@ -47,10 +48,6 @@ export default new Vuex.Store({
     },
     setIsListView: (state, val) => {
       state.settings.isListView = val
-      saveSettings(state.settings)
-    },
-    setIsEditWYSIWYG: (state, val) => {
-      state.settings.isEditWYSIWYG = val
       saveSettings(state.settings)
     },
     setEditorTheme: (state, val) => {

@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import store from '@/store'
+import {mapGetters} from 'vuex'
 import {hexToRgb} from '@/utils/color'
 
 export default {
   computed: {
-    isDarkMode: {
-      get: () => store.getters.isDarkMode
-    },
+    ...mapGetters([
+      'isDarkMode'
+    ]),
   },
   created() {
     const themeColor = this.$store.getters.themeColor

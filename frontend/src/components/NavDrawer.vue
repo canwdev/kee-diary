@@ -29,11 +29,11 @@
       <span class="menu-item-title">
         {{ $t('drawer.language') }}
         <TkDropdown
-          v-model="locate"
-          size="sm"
-          :options="languages"
-          option-label="name"
-          option-value="locate"
+            v-model="locate"
+            size="sm"
+            :options="languages"
+            option-label="name"
+            option-value="locate"
         />
       </span>
     </TkButton>
@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import store from '@/store'
-import router from '@/router'
+import {mapGetters} from 'vuex'
 import languages from '@/lang/languages'
 import {hexToRgb} from '@/utils/color'
 
@@ -64,6 +63,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'themeColor'
+    ]),
     mValue: {
       get() {
         return this.value
@@ -73,22 +75,31 @@ export default {
       }
     },
     locate: {
-      get: () => store.getters.locate,
-      set: val => store.commit('setLocate', val)
+      get() {
+        return this.$store.getters.locate
+      },
+      set(val) {
+        this.$store.commit('setLocate', val)
+      }
     },
     isDarkMode: {
-      get: () => store.getters.isDarkMode,
-      set: val => store.commit('setIsDarkMode', val)
+      get() {
+        return this.$store.getters.isDarkMode
+      },
+      set(val) {
+        this.$store.commit('setIsDarkMode', val)
+      }
     },
-    themeColor() {
-      return this.$store.getters.themeColor
-    },
-    isUnlocked: {
-      get: () => store.state.isUnlocked
+    isUnlocked() {
+      return this.$store.state.isUnlocked
     },
     isListView: {
-      get: () => store.getters.isListView,
-      set: val => store.commit('setIsListView', val)
+      get() {
+        return this.$store.getters.isListView
+      },
+      set(val) {
+        this.$store.commit('setIsListView', val)
+      }
     },
     menuList() {
       const iconClass = 'material-icons'
@@ -99,7 +110,7 @@ export default {
               iconClass,
               iconName: 'home',
               name: this.$t('pages.home'), action: () => {
-                router.push({name: 'Home'})
+                this.$router.push({name: 'Home'})
                 this.mValue = false
               }
             }

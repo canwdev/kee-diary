@@ -4,8 +4,6 @@ const {
   ipcSendEventAsync
 } = electronAPI
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
-import store from '@/store'
-import router from '@/router'
 import main from '@/main'
 import i18n from '@/lang/i18n'
 
@@ -105,17 +103,17 @@ export function getNodeUuid(node) {
 
 const saveDb = async () => {
   await saveDatabase()
-  store.commit('setIsChanged', false)
+  main.$store.commit('setIsChanged', false)
   main.$toast.success(i18n.t('kdbx.saved-successfully'))
 }
 
 export async function handleSaveDatabase() {
   try {
-    if (!store.state.isChanged || !store.state.isUnlocked) {
+    if (!main.$store.state.isChanged || !main.$store.state.isUnlocked) {
       return
     }
-    store.commit('setIsGlobalLoading', true)
-    if (router.currentRoute.name !== 'Detail') {
+    main.$store.commit('setIsGlobalLoading', true)
+    if (main.$router.currentRoute.name !== 'Detail') {
       await saveDb()
       return
     }
@@ -127,17 +125,17 @@ export async function handleSaveDatabase() {
     console.error(e)
     main.$toast.error(e)
   } finally {
-    store.commit('setIsGlobalLoading', false)
+    main.$store.commit('setIsGlobalLoading', false)
   }
 }
 
 async function doCloseDatabase() {
   await closeDatabase()
 
-  store.commit('setIsUnlocked', false)
-  store.commit('setIsChanged', false)
-  store.commit('setSelectedGroup', null)
-  await router.replace({
+  main.$store.commit('setIsUnlocked', false)
+  main.$store.commit('setIsChanged', false)
+  main.$store.commit('setSelectedGroup', null)
+  await main.$router.replace({
     name: 'Login'
   })
 }
@@ -147,10 +145,10 @@ export const closeWindow = () => {
 }
 
 export async function handleCloseDatabase({isExit = false} = {}) {
-  if (!store.state.isUnlocked) {
+  if (!main.$store.state.isUnlocked) {
     return
   }
-  if (!store.state.isChanged) {
+  if (!main.$store.state.isChanged) {
     await doCloseDatabase()
     return
   }

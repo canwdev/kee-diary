@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import {mapGetters} from 'vuex'
 import {handleCloseDatabase, handleSaveDatabase} from '@/api'
 import WindowFrameMixin from '@/mixins/window-frame-mixin'
 // import DialogSearch from './DialogSearch'
@@ -121,15 +121,9 @@ export default {
     }
   },
   computed: {
-    isDarkMode: {
-      get: () => store.getters.isDarkMode
-    },
-    isUnlocked: {
-      get: () => store.state.isUnlocked
-    },
-    isChanged: {
-      get: () => store.state.isChanged
-    },
+    ...mapGetters([
+      'isDarkMode', 'isUnlocked', 'isChanged'
+    ]),
     isShowBack() {
       const r = this.$route.name
       return r !== 'Home' && r !== 'Login'
