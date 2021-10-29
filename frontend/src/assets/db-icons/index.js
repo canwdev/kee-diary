@@ -1,6 +1,5 @@
-import themeConfig from './themes.json'
-import theme from './themes/icons.json'
-
+const themeConfig = require('./themes.json')
+const theme = require(`./${themeConfig.baseDir}/${themeConfig.themes[0].dir}.json`)
 // const themes = themeConfig.themes.map(item => {
 //   return require(`./${themeConfig.baseDir}/${item.dir}.json`)
 // })
@@ -10,13 +9,11 @@ function Icons(theme) {
     dir,
     isPixel = false
   } = theme
-  this.list = theme.list.map(item => {
-    const imgUrl = new URL(`./${themeConfig.baseDir}/${dir}/${item.file}`, import.meta.url).href
-    return {
-      file: imgUrl,
-      name: item.name
-    }
-  })
+  this.list = theme.list.map(item => ({
+    // 让 Webpack 自动打包图片
+    file: require(`./${themeConfig.baseDir}/${dir}/${item.file}`),
+    name: item.name
+  }))
 
   this.dir = dir
   this.isPixel = isPixel

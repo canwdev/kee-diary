@@ -303,7 +303,6 @@ export default {
     text-align: center;
     padding: 10px;
 
-
   }
 }
 </style>

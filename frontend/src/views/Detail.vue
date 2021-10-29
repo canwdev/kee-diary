@@ -3,16 +3,16 @@
     <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
-            class="cursor-pointer"
+          class="cursor-pointer"
         >
           {{ $t('preview') + '1' }} (Ctrl+/)
         </ItemIcon>
 
         <TkInput
-            v-model="editData.title"
-            placeholder="Title"
-            class="title-input"
-            size="lg"
+          v-model="editData.title"
+          placeholder="Title"
+          class="title-input"
+          size="lg"
         />
       </div>
 
@@ -20,11 +20,11 @@
 
       <div class="settings-row">
         <TkDropdown
-            v-model="editorTheme"
-            dense
-            color="secondary"
-            :options="themeOptions"
-            style="width: 150px"
+          v-model="editorTheme"
+          dense
+          color="secondary"
+          :options="themeOptions"
+          style="width: 150px"
         >
           <template v-slot:prepend>
             <q-icon name="style"/>
@@ -68,7 +68,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor'
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
@@ -103,34 +103,34 @@ export default {
     ]),
     isChanged: {
       get() {
-        return store.state.isChanged
+        return this.$store.state.isChanged
       },
       set(val) {
-        store.commit('setIsChanged', val)
+        this.$store.commit('setIsChanged', val)
       }
     },
     editorTheme: {
       get() {
-        return store.getters.editorTheme || 'default'
+        return this.$store.getters.editorTheme || 'default'
       },
       set(val) {
-        store.commit('setEditorTheme', val)
+        this.$store.commit('setEditorTheme', val)
       }
     },
     editorFontSize: {
       get() {
-        return store.getters.editorFontSize
+        return this.$store.getters.editorFontSize
       },
       set(val) {
-        store.commit('setEditorFontSize', val)
+        this.$store.commit('setEditorFontSize', val)
       }
     },
     editorFontFamily: {
       get() {
-        return store.getters.editorFontFamily
+        return this.$store.getters.editorFontFamily
       },
       set(val) {
-        store.commit('setEditorFontFamily', val)
+        this.$store.commit('setEditorFontFamily', val)
       }
     },
     uuid() {
@@ -211,7 +211,7 @@ export default {
       const value = entry && entry.notes || ''
       const editor = monaco.editor.create(container, {
         value,
-        lineNumbers: "off",
+        lineNumbers: 'off',
         language: 'markdown'
       })
 
@@ -229,8 +229,8 @@ export default {
     setFontSize(editor) {
       editor = this.editor || editor
       editor.updateOptions({
-        lineNumbers: "off"
-      });
+        lineNumbers: 'off'
+      })
     },
     setFontFamily(editor) {
       editor = this.editor || editor

@@ -1,37 +1,37 @@
 <template>
   <div class="calendar-view q-px-md q-py-lg">
     <Calendar
-        ref="calendar"
-        is-expanded
-        :locale="locate"
-        :is-dark="isDarkMode"
-        :attributes="calendarAttributes"
-        :first-day-of-week="1"
-        disable-page-swipe
-        @update:from-page="handlePageChange"
+      ref="calendar"
+      is-expanded
+      :locale="locate"
+      :is-dark="isDarkMode"
+      :attributes="calendarAttributes"
+      :first-day-of-week="1"
+      disable-page-swipe
+      @update:from-page="handlePageChange"
     >
       <template v-slot:day-content="{ day, attributes }">
         <div class="day-content">
           <div class="entry-list">
             <q-scroll-area>
               <template
-                  v-for="attr in attributes"
+                v-for="attr in attributes"
               >
                 <div
-                    v-if="attr.customData"
-                    :key="attr.key"
-                    class="entry-item cursor-pointer overflow-hidden"
-                    :style="{
+                  v-if="attr.customData"
+                  :key="attr.key"
+                  class="entry-item cursor-pointer overflow-hidden"
+                  :style="{
                     background: attr.customData.bgColor,
                     color: attr.customData.fgColor
                   }"
-                    @click="handlePreview(attr)"
-                    @contextmenu="handleAttrContextMenu(attr)"
+                  @click="handlePreview(attr)"
+                  @contextmenu="handleAttrContextMenu(attr)"
                 >
                   <ItemIcon
-                      :item="{iconIndex: attr.customData.iconIndex}"
-                      size="16px"
-                      :icon-scale="1"
+                    :item="{iconIndex: attr.customData.iconIndex}"
+                    size="16px"
+                    :icon-scale="1"
                   />
                   <span class="entry-title">{{ attr.customData.title }}</span>
                 </div>
@@ -41,9 +41,9 @@
           </div>
           <span class="day-label-wrap">
             <DayDetail
-                v-if="/^zh/i.test($i18n.locale)"
-                :lunar-data="getLunarData(day.year, day.month, day.day)"
-                class="lunar-label"
+              v-if="/^zh/i.test($i18n.locale)"
+              :lunar-data="getLunarData(day.year, day.month, day.day)"
+              class="lunar-label"
             />
             <span class="day-label">{{ day.day }}</span>
           </span>
@@ -52,31 +52,31 @@
     </Calendar>
 
     <ContextMenuCommon
-        :target-data="currentAttr"
-        @onPreview="handlePreview"
-        @onEdit="handleEdit"
-        @onRename="handleRename"
-        @onChangeIcon="handleShowChangeIcon"
-        @onChangeColor="handleShowChangeColor"
-        @onMove="isDialogChooseGroupVisible = true"
-        @onDelete="handleDelete"
+      :target-data="currentAttr"
+      @onPreview="handlePreview"
+      @onEdit="handleEdit"
+      @onRename="handleRename"
+      @onChangeIcon="handleShowChangeIcon"
+      @onChangeColor="handleShowChangeColor"
+      @onMove="isDialogChooseGroupVisible = true"
+      @onDelete="handleDelete"
     />
 
     <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="currentEntry && currentEntry.icon"
-        @onChoose="handleUpdateIcon"
+      :visible.sync="isDialogChooseIconVisible"
+      :index="currentEntry && currentEntry.icon"
+      @onChoose="handleUpdateIcon"
     />
 
     <DialogChooseColor
-        :item="currentEntry"
-        :visible.sync="isDialogChooseColorVisible"
-        @onChoose="handleUpdateColor"
+      :item="currentEntry"
+      :visible.sync="isDialogChooseColorVisible"
+      @onChoose="handleUpdateColor"
     />
 
     <DialogChooseGroup
-        :visible.sync="isDialogChooseGroupVisible"
-        @onChoose="handleMoveEntry"
+      :visible.sync="isDialogChooseGroupVisible"
+      @onChoose="handleMoveEntry"
     />
   </div>
 </template>
@@ -143,10 +143,10 @@ export default {
     ]),
     calendarDate: {
       get() {
-        return store.getters.calendarDate
+        return this.$store.getters.calendarDate
       },
       set(val) {
-        store.commit('setCalendarDate', val)
+        this.$store.commit('setCalendarDate', val)
       }
     },
     calendarAttributesRaw() {

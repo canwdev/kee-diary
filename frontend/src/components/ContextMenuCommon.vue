@@ -21,7 +21,7 @@
 
 <script>
 // hidden when root group
-import {getMeta, getRecycleText} from "@/api"
+import {getMeta, getRecycleText} from '@/api'
 
 function isHiddenGroupRoot(isGroup, targetData) {
   if (!isGroup) {

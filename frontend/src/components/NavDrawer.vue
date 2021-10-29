@@ -29,11 +29,11 @@
       <span class="menu-item-title">
         {{ $t('drawer.language') }}
         <TkDropdown
-            v-model="locate"
-            size="sm"
-            :options="languages"
-            option-label="name"
-            option-value="locate"
+          v-model="locate"
+          size="sm"
+          :options="languages"
+          option-label="name"
+          option-value="locate"
         />
       </span>
     </TkButton>
@@ -118,7 +118,7 @@ export default {
               iconClass,
               iconName: 'login',
               name: this.$t('login.openDatabase'), action: () => {
-                router.push({name: 'Login'})
+                this.$router.push({name: 'Login'})
                 this.mValue = false
               }
             },
@@ -126,7 +126,7 @@ export default {
           iconClass,
           iconName: 'info',
           name: this.$t('pages.about'), action: () => {
-            router.push({name: 'About'})
+            this.$router.push({name: 'About'})
             this.mValue = false
           }
         },

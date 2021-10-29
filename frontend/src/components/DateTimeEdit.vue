@@ -18,7 +18,7 @@
             <q-popup-proxy>
               <q-time v-model="mDate" mask="YYYY-MM-DD HH:mm" format24h>
                 <div class="row items-center justify-end">
-                  <TkButton v-close-popup label="Close"  flat/>
+                  <TkButton v-close-popup label="Close" flat/>
                 </div>
               </q-time>
             </q-popup-proxy>

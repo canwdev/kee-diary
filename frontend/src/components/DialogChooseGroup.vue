@@ -12,8 +12,8 @@
 
       <div class="card-tree">
         <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
-            tips
-          }}</p>
+          tips
+        }}</p>
         <GroupTree
           ref="treeRef"
           :selected.sync="selected"

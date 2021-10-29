@@ -11,27 +11,27 @@
 
       <div class="table-body">
         <ListItem
-            v-for="item in pagedList"
-            :key="item.uuid"
-            :item="item"
-            @preview="previewItem"
-            @itemClick="handleItemClick"
-            @itemContextMenu="handleContextMenu"
+          v-for="item in pagedList"
+          :key="item.uuid"
+          :item="item"
+          @preview="previewItem"
+          @itemClick="handleItemClick"
+          @itemContextMenu="handleContextMenu"
         />
 
         <TkPager
-            v-show="pagerOptions.allCount && pagerOptions.allCount > pagerOptions.pageSize"
-            :page-size="pagerOptions.pageSize"
-            :offset.sync="pagerOptions.offset"
-            :total="pagerOptions.allCount"
-            show-extra-info
+          v-show="pagerOptions.allCount && pagerOptions.allCount > pagerOptions.pageSize"
+          :page-size="pagerOptions.pageSize"
+          :offset.sync="pagerOptions.offset"
+          :total="pagerOptions.allCount"
+          show-extra-info
         />
 
         <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
 
       <ContextMenuCommon
-          ref="ctxMenu"
+        ref="ctxMenu"
       />
 
     </div>

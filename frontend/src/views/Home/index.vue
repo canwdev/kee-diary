@@ -1,26 +1,26 @@
 <template>
   <div
-      class="home-page"
+    class="home-page"
   >
     <div class="nav-tree">
       <GroupView
-          ref="groupView"
-          :selected.sync="selectedGroup"
-          @onCreateEntry="handleAddEntry"
-          @onCreateGroup="handleAddGroup"
-          @onDelete="handleDeleteGroup"
-          @onRename="handleRename"
-          @onChangeIcon="handleChangeIcon"
-          @onMove="handleMove"
+        ref="groupView"
+        :selected.sync="selectedGroup"
+        @onCreateEntry="handleAddEntry"
+        @onCreateGroup="handleAddGroup"
+        @onDelete="handleDeleteGroup"
+        @onRename="handleRename"
+        @onChangeIcon="handleChangeIcon"
+        @onMove="handleMove"
       />
 
     </div>
 
     <div class="home-right">
       <EntryList
-          v-if="isListView"
-          ref="entryList"
-          :selected-group="selectedGroup"
+        v-if="isListView"
+        ref="entryList"
+        :selected-group="selectedGroup"
       />
 
       <!--      <CalendarView-->
@@ -36,31 +36,31 @@
     </div>
 
     <DialogAdd
-        ref="dialogAdd"
-        :visible.sync="isShowDialogAdd"
-        :is-add-group="isAddGroup"
-        @addEntrySuccess="addEntrySuccess"
-        @addGroupSuccess="refreshGroup"
+      ref="dialogAdd"
+      :visible.sync="isShowDialogAdd"
+      :is-add-group="isAddGroup"
+      @addEntrySuccess="addEntrySuccess"
+      @addGroupSuccess="refreshGroup"
     />
 
     <DialogEntryPreview
-        :visible.sync="isShowPreview"
-        :item="previewItem"
+      :visible.sync="isShowPreview"
+      :item="previewItem"
     />
 
     <DialogChooseIcon
-        :visible.sync="isShowChooseIcon"
-        :index="curIcon"
-        @onChoose="updateIcon"
+      :visible.sync="isShowChooseIcon"
+      :index="curIcon"
+      @onChoose="updateIcon"
     />
 
     <DialogChooseGroup
-        ref="groupChooser"
-        :visible.sync="isShowChooseGroup"
-        :tips="$t('kdbx.do-not-move-to-the-group-itself')"
-        :auto-expand-uuid="autoExpandUuid"
-        not-allow-select-sub
-        @onChoose="changeGroup"
+      ref="groupChooser"
+      :visible.sync="isShowChooseGroup"
+      :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+      :auto-expand-uuid="autoExpandUuid"
+      not-allow-select-sub
+      @onChoose="changeGroup"
     />
 
   </div>

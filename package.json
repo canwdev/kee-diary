@@ -11,7 +11,7 @@
   "scripts": {
     "inst": "yarn install && yarn install --cwd frontend",
     "dev": "node start-dev.js",
-    "dev:frontend": "cross-env yarn --cwd './frontend' dev",
+    "dev:frontend": "cross-env PORT=8081 yarn --cwd './frontend' serve",
     "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:8081 electron .",
     "prod:electron": "cross-env ELECTRON_IS_DEV=0 electron .",
     "build": "yarn run build:frontend && yarn run build:electron-dir",

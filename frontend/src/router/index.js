@@ -1,16 +1,19 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home/index.vue'
-import Default from '@/layout/Default.vue'
+import Default from '@/layout/Default'
+import store from '@/store'
 
 const validateUnlock = (to, from, next) => {
-  // if (store.state.isUnlocked) {
+  if (store.state.isUnlocked) {
     next()
-  // } else {
-  //   console.error('router.replace({name: \'Login\'})')
-    // router.replace({name: 'Login'})
-  // }
+  } else {
+    router.replace({name: 'Login'})
+  }
 }
 
+Vue.use(VueRouter)
 
 const routes = [
   {
@@ -51,6 +54,9 @@ const routes = [
   }
 ]
 
+const router = new VueRouter({
+  mode: 'hash',
+  routes
+})
 
-
-export default routes
+export default router

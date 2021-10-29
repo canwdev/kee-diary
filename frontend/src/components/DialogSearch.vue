@@ -61,7 +61,6 @@
             :disable="!searchText"
             label="搜索"
             type="submit"
-
           />
         </TkCard>
       </form>

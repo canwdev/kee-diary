@@ -31,7 +31,7 @@
       <hr/>
 
       <div class="action-btn-row" >
-        <TkButton :label="$t('cancel')"  @click="mVisible = false"/>
+        <TkButton :label="$t('cancel')" @click="mVisible = false"/>
         <TkButton
           :disabled="selectedColor === color"
           :label="$t('choose')"
