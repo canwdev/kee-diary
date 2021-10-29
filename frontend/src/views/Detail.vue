@@ -3,16 +3,16 @@
     <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
-          class="cursor-pointer"
+            class="cursor-pointer"
         >
           {{ $t('preview') + '1' }} (Ctrl+/)
         </ItemIcon>
 
         <TkInput
-          v-model="editData.title"
-          placeholder="Title"
-          class="title-input"
-          size="lg"
+            v-model="editData.title"
+            placeholder="Title"
+            class="title-input"
+            size="lg"
         />
       </div>
 
@@ -20,11 +20,11 @@
 
       <div class="settings-row">
         <TkDropdown
-          v-model="editorTheme"
-          dense
-          color="secondary"
-          :options="themeOptions"
-          style="width: 150px"
+            v-model="editorTheme"
+            dense
+            color="secondary"
+            :options="themeOptions"
+            style="width: 150px"
         >
           <template v-slot:prepend>
             <q-icon name="style"/>
@@ -78,7 +78,9 @@ import {getEntryDetail, updateEntry} from '@/api'
 import {textFilters as filters} from '@/enum'
 
 const themeOptions = [
-  'default',
+  'vs',
+  'vs-dark',
+  'hc-black'
 ]
 
 export default {
@@ -111,7 +113,7 @@ export default {
     },
     editorTheme: {
       get() {
-        return this.$store.getters.editorTheme || 'default'
+        return this.$store.getters.editorTheme || themeOptions[0]
       },
       set(val) {
         this.$store.commit('setEditorTheme', val)
@@ -139,7 +141,9 @@ export default {
   },
   watch: {
     editorTheme(nv) {
-      this.editor.setOption('theme', nv)
+      this.editor.updateOptions({
+        theme: nv
+      })
     },
     editData: {
       handler() {
@@ -160,6 +164,7 @@ export default {
     })
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
+    window.addEventListener('resize', this.handleResize)
   },
   async beforeRouteLeave(to, from, next) {
     // console.log('beforeRouteLeave')
@@ -174,6 +179,7 @@ export default {
     mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
+    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
     formatDate,
@@ -212,28 +218,35 @@ export default {
       const editor = monaco.editor.create(container, {
         value,
         lineNumbers: 'off',
-        language: 'markdown'
+        language: 'markdown',
+        theme: this.editorTheme,
+        wordWrap: true,
+        minimap: {
+          enabled: false
+        },
+        scrollbar: {
+          alwaysConsumeMouseWheel: false
+        }
       })
 
       // editor.setSize(null, '100%') // set height
       // this.setFontFamily(editor)
-      // this.setFontSize(editor)
-      // editor.setOption('theme', this.editorTheme)
-      // editor.on('change', () => {
-      //   if (this.editor) {
-      //     this.isChanged = true
-      //   }
-      // })
+      this.setFontSize(editor)
+
+      editor.onDidChangeModelContent(event => {
+        if (this.editor) {
+          this.isChanged = true
+        }
+      })
+
       this.editor = editor
     },
-    setFontSize(editor) {
-      editor = this.editor || editor
+    setFontSize(editor = this.editor) {
       editor.updateOptions({
-        lineNumbers: 'off'
+        fontSize: this.editorFontSize
       })
     },
-    setFontFamily(editor) {
-      editor = this.editor || editor
+    setFontFamily(editor = this.editor) {
       const el = editor.display.wrapper
       if (this.editorFontFamily) {
         el.style.fontFamily = this.editorFontFamily
@@ -375,6 +388,11 @@ export default {
           this.editorFontSize = editorFontSize
           this.setFontSize()
         }
+      }
+    },
+    handleResize() {
+      if (this.editor) {
+        this.editor.layout()
       }
     }
   }
