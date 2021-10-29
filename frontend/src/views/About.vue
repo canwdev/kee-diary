@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import VersionText from '@/components/VersionText'
-import CheckConnection from '@/components/CheckConnection'
+import VersionText from '@/components/VersionText.vue'
+import CheckConnection from '@/components/CheckConnection/index.vue'
 
 export default {
   name: 'About',

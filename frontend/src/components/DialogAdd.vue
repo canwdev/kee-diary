@@ -127,11 +127,11 @@
 <script>
 import store from '@/store'
 import {createEntry, createGroup} from '@/api'
-import ItemIcon from '@/components/ItemIcon'
-import ColorItem from './ColorItem'
-import DialogChooseIcon from '@/components/DialogChooseIcon'
-import DialogChooseGroup from '@/components/DialogChooseGroup'
-import DialogChooseColor from '@/components/DialogChooseColor'
+import ItemIcon from '@/components/ItemIcon.vue'
+import ColorItem from './ColorItem.vue'
+import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
+import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
+import DialogChooseColor from '@/components/DialogChooseColor.vue'
 
 const initForm = Object.freeze({
   groupUuid: null,

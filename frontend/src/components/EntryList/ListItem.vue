@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ItemIcon from '@/components/ItemIcon'
+import ItemIcon from '@/components/ItemIcon.vue'
 import {formatDate} from '@/utils'
 
 export default {

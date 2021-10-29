@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import NavDrawer from '../components/NavDrawer'
-import NavHeader from '../components/NavHeader'
+import NavDrawer from '../components/NavDrawer.vue'
+import NavHeader from '../components/NavHeader.vue'
 import {registerKeyShortcuts, unRegisterKeyShortcuts} from '@/utils/key-shortcuts'
 
 export default {

@@ -106,8 +106,8 @@
 
 <script>
 import store from '@/store'
-import DialogChooseGroup from '@/components/DialogChooseGroup'
-import ItemIcon from '@/components/ItemIcon'
+import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
+import ItemIcon from '@/components/ItemIcon.vue'
 // import {searchEntries} from '@/utils/kdbx-utils'
 
 export default {

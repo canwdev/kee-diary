@@ -3,7 +3,8 @@
 </template>
 
 <script>
-const pkg = require('@/../../package.json')
+// const pkg = require('@/../../package.json')
+import pkg from '@/../../package.json'
 export default {
   name: 'VersionText',
   data() {

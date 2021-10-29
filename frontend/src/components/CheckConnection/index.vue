@@ -20,7 +20,7 @@
 
 <script>
 import {ConnectType} from './enum'
-import Status from './Status'
+import Status from './Status.vue'
 import axios from 'axios'
 
 const getInitStatus = (initState = ConnectType.UNKNOWN) => {

@@ -53,8 +53,8 @@ import marked from '@/utils/marked'
 import {formatDate} from '@/utils'
 import {getEntryDetail} from '@/api'
 import store from '@/store'
-import ItemIcon from '@/components/ItemIcon'
-import DialogPreview from './DialogPreview'
+import ItemIcon from '@/components/ItemIcon.vue'
+import DialogPreview from './DialogPreview.vue'
 
 export default {
   name: 'DialogEntryPreview',

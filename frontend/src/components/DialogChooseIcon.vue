@@ -60,8 +60,8 @@
 
 <script>
 import icons from '@/assets/db-icons'
-import ItemIcon from './ItemIcon'
-import DialogPreview from './DialogPreview'
+import ItemIcon from './ItemIcon.vue'
+import DialogPreview from './DialogPreview.vue'
 
 export default {
   components: {

@@ -95,7 +95,7 @@ import 'codemirror/theme/the-matrix.css'
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
-import ItemIcon from '@/components/ItemIcon'
+import ItemIcon from '@/components/ItemIcon.vue'
 import {getEntryDetail, updateEntry} from '@/api'
 
 import {textFilters as filters} from '@/enum'

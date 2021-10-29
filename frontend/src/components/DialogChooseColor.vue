@@ -46,7 +46,7 @@
 
 <script>
 import {palette} from '@/enum'
-import ColorItem from '@/components/ColorItem'
+import ColorItem from '@/components/ColorItem.vue'
 
 function getTypeColor(isFgColor, item) {
   if (!item) return

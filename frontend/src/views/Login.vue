@@ -140,7 +140,7 @@
 import LocalStorageSettings from '@/utils/login-settings'
 import {isProd} from '@/utils/is'
 import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/enum'
-import VersionText from '@/components/VersionText'
+import VersionText from '@/components/VersionText.vue'
 import {
   openDatabase,
   checkIsOpen

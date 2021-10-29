@@ -7,7 +7,7 @@ A note editor application that uses KeePass technology to encrypt storage.
 The following techniques are used:
 
 - Electron
-- Vue
+- Vite + Vue 2
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
 
 ## Development

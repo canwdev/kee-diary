@@ -9,12 +9,16 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import './style/base.scss'
 
 import i18n from './lang/i18n'
+
 const isProd = process.env.NODE_ENV === 'production' // 'development'
 
 import tankUI from '@canwdev/tank-ui'
-
+const tankCSS = new URL('../node_modules/@canwdev/tank-ui/dist/tank-ui.css', import.meta.url)
 if (isProd) {
-  require('@canwdev/tank-ui/dist/tank-ui.css')
+  let file = document.createElement('link');
+  file.rel = 'stylesheet';
+  file.href = tankCSS.href
+  document.head.appendChild(file)
 }
 
 Vue.use(tankUI)

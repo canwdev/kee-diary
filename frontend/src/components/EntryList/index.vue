@@ -40,11 +40,11 @@
 
 <script>
 import store from '@/store'
-import ListItem from './ListItem'
+import ListItem from './ListItem.vue'
 import {getGroupEntries} from '@/api'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 import {getNodeUuid} from '@/api'
-import ContextMenuCommon from '@/components/ContextMenuCommon'
+import ContextMenuCommon from '@/components/ContextMenuCommon.vue'
 
 export default {
   name: 'EntryList',

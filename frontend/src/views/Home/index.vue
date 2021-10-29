@@ -68,15 +68,15 @@
 
 <script>
 import store from '@/store'
-import GroupView from './GroupView'
-import EntryList from '@/components/EntryList'
-// import CalendarView from '@/views/Home/CalendarView'
-import DialogAdd from '@/components/DialogAdd'
-import DialogEntryPreview from '@/components/DialogEntryPreview'
+import GroupView from './GroupView.vue'
+import EntryList from '@/components/EntryList/index.vue'
+// import CalendarView from '@/views/Home/CalendarView.vue'
+import DialogAdd from '@/components/DialogAdd.vue'
+import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 import {removeGroup, updateGroup, moveGroup, getRecycleText} from '@/api'
-import DialogChooseIcon from '@/components/DialogChooseIcon'
-import DialogChooseGroup from '@/components/DialogChooseGroup'
+import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
+import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 
 export default {
   name: 'HomeView',

@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import GroupTree from '@/components/GroupTree'
-import ContextMenuCommon from '@/components/ContextMenuCommon'
+import GroupTree from '@/components/GroupTree.vue'
+import ContextMenuCommon from '@/components/ContextMenuCommon.vue'
 
 export default {
   name: 'GroupView',

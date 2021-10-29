@@ -21,7 +21,7 @@
 
 <script>
 import {getGroupTree, getNodeUuid} from '@/api'
-import ItemIcon from '@/components/ItemIcon'
+import ItemIcon from '@/components/ItemIcon.vue'
 
 import tankUI from '@canwdev/tank-ui'
 const TreeNode = tankUI.enum.TreeNode

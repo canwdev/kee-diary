@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import GroupTree from '@/components/GroupTree'
+import GroupTree from '@/components/GroupTree.vue'
 
 const checkParent = (node, uuid) => {
   if (!node) {
