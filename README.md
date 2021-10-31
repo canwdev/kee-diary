@@ -1,34 +1,36 @@
 # KeeNote
 
-## Introduction
+## 简介 · Introduction
+
+kdbx 加密笔记应用程序
 
 A note editor application that uses KeePass technology to encrypt storage.
 
-The following techniques are used:
+## 技术栈 · Technology
 
 - Electron
-- Vite + Vue 2
+- Vue 2
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
 
-## Development
+## 开发 · Development
 
 ```sh
-# Install dependencies
+# 安装依赖
 yarn ist
 
-# Run development
+# 启动开发环境
 yarn run dev
 ```
 
-## Build production
+## 构建 · Build
 
 ```sh
-# Global install: electron-builder
+# 安装全局依赖
 npm -i -g electron-builder
 
-# Build frontend first
+# 首先构建前端
 yarn run build:frontend
 
-# Build electron executable file
+# 构建Electron
 yarn run build:electron
 ```
