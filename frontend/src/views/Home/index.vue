@@ -202,16 +202,16 @@ export default {
         },
         parentEl: this.$el
       }).onConfirm(async (context) => {
-        if (this.inputValue === item.title) {
+        if (context.inputValue === item.title) {
           return
         }
         await updateGroup({
           uuid: item.data.uuid,
           updates: [
-            {path: 'name', value: this.inputValue},
+            {path: 'name', value: context.inputValue},
           ]
         })
-        item.title = this.inputValue
+        item.title = context.inputValue
         this.$store.commit('setIsChanged', true)
       })
     },

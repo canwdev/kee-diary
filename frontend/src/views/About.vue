@@ -7,7 +7,7 @@
         <h3><VersionText/></h3>
         <hr>
         <div>
-          {{ $t('about.info')+'1' }}
+          {{ $t('about.info') }}
         </div>
 
         <template v-if="message">
