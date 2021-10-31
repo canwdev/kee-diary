@@ -2,14 +2,26 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './quasar'
-import './styles/base.styl'
-import './styles/github-markdown.css'
-import './styles/github-markdown-dark.css'
+import 'normalize.css'
+import './style/github-markdown.css'
+import './style/github-markdown-dark.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import './style/base.scss'
+
 import i18n from './lang/i18n'
+const isProd = process.env.NODE_ENV === 'production' // 'development'
+
+import tankUI from '@canwdev/tank-ui'
+
+if (isProd) {
+  require('@canwdev/tank-ui/dist/tank-ui.css')
+}
+
+Vue.use(tankUI)
+
 Vue.config.productionTip = false
 
-new Vue({
+export default new Vue({
   i18n,
   router,
   store,

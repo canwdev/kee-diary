@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
-import Default from "@/layout/Default"
+import Home from '@/views/Home/index.vue'
+import Default from '@/layout/Default'
 import store from '@/store'
 
 const validateUnlock = (to, from, next) => {
-  if (store.getters.isUnlocked) {
+  if (store.state.isUnlocked) {
     next()
   } else {
     router.replace({name: 'Login'})
@@ -14,7 +15,7 @@ const validateUnlock = (to, from, next) => {
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Root',
@@ -32,16 +33,16 @@ Vue.use(VueRouter)
         path: 'home',
         name: 'Home',
         beforeEnter: validateUnlock,
-        component: () => import('@/views/Home/index.vue')
+        component: Home
       },
       {
-        path: 'detail',
+        path: 'detail/:uuid',
         name: 'Detail',
         beforeEnter: validateUnlock,
         component: () => import('@/views/Detail.vue')
       },
       {
-        path: '/about',
+        path: 'about',
         name: 'About',
         component: () => import('@/views/About.vue')
       }
@@ -54,6 +55,7 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
+  mode: 'hash',
   routes
 })
 

@@ -1,115 +1,316 @@
 <template>
-  <q-page>
-    <q-splitter
-        v-model="splitterSize"
-        class="home-page"
-    >
-      <template v-slot:before>
-        <div class="nav-tree">
-          <div class="q-pa-md">
-            <GroupTreeWrap
-                :selectedGroupUuid.sync="currentGroupUuid"
-                @onCreateEntry="handleAddEntryFromGroup"
-            />
-          </div>
-          <div style="height: 80px"></div>
-        </div>
-      </template>
+  <div
+    class="home-page"
+  >
+    <div class="nav-tree">
+      <GroupView
+        ref="groupView"
+        :selected.sync="selectedGroup"
+        @onCreateEntry="handleAddEntry"
+        @onCreateGroup="handleAddGroup"
+        @onDelete="handleDeleteGroup"
+        @onRename="handleRename"
+        @onChangeIcon="handleChangeIcon"
+        @onMove="handleMove"
+      />
 
-      <template v-slot:after>
-        <EntryList
-            v-if="isListView"
-            :currentGroupUuid="currentGroupUuid"
-        />
+    </div>
 
-        <CalendarView
-            v-else
-            :currentGroupUuid="currentGroupUuid"
-        />
-      </template>
+    <div class="home-right">
+      <EntryList
+        v-if="isListView"
+        ref="entryList"
+        :selected-group="selectedGroup"
+      />
 
-    </q-splitter>
+      <!--      <CalendarView-->
+      <!--          v-else-->
+      <!--          :current-group-uuid="selectedGroup"-->
+      <!--      />-->
+    </div>
 
-    <q-page-sticky position="bottom-left" :offset="[18, 18]">
-      <q-btn fab icon="add" color="secondary" @click="isDialogAddEntryVisible = true" :title="$t('home.add-entry')"/>
-    </q-page-sticky>
+    <div class="sticky-area">
+      <TkButton theme="accent" round :title="$t('home.create-entry')" @click="handleAddEntry()">
+        <i class="material-icons">add</i>
+      </TkButton>
+    </div>
 
-    <DialogAddEntry
-        ref="addEntry"
-        :visible.sync="isDialogAddEntryVisible"
-        @confirm="handleAddEntry"
+    <DialogAdd
+      ref="dialogAdd"
+      :visible.sync="isShowDialogAdd"
+      :is-add-group="isAddGroup"
+      @addEntrySuccess="addEntrySuccess"
+      @addGroupSuccess="refreshGroup"
     />
-  </q-page>
+
+    <DialogEntryPreview
+      :visible.sync="isShowPreview"
+      :item="previewItem"
+    />
+
+    <DialogChooseIcon
+      :visible.sync="isShowChooseIcon"
+      :index="curIcon"
+      @onChoose="updateIcon"
+    />
+
+    <DialogChooseGroup
+      ref="groupChooser"
+      :visible.sync="isShowChooseGroup"
+      :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+      :auto-expand-uuid="autoExpandUuid"
+      not-allow-select-sub
+      @onChoose="changeGroup"
+    />
+
+  </div>
 </template>
 
 <script>
-import store from "@/store"
-import {addEntry} from "@/utils/kdbx-utils"
-import GroupTreeWrap from "./GroupTreeWrap"
-import EntryList from "@/views/Home/EntryList"
-import CalendarView from "@/views/Home/CalendarView"
-import DialogAddEntry from "@/components/DialogAddEntry"
+import GroupView from './GroupView.vue'
+import EntryList from '@/components/EntryList/index.vue'
+// import CalendarView from '@/views/Home/CalendarView.vue'
+import DialogAdd from '@/components/DialogAdd.vue'
+import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
+import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
+import {removeGroup, updateGroup, moveGroup, getRecycleText} from '@/api'
+import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
+import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 
 export default {
-  name: "DbListView",
+  name: 'HomeView',
   components: {
     EntryList,
-    GroupTreeWrap,
-    CalendarView,
-    DialogAddEntry
+    GroupView,
+    // CalendarView,
+    DialogAdd,
+    DialogEntryPreview,
+    DialogChooseIcon,
+    DialogChooseGroup,
   },
   data() {
     return {
-      isList: false,
-      isDialogAddEntryVisible: false
+      isShowDialogAdd: false,
+      isShowPreview: false,
+      isAddGroup: false,
+      previewItem: null,
+      isShowChooseIcon: false,
+      isShowChooseGroup: false,
+      curIcon: null,
+      curItem: null
     }
   },
   computed: {
     database: {
-      get: () => store.getters.database
+      get() {
+        return this.$store.getters.database
+      }
     },
-    splitterSize: {
-      get: () => store.getters.splitterSize,
-      set: val => store.commit('setSplitterSize', val)
-    },
-    currentGroupUuid: {
-      get: () => store.getters.currentGroupUuid,
-      set: val => store.commit('setCurrentGroupUuid', val)
+    selectedGroup: {
+      get() {
+        return this.$store.state.selectedGroup
+      },
+      set(val) {
+        this.$store.commit('setSelectedGroup', val)
+      }
     },
     isListView: {
-      get: () => store.getters.isListView,
+      get() {
+        return this.$store.getters.isListView
+      },
+    },
+    autoExpandUuid() {
+      const item = this.curItem
+      if (item) {
+        return item.data.uuid
+      }
+      return null
     }
   },
+  mounted() {
+    this.$refs.groupView.updateTree()
+    mainBus.$on(BUS_SHOW_PREVIEW, this.handlePreviewItem)
+  },
+  beforeDestroy() {
+    mainBus.$off(BUS_SHOW_PREVIEW, this.handlePreviewItem)
+  },
+  activated() {
+  },
   methods: {
-    handleAddEntry(data) {
-      const result = addEntry(this.database, data.groupUuid || this.currentGroupUuid, {
-        title: data.title,
-        icon: data.iconIndex,
-        bgColor: data.bgColor,
-        fgColor: data.fgColor
+    addEntrySuccess({entry, group}) {
+      this.$store.commit('setSelectedGroup', group)
+      this.$nextTick(() => {
+        this.$refs.entryList.loadEntryList()
       })
-      if (result) {
-        this.$router.push({
-          name: 'Detail'
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          uuid: entry.uuid
+        }
+      })
+    },
+    refreshGroup() {
+      this.$refs.groupView.updateTree()
+      this.$refs.groupChooser.updateTree()
+    },
+    handleAddEntry(group) {
+      this.isAddGroup = false
+      this.isShowDialogAdd = true
+      if (group) {
+        this.$nextTick(() => {
+          this.$refs.dialogAdd.setGroupInfo(group)
         })
       }
     },
-    handleAddEntryFromGroup(group) {
-      this.isDialogAddEntryVisible = true
+    handleAddGroup(group) {
+      this.isAddGroup = true
+      this.isShowDialogAdd = true
       this.$nextTick(() => {
-        this.$refs.addEntry.getGroupInfo(group)
+        this.$refs.dialogAdd.setGroupInfo(group)
       })
+    },
+    handleDeleteGroup(item) {
+      const msgAction = getRecycleText(item.data.uuid)
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('confirm'),
+          useHTML: true,
+          content: `${this.$t('menu.are-you-sure')} <b>${msgAction}</b>?<br><p>${item.title}</p>`,
+        },
+        parentEl: this.$el
+      }).onConfirm(async () => {
+        await removeGroup({
+          groupUuid: item.data.uuid
+        })
+        this.$store.commit('setIsChanged', true)
+        this.refreshGroup()
+      })
+    },
+    handlePreviewItem(item) {
+      this.isShowPreview = true
+      this.previewItem = item
+    },
+    handleRename(item) {
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('rename'),
+          input: {
+            value: item.title,
+            required: true,
+            placeholder: item.title,
+          }
+        },
+        parentEl: this.$el
+      }).onConfirm(async (context) => {
+        if (this.inputValue === item.title) {
+          return
+        }
+        await updateGroup({
+          uuid: item.data.uuid,
+          updates: [
+            {path: 'name', value: this.inputValue},
+          ]
+        })
+        item.title = this.inputValue
+        this.$store.commit('setIsChanged', true)
+      })
+    },
+    async updateIcon(icon) {
+      const item = this.curItem
+
+      await updateGroup({
+        uuid: item.data.uuid,
+        updates: [
+          {path: 'icon', value: icon},
+        ]
+      })
+
+      item.data.icon = icon
+      this.$store.commit('setIsChanged', true)
+      this.curIcon = null
+      this.curItem = null
+    },
+    handleChangeIcon(item) {
+      this.isShowChooseIcon = true
+      this.curIcon = item.data.icon
+      this.curItem = item
+    },
+    async changeGroup(group) {
+      console.log(group)
+
+      await moveGroup({
+        uuid: this.curItem.data.uuid,
+        targetUuid: group.data.uuid,
+      })
+
+      this.refreshGroup()
+      this.$store.commit('setIsChanged', true)
+      this.isShowChooseGroup = false
+      this.curItem = null
+    },
+    handleMove(item) {
+      this.isShowChooseGroup = true
+      this.curItem = item
     }
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .home-page {
-  height calc(100vh - 50px)
+  height: calc(100vh - 50px);
+  display: flex;
+
+  .nav-tree {
+    transition: $common-transition;
+    width: 350px;
+  }
+
+  .home-right {
+    flex: 1;
+    border-radius: 0;
+    border: none;
+    border-left: $layout-border;
+    background: rgba(255, 255, 255, .5);
+  }
+
+  @media screen and (max-width: $mq_tablet_width) {
+    .nav-tree {
+      width: 240px;
+    }
+  }
+
+  @media screen and (max-width: $mq_mobile_width) {
+    flex-direction: column;
+    .nav-tree {
+      width: 100%;
+      height: 150px;
+    }
+    .home-right {
+      height: 100%;
+      overflow: hidden;
+      border-left: none;
+      border-top: $layout-border;
+    }
+  }
+
+  .sticky-area {
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    z-index: 20;
+
+    button {
+      box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 
-.nav-tree {
-  min-width 350px
+.tk-dark-theme {
+  .home-page {
+    .home-right {
+      background: transparent;
+    }
+  }
 }
 </style>

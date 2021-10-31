@@ -1,23 +1,22 @@
 {
-  "name": "kee-diary-vue-frontend",
-  "version": "1.0.0",
+  "name": "kee-note-frontend",
+  "version": "2.0.0",
   "private": true,
-  "author": "canwdev",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lint-fix": "eslint --ext .js,.vue --fix src"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@canwdev/tank-ui": "^0.2.18",
     "axios": "^0.21.0",
-    "codemirror": "^5.57.0",
     "core-js": "^3.6.5",
-    "hypermd": "^0.3.11",
-    "kdbxweb": "https://gitee.com/canwdev/kdbxweb.git",
     "lodash": "^4.17.20",
     "marked": "^1.1.1",
-    "quasar": "^1.0.0",
+    "material-design-icons-iconfont": "^6.1.0",
+    "monaco-editor": "^0.29.1",
+    "normalize.css": "^8.0.1",
     "solarlunar": "^2.0.7",
     "v-calendar": "^1.1.1",
     "vue": "^2.6.11",
@@ -32,14 +31,10 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-transform-imports": "1.5.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "style-resources-loader": "^1.3.3",
-    "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-quasar": "~2.0.2",
-    "vue-cli-plugin-style-resources-loader": "^0.1.4",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   }
 }

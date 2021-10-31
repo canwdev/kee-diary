@@ -1,7 +1,7 @@
 <template>
   <span
-      v-if="lunarData"
-      :title="JSON.stringify(lunarData, null, 2)"
+    v-if="lunarData"
+    :title="JSON.stringify(lunarData, null, 2)"
   >
     {{ lunarData.dayCn }}
   </span>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "DayDetail",
+  name: 'DayDetail',
   props: {
     lunarData: {
       type: Object,
@@ -18,7 +18,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,74 +1,71 @@
 <template>
-  <q-dialog
+  <div>
+    <TkModalDialog
       v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
-  >
-    <q-card>
-      <q-card-section>
-        <div class="text-h6 row items-center">
-          <IconShow
-              :item="{icon:index}"
+      show-close
+    >
+      <TkCard class="card-choose-icon">
+        <div class="flex items-center">
+          <ItemIcon
+            :item="{icon:index}"
           />
-          <span class="q-ml-md">{{$t('choose-icon')}}</span>
+          <span class="">{{ $t('choose-icon') }}</span>
         </div>
-      </q-card-section>
 
-      <q-separator/>
+        <hr/>
 
-      <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md">
-          <q-btn
-              v-for="(item, i) in icons"
-              :key="i"
-              @click="handleSelect(i)"
-              @contextmenu="handlePreview(i)"
-              :flat="i !== selectedIndex"
-              color="primary"
-              round
+        <div class="icon-palette">
+          <TkButton
+            v-for="(item, i) in icons"
+            :key="i"
+            :title="item.name"
+            size="no-style"
+            class="icon-item"
+            :class="{active: i === selectedIndex }"
+            @click="handleSelect(i)"
+            @contextmenu="handlePreview(i)"
           >
-            <IconShow
-                :item="{icon:i}"
-                :icon-scale="1"
+            <ItemIcon
+              :item="{icon:i}"
+              :icon-scale="1.2"
             />
-            <q-tooltip>
-              {{ item.name }}
-            </q-tooltip>
-          </q-btn>
-        </q-card>
-      </q-card-section>
+          </TkButton>
+        </div>
 
-      <q-separator/>
-
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
-        <q-btn
+        <hr/>
+        <div class="action-btn-row">
+          <TkButton :label="$t('cancel')" @click="mVisible = false"/>
+          <TkButton
             :disabled="index === selectedIndex"
+            :label="$t('choose')"
+
             @click="handleChoose"
-            flat :label="$t('choose')" color="primary"/>
-      </q-card-actions>
-    </q-card>
+          />
+        </div>
+      </TkCard>
+
+    </TkModalDialog>
 
     <DialogPreview
-        :visible.sync="isPreviewIconVisible"
+      :visible.sync="isPreviewIconVisible"
     >
-      <IconShow
-          size="256px"
-          :item="{icon:previewIndex}"
-          :icon-scale="1"
+      <ItemIcon
+        size="256px"
+        :item="{icon:previewIndex}"
+        :icon-scale="1"
       />
     </DialogPreview>
-  </q-dialog>
+  </div>
 </template>
 
 <script>
 import icons from '@/assets/db-icons'
-import IconShow from "./IconShow"
-import DialogPreview from "./DialogPreview"
+import ItemIcon from './ItemIcon.vue'
+import DialogPreview from './DialogPreview.vue'
 
 export default {
   components: {
-    IconShow,
+    ItemIcon,
     DialogPreview
   },
   props: {
@@ -97,6 +94,11 @@ export default {
         this.selectedIndex = nv
       },
       immediate: true
+    },
+    mVisible(val) {
+      if (!val) {
+        this.selectedIndex = this.index
+      }
     }
   },
   data() {
@@ -126,3 +128,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-choose-icon {
+  max-width: 500px;
+
+  .icon-palette {
+    max-height: 70vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    padding: 10px 0;
+
+    .icon-item {
+      margin: 5px;
+      padding: 2px;
+
+      &.active {
+        outline: 2px dashed $primary;
+      }
+    }
+  }
+}
+</style>

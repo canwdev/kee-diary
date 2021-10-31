@@ -1,45 +1,58 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
+    show-close
   >
-    <q-card style="min-width: 400px">
-      <q-card-section>
-        <div class="text-h6 row items-center">
-          <span>{{$t('choose-group')}}</span>
-        </div>
-      </q-card-section>
+    <TkCard class="card-choose-group">
+      <div class="flex items-center">
+        <span>{{ $t('choose-group') }}</span>
+      </div>
 
-      <q-separator/>
+      <hr/>
 
-      <q-card-section style="max-height: 70vh" class="scroll">
-        <q-card flat class="q-gutter-md" v-if="mVisible">
-          <p v-if="showTips" class="text-weight-thin">{{$t('tip')}}: {{$t('kdbx.do-not-move-to-the-group-itself')}}</p>
-          <GroupTree
-              :selectedGroupUuid.sync="selected"
-          />
-        </q-card>
-      </q-card-section>
+      <div class="card-tree">
+        <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
+          tips
+        }}</p>
+        <GroupTree
+          ref="treeRef"
+          :selected.sync="selected"
+        />
+      </div>
 
-      <q-separator/>
+      <hr/>
 
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup/>
-        <q-btn
-            :disabled="!selected"
-            @click="handleChoose"
-            flat :label="$t('choose')" color="primary" v-close-popup/>
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      <div class="action-btn-row">
+
+        <TkButton flat :label="$t('cancel')" @click="mVisible = false"/>
+        <TkButton
+          :disabled="!selected"
+          :label="$t('choose')"
+          @click="handleChoose"
+        />
+      </div>
+    </TkCard>
+  </TkModalDialog>
 </template>
 
 <script>
-import GroupTree from "@/views/Home/GroupTree"
+import GroupTree from '@/components/GroupTree.vue'
+
+const checkParent = (node, uuid) => {
+  if (!node) {
+    return false
+  }
+  if (uuid === node.data.uuid) {
+    return true
+  }
+  if (node.parent) {
+    return checkParent(node.parent, uuid)
+  }
+  return false
+}
 
 export default {
-  name: "DialogChooseGroup",
+  name: 'DialogChooseGroup',
   components: {
     GroupTree
   },
@@ -48,10 +61,18 @@ export default {
       type: Boolean,
       default: false
     },
-    showTips: {
+    tips: {
+      type: String,
+      default: null
+    },
+    autoExpandUuid: {
+      type: String,
+      default: null
+    },
+    notAllowSelectSub: {
       type: Boolean,
       default: false
-    }
+    },
   },
   data() {
     return {
@@ -68,14 +89,56 @@ export default {
       }
     }
   },
+  watch: {
+    mVisible: {
+      handler(val) {
+        if (val && this.autoExpandUuid) {
+          // console.log('autoExpandUuid', this.autoExpandUuid)
+          this.$nextTick(() => {
+            this.expandNodeByUuid(this.autoExpandUuid)
+          })
+        }
+      }
+    }
+  },
   methods: {
+    updateTree() {
+      this.$refs.treeRef.getTreeData()
+    },
     handleChoose() {
+      if (this.notAllowSelectSub) {
+        const isSub = checkParent(this.selected, this.autoExpandUuid)
+        if (isSub) {
+          if (this.tips) {
+            this.$toast.warning(this.tips)
+          }
+          return
+        }
+      }
       this.$emit('onChoose', this.selected)
+    },
+    expandNodeByUuid(uuid) {
+      const node = this.$refs.treeRef.findNode(uuid)
+      console.log('node', node)
+      if (!node) {
+        return
+      }
+      node.$click()
+      this.$refs.treeRef.openNode(node)
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.card-choose-group {
+  min-width: 400px;
 
+  .card-tree {
+    max-height: 70vh;
+    overflow: auto;
+  }
+
+}
 </style>
+

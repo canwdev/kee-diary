@@ -1,11 +1,39 @@
 <template>
-  <div id="app">
+  <div id="app" class="tk-scroll" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme']">
     <router-view/>
   </div>
 </template>
 
-<style lang="stylus">
+<script>
+import {mapGetters} from 'vuex'
+import {hexToRgb} from '@/utils/color'
+
+export default {
+  computed: {
+    ...mapGetters([
+      'isDarkMode'
+    ]),
+  },
+  created() {
+    const themeColor = this.$store.getters.themeColor
+    // console.log('themeColor', themeColor.value)
+    if (themeColor) {
+      const {r, g, b} = hexToRgb(themeColor)
+      const root = document.documentElement
+      root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
+    }
+  },
+  mounted() {
+    document.body.classList.add('body-bordered')
+  }
+}
+</script>
+
+<style lang="scss">
 #app {
-  user-select none
+  height: 100%;
+  //border-radius: 8px;
+  overflow: hidden;
+  //user-select: none
 }
 </style>

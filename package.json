@@ -1,18 +1,19 @@
 {
-  "name": "kee-diary-vue-electron",
-  "appName": "KeeDiary",
-  "version": "0.3.11",
-  "description": "A diary app that use kdbx to encrypt your diary",
+  "name": "kee-note",
+  "appName": "KeeNote",
+  "version": "3.0.2",
+  "description": "A note editor application that uses KeePass.",
   "repository": "",
   "private": true,
   "author": "canwdev",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "inst": "yarn install && yarn install --cwd './frontend'",
+    "inst": "yarn install && yarn install --cwd frontend",
     "dev": "node start-dev.js",
-    "dev:frontend": "cross-env PORT=12020 yarn --cwd './frontend' serve",
-    "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:12020 electron .",
+    "dev:frontend": "cross-env PORT=8081 yarn --cwd './frontend' serve",
+    "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:8081 electron .",
+    "prod:electron": "cross-env ELECTRON_IS_DEV=0 electron .",
     "build": "yarn run build:frontend && yarn run build:electron-dir",
     "build:frontend": "cross-env yarn --cwd './frontend' build",
     "build:electron-dir": "electron-builder --dir",
@@ -22,10 +23,14 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "electron": "^10.1.2",
-    "electron-builder": "^22.8.0"
+    "electron-builder": "^22.8.0",
+    "vue-devtools": "^5.1.4"
   },
   "dependencies": {
-    "electron-window-state": "^5.0.3",
-    "node-fetch": "^2.6.1"
+    "@canwdev/electron-utils": "^0.1.0",
+    "@canwdev/electron-window-manager": "^0.1.7",
+    "fs-extra": "^10.0.0",
+    "kdbxweb": "^2.1.1",
+    "node-fetch": "2.6.2"
   }
 }

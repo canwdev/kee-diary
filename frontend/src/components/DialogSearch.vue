@@ -1,133 +1,119 @@
 <template>
-  <q-dialog
-      v-model="mVisible"
-      transition-show="fade"
-      transition-hide="fade"
+  <TkModalDialog
+    v-model="mVisible"
   >
-    <q-card style="width: 420px">
+    <TkCard style="width: 420px">
       <form @submit.prevent="handleSearch">
 
-        <q-card-section>
+        <TkCard>
           <div class="text-h6 row items-center">
             <div class="text-h6 row items-center">
-              <q-icon name="search"/>
               <span class="q-ml-sm">搜索</span>
             </div>
-            <q-space/>
-            <q-btn icon="close" flat round dense v-close-popup/>
+
+            <TkButton icon="close" @click="mVisible = false"/>
           </div>
-        </q-card-section>
+        </TkCard>
 
-        <q-separator/>
+        <hr/>
 
-        <q-card-section class="form-wrap q-pa-md q-gutter-md">
+        <TkCard class="form-wrap  q-gutter-md">
           <div class="form-row">
             <div class="row-title q-mb-xs">要搜索的群组:</div>
             <div class="row-content flex-1">
-              <q-btn
-                  @click="isDialogChooseGroupVisible = true"
-                  outline
-                  class="list-btn"
+              <TkButton
+                outline
+                class="list-btn"
+                @click="isDialogChooseGroupVisible = true"
               >
-                <IconShow
-                    :item="{icon: groupInfo.iconIndex}"
+                <ItemIcon
+                  :item="{icon: groupInfo.iconIndex}"
                 />
                 {{ groupInfo.name }}
-              </q-btn>
+              </TkButton>
             </div>
           </div>
 
           <div class="form-row">
             <div class="row-title q-mb-xs">搜索标题、内容 *</div>
             <div class="row-content">
-              <q-input dense outlined v-model="searchText" autofocus/>
+              <TkInput v-model="searchText" outlined autofocus/>
             </div>
           </div>
 
-        </q-card-section>
+        </TkCard>
 
-        <q-separator/>
+        <hr/>
 
-        <q-card-actions class="q-px-md">
-          <q-toggle
-              size="sm"
-              v-model="isDeep"
-              label="搜索子群组"
+        <TkCard class="q-px-md">
+          <TkSwitch
+            v-model="isDeep"
+            size="sm"
+          >搜索子群组
+          </TkSwitch>
+
+          <TkButton
+            label="清除"
+
+            @click="clearSearch"
           />
-          <q-space/>
-          <q-btn
-              flat
-              label="清除"
-              color="primary"
-              @click="clearSearch"
+          <TkButton
+            :disable="!searchText"
+            label="搜索"
+            type="submit"
           />
-          <q-btn
-              :disable="!searchText"
-              label="搜索"
-              type="submit"
-              color="primary"
-          />
-        </q-card-actions>
+        </TkCard>
       </form>
 
-      <q-separator/>
+      <hr/>
 
-      <div v-if="!searchResults.length" class="text-center q-pa-md">
+      <div v-if="!searchResults.length" class="text-center ">
         无搜索结果
       </div>
-      <div v-else class="result-list q-pa-md">
-        <q-btn
-            flat
-            v-for="item in searchResults"
-            :key="item.uuid.id"
-            class="list-btn"
-            @click="handlePreview(item)"
-            :style="{
-                      background: item.bgColor,
-                      color: item.fgColor
-                    }"
+      <div v-else class="result-list ">
+        <TkButton
+          v-for="item in searchResults"
+          :key="item.uuid.id"
+          class="list-btn"
+          :style="{
+            background: item.bgColor,
+            color: item.fgColor
+          }"
+          @click="handlePreview(item)"
         >
-          <IconShow
-              :item="{iconIndex: item.icon}"
-              size="16px"
-              :icon-scale="1"
+          <ItemIcon
+            :item="{iconIndex: item.icon}"
+            size="16px"
+            :icon-scale="1"
           />
           <span class="entry-title q-ml-sm">{{ item.fields.Title }}</span>
-        </q-btn>
+        </TkButton>
       </div>
 
-      <q-inner-loading :showing="isLoading">
-        <q-spinner-gears size="50px" color="primary"/>
-      </q-inner-loading>
+      <TkLoading :visible="isLoading">
+      </TkLoading>
 
-    </q-card>
-
-    <DialogPreviewEntry
-        :visible.sync="isDialogPreviewVisible"
-        :entry="currentEntry"
-    />
+    </TkCard>
 
     <DialogChooseGroup
-        :visible.sync="isDialogChooseGroupVisible"
-        @onChoose="getGroupInfo"
+      :visible.sync="isDialogChooseGroupVisible"
+      @onChoose="getGroupInfo"
     />
 
-  </q-dialog>
+  </TkModalDialog>
 </template>
 
 <script>
-import store from "@/store"
-import DialogPreviewEntry from "@/components/DialogPreviewEntry"
-import DialogChooseGroup from "@/components/DialogChooseGroup"
-import IconShow from "@/components/IconShow"
-import {searchEntries} from "@/utils/kdbx-utils"
+import {mapGetters} from 'vuex'
+import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
+import ItemIcon from '@/components/ItemIcon.vue'
+// import {searchEntries} from '@/utils/kdbx-utils'
 
 export default {
-  name: "DialogSearch",
+  name: 'DialogSearch',
   components: {
     DialogChooseGroup,
-    DialogPreviewEntry,
-    IconShow
+    ItemIcon
   },
   props: {
     visible: {
@@ -152,6 +138,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'selectedGroup'
+    ]),
     mVisible: {
       get() {
         return this.visible
@@ -160,18 +149,12 @@ export default {
         this.$emit('update:visible', nv)
       }
     },
-    currentGroupUuid: {
-      get: () => store.getters.currentGroupUuid,
-    },
-    database: {
-      get: () => store.getters.database
-    },
   },
   watch: {
     mVisible: {
       handler(nv) {
         if (nv) {
-          this.getGroupInfo(this.currentGroupUuid)
+          this.getGroupInfo(this.selectedGroup)
         }
       },
       immediate: true
@@ -190,12 +173,12 @@ export default {
       }
       try {
         this.isLoading = true
-        this.searchResults = searchEntries(
-            this.database,
-            this.groupInfo.groupUuid,
-            this.searchText,
-            this.isDeep
-        )
+        // this.searchResults = searchEntries(
+        //   this.database,
+        //   this.groupInfo.groupUuid,
+        //   this.searchText,
+        //   this.isDeep
+        // )
         // console.log('this.searchResults', this.searchResults)
       } catch (e) {
         console.error(e)
@@ -215,21 +198,21 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .flex-1 {
-  flex 1
+  flex: 1;
 }
 
 .list-btn {
-  width: 100%
+  width: 100%;
 
-  >>> .q-btn__content {
-    justify-content flex-start !important
+  ::v-deep .TkButton__content {
+    justify-content: flex-start !important;
   }
 }
 
 .result-list {
-  max-height 300px
+  max-height: 300px;
   overflow: auto;
 }
 </style>

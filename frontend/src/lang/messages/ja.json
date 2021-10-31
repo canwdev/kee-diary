@@ -2,7 +2,7 @@
   "about": {
     "btnHome": "ホームページに戻ります",
     "btnLogDatabase": "データベースをコンソールに出力",
-    "info": "信頼できる日記編集者"
+    "info": "暗号化されたエッセイエディター"
   },
   "and-exit": "次に終了します",
   "background": "バックグラウンド",
@@ -28,20 +28,20 @@
     "darkMode": "ダークモード",
     "listView": "リストビュー",
     "navigation": "ナビゲーション",
-    "settings": "セットアップ"
+    "settings": "セットアップ",
+    "language": "言語"
   },
   "edit": "編集",
   "exit": "脱落",
   "export-file": "ファイルのエクスポート",
   "foreground": "見込み",
   "header": {
-    "close": "データベースを閉じる",
+    "lock": "データベースを閉じる",
     "save": "保存する",
     "search": "検索する",
     "unlocked": "（ロック解除）"
   },
   "home": {
-    "add-entry": "エントリを追加",
     "created": "作成時間",
     "modified": "時間を変更する",
     "title": "題名"
@@ -49,7 +49,7 @@
   "insert": "インサート",
   "kdbx": {
     "database-not-exist": "データベースインスタンスが存在しません",
-    "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。\nこのバグは一時的に解決できません。",
+    "do-not-move-to-the-group-itself": "グループをそれ自体またはサブグループに移動しないでください。移動すると、グループが消えます。",
     "not-allowed-move-group-itself": "グループ自体への移動は許可されていません",
     "saved-successfully": "正常に保存されました",
     "there-are-unsaved": "保存されていない変更があります。保存しますか？"
@@ -62,7 +62,7 @@
     "password": "パスワード",
     "saveHistory": "履歴を保存",
     "unlock": "ロックを解除する",
-    "welcome": "KeeDiaryへようこそ"
+    "welcome": "KeeNote へようこそ"
   },
   "menu": {
     "are-you-sure": "よろしいですか",

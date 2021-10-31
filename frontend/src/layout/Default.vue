@@ -1,34 +1,36 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-inner-loading class="_loading" :showing="isGlobalLoading">
-      <q-spinner-gears
-          color="primary"
-          size="5em"
-      />
-    </q-inner-loading>
+  <div class="default-layout">
+    <TkLoading size="xl" theme="white" :visible="isGlobalLoading" fixed/>
 
-    <DefaultHeader
-        :title="pkg.appName"
-        @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
-        @onBackClick="handleBack"
+    <NavHeader
+      title="KeeNote"
+      @onMenuClick="leftDrawerOpen = !leftDrawerOpen"
+      @onBackClick="handleBack"
     />
-    <q-page-container>
-      <router-view/>
-    </q-page-container>
-    <DefaultDrawer v-model="leftDrawerOpen"/>
-  </q-layout>
+
+    <NavDrawer
+      v-model="leftDrawerOpen"
+      title="KeeNote"
+    />
+
+    <div class="default-layout-content">
+      <keep-alive :include="['HomeView']">
+        <router-view/>
+      </keep-alive>
+    </div>
+  </div>
 </template>
 
 <script>
-import DefaultDrawer from "../components/DefaultDrawer"
-import DefaultHeader from "../components/DefaultHeader"
-import {registerKeyShortcuts, unRegisterKeyShortcuts} from "@/utils/key-shortcuts"
+import NavDrawer from '../components/NavDrawer.vue'
+import NavHeader from '../components/NavHeader.vue'
+import {registerKeyShortcuts, unRegisterKeyShortcuts} from '@/utils/key-shortcuts'
 
 export default {
   name: 'LayoutDefault',
   components: {
-    DefaultDrawer,
-    DefaultHeader,
+    NavDrawer,
+    NavHeader,
   },
   data() {
     return {
@@ -36,11 +38,8 @@ export default {
     }
   },
   computed: {
-    pkg() {
-      return this.$store.getters.pkg
-    },
     isGlobalLoading() {
-      return this.$store.getters.isGlobalLoading
+      return this.$store.state.isGlobalLoading
     }
   },
   mounted() {
@@ -59,8 +58,17 @@ export default {
 }
 </script>
 
-<style scoped>
-._loading {
-  z-index: 3000;
+<style lang="scss" scoped>
+.default-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .default-layout-content {
+    flex: 1;
+    overflow: hidden;
+  }
 }
 </style>
+

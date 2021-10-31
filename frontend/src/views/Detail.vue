@@ -1,346 +1,284 @@
 <template>
-  <q-page class="row justify-center">
-    <div class="col-sm-12 col-md-10 q-pa-lg">
-      <q-card style="height: 100%">
-        <q-card-section class="q-gutter-y-xs">
-          <q-input
-              v-if="isEntryOpen"
-              v-model="editing.title"
-              dense
-              color="secondary"
-              placeholder="entry.fields.Title">
-            <template v-slot:prepend>
-              <IconShow
-                  class="cursor-pointer"
-                  @click.native="isDialogPreviewVisible = true"
-                  :item="currentEntry"
-              >
-                <q-tooltip>{{$t('preview')}} (Ctrl+/)</q-tooltip>
-              </IconShow>
-            </template>
+  <div class="detail-view flex items-center justify-center">
+    <TkCard solid class="edit-card">
+      <div class="title-row flex">
+        <ItemIcon
+            class="cursor-pointer"
+        >
+          {{ $t('preview') + '1' }} (Ctrl+/)
+        </ItemIcon>
 
-            <ContextMenuCommon
-                :target-data="currentEntry"
-                :hidden-items="['edit', 'rename']"
-                @onPreview="handlePreview"
-                @onChangeIcon="isDialogChooseIconVisible = true"
-                @onChangeColor="isDialogChooseColorVisible = true"
-            />
-          </q-input>
+        <TkInput
+            v-model="editData.title"
+            placeholder="Title"
+            class="title-input"
+            size="lg"
+        />
+      </div>
 
-          <div style="overflow: auto; height: calc(100vh - 230px)">
-            <textarea id="input-area"></textarea>
-          </div>
+      <hr>
 
-          <q-toolbar :class="[isDarkMode ? 'bg-grey-9':'bg-grey-3']">
-            <div class="row q-gutter-x-md">
-              <q-toggle
-                  v-model="isEditWYSIWYG"
-                  color="secondary"
-                  checked-icon="note"
-                  unchecked-icon="code"
-              >
-                <q-tooltip anchor="top middle" self="center middle">{{$t('detail.iswysiwyg')}}</q-tooltip>
-              </q-toggle>
-              <q-select
-                  dense
-                  color="secondary"
-                  v-model="editorTheme" :options="themeOptions"
-                  style="width: 150px"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="style"/>
-                </template>
-              </q-select>
-              <q-btn-group flat>
-                <q-btn
-                    @click="handleChangeFont"
-                    dense icon="text_fields">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.changeFontFamily')}}</q-tooltip>
-                </q-btn>
-              </q-btn-group>
-              <q-btn-group flat>
-                <q-btn
-                    @click="handleLoad"
-                    dense icon="archive">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.load-outer-text-file')}}</q-tooltip>
-                </q-btn>
-                <q-btn
-                    @click="handleExport"
-                    dense icon="unarchive">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.export-to-text-file')}}</q-tooltip>
-                </q-btn>
-                <q-btn
-                    dense icon="open_in_browser">
-                  <q-tooltip anchor="top middle" self="center middle">{{$t('detail.edit-with-external')}}
-                  </q-tooltip>
-                </q-btn>
-              </q-btn-group>
-            </div>
+      <div class="settings-row">
+        <TkDropdown
+            v-model="editorTheme"
+            dense
+            color="secondary"
+            :options="themeOptions"
+            style="width: 150px"
+        >
+          <template v-slot:prepend>
+            <q-icon name="style"/>
+          </template>
+        </TkDropdown>
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="text_fields"-->
+        <!--          @click="handleChangeFont"-->
+        <!--        >-->
+        <!--          {{ $t('detail.changeFontFamily') }}-->
+        <!--        </TkButton>-->
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="archive"-->
+        <!--          @click="handleLoad"-->
+        <!--        >-->
+        <!--          {{-->
+        <!--            $t('detail.load-outer-text-file')-->
+        <!--          }}-->
+        <!--        </TkButton>-->
+        <!--        <TkButton-->
+        <!--          dense-->
+        <!--          icon="unarchive"-->
+        <!--          @click="handleExport"-->
+        <!--        >-->
+        <!--          {{ $t('detail.export-to-text-file') }}-->
+        <!--        </TkButton>-->
 
+        <span>{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
+      </div>
 
-            <q-space/>
-            <div class="date-display text-right" v-if="isEntryOpen">
-              <span>{{$t('home.created')}}: <DateTimeEdit :date.sync="editing.creationTime"/></span>
-              <span>{{$t('home.modified')}}: <DateTimeEdit disabled :date="lastModTime"/></span>
-            </div>
-          </q-toolbar>
-        </q-card-section>
-      </q-card>
-    </div>
+      <hr>
 
-    <DialogPreviewEntry
-        :visible.sync="isDialogPreviewVisible"
-        :entry="currentEntry"
-    />
-
-    <DialogChooseIcon
-        :visible.sync="isDialogChooseIconVisible"
-        :index="currentEntry.icon"
-        @onChoose="handleUpdateIcon"
-    />
-
-
-    <DialogChooseColor
-        :item="currentEntry"
-        :visible.sync="isDialogChooseColorVisible"
-        @onChoose="handleUpdateColor"
-    />
-  </q-page>
+      <div class="editor-wrap">
+        <div id="code-container" style="height:100%;"></div>
+      </div>
+    </TkCard>
+  </div>
 </template>
 
 <script>
-import store from '@/store'
-import * as HyperMD from 'hypermd'
-// 语法高亮
-import "codemirror/mode/htmlmixed/htmlmixed" // Markdown 内嵌HTML
-import "codemirror/mode/stex/stex" // TeX 数学公式
-import "codemirror/mode/yaml/yaml" // Front Matter
+import {mapGetters} from 'vuex'
+import * as monaco from 'monaco-editor'
 
-// CodeMirror Theme
-import 'codemirror/theme/idea.css'
-import 'codemirror/theme/elegant.css'
-import 'codemirror/theme/yeti.css'
-import 'codemirror/theme/darcula.css'
-import 'codemirror/theme/dracula.css'
-import 'codemirror/theme/gruvbox-dark.css'
-import 'codemirror/theme/lesser-dark.css'
-import 'codemirror/theme/material.css'
-import 'codemirror/theme/monokai.css'
-import 'codemirror/theme/mdn-like.css'
-import 'codemirror/theme/rubyblue.css'
-import 'codemirror/theme/solarized.css'
-import 'codemirror/theme/the-matrix.css'
+import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
+import {formatDate} from '@/utils'
+import ItemIcon from '@/components/ItemIcon.vue'
+import {getEntryDetail, updateEntry} from '@/api'
 
-import bus, {BUS_SAVE_NOTES_START} from '@/utils/bus'
-import DateTimeEdit from "../components/DateTimeEdit"
-import DialogPreviewEntry from "@/components/DialogPreviewEntry"
-import {notifyError, notifySuccess} from "../utils"
-import ContextMenuCommon from "@/components/ContextMenuCommon"
-import DialogChooseIcon from "@/components/DialogChooseIcon"
-import IconShow from "@/components/IconShow"
-import DialogChooseColor from "@/components/DialogChooseColor"
+import {textFilters as filters} from '@/enum'
 
-import {textFilters as filters} from "../utils/enum"
+const themeOptions = [
+  'vs',
+  'vs-dark',
+  'hc-black'
+]
 
 export default {
-  name: "Detail",
+  name: 'Detail',
   components: {
-    DateTimeEdit,
-    DialogPreviewEntry,
-    ContextMenuCommon,
-    DialogChooseIcon,
-    IconShow,
-    DialogChooseColor
+    ItemIcon,
   },
   data() {
     return {
-      editing: {
+      editData: {
         title: '',
         creationTime: '',
       },
-      lastModTime: '',
-      isDialogPreviewVisible: false,
-      isDialogChooseIconVisible: false,
-      isDialogChooseColorVisible: false,
-      themeOptions: [
-        'hypermd-light',
-        'default',
-        'idea',
-        'elegant',
-        'yeti',
-        'darcula',
-        'dracula',
-        'gruvbox-dark',
-        'lesser-dark',
-        'material',
-        'monokai',
-        'mdn-like',
-        'rubyblue',
-        'solarized dark',
-        'solarized light',
-        'the-matrix',
-      ],
-      isDisableEsc: false
+      themeOptions,
+      isDisableEsc: false,
+      isLoading: false
     }
   },
   computed: {
-    isDarkMode: {
-      get: () => store.getters.isDarkMode,
-    },
-    isEntryOpen: () => store.getters.isEntryOpen,
-    isGlobalLoading: () => store.getters.isGlobalLoading,
-    isEditWYSIWYG: {
-      get: () => store.getters.isEditWYSIWYG,
-      set: val => store.commit('setIsEditWYSIWYG', val)
+    ...mapGetters([
+      'isDarkMode'
+    ]),
+    isChanged: {
+      get() {
+        return this.$store.state.isChanged
+      },
+      set(val) {
+        this.$store.commit('setIsChanged', val)
+      }
     },
     editorTheme: {
-      get: () => store.getters.editorTheme || 'hypermd-light',
-      set: val => store.commit('setEditorTheme', val)
+      get() {
+        return this.$store.getters.editorTheme || themeOptions[0]
+      },
+      set(val) {
+        this.$store.commit('setEditorTheme', val)
+      }
     },
     editorFontSize: {
-      get: () => store.getters.editorFontSize,
-      set: val => store.commit('setEditorFontSize', val)
+      get() {
+        return this.$store.getters.editorFontSize
+      },
+      set(val) {
+        this.$store.commit('setEditorFontSize', val)
+      }
     },
     editorFontFamily: {
-      get: () => store.getters.editorFontFamily,
-      set: val => store.commit('setEditorFontFamily', val)
+      get() {
+        return this.$store.getters.editorFontFamily
+      },
+      set(val) {
+        this.$store.commit('setEditorFontFamily', val)
+      }
     },
-    currentEntry: {
-      get: () => store.getters.currentEntry,
-      set: val => store.commit('setCurrentEntry', val)
-    },
-    lockEsc() {
-      return this.isDialogPreviewVisible || this.isDialogChooseIconVisible || this.isGlobalLoading || this.isDisableEsc
+    uuid() {
+      return this.$route.params.uuid
     }
   },
   watch: {
-    currentEntry: {
-      handler(nv) {
-        if (!nv) {
-          this.editor && this.editor.setValue('')
+    editorTheme(nv) {
+      this.editor.updateOptions({
+        theme: nv
+      })
+    },
+    editData: {
+      handler() {
+        if (this.isLoading) {
           return
         }
-        this.editing = {
-          title: nv.fields.Title,
-          creationTime: nv.times.creationTime,
-        }
-        this.lastModTime = nv.times.lastModTime
-        this.editor && this.editor.setValue(nv.fields.Notes)
-      },
-      immediate: true,
-    },
-    isEditWYSIWYG(nv) {
-      if (nv) {
-        HyperMD.switchToHyperMD(this.editor)
-      } else {
-        HyperMD.switchToNormal(this.editor)
-      }
-      this.editor.setOption("theme", this.editorTheme);
-    },
-    editorTheme(nv) {
-      this.editor.setOption("theme", nv);
-    },
-    editing: {
-      handler() {
-        store.commit('setIsNotSave')
-        const entry = this.currentEntry
-        entry.fields.Title = this.editing.title
-        entry.times.creationTime = this.editing.creationTime
-        this.updateTime()
+        this.isChanged = true
       },
       deep: true
     }
   },
-  mounted() {
-    if (!this.isEntryOpen) {
-      console.warn('Entry is not open')
-      this.$router.push({
-        name: 'Home'
-      })
-      return
-    }
+  async mounted() {
+    await this.initEntryData()
 
-    this.initHyperMD()
-    bus.$on(BUS_SAVE_NOTES_START, (resolve) => {
+    mainBus.$on(BUS_SYNC_ENTRY_DETAIL, (cb) => {
       this.syncNotes()
-      resolve()
+      cb && cb()
     })
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
+    window.addEventListener('resize', this.handleResize)
+  },
+  async beforeRouteLeave(to, from, next) {
+    // console.log('beforeRouteLeave')
+    if (this.isChanged) {
+      await this.syncNotes()
+    }
+    next()
   },
   beforeDestroy() {
-    this.syncNotes()
-    bus.$off(BUS_SAVE_NOTES_START)
-    this.currentEntry = null
+    // console.log('beforeDestroy')
+
+    mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
+    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    initHyperMD() {
-      const textarea = document.getElementById('input-area')
-      const editor = HyperMD.fromTextArea(textarea, {
-        lineNumbers: false
-      })
-      if (!this.isEditWYSIWYG) {
-        HyperMD.switchToNormal(editor)
+    formatDate,
+    async initEntryData() {
+      try {
+        this.isLoading = true
+
+        const uuid = this.uuid
+        if (!uuid) {
+          alert('uuid is not exist!')
+          return
+        }
+
+        const entry = await getEntryDetail(uuid)
+
+        if (!entry) {
+          alert('entry is not exist!')
+          return
+        }
+        this.editData.title = entry.title
+        this.editData.creationTime = entry.creationTime
+        this.initCodeEditor(entry)
+      } catch (e) {
+        console.error(e)
+        this.$toast.error({message: e})
+      } finally {
+        this.$nextTick(() => {
+          this.isLoading = false
+        })
       }
-      editor.setSize(null, "100%") // set height
-      this.setFontFamily(editor)
-      this.setFontSize(editor)
-      editor.setOption("theme", this.editorTheme);
-      editor.on('change', () => {
-        if (this.editor) {
-          store.commit('setIsNotSave')
+    },
+    initCodeEditor(entry) {
+      const container = document.getElementById('code-container')
+
+      const value = entry && entry.notes || ''
+      const editor = monaco.editor.create(container, {
+        value,
+        lineNumbers: 'off',
+        language: 'markdown',
+        theme: this.editorTheme,
+        wordWrap: true,
+        minimap: {
+          enabled: false
+        },
+        scrollbar: {
+          alwaysConsumeMouseWheel: false
         }
       })
-      if (this.currentEntry) {
-        editor.setValue(this.currentEntry.fields.Notes)
-      }
+
+      // editor.setSize(null, '100%') // set height
+      // this.setFontFamily(editor)
+      this.setFontSize(editor)
+
+      editor.onDidChangeModelContent(event => {
+        if (this.editor) {
+          this.isChanged = true
+        }
+      })
+
       this.editor = editor
     },
-    setFontSize(editor) {
-      editor = this.editor || editor
-      const el = editor.display.wrapper
-      el.style.fontSize = this.editorFontSize + 'px'
-      editor.refresh();
+    setFontSize(editor = this.editor) {
+      editor.updateOptions({
+        fontSize: this.editorFontSize
+      })
     },
-    setFontFamily(editor) {
-      editor = this.editor || editor
+    setFontFamily(editor = this.editor) {
       const el = editor.display.wrapper
       if (this.editorFontFamily) {
         el.style.fontFamily = this.editorFontFamily
       } else {
         el.style.fontFamily = null
       }
-      editor.refresh();
+      editor.refresh()
     },
-    syncNotes() {
-      const entry = this.currentEntry
-      if (entry) {
-        const newNotes = this.editor.getValue()
-        if (entry.fields.Notes !== newNotes) {
-          this.updateTime()
-          entry.fields.Notes = newNotes
-        }
+    async syncNotes() {
+      console.log('syncNotes1', this.uuid)
+
+      if (!this.uuid || !this.editor) {
+        return
       }
-    },
-    updateTime() {
-      this.currentEntry.times.update()
-      this.lastModTime = this.currentEntry.times.lastModTime
+      const res = await updateEntry({
+        uuid: this.uuid,
+        updates: [
+          {path: 'fields.Title', value: this.editData.title},
+          {path: 'fields.Notes', value: this.editor.getValue()},
+        ]
+      })
+      console.log('syncNotes2', res)
     },
     handleChangeFont() {
-      this.$q.dialog({
-        title: this.$t('detail.changeFontFamily'),
-        prompt: {
-          model: this.editorFontFamily,
-          type: 'text'
-        },
-        cancel: true,
-        persistent: false
-      }).onOk(data => {
-        this.editorFontFamily = data
-        this.setFontFamily()
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('detail.changeFontFamily'),
+          content: this.editorFontFamily
+        }
+      }).onConfirm(() => {
+        // this.editorFontFamily = ''
+        // this.setFontFamily()
       })
     },
     handleKeyDown(event) {
@@ -355,7 +293,7 @@ export default {
           case '¿': // Keyboard symbol: "/"
             event.preventDefault()
             this.handlePreview()
-            break;
+            break
           default:
             return
         }
@@ -363,13 +301,10 @@ export default {
     },
     handlePreview() {
       this.syncNotes()
-      this.isDialogPreviewVisible = !this.isDialogPreviewVisible
     },
     async handleLoad() {
-      this.$store.commit('setIsGlobalLoading')
-
       try {
-        const paths = await window.electronAPI.openFileChooser({
+        const paths = await window.electronAPI.showFileChooser({
           sizeLimit: 1024000,
           filters
         })
@@ -404,51 +339,40 @@ export default {
 
         }).onOk(() => {
           const title = path.substring(path.lastIndexOf(`\\`) + 1)
-          this.editing.title = title.replace(/\.[^.$]+$/, '')
+          this.editData.title = title.replace(/\.[^.$]+$/, '')
           this.editor.setValue(txt)
         }).onCancel(() => {
           this.editor.replaceSelection(txt)
         }).onDismiss(() => {
           this.isDisableEsc = false
         })
-
       } catch (e) {
-        notifyError(e.message)
+        this.$toast.error({message: e})
         console.error(e)
-      } finally {
-        this.$store.commit('setIsGlobalLoading', false)
       }
-
     },
     handleExport() {
-      this.$store.commit('setIsGlobalLoading')
-
-      window.electronAPI.saveAsFile(this.editor.getValue(), {
+      window.electronAPI.showSaveDialog(this.editor.getValue(), {
         title: this.$t('export-file'),
-        defaultPath: this.editing.title + '.txt',
+        defaultPath: this.editData.title + '.txt',
         filters
       }).then(result => {
         if (result) {
-          notifySuccess()
+          this.$toast.success({message: 'Success'})
         }
       }).catch(e => {
-        notifyError(e.message)
+        this.$toast.error({message: e.message})
         console.error(e)
-      }).finally(() => {
-        this.$store.commit('setIsGlobalLoading', false)
       })
     },
     handleUpdateIcon(iconIndex) {
       this.currentEntry.icon = iconIndex
-      store.commit('setIsNotSave')
     },
     handleUpdateColor(result) {
       const {type, value} = result
       this.currentEntry[type] = value
-      store.commit('setIsNotSave')
     },
     handleCtrlScroll(event) {
-
       if (event.ctrlKey) {
         event.preventDefault()
         let editorFontSize = this.editorFontSize
@@ -464,20 +388,53 @@ export default {
           this.editorFontSize = editorFontSize
           this.setFontSize()
         }
-
+      }
+    },
+    handleResize() {
+      if (this.editor) {
+        this.editor.layout()
       }
     }
   }
 }
 </script>
 
-<style lang="stylus" scoped>
-.date-display {
-  display flex
-  flex-direction column
+<style lang="scss" scoped>
+.detail-view {
+  height: 100%;
 
-  .q-btn {
-    line-height: 1
+  .edit-card {
+    width: 800px;
+
+    @media screen and (max-width: $mq_mobile_width) {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+
+    .title-input {
+      flex: 1;
+    }
+  }
+
+  .editor-wrap {
+    //overflow: auto;
+    height: calc(100vh - 230px);
+    @media screen and (max-width: $mq_mobile_width) {
+      height: calc(100vh - 200px);
+    }
   }
 }
 </style>

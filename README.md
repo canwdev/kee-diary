@@ -1,84 +1,70 @@
-# KeeDiary
+# KeeNote
 
-## Introduction
+## 简介 · Introduction
 
-A diary editor application that uses KeePass technology to encrypt storage. With Syncthing, you can easily synchronize on different devices.
+使用 kdbx 加密的笔记应用程序
 
-The following techniques are used:
+A note editor application that uses KeePass technology to encrypt storage.
+
+## 技术栈 · Technology
 
 - Electron
-- Vue / Quasar UI
+- Vue 2
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
 
-## Screenshots
+## 功能 · Features
 
-![img](./screenshots/001.png)
-![img](./screenshots/002.png)
-![img](./screenshots/003.png)
-![img](./screenshots/004.png)
-![img](./screenshots/005.png)
-![img](./screenshots/006.png)
-![img](./screenshots/007.png)
-![img](./screenshots/008.png)
-## Features
+开发中...
 
-- [x] Open a database (`password`/`password+key`)
-- [x] Save database/close database
-- [x] Full database search
-- [x] Dark mode
-- [x] Welcome page
-- [x] About page
-- [x] Multiple language support
-- [x] Check Internet connection (Offline for better security)
-- Groups
-    - [x] Create new entry
-    - [x] Create new group
-    - [x] Rename group
-    - [x] Change icon
-    - [x] Move group
-    - [x] Move to the recycle bin
-    - [x] Empty trash
-- Entries
-    - [x] List view (sort)
-    - [x] Calendar view
-    - [x] Change icon
-    - [x] Change color
-    - [x] Markdown support
-    - [x] Preview
-    - [x] Rename entry
-    - [x] Edit (CodeMirror)
-    - [ ] Edit with external tools
-    - [x] Import/Export
-    - [x] Move entry
-    - [x] Delete entry
+- [ ] ~~创建数据库~~
+- [x] 打开kdbx数据库 (`password`/`password+key`)
+- [x] 保存/关闭数据库
+- [ ] 全数据库搜索
+- [x] 黑暗模式
+- [x] 多国语言（中文/English/日本語）
+- 群组 · Group
+    - [x] 创建 Entry
+    - [x] 创建 Group
+    - [x] 重命名
+    - [x] 修改图标
+    - [x] 移动
+    - [x] 删除/移动到回收站
+- 条目 · Entries
+    - [ ] 列表视图
+    - [ ] 日历视图
+    - [ ] 修改图标
+    - [ ] 修改颜色
+    - [x] Markdown 预览
+    - [x] Monaco 编辑器
+    - [ ] 删除
+    - [ ] 移动
 
-## Development
+## 开发 · Development
 
 ```sh
-# Install dependencies
-yarn install
-yarn install --cwd "./frontend"
+# 安装依赖
+yarn ist
 
-# Run development
+# 启动开发环境
 yarn run dev
 ```
 
-## Build production
+## 构建 · Build
 
 ```sh
-# Global install: electron-builder
+# 安装全局依赖
 npm -i -g electron-builder
 
-# Build frontend first
+# 首先构建前端
 yarn run build:frontend
 
-# Build electron executable file
+# 构建Electron
 yarn run build:electron
 ```
 
-## Remarks
+## 备注 · Remarks
 
-- `kdbxweb` It is a function library for operating the kdbx database. Due to domestic network problems, [copy version](https://gitee.com/canwdev/kdbxweb) is used，there are no other changes.
+- 之前的版本: [kee-diary-react-electron](https://github.com/canwdev/kee-diary-react-electron)
 
 
 

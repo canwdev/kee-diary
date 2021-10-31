@@ -1,40 +1,34 @@
 <template>
-  <q-menu
-      transition-show="none"
-      transition-hide="none"
-      touch-position
-      context-menu
-  >
-    <q-list dense style="min-width: 100px">
-
-      <template v-for="(item, index) in menuListFiltered">
-        <q-separator
-            v-if="item.isSeparator"
-            :key="index"
-        />
-        <q-item
-            v-else-if="!item.hidden"
-            :key="index"
-            @click="item.action"
-            clickable v-close-popup
-            class="row items-center"
-        >
-          <q-icon :name="item.icon" color="secondary" size="sm" class="q-mr-sm"/>
-          <q-item-label>{{ item.label }}</q-item-label>
-        </q-item>
-      </template>
-    </q-list>
-  </q-menu>
+  <TkContextMenu ref="ctxMenu" class="common-menu">
+    <template v-for="(item, index) in menuListFiltered">
+      <hr
+        v-if="item.isSeparator"
+        :key="index"
+      />
+      <li
+        v-else-if="!item.hidden"
+        :key="index"
+        class="menu-item"
+        @click="item.action"
+        @contextmenu.prevent="item.action"
+      >
+        <i class="material-icons text-primary">{{ item.icon }}</i>
+        {{ item.label }}
+      </li>
+    </template>
+  </TkContextMenu>
 </template>
 
 <script>
 // hidden when root group
+import {getMeta, getRecycleText} from '@/api'
+
 function isHiddenGroupRoot(isGroup, targetData) {
   if (!isGroup) {
     return false
   }
   try {
-    return !(targetData._origin.parentGroup)
+    return !(targetData.parent)
   } catch {
     return false
   }
@@ -43,10 +37,6 @@ function isHiddenGroupRoot(isGroup, targetData) {
 export default {
   name: 'ContextMenuCommon',
   props: {
-    targetData: {
-      type: [Object, Array],
-      default: null
-    },
     hiddenItems: {
       type: Array,
       default() {
@@ -60,7 +50,19 @@ export default {
   },
   data() {
     return {
-      menuList: [
+      targetData: null,
+    }
+  },
+  computed: {
+    isTargetArray() {
+      return Array.isArray(this.targetData)
+    },
+    menuList() {
+      let uuid
+      if (this.isGroup && this.targetData) {
+        uuid = this.targetData.data.uuid
+      }
+      return [
         {
           id: 'createEntry',
           hidden: !this.isGroup,
@@ -127,16 +129,11 @@ export default {
         {
           id: 'delete',
           hidden: isHiddenGroupRoot(this.isGroup, this.targetData),
-          icon: 'delete', label: this.$t('delete'), action: () => {
+          icon: 'delete', label: getRecycleText(uuid), action: () => {
             this.emitEvent('onDelete')
           }
         }
       ]
-    }
-  },
-  computed: {
-    isTargetArray() {
-      return Array.isArray(this.targetData)
     },
     menuListFiltered() {
       if (!this.targetData || this.targetData.length === 0) {
@@ -149,7 +146,12 @@ export default {
     }
   },
   methods: {
+    open(data) {
+      this.targetData = data
+      this.$refs.ctxMenu.open()
+    },
     emitEvent(eventName) {
+      console.log('emitEvent', eventName)
       this.$emit(eventName, this.targetData)
     },
     // show when only one targetData is selected
@@ -162,3 +164,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.common-menu {
+  ::v-deep .menu-item {
+    &:hover {
+      i {
+        color: white !important;
+      }
+    }
+  }
+}
+
+</style>

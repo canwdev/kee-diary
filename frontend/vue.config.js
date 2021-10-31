@@ -1,23 +1,23 @@
-const path = require('path')
+const isProd = process.env.NODE_ENV === 'production' // 'development'
 
 module.exports = {
   publicPath: './',
   outputDir: '../dist-frontend',
   productionSourceMap: false,
-  pluginOptions: {
-    quasar: {
-      importStrategy: 'kebab', // 'manual'
-      rtlSupport: false
-    },
-    'style-resources-loader': {
-      'preProcessor': 'stylus',
-      'patterns': [
-        path.resolve(__dirname, './src/styles/quasar.variables.styl'),
-      ]
+  css: {
+    // extract: false,
+    sourceMap: false,
+    loaderOptions: {
+      sass: {
+        prependData: `@import "@/style/variables.scss";`
+      }
     }
   },
-
-  transpileDependencies: [
-    'quasar'
-  ]
+  configureWebpack: {
+    externals: isProd ? [] : [
+      {
+        '@canwdev/tank-ui': 'tankUI',
+      }
+    ]
+  },
 }

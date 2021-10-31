@@ -1,159 +1,150 @@
 <template>
-  <q-page
-      class="row justify-center items-center"
+  <div
+    class="login-view full-height flex justify-center items-center"
   >
-    <q-inner-loading class="_loading" :showing="isLoading">
-      <q-spinner-gears
-          color="secondary"
-          size="5em"
-      />
-    </q-inner-loading>
+    <TkLoading :visible="isLoading" fixed/>
 
-    <q-dialog v-model="isShowAlertDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="error"/>
-          <span class="text-h6">{{ alertDialog.title || 'Error' }}</span>
-        </q-card-section>
+    <TkCard solid class="login-card-main">
+      <div class="header-area text-center">
+        <TkButton
+          v-show="!isWelcome"
+          size="no-style"
+          class="btn-back"
+          @click="isWelcome = true"
+        >
+          <i class="material-icons">arrow_back</i>
+        </TkButton>
 
-        <q-card-section class="q-pt-none">
-          {{ alertDialog.content }}
-        </q-card-section>
+        <div class="logo-icon">
+          <i class="material-icons">lock</i>
+        </div>
 
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <div class="column q-pa-lg">
-      <div class="row">
-        <q-card class="shadow-10" style="width:400px;">
-          <q-card-section class="bg-primary text-center">
-            <q-btn
-                @click="isWelcome = true"
-                v-show="!isWelcome"
-                icon="arrow_back" text-color="white" flat round class="absolute-top-left"/>
-
-            <q-avatar size="64px" color="white">
-              <q-icon name="lock" color="primary"/>
-            </q-avatar>
-
-            <h4 class="text-h5 text-white q-mb-none q-mt-md">{{
-                isWelcome ? $t('login.welcome') : $t('login.openDatabase')
-              }}</h4>
-          </q-card-section>
-
-          <div v-show="isWelcome">
-            <q-card-actions class="q-px-md">
-              <q-btn
-                  @click="chooseNewKdbx"
-                  unelevated size="md"
-                  color="secondary"
-                  class="full-width text-white"
-                  :label="$t('login.openDatabase')"
-              />
-            </q-card-actions>
-
-            <q-card-section class="q-pt-xs">
-              <div class="row q-mb-xs">
-                <q-checkbox dense v-model="isSaveHistory" :label="$t('login.saveHistory')"/>
-                <q-space/>
-                <q-btn
-                    v-show="recentList.length > 0"
-                    @click="handleClearRecent"
-                    dense flat :label="$t('login.clear')"/>
-              </div>
-              <q-list dense bordered padding class="rounded-borders" style="height: 150px; overflow: auto">
-                <q-item
-                    clickable
-                    v-ripple
-                    v-for="(item, index) in recentList"
-                    :key="index"
-                    @click="openRecentItem(item)"
-                >
-                  <q-item-section avatar>
-                    <q-icon color="secondary" name="lock"/>
-                  </q-item-section>
-                  <q-item-section>
-                      <span class="single-line-hide" :title="item.dbPath">
-                      {{ item.dbPath }}
-                      </span>
-                  </q-item-section>
-                  <q-item-section side>
-                    <q-btn
-                        @click.stop="removeRecentItem(item)"
-                        dense flat icon="close" color="secondary"/>
-                  </q-item-section>
-                </q-item>
-
-                <q-item class="text-grey" v-if="recentList.length === 0">{{ $t('login.noRecent') }}</q-item>
-              </q-list>
-            </q-card-section>
-          </div>
-
-          <div v-show="!isWelcome">
-            <q-form
-                class="q-px-md"
-                @submit="handleUnlock">
-              <q-card-section
-                  class="q-px-sm q-gutter-y-sm q-pt-md">
-
-                <q-input
-                    outlined dense readonly v-model="form.dbPath" type="text" placeholder="Database file path">
-                  <template v-slot:prepend>
-                    <q-icon name="lock"/>
-                  </template>
-                </q-input>
-                <q-input outlined dense clearable v-model="form.password" type="password" :placeholder="$t('login.password')"
-                         autofocus>
-                  <template v-slot:prepend>
-                    <q-icon name="vpn_key"/>
-                  </template>
-                </q-input>
-                <q-input outlined dense clearable v-model="form.keyPath" type="text"
-                         :placeholder="$t('login.keyFilePath')">
-                  <template v-slot:prepend>
-                    <q-icon name="vpn_key"/>
-                  </template>
-                  <template v-slot:after>
-                    <q-btn
-                        @click="handleChooseFile('keyPath', [
-                          {name: 'All', extensions: ['*']},
-                          {name: '*.key', extensions: ['key']},
-                        ])"
-
-                        outline icon="attachment"/>
-                  </template>
-                </q-input>
-              </q-card-section>
-
-              <q-card-actions>
-                <q-btn
-                    type="submit"
-                    unelevated size="md" color="secondary" class="full-width text-white" :label="$t('login.unlock')"/>
-              </q-card-actions>
-            </q-form>
-          </div>
-
-          <q-card-section class="text-center q-pa-sm">
-            <p class="text-grey-6 q-mb-none">
-              <VersionText/>
-            </p>
-          </q-card-section>
-        </q-card>
+        <div class="_title">{{
+          isWelcome ? $t('login.welcome') : $t('login.openDatabase')
+        }}
+        </div>
       </div>
-    </div>
-  </q-page>
+
+      <div v-show="isWelcome">
+        <div class="buttons-row">
+          <TkButton
+            size="lg"
+            class="full-width"
+            :label="$t('login.openDatabase')"
+            @click="chooseNewKdbx"
+          />
+          <TkLink
+            href="https://keepass.info/help/base/firststeps.html"
+            target="_blank"
+          >Create Database...</TkLink>
+        </div>
+        <TkCard>
+          <div class="history-actions">
+            <TkSwitch v-model="isSaveHistory">{{ $t('login.saveHistory') }}</TkSwitch>
+            <TkButton
+              v-show="recentList.length > 0"
+              size="sm"
+              :label="$t('login.clear')"
+              @click="handleClearRecent"
+            />
+          </div>
+          <div class="history-list">
+            <div
+              v-for="(item, index) in recentList"
+              :key="index"
+              class="list-item"
+              @click="openRecentItem(item)"
+            >
+
+              <span class="text-overflow" :title="item.dbPath">
+                {{ item.dbPath }}
+              </span>
+              <TkButton
+                label="✖"
+                size="xs"
+                @click.stop="removeRecentItem(item)"
+              />
+            </div>
+
+            <TkEmpty v-if="recentList.length === 0" :text="$t('login.noRecent')"></TkEmpty>
+          </div>
+        </TkCard>
+      </div>
+
+      <div v-show="!isWelcome">
+        <form
+          @submit.prevent="handleUnlock"
+        >
+          <TkCard class="form-card">
+            <div class="input-row">
+              <TkInput
+                v-model="form.dbPath"
+                readonly
+                type="text"
+                placeholder="Database file path"
+              />
+            </div>
+
+            <div class="input-row">
+              <TkInput
+                v-model="form.password"
+                type="password"
+                :placeholder="$t('login.password')"
+                autofocus
+              />
+            </div>
+
+            <div class="input-row">
+              <TkInput
+                v-model="form.keyPath"
+                clearable
+                readonly
+                type="text"
+                :placeholder="$t('login.keyFilePath')"
+              >
+              </TkInput>
+              <TkButton
+                type="button"
+                class="btn-choose"
+                size="no-style"
+                @click="handleChooseFile('keyPath', [
+                  {name: 'All', extensions: ['*']},
+                  {name: '*.key', extensions: ['key']},
+                ])"
+              ><i class="material-icons">attachment</i>
+              </TkButton>
+            </div>
+
+            <div class="input-row">
+              <TkButton
+                size="lg"
+                type="submit"
+                class="btn-submit"
+                :label="$t('login.unlock')"
+              />
+            </div>
+          </TkCard>
+        </form>
+
+      </div>
+
+      <div class="version-wrap text-center">
+        <VersionText/>
+      </div>
+    </TkCard>
+  </div>
 </template>
 
 <script>
-import {decryptKdbx, openKdbx} from "@/utils/kdbx-utils"
-import LocalStorageSettings from "@/utils/settings"
-import {isProd} from "@/utils/is"
-import {notifyError} from "@/utils"
-import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from "@/utils/enum"
-import VersionText from "@/components/VersionText"
+
+import LocalStorageSettings from '@/utils/login-settings'
+import {isProd} from '@/utils/is'
+import {kdbxFilters, KEE_DIARY_VUE_LOGIN} from '@/enum'
+import VersionText from '@/components/VersionText.vue'
+import {
+  openDatabase,
+  checkIsOpen
+} from '@/api'
 
 const settingsLogin = new LocalStorageSettings(KEE_DIARY_VUE_LOGIN)
 
@@ -166,11 +157,6 @@ export default {
     return {
       isWelcome: true,
       isLoading: false,
-      isShowAlertDialog: false,
-      alertDialog: {
-        title: 'Alert',
-        content: 'Content'
-      },
       form: {
         dbPath: '',
         keyPath: '',
@@ -223,9 +209,7 @@ export default {
      * filters：File filter: [{name: 'KeePass KDBX 文件', extensions: ['kdbx']}]
      **/
     async handleChooseFile(name, filters) {
-      this.$store.commit('setIsGlobalLoading')
-      const results = await window.electronAPI.openFileChooser({filters})
-      this.$store.commit('setIsGlobalLoading', false)
+      const results = await window.electronAPI.showFileChooser({filters})
       // console.log(results)
       if (results && results[0]) {
         this.form[name] = results[0]
@@ -255,17 +239,17 @@ export default {
     async handleUnlock() {
       const {dbPath, password, keyPath} = this.form
       if (!dbPath) {
-        notifyError('The database path cannot be empty')
+        this.$toast.error({message: 'The database path cannot be empty'})
         return
       }
       if (!password && !keyPath) {
-        notifyError('Password or key path cannot be empty')
+        this.$toast.error({message: 'Password or key path cannot be empty'})
         return
       }
 
       try {
         this.isLoading = true
-        const db = await decryptKdbx(dbPath, password, keyPath)
+        await openDatabase({dbPath, password, keyPath})
 
         // save recent settings
         if (this.isSaveHistory && !!this.form.dbPath) {
@@ -282,18 +266,21 @@ export default {
           this.saveSettings()
         }
 
-        openKdbx(db, dbPath)
+        this.$store.commit('setIsUnlocked', true)
         await this.$router.replace({
           name: 'Home'
         })
-
       } catch (e) {
         console.error(e)
-        this.isShowAlertDialog = true
-        this.alertDialog = {
-          title: e.code,
-          content: e.message
-        }
+
+        this.$prompt.create({
+          propsData: {
+            title: e.code,
+            content: e.message,
+            btnCancel: null,
+            showClose: false
+          }
+        })
       } finally {
         this.isLoading = false
       }
@@ -302,18 +289,108 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-._loading {
-  z-index 10
+<style lang="scss" scoped>
+.login-view {
+  .login-card-main {
+    width: 400px;
+
+    @media screen and (max-width: 400px) {
+      width: 95%;
+    }
+  }
+
+  .header-area {
+    position: relative;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .logo-icon {
+      margin-bottom: 8px;
+
+      i {
+        font-size: 32px;
+      }
+    }
+
+    .btn-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    ._title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .form-card {
+    .input-row {
+      width: 100%;
+      display: flex;
+
+      input {
+        flex: 1;
+      }
+
+      & + .input-row {
+        margin-top: 10px;
+      }
+
+      .btn-choose {
+        margin-left: 10px;
+      }
+
+      .btn-submit {
+        width: 100%;
+      }
+    }
+  }
+
+  .buttons-row {
+    padding: 10px 0 20px;
+
+    button, a {
+      width: 100%;
+    }
+
+    a {
+      text-align: center;
+      color: inherit;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+  }
+
+  .history-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .history-list {
+    margin-top: 10px;
+
+    .list-item {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 5px 5px;
+      border-top: $layout-border;
+
+      &:hover {
+        background-color: $border-color;
+      }
+    }
+  }
+
+  .version-wrap {
+    margin-top: 20px;
+  }
 }
 
-
-.q-item__section--avatar {
-  min-width 32px
-}
-
-.single-line-hide {
-  display block
-  max-width 100%
-}
 </style>

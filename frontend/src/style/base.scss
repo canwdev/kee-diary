@@ -1,0 +1,47 @@
+html, body {
+  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  &.body-bordered {
+    //padding: 2px;
+    background: linear-gradient(to bottom, #ff7847, #00eaff);
+    box-sizing: border-box;
+  }
+}
+
+button, input, textarea, a, {
+  &:focus {
+    //outline: 1px solid $primary;
+    outline: none;
+    box-shadow: 0 0 0 0.12rem rgba(255, 255, 255, 0.3) inset;
+  }
+}
+
+hr {
+  border-top: none;
+  border-color: $border-color;
+}
+
+.__dragable {
+  -webkit-app-region: drag;
+}
+
+.__dragable-disabled {
+  -webkit-app-region: no-drag;
+}
+
+// ---
+
+.action-btn-row {
+  text-align: right;
+  button + button {
+    margin-left: 8px;
+  }
+}
+
+.material-icons {
+  //font-size: 16px;
+}

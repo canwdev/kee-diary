@@ -2,9 +2,9 @@
   "about": {
     "btnHome": "返回首頁",
     "btnLogDatabase": "輸出數據庫到控制台",
-    "info": "可信任的日記編輯器"
+    "info": "加密隨筆編輯器"
   },
-  "and-exit": "然後退出",
+  "and-exit": "并退出",
   "background": "背景",
   "cancel": "取消",
   "choose": "選擇",
@@ -28,20 +28,20 @@
     "darkMode": "黑暗模式",
     "listView": "列表視圖",
     "navigation": "導航",
-    "settings": "設置"
+    "settings": "設置",
+    "language": "語言"
   },
   "edit": "編輯",
   "exit": "退出",
   "export-file": "導出文件",
   "foreground": "前景",
   "header": {
-    "close": "關閉數據庫",
+    "lock": "關閉數據庫",
     "save": "保存",
     "search": "搜索",
     "unlocked": "(已解鎖)"
   },
   "home": {
-    "add-entry": "添加條目",
     "created": "創建時間",
     "modified": "修改時間",
     "title": "標題"
@@ -49,7 +49,7 @@
   "insert": "插入",
   "kdbx": {
     "database-not-exist": "數據庫實例不存在",
-    "do-not-move-to-the-group-itself": "請勿移動群組到它本身或子群組，否則該群組將消失。\n此 bug 暫時無法解決。",
+    "do-not-move-to-the-group-itself": "請勿移動群組到它本身或子群組，否則該群組將消失。",
     "not-allowed-move-group-itself": "不允許移動到群組本身",
     "saved-successfully": "保存成功",
     "there-are-unsaved": "有未保存的更改，您要保存嗎？"
@@ -61,8 +61,8 @@
     "openDatabase": "打開數據庫",
     "password": "密碼",
     "saveHistory": "保存歷史記錄",
-    "unlock": "解 鎖",
-    "welcome": "歡迎來到 KeeDiary"
+    "unlock": "解鎖",
+    "welcome": "歡迎來到 KeeNote"
   },
   "menu": {
     "are-you-sure": "你確定要",

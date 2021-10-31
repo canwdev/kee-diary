@@ -8,32 +8,33 @@
     "unlocked": "(已解锁)",
     "search": "搜索",
     "save": "保存",
-    "close": "关闭数据库"
+    "lock": "关闭数据库"
   },
   "drawer": {
     "navigation": "导航",
     "settings": "设置",
     "listView": "列表视图",
     "calendarView": "日历视图",
-    "darkMode": "黑暗模式"
+    "darkMode": "黑暗模式",
+    "language": "语言"
   },
   "about": {
-    "info": "可信任的日记编辑器 \n本程序不会主动联网，断网使用以获得最佳安全性",
+    "info": "加密随笔编辑器",
     "btnHome": "返回首页",
     "btnLogDatabase": "输出数据库到控制台"
   },
   "login": {
-    "welcome": "欢迎来到 KeeDiary",
+    "welcome": "欢迎来到 KeeNote",
     "openDatabase": "打开数据库",
     "saveHistory": "保存历史记录",
     "clear": "清空历史记录",
     "noRecent": "没有最近打开的条目",
     "password": "密码",
     "keyFilePath": "密钥文件路径（可选）",
-    "unlock": "解 锁"
+    "unlock": "解锁"
   },
   "home": {
-    "add-entry": "添加条目",
+    "create-entry": "创建条目",
     "title": "标题",
     "created": "创建时间",
     "modified": "修改时间"
@@ -59,10 +60,10 @@
     "not-allowed-move-group-itself": "不允许移动到群组本身",
     "saved-successfully": "保存成功",
     "there-are-unsaved": "有未保存的更改，您要保存吗？",
-    "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。此 bug 暂时无法解决。"
+    "do-not-move-to-the-group-itself": "请勿移动群组到它本身或子群组，否则该群组将消失。"
   },
   "save": "保存",
-  "and-exit": "然后退出",
+  "and-exit": "并退出",
   "delete": "删除",
   "rename": "重命名",
   "edit": "编辑",

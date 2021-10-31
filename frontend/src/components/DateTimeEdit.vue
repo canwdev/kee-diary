@@ -1,13 +1,13 @@
 <template>
   <a :class="{'cursor-pointer': !disabled}">{{ mDate }}
     <q-popup-edit v-if="!disabled" v-model="mDate" buttons :cover="false" :offset="[0, 5]">
-      <q-input dense filled v-model="mDate">
+      <TkInput v-model="mDate" filled>
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy>
               <q-date v-model="mDate" mask="YYYY-MM-DD HH:mm">
                 <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat/>
+                  <TkButton v-close-popup label="Close" />
                 </div>
               </q-date>
             </q-popup-proxy>
@@ -18,22 +18,22 @@
             <q-popup-proxy>
               <q-time v-model="mDate" mask="YYYY-MM-DD HH:mm" format24h>
                 <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat/>
+                  <TkButton v-close-popup label="Close" flat/>
                 </div>
               </q-time>
             </q-popup-proxy>
           </q-icon>
         </template>
-      </q-input>
+      </TkInput>
     </q-popup-edit>
   </a>
 </template>
 
 <script>
-import {formatDate} from "@/utils"
+import {formatDate} from '@/utils'
 
 export default {
-  name: "DateTimeEdit",
+  name: 'DateTimeEdit',
   props: {
     date: {
       type: [String, Date],
@@ -66,10 +66,10 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .cursor-pointer {
   &:hover {
-    text-decoration: underline
+    text-decoration: underline;
   }
 }
 </style>

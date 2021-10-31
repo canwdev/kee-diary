@@ -1,41 +1,48 @@
 <template>
-  <q-page class="flex items-center justify-center bg-wall">
+  <div class="flex items-center justify-center bg-wall">
     <div class="text-center">
-      <h5 class="text-primary">{{ $t('pages.about') }}</h5>
+      <h1 class="text-primary">{{ $t('pages.about') }}</h1>
 
-      <q-card class="text-white bg-primary q-pa-md q-mb-lg">
-        <div class="text-bold">{{ message || $t('about.info') }}</div>
-        <div class="q-mt-md">
-          <VersionText/>
+      <TkCard class="about-card" solid>
+        <h3><VersionText/></h3>
+        <hr>
+        <div>
+          {{ $t('about.info')+'1' }}
         </div>
-      </q-card>
+
+        <template v-if="message">
+          <hr>
+          <div>{{ message }}</div>
+        </template>
+      </TkCard>
 
       <div class="content">
         <CheckConnection
-            class="q-mb-lg"
-            @onMessage="updateMessage"
+          @onMessage="updateMessage"
         />
 
-        <div class="column q-gutter-sm">
-          <q-btn color="primary" to="/home">{{$t('about.btnHome')}}</q-btn>
-          <q-btn
-              outline color="secondary"
-              @click="logDatabase"
-              title="Ctrl+Shift+I"
-          >{{$t('about.btnLogDatabase')}}</q-btn>
+        <div class="about-buttons">
+          <TkLink class="tk-button" href="/home">
+            {{ $t('about.btnHome') }}
+          </TkLink>
+          <TkButton
+            theme="secondary"
+            @click="logDatabase"
+          >{{ $t('about.btnLogDatabase') }}
+          </TkButton>
         </div>
       </div>
 
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
-import VersionText from "@/components/VersionText"
-import CheckConnection from '@/components/CheckConnection'
+import VersionText from '@/components/VersionText.vue'
+import CheckConnection from '@/components/CheckConnection/index.vue'
 
 export default {
-  name: "About",
+  name: 'About',
   components: {
     VersionText,
     CheckConnection
@@ -57,13 +64,22 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-.bg-wood {
-  user-select text
-  white-space: pre-line;
+<style lang="scss" scoped>
+.about-card {
+  margin-bottom: 10px;
 }
+
 .content {
-  margin 0 auto
-  width 300px
+  margin: 0 auto;
+  width: 300px;
+
+  .about-buttons {
+    a, button {
+      color: inherit;
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
 }
 </style>

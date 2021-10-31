@@ -1,12 +1,8 @@
 import Vue from 'vue'
-const bus = new Vue()
 
-export const BUS_SAVE_NOTES_START = 'DO_UPDATE_DB'
+const mainBus = new Vue()
 
-export function busEmitSaveNotes() {
-  return new Promise((resolve) => {
-    bus.$emit(BUS_SAVE_NOTES_START, resolve)
-  })
-}
+export const BUS_SHOW_PREVIEW = 'BUS_SHOW_PREVIEW'
+export const BUS_SYNC_ENTRY_DETAIL = 'BUS_SYNC_ENTRY_DETAIL'
 
-export default bus
+export default mainBus

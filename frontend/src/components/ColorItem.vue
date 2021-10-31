@@ -1,10 +1,10 @@
 <template>
   <span
-      class="color-item"
-      :class="{active: isActive, 'no-color': !color}"
-      :style="{background: color}"
+    class="color-item"
+    :class="{active: isActive, 'no-color': !color}"
+    :style="{background: color}"
+    :title="`${name} (${color})`"
   >
-    <q-tooltip v-if="name">{{ name }}</q-tooltip>
   </span>
 </template>
 
@@ -28,38 +28,38 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .color-item {
-  display inline-block
-  width: 45px
-  height: 45px
-  border-radius 50%;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   overflow: hidden;
-  transition all .3s
-  cursor pointer
-  border 5px solid transparent
-  box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
+  transition: all 0.3s;
+  cursor: pointer;
+  border: 5px solid transparent;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    transform scale(1.1)
+    transform: scale(1.1);
   }
 
   &:active, &.active {
-    border-color rgba(0, 0, 0, 0.5)
+    border-color: rgba(0, 0, 0, 0.5);
   }
 
   &:active {
-    transform scale(0.9)
+    transform: scale(0.9);
   }
 
   &.no-color {
-    background repeating-linear-gradient(
+    background: repeating-linear-gradient(
         -45deg,
         transparent,
         transparent 5px,
         #ccc 5px,
         #ccc 10px
-    )
+    );
   }
 }
 </style>
