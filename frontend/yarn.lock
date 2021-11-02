@@ -903,10 +903,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@canwdev/tank-ui@^0.2.18":
-  version "0.2.18"
-  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.18.tgz#3410188eaed412fce6d86c7df5d95630a698a64d"
-  integrity sha1-NBAYjq7UEvzm2Gx99dlWMKaYpk0=
+"@canwdev/tank-ui@latest":
+  version "0.2.19"
+  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.19.tgz#294adbc315247670774b1b6ea2a6232cb7e22ec0"
+  integrity sha1-KUrbwxUkdnB3SxtuoqYjLLfiLsA=
   dependencies:
     vue "^2.6.14"
 
@@ -5522,10 +5522,23 @@ mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+monaco-editor@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.npmmirror.com/monaco-editor/download/monaco-editor-0.17.1.tgz#8fbe96ca54bfa75262706e044f8f780e904aa45c"
+  integrity sha1-j76WylS/p1JicG4ET494DpBKpFw=
+
 monaco-editor@^0.29.1:
   version "0.29.1"
   resolved "https://registry.npmmirror.com/monaco-editor/download/monaco-editor-0.29.1.tgz#6ee93d8a5320704d48fd7058204deed72429c020"
   integrity sha1-buk9ilMgcE1I/XBYIE3u1yQpwCA=
+
+monaco-markdown@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.npmmirror.com/monaco-markdown/download/monaco-markdown-0.0.11.tgz#3b81c7f3ca6032dc826ed3afb46c9512f2509a7f"
+  integrity sha1-O4HH88pgMtyCbtOvtGyVEvJQmn8=
+  dependencies:
+    monaco-editor "^0.17.1"
+    string-similarity "^3.0.0"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -7560,6 +7573,11 @@ strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/strict-uri-encode/download/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
   integrity sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
+
+string-similarity@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/string-similarity/download/string-similarity-3.0.0.tgz#07b0bc69fae200ad88ceef4983878d03793847c7"
+  integrity sha1-B7C8afriAK2Izu9Jg4eNA3k4R8c=
 
 string-width@^2.0.0:
   version "2.1.1"

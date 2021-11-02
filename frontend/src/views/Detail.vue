@@ -3,16 +3,16 @@
     <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
-            class="cursor-pointer"
+          class="cursor-pointer"
         >
           {{ $t('preview') + '1' }} (Ctrl+/)
         </ItemIcon>
 
         <TkInput
-            v-model="editData.title"
-            placeholder="Title"
-            class="title-input"
-            size="lg"
+          v-model="editData.title"
+          placeholder="Title"
+          class="title-input"
+          size="lg"
         />
       </div>
 
@@ -20,11 +20,11 @@
 
       <div class="settings-row">
         <TkDropdown
-            v-model="editorTheme"
-            dense
-            color="secondary"
-            :options="themeOptions"
-            style="width: 150px"
+          v-model="editorTheme"
+          dense
+          color="secondary"
+          :options="themeOptions"
+          style="width: 150px"
         >
           <template v-slot:prepend>
             <q-icon name="style"/>
@@ -69,6 +69,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import * as monaco from 'monaco-editor'
+import {MonacoMarkdownExtension} from 'monaco-markdown'
 
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
@@ -140,6 +141,12 @@ export default {
     }
   },
   watch: {
+    isDarkMode(val) {
+      if (this.editorTheme !== 'vs' && this.editorTheme !== 'vs-dark') {
+        return
+      }
+      this.editorTheme = val ? 'vs-dark' : 'vs'
+    },
     editorTheme(nv) {
       this.editor.updateOptions({
         theme: nv
@@ -226,8 +233,11 @@ export default {
         },
         scrollbar: {
           alwaysConsumeMouseWheel: false
-        }
+        },
+        quickSuggestions: false
       })
+      const mdExtension = new MonacoMarkdownExtension()
+      mdExtension.activate(editor)
 
       // editor.setSize(null, '100%') // set height
       // this.setFontFamily(editor)
