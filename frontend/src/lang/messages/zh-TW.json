@@ -29,7 +29,8 @@
     "listView": "列表視圖",
     "navigation": "導航",
     "settings": "設置",
-    "language": "語言"
+    "language": "語言",
+    "themeColor": "主題色"
   },
   "edit": "編輯",
   "exit": "退出",
@@ -39,12 +40,15 @@
     "lock": "關閉數據庫",
     "save": "保存",
     "search": "搜索",
-    "unlocked": "(已解鎖)"
+    "unlocked": "(已解鎖)",
+    "close": "關閉"
   },
   "home": {
     "created": "創建時間",
     "modified": "修改時間",
-    "title": "標題"
+    "title": "標題",
+    "create-entry": "創建條目",
+    "create-group": "創建組"
   },
   "insert": "插入",
   "kdbx": {
@@ -62,7 +66,8 @@
     "password": "密碼",
     "saveHistory": "保存歷史記錄",
     "unlock": "解鎖",
-    "welcome": "歡迎來到 KeeNote"
+    "welcome": "歡迎來到 KeeNote",
+    "createDatabase": "創建數據庫"
   },
   "menu": {
     "are-you-sure": "你確定要",

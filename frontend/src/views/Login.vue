@@ -36,7 +36,7 @@
           <TkLink
             href="https://keepass.info/help/base/firststeps.html"
             target="_blank"
-          >Create Database...</TkLink>
+          >{{$t('login.createDatabase')}}...</TkLink>
         </div>
         <TkCard>
           <div class="history-actions">

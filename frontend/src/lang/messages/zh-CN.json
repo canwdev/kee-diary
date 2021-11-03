@@ -8,7 +8,8 @@
     "unlocked": "(已解锁)",
     "search": "搜索",
     "save": "保存",
-    "lock": "关闭数据库"
+    "lock": "关闭数据库",
+    "close": "关闭"
   },
   "drawer": {
     "navigation": "导航",
@@ -16,7 +17,8 @@
     "listView": "列表视图",
     "calendarView": "日历视图",
     "darkMode": "黑暗模式",
-    "language": "语言"
+    "language": "语言",
+    "themeColor": "主题颜色"
   },
   "about": {
     "info": "加密随笔编辑器",
@@ -26,6 +28,7 @@
   "login": {
     "welcome": "欢迎来到 KeeNote",
     "openDatabase": "打开数据库",
+    "createDatabase": "创建数据库",
     "saveHistory": "保存历史记录",
     "clear": "清空历史记录",
     "noRecent": "没有最近打开的条目",
@@ -37,7 +40,8 @@
     "create-entry": "创建条目",
     "title": "标题",
     "created": "创建时间",
-    "modified": "修改时间"
+    "modified": "修改时间",
+    "create-group": "创建群组"
   },
   "detail": {
     "changeFontFamily": "设置字体",

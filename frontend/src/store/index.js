@@ -28,7 +28,6 @@ export default new Vuex.Store({
   getters: {
     isUnlocked: state => state.isUnlocked,
     isChanged: state => state.isChanged,
-    locate: state => state.settings.locate,
     isDarkMode: state => state.settings.isDarkMode,
     themeColor: state => state.settings.themeColor,
     isListView: state => state.settings.isListView,
@@ -38,10 +37,6 @@ export default new Vuex.Store({
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,
   },
   mutations: {
-    setLocate: (state, val) => {
-      state.settings.locate = val
-      saveSettings(state.settings)
-    },
     setIsDarkMode: (state, val) => {
       state.settings.isDarkMode = val
       saveSettings(state.settings)

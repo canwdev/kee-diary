@@ -28,6 +28,7 @@
  "login": {
   "welcome": "Welcome to KeeNote",
   "openDatabase": "Open database",
+  "createDatabase": "Create database",
   "saveHistory": "Save history",
   "clear": "Clear",
   "noRecent": "No recent item",

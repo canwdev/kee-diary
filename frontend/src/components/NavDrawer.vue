@@ -29,11 +29,12 @@
       <span class="menu-item-title">
         {{ $t('drawer.language') }}
         <TkDropdown
-          v-model="locate"
+          v-model="$i18n.locale"
           size="sm"
           :options="languages"
           option-label="name"
           option-value="locate"
+          @change="saveLocateChange($i18n.locale)"
         />
       </span>
     </TkButton>
@@ -43,6 +44,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import languages from '@/lang/languages'
+import {LS_KEY_LOCATE} from '@/lang/i18n'
 import {hexToRgb} from '@/utils/color'
 
 export default {
@@ -72,14 +74,6 @@ export default {
       },
       set(nv) {
         return this.$emit('input', nv)
-      }
-    },
-    locate: {
-      get() {
-        return this.$store.getters.locate
-      },
-      set(val) {
-        this.$store.commit('setLocate', val)
       }
     },
     isDarkMode: {
@@ -134,16 +128,10 @@ export default {
       ]
     }
   },
-  watch: {
-    locate: {
-      handler(nv) {
-        this.$i18n.locale = nv
-      },
-      immediate: true
-    },
-  },
   methods: {
-
+    saveLocateChange(val) {
+      localStorage.setItem(LS_KEY_LOCATE, val)
+    },
     handleThemeColorChange(event) {
       const colorHex = event.target.value
       const {r, g, b} = hexToRgb(colorHex)

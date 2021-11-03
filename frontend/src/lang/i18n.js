@@ -1,21 +1,22 @@
+import languages from './languages'
+import en from './messages/en.json'
+import zhCN from './messages/zh-CN.json'
+import zhTW from './messages/zh-TW.json'
+import ja from './messages/ja.json'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
 Vue.use(VueI18n)
 
-import languages from '@/lang/languages'
-import en from './messages/en'
-import zhCN from './messages/zh-CN'
-import zhTW from './messages/zh-TW'
-import ja from './messages/ja'
+export const LS_KEY_LOCATE = 'LS_KEY_KEE_NOTE_LOCATE'
 
-const defaultLocale = languages[0].locate
+const defaultLocale = localStorage.getItem(LS_KEY_LOCATE) || languages[0].locate
 
 const i18n = new VueI18n({
   locale: defaultLocale,
-  fallbackLocale: defaultLocale,
+  fallbackLocale: 'en', //defaultLocale,
   messages: {
-    [defaultLocale]: en,
+    'en': en,
     'zh-CN': zhCN,
     'zh-TW': zhTW,
     'ja': ja,

@@ -29,7 +29,8 @@
     "listView": "リストビュー",
     "navigation": "ナビゲーション",
     "settings": "セットアップ",
-    "language": "言語"
+    "language": "言語",
+    "themeColor": "テーマカラー"
   },
   "edit": "編集",
   "exit": "脱落",
@@ -39,12 +40,15 @@
     "lock": "データベースを閉じる",
     "save": "保存する",
     "search": "検索する",
-    "unlocked": "（ロック解除）"
+    "unlocked": "（ロック解除）",
+    "close": "選ぶ"
   },
   "home": {
     "created": "作成時間",
     "modified": "時間を変更する",
-    "title": "題名"
+    "title": "題名",
+    "create-entry": "エントリを作成する",
+    "create-group": "グループを作成します"
   },
   "insert": "インサート",
   "kdbx": {
@@ -62,7 +66,8 @@
     "password": "パスワード",
     "saveHistory": "履歴を保存",
     "unlock": "ロックを解除する",
-    "welcome": "KeeNote へようこそ"
+    "welcome": "KeeNote へようこそ",
+    "createDatabase": "データベースを作成する"
   },
   "menu": {
     "are-you-sure": "よろしいですか",
