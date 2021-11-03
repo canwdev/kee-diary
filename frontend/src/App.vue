@@ -23,9 +23,6 @@ export default {
       root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
     }
   },
-  mounted() {
-    document.body.classList.add('body-bordered')
-  }
 }
 </script>
 

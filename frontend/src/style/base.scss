@@ -5,11 +5,11 @@ html, body {
 
 body {
   margin: 0;
-  &.body-bordered {
-    //padding: 2px;
-    background: linear-gradient(to bottom, #ff7847, #00eaff);
-    box-sizing: border-box;
-  }
+  //&.body-bordered {
+  //padding: 2px;
+  //  background: linear-gradient(to bottom, #ff7847, #00eaff);
+  //  box-sizing: border-box;
+  //}
 }
 
 button, input, textarea, a, {
@@ -37,6 +37,7 @@ hr {
 
 .action-btn-row {
   text-align: right;
+
   button + button {
     margin-left: 8px;
   }

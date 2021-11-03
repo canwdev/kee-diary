@@ -1,10 +1,12 @@
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-const {app, BrowserWindow, session} = require('electron')
+const {app} = require('electron')
+require('@electron/remote/main').initialize()
 const path = require('path')
 const url = require('url')
 const {isDev} = require('./utils')
 const {kInstance} = require('./keepass/api')
 const wm = require('./utils/wm-instance')
+
 
 let mainWindow
 
@@ -24,10 +26,13 @@ function createMainWindow() {
       minWidth: 375,
       minHeight: 500,
       icon: path.join(__dirname, '../build/256x256.png'),
-      frame: true,
+      // frame: true,
+      titleBarStyle: 'hidden',
+      titleBarOverlay: false,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
+        // enableRemoteModule: true,
         webSecurity: false,
         spellcheck: false,
       },
@@ -39,6 +44,7 @@ function createMainWindow() {
     },
     startUrl
   )
+  require("@electron/remote/main").enable(mainWindow.webContents);
 
   // 退出前询问
   mainWindow.on('close', (e) => {
