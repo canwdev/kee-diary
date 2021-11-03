@@ -1,5 +1,5 @@
-const {remote} = require('electron')
-const fs = remote.require('fs')
+const remote = require('@electron/remote')
+const fs = require('fs')
 
 // 打开文件选择器
 function showFileChooser(config = {}) {
