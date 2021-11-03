@@ -30,16 +30,16 @@
       </template>
       <template slot="center">
         <div class="header-center actions-btn-wrap flex items-center justify-end">
-          <template v-if="isUnlocked">
-            <TkButton
-              round
-              flat
-              :title="$t('header.search')"
-              @click="isDialogSearchVisible = true"
-            >
-              <i class="material-icons">search</i>
-            </TkButton>
-          </template>
+          <!--          <template v-if="isUnlocked">-->
+          <!--            <TkButton-->
+          <!--              round-->
+          <!--              flat-->
+          <!--              :title="$t('header.search')"-->
+          <!--              @click="isDialogSearchVisible = true"-->
+          <!--            >-->
+          <!--              <i class="material-icons">search</i>-->
+          <!--            </TkButton>-->
+          <!--          </template>-->
 
           <template v-if="isUnlocked">
 
@@ -68,6 +68,7 @@
         <TkButton
           round
           flat
+          class="btn-window-action"
           @click="handleMinimum"
         >
           <i class="material-icons">minimize</i>
@@ -75,6 +76,7 @@
         <TkButton
           round
           flat
+          class="btn-window-action"
           @click="handleToggleMaximum"
         >
           <i class="material-icons">{{ isMaximized ? 'fullscreen_exit' : 'fullscreen' }}</i>
@@ -84,6 +86,7 @@
           round
           flat
           :title="$t('header.close')"
+          class="btn-window-action"
           @click="handleClose"
         >
           <i class="material-icons">close</i>
@@ -148,6 +151,11 @@ export default {
   ::v-deep .tk-navbar {
     -webkit-app-region: drag;
     button {
+      cursor: default;
+      border-radius: $border-radius;
+      &:hover {
+        background: $border-color;
+      }
       -webkit-app-region: no-drag;
     }
     .nav-right {

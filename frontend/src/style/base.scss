@@ -5,11 +5,15 @@ html, body {
 
 body {
   margin: 0;
-  //&.body-bordered {
+
+  //background-repeat: no-repeat;
+  //background-position: center;
+  //background-size: cover;
+  //background-image: url("https://cn.bing.com/th?id=OHR.MoonJellyDay_ZH-CN4121466496_1920x1080.jpg&rf=LaDigue_1920x1080.jpg");
+
   //padding: 2px;
-  //  background: linear-gradient(to bottom, #ff7847, #00eaff);
-  //  box-sizing: border-box;
-  //}
+  background: linear-gradient(to bottom, #ff7847, #00eaff);
+  box-sizing: border-box;
 }
 
 button, input, textarea, a, {

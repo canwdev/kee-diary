@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="tk-scroll" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme']">
+  <div id="app" class="tk-scroll tk-aero" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme']">
     <router-view/>
   </div>
 </template>
