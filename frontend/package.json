@@ -9,7 +9,7 @@
     "lint-fix": "eslint --ext .js,.vue --fix src"
   },
   "dependencies": {
-    "@canwdev/tank-ui": "^0.2.20",
+    "@canwdev/tank-ui": "^0.2.21",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
