@@ -5,7 +5,7 @@ files:
   - ./dist-frontend/**/*
   - ./src/**/*
 extraMetadata:
-  main: ./src/index.js
+  main: ./src/main.js
 
 # Mac OS configuration
 mac:
