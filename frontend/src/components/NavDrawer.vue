@@ -20,7 +20,10 @@
       <span class="material-icons">color_lens</span>
       <span class="menu-item-title">
         {{ $t('drawer.themeColor') }}
-        <input class="tk-button-no-style color-input" type="color" :value="themeColor" @change="handleThemeColorChange">
+        <span class="flex items-center">
+          <input class="tk-button-no-style color-input" type="color" :value="themeColor" @change="handleThemeColorChange">
+          <TkSwitch v-model="fxEnabled"/>
+        </span>
       </span>
     </TkButton>
 
@@ -82,6 +85,18 @@ export default {
       },
       set(val) {
         this.$store.commit('setIsDarkMode', val)
+      }
+    },
+    fxEnabled: {
+      get() {
+        return this.$store.getters.fxEnabled
+      },
+      set(val) {
+        console.log('set',val)
+        this.$store.commit('updateSettings', {
+          key: 'fxEnabled',
+          value: val
+        })
       }
     },
     isUnlocked() {

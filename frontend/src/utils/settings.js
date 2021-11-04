@@ -4,6 +4,7 @@ const isSystemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-
 
 const defaultSettings = {
   isDarkMode: isSystemDarkMode,
+  fxEnabled: true,
   isListView: true, // 是列表视图还是日历视图
   editorTheme: 'vs',
   editorFontSize: 16, // px

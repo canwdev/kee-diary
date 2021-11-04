@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="tk-scroll tk-aero" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme']">
+  <div id="app" class="tk-scroll" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme', fxEnabled ? 'tk-aero': '']">
     <router-view/>
   </div>
 </template>
@@ -11,7 +11,8 @@ import {hexToRgb} from '@/utils/color'
 export default {
   computed: {
     ...mapGetters([
-      'isDarkMode'
+      'isDarkMode',
+      'fxEnabled'
     ]),
   },
   created() {
