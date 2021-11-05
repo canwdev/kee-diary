@@ -903,10 +903,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@canwdev/tank-ui@^0.2.21":
-  version "0.2.21"
-  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.21.tgz#102fbaf3ba2c472777811ac889ddd732a400d2ce"
-  integrity sha1-EC+687osRyd3gRrIid3XMqQA0s4=
+"@canwdev/tank-ui@^0.2.22":
+  version "0.2.22"
+  resolved "https://registry.npmmirror.com/@canwdev/tank-ui/download/@canwdev/tank-ui-0.2.22.tgz#b50466c5807be6c5fb84e0283fb4f2ce2c26c63e"
+  integrity sha1-tQRmxYB75sX7hOAoP7Tyziwmxj4=
   dependencies:
     vue "^2.6.14"
 
