@@ -15,7 +15,7 @@
           :key="item.uuid"
           :item="item"
           @preview="previewItem"
-          @itemClick="handleItemClick"
+          @itemClick="goItemEdit"
           @itemContextMenu="handleContextMenu"
         />
 
@@ -25,13 +25,29 @@
           :offset.sync="pagerOptions.offset"
           :total="pagerOptions.allCount"
           show-extra-info
-        />
+        >
+          <template v-slot:left>
+            <TkButton
+              theme="outline"
+              class="material-icons"
+              flat
+              size="xs"
+              @click="loadEntryList"
+            >refresh
+            </TkButton>
+          </template>
+        </TkPager>
 
         <TkEmpty v-if="!(entryList && entryList.length)"></TkEmpty>
       </div>
 
       <ContextMenuCommon
         ref="ctxMenu"
+        @onPreview="previewItem"
+        @onEdit="goItemEdit"
+        @onRename="i => $emit('onRename', i)"
+        @onChangeIcon="i => $emit('onChangeIcon', i)"
+        @onChangeColor="i => $emit('onChangeColor', i)"
       />
 
     </div>
@@ -109,7 +125,7 @@ export default {
     previewItem(item) {
       mainBus.$emit(BUS_SHOW_PREVIEW, item)
     },
-    handleItemClick(item) {
+    goItemEdit(item) {
       this.$router.push({
         name: 'Detail',
         params: {

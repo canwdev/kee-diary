@@ -2,7 +2,6 @@
   <div
     v-if="item"
     class="item-icon relative-position"
-    :size="size"
     :style="{background: item.bgColor}"
   >
     <span
@@ -72,9 +71,10 @@ export default {
 <style lang="scss" scoped>
 .item-icon {
   border-radius: 5px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 2px;
 
   .color-fg {
     position: absolute;

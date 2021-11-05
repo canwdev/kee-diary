@@ -21,6 +21,8 @@
         v-if="isListView"
         ref="entryList"
         :selected-group="selectedGroup"
+        @onRename="i => handleRename(i, true)"
+        @onChangeIcon="i => handleChangeIcon(i, true)"
       />
 
       <!--      <CalendarView-->
@@ -73,7 +75,7 @@ import EntryList from '@/components/EntryList/index.vue'
 import DialogAdd from '@/components/DialogAdd.vue'
 import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup, updateGroup, moveGroup, getRecycleText} from '@/api'
+import {removeGroup, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
 import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
 import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 
@@ -121,7 +123,7 @@ export default {
     },
     autoExpandUuid() {
       const item = this.curItem
-      if (item) {
+      if (item && item.data) {
         return item.data.uuid
       }
       return null
@@ -190,7 +192,7 @@ export default {
       this.isShowPreview = true
       this.previewItem = item
     },
-    handleRename(item) {
+    handleRename(item, isEntry = false) {
       this.$prompt.create({
         propsData: {
           title: this.$t('rename'),
@@ -205,34 +207,55 @@ export default {
         if (context.inputValue === item.title) {
           return
         }
-        await updateGroup({
-          uuid: item.data.uuid,
-          updates: [
-            {path: 'name', value: context.inputValue},
-          ]
-        })
+        if (isEntry) {
+          await updateEntry({
+            uuid: item.uuid,
+            updates: [
+              {path: 'fields.Title', value: context.inputValue},
+            ]
+          })
+        } else {
+          await updateGroup({
+            uuid: item.data.uuid,
+            updates: [
+              {path: 'name', value: context.inputValue},
+            ]
+          })
+        }
+
         item.title = context.inputValue
         this.$store.commit('setIsChanged', true)
       })
     },
     async updateIcon(icon) {
       const item = this.curItem
+      const isEntry = !item.data
 
-      await updateGroup({
-        uuid: item.data.uuid,
-        updates: [
-          {path: 'icon', value: icon},
-        ]
-      })
+      if (isEntry) {
+        await updateEntry({
+          uuid: item.uuid,
+          updates: [
+            {path: 'icon', value: icon},
+          ]
+        })
+        item.icon = icon
+      } else {
+        await updateGroup({
+          uuid: item.data.uuid,
+          updates: [
+            {path: 'icon', value: icon},
+          ]
+        })
+        item.data.icon = icon
+      }
 
-      item.data.icon = icon
       this.$store.commit('setIsChanged', true)
       this.curIcon = null
       this.curItem = null
     },
-    handleChangeIcon(item) {
+    handleChangeIcon(item, isEntry) {
       this.isShowChooseIcon = true
-      this.curIcon = item.data.icon
+      this.curIcon = isEntry ? item.icon : item.data.icon
       this.curItem = item
     },
     async changeGroup(group) {

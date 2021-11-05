@@ -4,7 +4,7 @@
       v-model="mVisible"
       show-close
     >
-      <TkCard class="card-choose-icon">
+      <TkCard v-if="mVisible" class="card-choose-icon">
         <div class="flex items-center">
           <ItemIcon
             :item="{icon:index}"

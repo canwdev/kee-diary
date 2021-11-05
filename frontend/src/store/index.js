@@ -40,6 +40,10 @@ export default new Vuex.Store({
   mutations: {
     setIsDarkMode: (state, val) => {
       state.settings.isDarkMode = val
+      const {editorTheme} = state.settings
+      if (editorTheme === 'vs' || editorTheme === 'vs-dark') {
+        state.settings.editorTheme = val ? 'vs-dark' : 'vs'
+      }
       saveSettings(state.settings)
     },
     setIsListView: (state, val) => {

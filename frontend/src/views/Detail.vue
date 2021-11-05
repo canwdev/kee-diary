@@ -3,10 +3,11 @@
     <TkCard solid class="edit-card">
       <div class="title-row flex">
         <ItemIcon
+          :item="editData"
           class="cursor-pointer"
-        >
-          {{ $t('preview') + '1' }} (Ctrl+/)
-        </ItemIcon>
+          :title="`${$t('preview')} (Ctrl+/)`"
+          @click.native="handlePreview"
+        />
 
         <TkInput
           v-model="editData.title"
@@ -63,6 +64,11 @@
         <div id="code-container" style="height:100%;"></div>
       </div>
     </TkCard>
+
+    <DialogEntryPreview
+      :visible.sync="isShowPreview"
+      :item="previewItem"
+    />
   </div>
 </template>
 
@@ -75,6 +81,7 @@ import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
 import ItemIcon from '@/components/ItemIcon.vue'
 import {getEntryDetail, updateEntry} from '@/api'
+import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 
 import {textFilters as filters} from '@/enum'
 
@@ -88,16 +95,22 @@ export default {
   name: 'Detail',
   components: {
     ItemIcon,
+    DialogEntryPreview
   },
   data() {
     return {
       editData: {
+        icon: null,
+        bgColor: null,
+        fgColor: null,
         title: '',
         creationTime: '',
       },
       themeOptions,
       isDisableEsc: false,
-      isLoading: false
+      isLoading: false,
+      isShowPreview: false,
+      previewItem: null,
     }
   },
   computed: {
@@ -138,15 +151,12 @@ export default {
     },
     uuid() {
       return this.$route.params.uuid
+    },
+    lockEsc() {
+      return this.isShowPreview
     }
   },
   watch: {
-    isDarkMode(val) {
-      if (this.editorTheme !== 'vs' && this.editorTheme !== 'vs-dark') {
-        return
-      }
-      this.editorTheme = val ? 'vs-dark' : 'vs'
-    },
     editorTheme(nv) {
       this.editor.updateOptions({
         theme: nv
@@ -208,6 +218,9 @@ export default {
         }
         this.editData.title = entry.title
         this.editData.creationTime = entry.creationTime
+        this.editData.icon = entry.icon
+        this.editData.bgColor = entry.bgColor
+        this.editData.fgColor = entry.fgColor
         this.initCodeEditor(entry)
       } catch (e) {
         console.error(e)
@@ -309,8 +322,11 @@ export default {
         }
       }
     },
-    handlePreview() {
-      this.syncNotes()
+    async handlePreview() {
+      await this.syncNotes()
+
+      this.isShowPreview = true
+      this.previewItem = await getEntryDetail(this.uuid)
     },
     async handleLoad() {
       try {
@@ -435,6 +451,7 @@ export default {
     align-items: center;
 
     .title-input {
+      margin-left: 10px;
       flex: 1;
     }
   }

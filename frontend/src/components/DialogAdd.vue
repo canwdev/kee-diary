@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapState} from 'vuex'
 import {createEntry, createGroup} from '@/api'
 import ItemIcon from '@/components/ItemIcon.vue'
 import ColorItem from './ColorItem.vue'
@@ -173,7 +173,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapState([
       'selectedGroup'
     ]),
     mVisible: {
