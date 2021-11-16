@@ -20,17 +20,15 @@
       <hr>
 
       <div class="settings-row">
-        <TkDropdown
-          v-model="editorTheme"
-          dense
-          color="secondary"
-          :options="themeOptions"
-          style="width: 150px"
-        >
-          <template v-slot:prepend>
-            <q-icon name="style"/>
-          </template>
-        </TkDropdown>
+        <span class="date-text">{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
+
+        <TkButton
+          round
+          size="xs"
+          class="material-icons"
+          @click="isShowEditorSettings = true"
+        >settings
+        </TkButton>
         <!--        <TkButton-->
         <!--          dense-->
         <!--          icon="text_fields"-->
@@ -55,7 +53,6 @@
         <!--          {{ $t('detail.export-to-text-file') }}-->
         <!--        </TkButton>-->
 
-        <span>{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
       </div>
 
       <hr>
@@ -69,6 +66,8 @@
       :visible.sync="isShowPreview"
       :item="previewItem"
     />
+
+    <EditorSettings :visible.sync="isShowEditorSettings"/>
   </div>
 </template>
 
@@ -82,20 +81,16 @@ import {formatDate} from '@/utils'
 import ItemIcon from '@/components/ItemIcon.vue'
 import {getEntryDetail, updateEntry} from '@/api'
 import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
+import EditorSettings from '@/components/EditorSettings'
 
 import {textFilters as filters} from '@/enum'
-
-const themeOptions = [
-  'vs',
-  'vs-dark',
-  'hc-black'
-]
 
 export default {
   name: 'Detail',
   components: {
     ItemIcon,
-    DialogEntryPreview
+    DialogEntryPreview,
+    EditorSettings
   },
   data() {
     return {
@@ -106,16 +101,18 @@ export default {
         title: '',
         creationTime: '',
       },
-      themeOptions,
       isDisableEsc: false,
       isLoading: false,
       isShowPreview: false,
+      isShowEditorSettings: false,
       previewItem: null,
     }
   },
   computed: {
     ...mapGetters([
-      'isDarkMode'
+      'isDarkMode',
+      'editorTheme',
+      'editorFontFamily',
     ]),
     isChanged: {
       get() {
@@ -125,28 +122,12 @@ export default {
         this.$store.commit('setIsChanged', val)
       }
     },
-    editorTheme: {
-      get() {
-        return this.$store.getters.editorTheme || themeOptions[0]
-      },
-      set(val) {
-        this.$store.commit('setEditorTheme', val)
-      }
-    },
     editorFontSize: {
       get() {
         return this.$store.getters.editorFontSize
       },
       set(val) {
         this.$store.commit('setEditorFontSize', val)
-      }
-    },
-    editorFontFamily: {
-      get() {
-        return this.$store.getters.editorFontFamily
-      },
-      set(val) {
-        this.$store.commit('setEditorFontFamily', val)
       }
     },
     uuid() {
@@ -161,6 +142,12 @@ export default {
       this.editor.updateOptions({
         theme: nv
       })
+    },
+    editorFontSize() {
+      this.setFontSize()
+    },
+    editorFontFamily() {
+      this.setFontFamily()
     },
     editData: {
       handler() {
@@ -255,6 +242,7 @@ export default {
       // editor.setSize(null, '100%') // set height
       // this.setFontFamily(editor)
       this.setFontSize(editor)
+      this.editorFontFamily && this.setFontFamily(editor)
 
       editor.onDidChangeModelContent(event => {
         if (this.editor) {
@@ -270,13 +258,9 @@ export default {
       })
     },
     setFontFamily(editor = this.editor) {
-      const el = editor.display.wrapper
-      if (this.editorFontFamily) {
-        el.style.fontFamily = this.editorFontFamily
-      } else {
-        el.style.fontFamily = null
-      }
-      editor.refresh()
+      editor.updateOptions({
+        fontFamily: this.editorFontFamily
+      })
     },
     async syncNotes() {
       console.log('syncNotes1', this.uuid)
@@ -293,17 +277,7 @@ export default {
       })
       console.log('syncNotes2', res)
     },
-    handleChangeFont() {
-      this.$prompt.create({
-        propsData: {
-          title: this.$t('detail.changeFontFamily'),
-          content: this.editorFontFamily
-        }
-      }).onConfirm(() => {
-        // this.editorFontFamily = ''
-        // this.setFontFamily()
-      })
-    },
+
     handleKeyDown(event) {
       if (event.key === 'Escape' && !this.lockEsc) {
         event.preventDefault()
@@ -412,7 +386,6 @@ export default {
             editorFontSize += 1
           }
           this.editorFontSize = editorFontSize
-          this.setFontSize()
         }
       }
     },
@@ -444,6 +417,10 @@ export default {
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    .date-text {
+      font-size: 12px;
+    }
   }
 
   .title-row {

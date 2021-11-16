@@ -1,5 +1,6 @@
 <template>
-  <div
+  <TkButton
+      size="no-style"
     class="relative-position table-row"
     @click="$emit('itemClick', item)"
     @contextmenu="$emit('itemContextMenu', item)"
@@ -14,7 +15,7 @@
     <div class="t-col _title">{{ item.title }}</div>
     <div class="t-col _time">{{ formatDate(item.creationTime) }}</div>
     <div class="t-col _time">{{ formatDate(item.lastModTime) }}</div>
-  </div>
+  </TkButton>
 </template>
 
 <script>

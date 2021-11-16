@@ -175,12 +175,15 @@ export default {
     padding: 0 20px;
 
     ::v-deep .table-row {
+      width: 100%;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 50px;
       border-bottom: $layout-border;
       cursor: pointer;
+      text-align: left;
 
       &:hover {
         background: $border-color;

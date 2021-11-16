@@ -1,6 +1,6 @@
 <template>
   <TkModalDialog v-model="mVisible" class="settings-dialog" show-close>
-    <TkCard class="text-center overflow-hidden">
+    <TkCard padding="none" class="text-center overflow-hidden">
       <div class="settings-form">
         <div class="settings-title">
           Theme Settings
@@ -36,7 +36,13 @@
               </div>
             </div>
             <div class="s-actions">
-              <TkInput placeholder="body CSS styles" v-model="form.backgroundStyle" type="textarea" :disabled="!fxEnabled"/>
+              <TkInput
+                v-model="form.backgroundStyle"
+                rows="5"
+                placeholder="body CSS styles"
+                type="textarea"
+                :disabled="!fxEnabled"
+              />
             </div>
           </div>
         </div>
@@ -114,7 +120,6 @@ export default {
       })
     },
     saveBackgroundStyle() {
-
       this.$store.commit('updateSettings', {
         key: 'backgroundStyle',
         value: this.form.backgroundStyle
@@ -124,80 +129,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.settings-dialog {
-  ::v-deep .tk-card {
-    padding: 0;
-  }
-}
-
-.settings-form {
-  min-width: 300px;
-  text-align: left;
-
-  .settings-title {
-    padding: 15px;
-    color: $primary;
-    font-weight: bold;
-    border-bottom: 1px solid;
-    font-size: 18px;
-  }
-
-  .settings-content {
-    padding: 10px;
-  }
-
-  .settings-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 0;
-
-    .s-label {
-      font-weight: 600;
-    }
-
-    .s-actions {
-      display: flex;
-      align-items: center;
-    }
-
-    & + .settings-row {
-      border-top: 1px solid rgba(204, 204, 204, 0.27);
-    }
-
-    &.multi-line {
-      flex-direction: column;
-      align-items: flex-start;
-
-      .s-label {
-        width: 100%;
-        margin-bottom: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .s-actions {
-        display: flex;
-        width: 100%;
-
-        textarea {
-          width: 100%;
-          min-height: 100px;
-          font-family: monospace;
-        }
-      }
-    }
-  }
-
-  .color-input {
-    width: 40px;
-    height: 20px;
-    padding: 0;
-  }
-}
-</style>
