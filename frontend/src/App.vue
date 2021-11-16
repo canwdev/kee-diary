@@ -12,8 +12,17 @@ export default {
   computed: {
     ...mapGetters([
       'isDarkMode',
-      'fxEnabled'
+      'fxEnabled',
+      'backgroundStyle',
     ]),
+  },
+  watch: {
+    backgroundStyle: {
+      handler(val) {
+        this.updateBackgroundStyle(val)
+      },
+      immediate: true
+    }
   },
   created() {
     const themeColor = this.$store.getters.themeColor
@@ -24,6 +33,11 @@ export default {
       root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
     }
   },
+  methods: {
+    updateBackgroundStyle(val) {
+      document.body.style.cssText = val
+    }
+  }
 }
 </script>
 

@@ -30,6 +30,7 @@ export default new Vuex.Store({
     isChanged: state => state.isChanged,
     isDarkMode: state => state.settings.isDarkMode,
     fxEnabled: state => state.settings.fxEnabled,
+    backgroundStyle: state => state.settings.backgroundStyle,
     themeColor: state => state.settings.themeColor,
     isListView: state => state.settings.isListView,
     editorTheme: state => state.settings.editorTheme,

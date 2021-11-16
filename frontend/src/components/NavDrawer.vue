@@ -16,14 +16,11 @@
       </span>
     </TkButton>
 
-    <TkButton size="no-style cursor-default" class="menu-item">
+    <TkButton size="no-style" class="menu-item" @click="$emit('showThemeSettings')">
       <span class="material-icons">color_lens</span>
       <span class="menu-item-title">
-        {{ $t('drawer.themeColor') }}
-        <span class="flex items-center">
-          <input class="tk-button-no-style color-input" type="color" :value="themeColor" @change="handleThemeColorChange">
-          <TkSwitch v-model="fxEnabled"/>
-        </span>
+        Theme
+        <span class="material-icons">settings</span>
       </span>
     </TkButton>
 
@@ -41,6 +38,7 @@
         />
       </span>
     </TkButton>
+
   </TkDrawer>
 </template>
 
@@ -48,7 +46,6 @@
 import {mapGetters} from 'vuex'
 import languages from '@/lang/languages'
 import {LS_KEY_LOCATE} from '@/lang/i18n'
-import {hexToRgb} from '@/utils/color'
 
 export default {
   name: 'NavDrawer',
@@ -68,9 +65,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'themeColor'
-    ]),
     mValue: {
       get() {
         return this.value
@@ -85,18 +79,6 @@ export default {
       },
       set(val) {
         this.$store.commit('setIsDarkMode', val)
-      }
-    },
-    fxEnabled: {
-      get() {
-        return this.$store.getters.fxEnabled
-      },
-      set(val) {
-        console.log('set',val)
-        this.$store.commit('updateSettings', {
-          key: 'fxEnabled',
-          value: val
-        })
       }
     },
     isUnlocked() {
@@ -146,18 +128,6 @@ export default {
   methods: {
     saveLocateChange(val) {
       localStorage.setItem(LS_KEY_LOCATE, val)
-    },
-    handleThemeColorChange(event) {
-      const colorHex = event.target.value
-      const {r, g, b} = hexToRgb(colorHex)
-      console.log(colorHex)
-
-      const root = document.documentElement
-      root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
-      this.$store.commit('updateSettings', {
-        key: 'themeColor',
-        value: colorHex
-      })
     }
   }
 }
@@ -177,12 +147,6 @@ export default {
 
   button {
     border-radius: 0;
-  }
-
-  .color-input {
-    width: 30px;
-    height: 30px;
-    padding: 0;
   }
 }
 </style>

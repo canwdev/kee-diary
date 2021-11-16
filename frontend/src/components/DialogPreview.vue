@@ -7,9 +7,11 @@
 </template>
 
 <script>
+import visibleMixin from '@/mixins/visible'
 
 export default {
   name: 'DialogPreview',
+  mixins: [visibleMixin],
   props: {
     visible: {
       type: Boolean,

@@ -4,12 +4,13 @@ const isSystemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-
 
 const defaultSettings = {
   isDarkMode: isSystemDarkMode,
-  fxEnabled: true,
   isListView: true, // 是列表视图还是日历视图
   editorTheme: 'vs',
   editorFontSize: 16, // px
   editorFontFamily: null,
   themeColor: '#ff7847',
+  fxEnabled: false,
+  backgroundStyle: `background-color: var(--primary);`
 }
 
 export function loadSettings() {

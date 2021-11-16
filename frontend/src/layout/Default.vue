@@ -11,7 +11,10 @@
     <NavDrawer
       v-model="leftDrawerOpen"
       title="KeeNote"
+      @showThemeSettings="themeSettingsVisible = true"
     />
+
+    <ThemeSettings :visible.sync="themeSettingsVisible"></ThemeSettings>
 
     <div class="default-layout-content">
       <keep-alive :include="['HomeView']">
@@ -25,16 +28,19 @@
 import NavDrawer from '../components/NavDrawer.vue'
 import NavHeader from '../components/NavHeader.vue'
 import {registerKeyShortcuts, unRegisterKeyShortcuts} from '@/utils/key-shortcuts'
+import ThemeSettings from '../components/ThemeSettings'
 
 export default {
   name: 'LayoutDefault',
   components: {
     NavDrawer,
     NavHeader,
+    ThemeSettings,
   },
   data() {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      themeSettingsVisible: false
     }
   },
   computed: {
