@@ -31,13 +31,6 @@
         </TkButton>
         <!--        <TkButton-->
         <!--          dense-->
-        <!--          icon="text_fields"-->
-        <!--          @click="handleChangeFont"-->
-        <!--        >-->
-        <!--          {{ $t('detail.changeFontFamily') }}-->
-        <!--        </TkButton>-->
-        <!--        <TkButton-->
-        <!--          dense-->
         <!--          icon="archive"-->
         <!--          @click="handleLoad"-->
         <!--        >-->
@@ -58,7 +51,21 @@
       <hr>
 
       <div class="editor-wrap">
-        <div id="code-container" style="height:100%;"></div>
+        <TkInput
+          v-if="useSimpleEditor"
+          v-model="simpleEditorValue"
+          type="textarea"
+          class="simple-editor"
+          :style="simpleEditorStyle"
+          @input="isChanged = true"
+        />
+        <DetailEditor
+          v-else
+          ref="codeEditor"
+          :font-size="editorFontSize"
+          :font-family="editorFontFamily"
+          @onChange="isChanged = true"
+        />
       </div>
     </TkCard>
 
@@ -73,16 +80,13 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import * as monaco from 'monaco-editor'
-import {MonacoMarkdownExtension} from 'monaco-markdown'
-
 import mainBus, {BUS_SYNC_ENTRY_DETAIL} from '@/utils/bus'
 import {formatDate} from '@/utils'
 import ItemIcon from '@/components/ItemIcon.vue'
 import {getEntryDetail, updateEntry} from '@/api'
 import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 import EditorSettings from '@/components/EditorSettings'
-
+import DetailEditor from '@/components/DetailEditor'
 import {textFilters as filters} from '@/enum'
 
 export default {
@@ -90,7 +94,8 @@ export default {
   components: {
     ItemIcon,
     DialogEntryPreview,
-    EditorSettings
+    EditorSettings,
+    DetailEditor
   },
   data() {
     return {
@@ -106,13 +111,14 @@ export default {
       isShowPreview: false,
       isShowEditorSettings: false,
       previewItem: null,
+      simpleEditorValue: ''
     }
   },
   computed: {
     ...mapGetters([
       'isDarkMode',
-      'editorTheme',
       'editorFontFamily',
+      'useSimpleEditor',
     ]),
     isChanged: {
       get() {
@@ -135,20 +141,18 @@ export default {
     },
     lockEsc() {
       return this.isShowPreview
+    },
+    simpleEditorStyle() {
+      if (!this.useSimpleEditor) {
+        return null
+      }
+      return {
+        fontSize: this.editorFontSize + 'px',
+        fontFamily: this.editorFontFamily
+      }
     }
   },
   watch: {
-    editorTheme(nv) {
-      this.editor.updateOptions({
-        theme: nv
-      })
-    },
-    editorFontSize() {
-      this.setFontSize()
-    },
-    editorFontFamily() {
-      this.setFontFamily()
-    },
     editData: {
       handler() {
         if (this.isLoading) {
@@ -157,6 +161,12 @@ export default {
         this.isChanged = true
       },
       deep: true
+    },
+    useSimpleEditor(val) {
+      this.initEntryData()
+      if (!val) {
+        this.simpleEditorValue = null
+      }
     }
   },
   async mounted() {
@@ -168,7 +178,6 @@ export default {
     })
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('wheel', this.handleCtrlScroll, {passive: false})
-    window.addEventListener('resize', this.handleResize)
   },
   async beforeRouteLeave(to, from, next) {
     // console.log('beforeRouteLeave')
@@ -183,7 +192,6 @@ export default {
     mainBus.$off(BUS_SYNC_ENTRY_DETAIL)
     document.removeEventListener('keydown', this.handleKeyDown)
     document.removeEventListener('wheel', this.handleCtrlScroll)
-    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
     formatDate,
@@ -208,7 +216,14 @@ export default {
         this.editData.icon = entry.icon
         this.editData.bgColor = entry.bgColor
         this.editData.fgColor = entry.fgColor
-        this.initCodeEditor(entry)
+
+        const editorValue = entry && entry.notes || ''
+
+        if (!this.useSimpleEditor) {
+          this.$refs.codeEditor.initCodeEditor(editorValue)
+        } else {
+          this.simpleEditorValue = editorValue
+        }
       } catch (e) {
         console.error(e)
         this.$toast.error({message: e})
@@ -218,61 +233,24 @@ export default {
         })
       }
     },
-    initCodeEditor(entry) {
-      const container = document.getElementById('code-container')
-
-      const value = entry && entry.notes || ''
-      const editor = monaco.editor.create(container, {
-        value,
-        lineNumbers: 'off',
-        language: 'markdown',
-        theme: this.editorTheme,
-        wordWrap: true,
-        minimap: {
-          enabled: false
-        },
-        scrollbar: {
-          alwaysConsumeMouseWheel: false
-        },
-        quickSuggestions: false
-      })
-      const mdExtension = new MonacoMarkdownExtension()
-      mdExtension.activate(editor)
-
-      // editor.setSize(null, '100%') // set height
-      // this.setFontFamily(editor)
-      this.setFontSize(editor)
-      this.editorFontFamily && this.setFontFamily(editor)
-
-      editor.onDidChangeModelContent(event => {
-        if (this.editor) {
-          this.isChanged = true
-        }
-      })
-
-      this.editor = editor
-    },
-    setFontSize(editor = this.editor) {
-      editor.updateOptions({
-        fontSize: this.editorFontSize
-      })
-    },
-    setFontFamily(editor = this.editor) {
-      editor.updateOptions({
-        fontFamily: this.editorFontFamily
-      })
+    getEditorValue() {
+      if (this.useSimpleEditor) {
+        return this.simpleEditorValue
+      } else {
+        return this.$refs.codeEditor.getValue()
+      }
     },
     async syncNotes() {
       console.log('syncNotes1', this.uuid)
 
-      if (!this.uuid || !this.editor) {
+      if (!this.uuid) {
         return
       }
       const res = await updateEntry({
         uuid: this.uuid,
         updates: [
           {path: 'fields.Title', value: this.editData.title},
-          {path: 'fields.Notes', value: this.editor.getValue()},
+          {path: 'fields.Notes', value: this.getEditorValue() },
         ]
       })
       console.log('syncNotes2', res)
@@ -375,25 +353,18 @@ export default {
     handleCtrlScroll(event) {
       if (event.ctrlKey) {
         event.preventDefault()
-        let editorFontSize = this.editorFontSize
-        if (this.editor) {
-          if (event.deltaY > 0) {
-            if (editorFontSize <= 0) {
-              return
-            }
-            editorFontSize -= 1
-          } else {
-            editorFontSize += 1
+        let fontSize = this.editorFontSize
+        if (event.deltaY > 0) {
+          if (fontSize <= 0) {
+            return
           }
-          this.editorFontSize = editorFontSize
+          fontSize -= 1
+        } else {
+          fontSize += 1
         }
+        this.editorFontSize = fontSize
       }
     },
-    handleResize() {
-      if (this.editor) {
-        this.editor.layout()
-      }
-    }
   }
 }
 </script>
@@ -437,7 +408,13 @@ export default {
     //overflow: auto;
     height: calc(100vh - 230px);
     @media screen and (max-width: $mq_mobile_width) {
-      height: calc(100vh - 200px);
+      height: calc(100vh - 164px);
+    }
+
+    .simple-editor {
+      width: 100%;
+      height: 100%;
+      resize: none;
     }
   }
 }

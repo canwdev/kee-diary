@@ -8,6 +8,7 @@ const defaultSettings = {
   editorTheme: 'vs',
   editorFontSize: 16, // px
   editorFontFamily: null,
+  useSimpleEditor: false,
   themeColor: '#ff7847',
   fxEnabled: false,
   backgroundStyle: `background-color: var(--primary);`

@@ -34,6 +34,7 @@ export default new Vuex.Store({
     themeColor: state => state.settings.themeColor,
     isListView: state => state.settings.isListView,
     editorTheme: state => state.settings.editorTheme,
+    useSimpleEditor: state => state.settings.useSimpleEditor,
     editorFontSize: state => state.settings.editorFontSize || 16,
     editorFontFamily: state => state.settings.editorFontFamily || '',
     databaseRecycleBinEnabled: state => state.database && state.database.meta.recycleBinEnabled,

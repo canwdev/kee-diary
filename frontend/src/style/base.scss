@@ -15,13 +15,18 @@ body {
   //background: linear-gradient(to bottom, #ff7847, #00eaff);
   //background-color: $primary;
   box-sizing: border-box;
+
+  ::selection {
+    color: #fff;
+    background-color: $primary;
+  }
 }
 
 button, input, textarea, a, {
   &:focus {
-    outline: 1px solid $primary;
-    //outline: none;
-    box-shadow: 0 0 0 0.12rem rgba(255, 255, 255, 0.3) inset;
+    //outline: 1px solid $primary;
+    outline: none;
+    box-shadow: 0 0 0 1px $primary inset;
   }
 }
 

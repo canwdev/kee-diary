@@ -6,7 +6,14 @@
           Editor Settings
         </div>
         <div class="settings-content">
-          <div class="settings-row">
+          <TkButton size="no-style" class="settings-row" @click="useSimpleEditor = !useSimpleEditor">
+            <div class="s-label">使用原生编辑器</div>
+            <div class="s-actions">
+              <TkSwitch :value="useSimpleEditor"/>
+            </div>
+          </TkButton>
+
+          <div v-if="!useSimpleEditor" class="settings-row">
             <div class="s-label">Editor Theme</div>
             <div class="s-actions">
               <TkDropdown
@@ -45,7 +52,7 @@
             <div class="s-label">Font Size</div>
             <div class="s-actions">
               <TkInput
-                  v-model="editorFontSize"
+                v-model="editorFontSize"
                 min="1"
                 style="width: 100px"
                 type="number"
@@ -80,6 +87,17 @@ export default {
     }
   },
   computed: {
+    useSimpleEditor: {
+      get() {
+        return this.$store.getters.useSimpleEditor
+      },
+      set(val) {
+        this.$store.commit('updateSettings', {
+          key: 'useSimpleEditor',
+          value: val
+        })
+      }
+    },
     editorTheme: {
       get() {
         return this.$store.getters.editorTheme || themeOptions[0]
