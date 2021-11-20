@@ -1,5 +1,11 @@
 <template>
-  <TkDrawer class="custom-drawer" :title="title" :visible.sync="mValue" :menu="menuList">
+  <TkDrawer
+    class="custom-drawer"
+    :title="title"
+    :visible.sync="mValue"
+    :menu="menuList"
+    :pos="isMacOS ? 'right': 'left'"
+  >
     <TkButton v-if="isUnlocked" size="no-style" class="menu-item" @click="isListView = !isListView">
       <span class="material-icons">{{ isListView ? 'list' : 'event' }}</span>
       <span class="menu-item-title">
@@ -65,6 +71,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isMacOS',
+    ]),
     mValue: {
       get() {
         return this.value

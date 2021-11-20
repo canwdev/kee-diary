@@ -29,6 +29,7 @@ function createMainWindow() {
       // frame: true,
       titleBarStyle: 'hidden',
       titleBarOverlay: false,
+      trafficLightPosition: { x: 15, y: 15.5 },
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -47,7 +48,7 @@ function createMainWindow() {
   require("@electron/remote/main").enable(mainWindow.webContents);
 
   // Hide macOS traffic lights
-  mainWindow.setWindowButtonVisibility(false)
+  // mainWindow.setWindowButtonVisibility(false)
 
   // 退出前询问
   mainWindow.on('close', (e) => {

@@ -15,6 +15,13 @@ const pagerOptions = {
   allCount: 0
 }
 
+let isMacOS = false
+try {
+  isMacOS = window.electronAPI.require('os').platform() === 'darwin'
+} catch (e) {
+  console.warn(e)
+}
+
 export default new Vuex.Store({
   state: {
     settings: loadSettings(),
@@ -23,9 +30,11 @@ export default new Vuex.Store({
     isChanged: getIsChanged() || false, // 有未保存的变更
     selectedGroup: null, // 当前选中的群组
     pagerOptions: {...pagerOptions}, // 条目列表分页配置
-    calendarDate: new Date() // 日历视图
+    calendarDate: new Date(), // 日历视图
+    isMacOS: isMacOS
   },
   getters: {
+    isMacOS: state => state.isMacOS,
     isUnlocked: state => state.isUnlocked,
     isChanged: state => state.isChanged,
     isDarkMode: state => state.settings.isDarkMode,

@@ -64,10 +64,6 @@ class KdbxInstance {
   }
 
   close() {
-    if (!this.db) {
-      throw new Error('[db] instance is not exist')
-    }
-
     console.log('[db] closing database...')
     // this.db.close()
     this.resetInstance()

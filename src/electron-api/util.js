@@ -1,5 +1,6 @@
 const {shell, remote} = require('electron')
 const fetch = require('node-fetch');
+const os = require('os')
 
 const checkUrl = 'http://developers.google.cn/generate_204'
 const checkUrlOrigin = 'http://developers.google.cn'
@@ -34,5 +35,6 @@ module.exports = {
   openExternal: shell.openExternal,
   checkConnectivity,
   alert,
-  showErrorBox
+  showErrorBox,
+  require
 }

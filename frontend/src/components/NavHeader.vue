@@ -1,5 +1,5 @@
 <template>
-  <div class="default-header" :class="{'is-maximized': isMaximized}">
+  <div class="default-header" :class="{'is-maximized': isMaximized, 'is-macos': isMacOS}">
     <TkNavBar full-width>
       <template slot="left">
         <div class="header-left actions-btn-wrap">
@@ -65,32 +65,33 @@
         </div>
       </template>
       <template slot="right">
-        <TkButton
-          round
-          flat
-          class="btn-window-action"
-          @click="handleMinimum"
-        >
-          <i class="material-icons">minimize</i>
-        </TkButton>
-        <TkButton
-          round
-          flat
-          class="btn-window-action"
-          @click="handleToggleMaximum"
-        >
-          <i class="material-icons">{{ isMaximized ? 'fullscreen_exit' : 'fullscreen' }}</i>
-        </TkButton>
-
-        <TkButton
-          round
-          flat
-          :title="$t('header.close')"
-          class="btn-window-action"
-          @click="handleClose"
-        >
-          <i class="material-icons">close</i>
-        </TkButton>
+        <template v-if="!isMacOS">
+          <TkButton
+            round
+            flat
+            class="btn-window-action"
+            @click="handleMinimum"
+          >
+            <i class="material-icons">minimize</i>
+          </TkButton>
+          <TkButton
+            round
+            flat
+            class="btn-window-action"
+            @click="handleToggleMaximum"
+          >
+            <i class="material-icons">{{ isMaximized ? 'fullscreen_exit' : 'fullscreen' }}</i>
+          </TkButton>
+          <TkButton
+            round
+            flat
+            :title="$t('header.close')"
+            class="btn-window-action"
+            @click="handleClose"
+          >
+            <i class="material-icons">close</i>
+          </TkButton>
+        </template>
       </template>
     </TkNavBar>
     <!--    <DialogSearch-->
@@ -125,7 +126,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isDarkMode', 'isUnlocked', 'isChanged'
+      'isDarkMode',
+      'isUnlocked',
+      'isChanged',
+      'isMacOS',
     ]),
     isShowBack() {
       const r = this.$route.name
@@ -164,12 +168,20 @@ export default {
     }
   }
 
+  &.is-macos {
+    ::v-deep .tk-navbar {
+      .tk-container-wrap {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
   .header-left {
     display: flex;
     align-items: center;
 
     .title-wrap {
-      margin-left: 10px;
+      margin: 0 10px;
       display: flex;
       align-items: center;
 
@@ -192,7 +204,21 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    padding: 0 10px;
   }
+
+  &.is-macos {
+    .header-left {
+      flex-direction: row-reverse;
+    }
+    .header-center {
+      justify-content: flex-start;
+    }
+    ::v-deep .nav-right {
+      padding-left: 50px;
+    }
+  }
+
 
 }
 </style>

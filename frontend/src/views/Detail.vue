@@ -26,7 +26,7 @@
           round
           size="xs"
           class="material-icons"
-          @click="isShowEditorSettings = true"
+          @click="showSettings"
         >settings
         </TkButton>
         <!--        <TkButton-->
@@ -365,6 +365,10 @@ export default {
         this.editorFontSize = fontSize
       }
     },
+    showSettings() {
+      this.syncNotes()
+      this.isShowEditorSettings = true
+    }
   }
 }
 </script>
