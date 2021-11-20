@@ -5,3 +5,4 @@ node_modules
 .yarnclean
 /yarn-error.log
 /dist-frontend/
+.DS_Store

@@ -30,7 +30,7 @@
         {{ $t('drawer.language') }}
         <TkDropdown
           v-model="$i18n.locale"
-          size="sm"
+          size="xs"
           :options="languages"
           option-label="name"
           option-value="locate"

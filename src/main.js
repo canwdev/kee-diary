@@ -46,6 +46,9 @@ function createMainWindow() {
   )
   require("@electron/remote/main").enable(mainWindow.webContents);
 
+  // Hide macOS traffic lights
+  mainWindow.setWindowButtonVisibility(false)
+
   // 退出前询问
   mainWindow.on('close', (e) => {
     if (kInstance.isChanged) {
@@ -57,6 +60,9 @@ function createMainWindow() {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
+    if (kInstance) {
+      kInstance.close()
+    }
     mainWindow = null
   })
 
