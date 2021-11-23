@@ -1,10 +1,10 @@
 # KeeNote
 
-## 简介 · Introduction
-
 使用 kdbx 加密的笔记应用程序
 
 A note editor application that uses KeePass technology to encrypt storage.
+
+![img](./screenshots/mac.png)
 
 ![img](./screenshots/001.png)
 ![img](./screenshots/002.png)
@@ -47,7 +47,7 @@ A note editor application that uses KeePass technology to encrypt storage.
     - [x] Markdown 预览
     - [x] Monaco 编辑器
     - [x] 删除
-    - [ ] 移动
+    - [x] 移动
 
 ## 开发 · Development
 
