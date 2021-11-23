@@ -25,6 +25,7 @@
         @onChangeIcon="i => handleChangeIcon(i, true)"
         @onChangeColor="i => handleChangeColor(i, true)"
         @onDelete="i => handleDeleteEntry(i)"
+        @onMove="i => handleMove(i, true)"
       />
 
       <!--      <CalendarView-->
@@ -68,9 +69,9 @@
     <DialogChooseGroup
       ref="groupChooser"
       :visible.sync="isShowChooseGroup"
-      :tips="$t('kdbx.do-not-move-to-the-group-itself')"
+      :tips="isCurrentItemEntry ? null : $t('kdbx.do-not-move-to-the-group-itself')"
       :auto-expand-uuid="autoExpandUuid"
-      not-allow-select-sub
+      :not-allow-select-sub="!isCurrentItemEntry"
       @onChoose="changeGroup"
     />
 
@@ -84,7 +85,7 @@ import EntryList from '@/components/EntryList/index.vue'
 import DialogAdd from '@/components/DialogAdd.vue'
 import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup, removeEntry, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
+import {removeGroup, removeEntry, moveEntry, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
 import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
 import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 import DialogChooseColor from '@/components/DialogChooseColor.vue'
@@ -139,6 +140,9 @@ export default {
         return item.data.uuid
       }
       return null
+    },
+    isCurrentItemEntry() {
+      return this.curItem && !this.curItem.data
     }
   },
   mounted() {
@@ -154,7 +158,7 @@ export default {
     addEntrySuccess({entry, group}) {
       this.$store.commit('setSelectedGroup', group)
       this.$nextTick(() => {
-        this.$refs.entryList.loadEntryList()
+        this.refreshEntryList()
       })
       this.$router.push({
         name: 'Detail',
@@ -166,6 +170,9 @@ export default {
     refreshGroup() {
       this.$refs.groupView.updateTree()
       this.$refs.groupChooser.updateTree()
+    },
+    refreshEntryList() {
+      this.$refs.entryList.loadEntryList()
     },
     handleAddEntry(group) {
       this.isAddGroup = false
@@ -214,7 +221,7 @@ export default {
           uuid: item.uuid
         })
         this.$store.commit('setIsChanged', true)
-        this.$refs.entryList.loadEntryList()
+        this.refreshEntryList()
       })
     },
     handlePreviewItem(item) {
@@ -258,9 +265,8 @@ export default {
     },
     async updateIcon(icon) {
       const item = this.curItem
-      const isEntry = !item.data
 
-      if (isEntry) {
+      if (this.isCurrentItemEntry) {
         await updateEntry({
           uuid: item.uuid,
           updates: [
@@ -309,13 +315,21 @@ export default {
     },
     async changeGroup(group) {
       console.log(group)
+      const item = this.curItem
 
-      await moveGroup({
-        uuid: this.curItem.data.uuid,
-        targetUuid: group.data.uuid,
-      })
-
-      this.refreshGroup()
+      if (this.isCurrentItemEntry) {
+        await moveEntry({
+          groupUuid: group.data.uuid,
+          uuid: item.uuid
+        })
+        this.refreshEntryList()
+      } else {
+        await moveGroup({
+          uuid: item.data.uuid,
+          targetUuid: group.data.uuid,
+        })
+        this.refreshGroup()
+      }
       this.$store.commit('setIsChanged', true)
       this.isShowChooseGroup = false
       this.curItem = null

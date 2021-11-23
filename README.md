@@ -31,6 +31,7 @@ A note editor application that uses KeePass technology to encrypt storage.
     - [x] 删除/移动到回收站
 - 条目 · Entries
     - [x] 列表视图
+      - [ ] 多选
     - [ ] 日历视图
     - [x] 修改图标
     - [x] 修改颜色

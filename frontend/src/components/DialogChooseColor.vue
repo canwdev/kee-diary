@@ -106,7 +106,7 @@ export default {
     iconPreview() {
       const item = this.item || {}
       return {
-        icon: item.icon || item.data.icon,
+        icon: item.icon || (item.data && item.data.icon),
         [this.colorType]: this.selectedColor
       }
     }

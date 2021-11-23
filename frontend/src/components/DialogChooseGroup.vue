@@ -11,12 +11,12 @@
 
         <div class="settings-content">
           <div class="card-tree">
-            <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
-                tips
-              }}</p>
+            <div v-if="tips" class="text-info text-sm">{{ $t('tip') }}: {{
+              tips
+            }}</div>
             <GroupTree
-                ref="treeRef"
-                :selected.sync="selected"
+              ref="treeRef"
+              :selected.sync="selected"
             />
           </div>
         </div>

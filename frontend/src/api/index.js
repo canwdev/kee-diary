@@ -93,8 +93,8 @@ export function moveGroup(params) {
   return callAsync('moveGroup', params)
 }
 
-export function moveItems(params) {
-  return callAsync('moveItems', params)
+export function moveEntry(params) {
+  return callAsync('moveEntry', params)
 }
 
 // ====== custom frontend api ======
