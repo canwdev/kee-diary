@@ -21,7 +21,7 @@
     "themeColor": "主题颜色"
   },
   "about": {
-    "info": "加密随笔编辑器",
+    "info": "加密笔记编辑器",
     "btnHome": "返回首页",
     "btnLogDatabase": "输出数据库到控制台"
   },

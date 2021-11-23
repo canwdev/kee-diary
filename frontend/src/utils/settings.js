@@ -11,7 +11,7 @@ const defaultSettings = {
   useSimpleEditor: false,
   themeColor: '#ff7847',
   fxEnabled: false,
-  backgroundStyle: `background-color: var(--primary);`
+  backgroundStyle: ``
 }
 
 export function loadSettings() {

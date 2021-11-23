@@ -3,32 +3,37 @@
     v-model="mVisible"
     show-close
   >
-    <TkCard class="card-choose-color">
-      <div class="flex items-center">
-        <span class="">{{ $t('choose') }} {{
-          isFgColor ? $t('foreground') : $t('background')
-        }} {{ $t('color') }}</span>
+    <TkCard padding="none" class="card-choose-color">
 
-        <TkSwitch
-          v-model="isFgColor"
-        >
-        </TkSwitch>
+      <div class="settings-form">
+        <div class="settings-title">
+          <div class="_title flex items-center">
+            <span>{{ $t('choose') }}</span>
+
+            <TkSwitch
+              v-model="isFgColor"
+              checkbox
+            >
+              {{ isFgColor ? $t('foreground') : $t('background') }}
+            </TkSwitch>
+
+            <span> {{ $t('color') }}</span>
+          </div>
+        </div>
+
+        <div class="settings-content">
+          <div class="color-palette">
+            <ColorItem
+              v-for="(item, i) in palette"
+              :key="i"
+              :color="item.color"
+              :name="item.name"
+              :is-active="selectedColor === item.color"
+              @click.native="handleSelect(item.color)"
+            />
+          </div>
+        </div>
       </div>
-
-      <hr/>
-
-      <div class="color-palette">
-        <ColorItem
-          v-for="(item, i) in palette"
-          :key="i"
-          :color="item.color"
-          :name="item.name"
-          :is-active="selectedColor === item.color"
-          @click.native="handleSelect(item.color)"
-        />
-      </div>
-
-      <hr/>
 
       <div class="action-btn-row" >
         <TkButton :label="$t('cancel')" @click="mVisible = false"/>
@@ -140,6 +145,13 @@ export default {
 <style lang="scss" scoped>
 .card-choose-color {
   max-width: 500px;
+
+  ._title {
+    .tk-switch {
+      padding: 0 5px;
+      font-weight: bold;
+    }
+  }
 
   .color-palette {
     max-height: 70vh;

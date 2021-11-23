@@ -47,6 +47,8 @@ hr {
 
 .action-btn-row {
   text-align: right;
+  padding: 10px 15px;
+  border-top: 1px solid $border-color;
 
   button + button {
     margin-left: 8px;
@@ -59,7 +61,11 @@ hr {
 
 // ---
 .settings-form {
-  min-width: 300px;
+  width: 400px;
+
+  @media screen and (max-width: $mq_mobile_width) {
+    width: 340px;
+  }
   text-align: left;
 
   .settings-title {
@@ -74,11 +80,20 @@ hr {
     padding: 10px;
   }
 
+  .form-row {
+    padding: 10px 5px;
+
+    .row-title {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  }
+
   .settings-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 5px;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0;

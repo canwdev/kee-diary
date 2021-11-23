@@ -4,35 +4,38 @@
       v-model="mVisible"
       show-close
     >
-      <TkCard v-if="mVisible" class="card-choose-icon">
-        <div class="flex items-center">
-          <ItemIcon
-            :item="{icon:index}"
-          />
-          <span class="">{{ $t('choose-icon') }}</span>
+      <TkCard v-if="mVisible" padding="none" class="card-choose-icon">
+        <div class="settings-form">
+          <div class="settings-title">
+            <div class="flex items-center">
+              <ItemIcon
+                  :item="{icon:index}"
+              />
+              <span class="">{{ $t('choose-icon') }}</span>
+            </div>
+          </div>
+
+          <div class="settings-content">
+            <div class="icon-palette">
+              <TkButton
+                  v-for="(item, i) in icons"
+                  :key="i"
+                  :title="item.name"
+                  size="no-style"
+                  class="icon-item"
+                  :class="{active: i === selectedIndex }"
+                  @click="handleSelect(i)"
+                  @contextmenu="handlePreview(i)"
+              >
+                <ItemIcon
+                    :item="{icon:i}"
+                    :icon-scale="1.2"
+                />
+              </TkButton>
+            </div>
+          </div>
         </div>
 
-        <hr/>
-
-        <div class="icon-palette">
-          <TkButton
-            v-for="(item, i) in icons"
-            :key="i"
-            :title="item.name"
-            size="no-style"
-            class="icon-item"
-            :class="{active: i === selectedIndex }"
-            @click="handleSelect(i)"
-            @contextmenu="handlePreview(i)"
-          >
-            <ItemIcon
-              :item="{icon:i}"
-              :icon-scale="1.2"
-            />
-          </TkButton>
-        </div>
-
-        <hr/>
         <div class="action-btn-row">
           <TkButton :label="$t('cancel')" @click="mVisible = false"/>
           <TkButton
@@ -132,13 +135,21 @@ export default {
 <style lang="scss" scoped>
 .card-choose-icon {
   max-width: 500px;
+  overflow: hidden;
+  .settings-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .settings-content {
+    padding: 0;
+  }
 
   .icon-palette {
-    max-height: 70vh;
+    max-height: 60vh;
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
-    padding: 10px 0;
+    padding: 10px 10px;
 
     .icon-item {
       margin: 5px;

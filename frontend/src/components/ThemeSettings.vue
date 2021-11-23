@@ -17,13 +17,21 @@
               >
             </div>
           </div>
+
+          <TkButton size="no-style" class="settings-row" @click="isDarkMode = !isDarkMode">
+            <div class="s-label">{{ $t('drawer.darkMode') }}</div>
+            <div class="s-actions">
+              <TkSwitch :value="isDarkMode"/>
+            </div>
+          </TkButton>
+
           <TkButton size="no-style" class="settings-row" @click="fxEnabled = !fxEnabled">
-            <div class="s-label">Aero</div>
+            <div class="s-label">Transparent Blur Effect</div>
             <div class="s-actions">
               <TkSwitch :value="fxEnabled"/>
             </div>
           </TkButton>
-          <div v-show="fxEnabled" class="settings-row multi-line">
+          <div class="settings-row multi-line">
             <div class="s-label">
               <div>Background Style</div>
               <div>
@@ -39,9 +47,8 @@
               <TkInput
                 v-model="form.backgroundStyle"
                 rows="5"
-                placeholder="body CSS styles"
+                placeholder="body CSS styles: background: var(--primary);"
                 type="textarea"
-                :disabled="!fxEnabled"
               />
             </div>
           </div>
@@ -78,6 +85,14 @@ export default {
       'themeColor',
       'backgroundStyle'
     ]),
+    isDarkMode: {
+      get() {
+        return this.$store.getters.isDarkMode
+      },
+      set(val) {
+        this.$store.commit('setIsDarkMode', val)
+      }
+    },
     mVisible: {
       get() {
         return this.visible

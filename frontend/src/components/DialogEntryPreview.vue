@@ -4,34 +4,36 @@
       v-model="mVisible"
       show-close
     >
-      <TkCard v-if="previewItem" style="width: 700px; max-width: 80vw;" class="preview-container">
-        <div class="preview-head">
-          <div class="flex items-center justify-between">
-            <ItemIcon
-              class="cursor-pointer"
-              :item="previewItem"
-              @click.native="isShowPreviewIcon = true"
+      <TkCard v-if="previewItem" padding="none" class="preview-container">
+        <div class="settings-form">
+          <div class="preview-head">
+            <div class="settings-title">
+
+              <div class="flex items-center">
+                <ItemIcon
+                  class="cursor-pointer"
+                  :item="previewItem"
+                  @click.native="isShowPreviewIcon = true"
+                />
+                <span class="_title" @dblclick="logEntry">{{ previewItem.title }}</span>
+
+                <span></span>
+              </div>
+
+            </div>
+
+            <div class="row-datetime">
+              <span>{{ $t('home.created') }}: {{ formatDate(previewItem.creationTime) }}</span>
+              <span>{{ $t('home.modified') }}: {{ formatDate(previewItem.lastModTime) }}</span>
+            </div>
+
+          </div>
+          <div class="preview-body">
+            <div
+              :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
+              v-html="transformHTML(previewItem.notes || '')"
             />
-            <span class="_title" @dblclick="logEntry">{{ previewItem.title }}</span>
-
-            <span></span>
           </div>
-
-          <hr/>
-
-          <div class="flex justify-between">
-            <span>{{ $t('home.created') }}: {{ formatDate(previewItem.creationTime) }}</span>
-            <span>{{ $t('home.modified') }}: {{ formatDate(previewItem.lastModTime) }}</span>
-          </div>
-
-          <hr/>
-        </div>
-
-        <div class="preview-body">
-          <div
-            :class="isDarkMode ? 'markdown-body-dark' : 'markdown-body'"
-            v-html="transformHTML(previewItem.notes || '')"
-          />
         </div>
 
       </TkCard>
@@ -120,25 +122,46 @@ export default {
 
 <style lang="scss" scoped>
 .dialog-entry-preview {
-
-  .preview-container {
+  .settings-form {
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
     overflow: hidden;
+    height: 80vh;
+
+    width: auto;
+    max-width: 1200px;
+
+    @media screen and (max-width: $mq_mobile_width) {
+      max-width: 90vw;
+    }
 
     .preview-head {
+      .settings-title {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
       ._title {
         font-weight: bold;
         font-size: 18px;
+        margin-left: 5px;
+      }
+
+      .row-datetime {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: 1px solid $border-color;
       }
     }
 
     .preview-body {
       flex: 1;
       overflow: auto;
-      padding: 20px 20px;
+      padding: 10px 15px;
     }
   }
+
 }
 </style>

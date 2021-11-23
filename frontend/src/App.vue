@@ -35,9 +35,7 @@ export default {
   },
   methods: {
     updateBackgroundStyle(val) {
-      if (this.fxEnabled) {
-        document.body.style.cssText = val
-      }
+      document.body.style.cssText = val
     }
   }
 }

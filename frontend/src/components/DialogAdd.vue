@@ -4,15 +4,13 @@
       v-model="mVisible"
       show-close
     >
-      <TkCard class="card-add-entry">
-        <form @submit.prevent="handleSubmit">
-          <div>
+      <TkCard padding="none" class="card-add-entry">
+        <form class="settings-form" @submit.prevent="handleSubmit">
+          <div class="settings-title">
             {{ isAddGroup ? $t('home.create-group') : $t('home.create-entry') }}
           </div>
 
-          <hr/>
-
-          <div class="form-wrap">
+          <div class="settings-content">
             <div class="form-row">
               <div class="row-title">{{ $t('choose-group') }}:</div>
               <div class="row-content">
@@ -43,10 +41,10 @@
               </div>
             </div>
 
-            <div v-if="!isAddGroup" class="form-row flex justify-between">
-              <div class="choose-btn-wrap">
-                <div class="row-title ">{{ $t('choose-icon') }}</div>
-                <div class="row-content">
+            <template v-if="!isAddGroup">
+              <div class="settings-row">
+                <div class="s-label">{{ $t('choose-icon') }}: </div>
+                <div class="s-actions">
                   <TkButton
                     type="button"
                     size="no-style"
@@ -60,30 +58,30 @@
                 </div>
               </div>
 
-              <div class="choose-btn-wrap">
-                <div class="row-title ">{{ $t('foreground') + ' ' + $t('color') }}</div>
-                <div class="row-content">
-                  <ColorItem
-                    :color="form.fgColor"
-                    @click.native="showColorChooser(true)"
-                  />
-                </div>
-              </div>
+              <div class="settings-row">
+                <div class="s-label">{{ $t('color') }}: </div>
 
-              <div class="choose-btn-wrap">
-                <div class="row-title ">{{ $t('background') + ' ' + $t('color') }}</div>
-                <div class="row-content">
-                  <ColorItem
-                    :color="form.bgColor"
-                    @click.native="showColorChooser(false)"
-                  />
+                <div class="s-actions flex items-center">
+                  <div class="color-icon">
+                    <ColorItem
+                      :color="form.fgColor"
+                      @click.native="showColorChooser(true)"
+                    />
+                    <div class="color-title">{{ $t('foreground') }}</div>
+                  </div>
+
+                  <div class="color-icon">
+                    <ColorItem
+                      :color="form.bgColor"
+                      @click.native="showColorChooser(false)"
+                    />
+                    <div class="color-title">{{ $t('background') }}</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
 
           </div>
-
-          <hr/>
 
           <div class="action-btn-row">
             <TkButton
@@ -284,25 +282,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form-wrap {
-  .form-row {
-    & + .form-row {
-      margin-top: 15px;
-    }
-
-    .row-title {
-      margin-bottom: 5px;
-    }
-  }
-}
-
 .card-add-entry {
-  width: 400px;
 
-  .choose-btn-wrap {
+  .color-icon {
+    margin-left: 20px;
     text-align: center;
-    padding: 10px;
-
+    .color-title {
+      font-size: 12px;
+      margin-top: 2px;
+    }
   }
 }
 </style>

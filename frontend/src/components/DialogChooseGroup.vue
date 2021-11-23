@@ -3,27 +3,26 @@
     v-model="mVisible"
     show-close
   >
-    <TkCard class="card-choose-group">
-      <div class="flex items-center">
-        <span>{{ $t('choose-group') }}</span>
+    <TkCard padding="none" class="card-choose-group">
+      <div class="settings-form">
+        <div class="settings-title">
+          <span>{{ $t('choose-group') }}</span>
+        </div>
+
+        <div class="settings-content">
+          <div class="card-tree">
+            <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
+                tips
+              }}</p>
+            <GroupTree
+                ref="treeRef"
+                :selected.sync="selected"
+            />
+          </div>
+        </div>
       </div>
-
-      <hr/>
-
-      <div class="card-tree">
-        <p v-if="tips" class="text-weight-thin">{{ $t('tip') }}: {{
-          tips
-        }}</p>
-        <GroupTree
-          ref="treeRef"
-          :selected.sync="selected"
-        />
-      </div>
-
-      <hr/>
 
       <div class="action-btn-row">
-
         <TkButton flat :label="$t('cancel')" @click="mVisible = false"/>
         <TkButton
           :disabled="!selected"
@@ -132,7 +131,6 @@ export default {
 
 <style lang="scss" scoped>
 .card-choose-group {
-  min-width: 400px;
 
   .card-tree {
     max-height: 70vh;
