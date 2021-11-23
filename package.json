@@ -1,7 +1,7 @@
 {
   "name": "kee-note",
   "appName": "KeeNote",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "A note editor application that uses KeePass.",
   "repository": "",
   "private": true,
@@ -14,7 +14,8 @@
     "dev:frontend": "cross-env PORT=8081 yarn --cwd './frontend' serve",
     "dev:electron": "cross-env ELECTRON_START_URL=http://localhost:8081 electron .",
     "prod:electron": "cross-env ELECTRON_IS_DEV=0 electron .",
-    "build": "yarn run build:frontend && yarn run build:electron-dir",
+    "build-dir": "yarn run build:frontend && yarn run build:electron-dir",
+    "build": "yarn run build:frontend && yarn run build:electron",
     "build:frontend": "cross-env yarn --cwd './frontend' build",
     "build:electron-dir": "electron-builder --dir",
     "build:electron": "electron-builder",

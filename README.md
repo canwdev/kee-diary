@@ -6,11 +6,20 @@
 
 A note editor application that uses KeePass technology to encrypt storage.
 
+![img](./screenshots/001.png)
+![img](./screenshots/002.png)
+![img](./screenshots/003.png)
+![img](./screenshots/004.png)
+![img](./screenshots/005.png)
+![img](./screenshots/006.png)
+![img](./screenshots/007.png)
+
 ## 技术栈 · Technology
 
 - Electron
 - Vue 2
 - [kdbxweb](https://github.com/keeweb/kdbxweb)
+- [TankUI](https://github.com/canwdev/tank-ui)
 
 ## 功能 · Features
 

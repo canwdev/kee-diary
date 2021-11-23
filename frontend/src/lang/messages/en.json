@@ -67,9 +67,9 @@
   "do-not-move-to-the-group-itself": "Do not move to the group itself or subgroups, otherwise the group will disappear."
  },
  "save": "Save",
- "don-t-save": "Don\\'t save",
+ "don-t-save": "Do not save",
  "cancel": "Cancel",
- "and-exit": "and exit",
+ "and-exit": " and exit",
  "menu": {
   "create-entry": "Create entry",
   "create-group": "Create group",
@@ -77,8 +77,8 @@
   "change-color": "Change color",
   "log-to-console": "Log to console",
   "are-you-sure": "Are you sure you want to",
-  "move-to-recycle-bin": "move to recycle bin",
-  "empty-recycle-bin": "empty recycle bin"
+  "move-to-recycle-bin": "Move to recycle bin",
+  "empty-recycle-bin": "Empty recycle bin"
  },
  "rename": "Rename",
  "move": "Move",

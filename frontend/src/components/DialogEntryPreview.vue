@@ -126,7 +126,7 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 80vh;
+    max-height: 80vh;
 
     width: auto;
     max-width: 1200px;
