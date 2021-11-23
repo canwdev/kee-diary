@@ -8,6 +8,8 @@
       <div class="settings-form">
         <div class="settings-title">
           <div class="_title flex items-center">
+            <ItemIcon :item="iconPreview"/>
+
             <span>{{ $t('choose') }}</span>
 
             <TkSwitch
@@ -52,6 +54,7 @@
 <script>
 import {palette} from '@/enum'
 import ColorItem from '@/components/ColorItem.vue'
+import ItemIcon from './ItemIcon.vue'
 
 function getTypeColor(isFgColor, item) {
   if (!item) return
@@ -66,7 +69,8 @@ function getColorName(color) {
 export default {
   name: 'DialogChooseIcon',
   components: {
-    ColorItem
+    ColorItem,
+    ItemIcon
   },
   props: {
     visible: {
@@ -95,6 +99,16 @@ export default {
     },
     toggleColor() {
       return getColorName(getTypeColor(this.isFgColor, this.item))
+    },
+    colorType() {
+      return this.isFgColor ? 'fgColor' : 'bgColor'
+    },
+    iconPreview() {
+      const item = this.item || {}
+      return {
+        icon: item.icon || item.data.icon,
+        [this.colorType]: this.selectedColor
+      }
     }
   },
   watch: {
@@ -133,7 +147,7 @@ export default {
     },
     handleChoose() {
       this.$emit('onChoose', {
-        type: this.isFgColor ? 'fgColor' : 'bgColor',
+        type: this.colorType,
         value: this.selectedColor
       })
       this.mVisible = false
@@ -146,7 +160,16 @@ export default {
 .card-choose-color {
   max-width: 500px;
 
+  .settings-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
   ._title {
+    .item-icon {
+      margin-right: 5px;
+    }
+
     .tk-switch {
       padding: 0 5px;
       font-weight: bold;

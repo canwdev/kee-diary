@@ -9,7 +9,7 @@
           <div class="settings-title">
             <div class="flex items-center">
               <ItemIcon
-                  :item="{icon:index}"
+                :item="{icon:index}"
               />
               <span class="">{{ $t('choose-icon') }}</span>
             </div>
@@ -18,18 +18,18 @@
           <div class="settings-content">
             <div class="icon-palette">
               <TkButton
-                  v-for="(item, i) in icons"
-                  :key="i"
-                  :title="item.name"
-                  size="no-style"
-                  class="icon-item"
-                  :class="{active: i === selectedIndex }"
-                  @click="handleSelect(i)"
-                  @contextmenu="handlePreview(i)"
+                v-for="(item, i) in icons"
+                :key="i"
+                :title="item.name"
+                size="no-style"
+                class="icon-item"
+                :class="{active: i === selectedIndex }"
+                @click="handleSelect(i)"
+                @contextmenu="handlePreview(i)"
               >
                 <ItemIcon
-                    :item="{icon:i}"
-                    :icon-scale="1.2"
+                  :item="{icon:i}"
+                  :icon-scale="1.2"
                 />
               </TkButton>
             </div>
@@ -136,10 +136,12 @@ export default {
 .card-choose-icon {
   max-width: 500px;
   overflow: hidden;
+
   .settings-title {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   .settings-content {
     padding: 0;
   }

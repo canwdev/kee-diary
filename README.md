@@ -30,10 +30,10 @@ A note editor application that uses KeePass technology to encrypt storage.
     - [x] 移动
     - [x] 删除/移动到回收站
 - 条目 · Entries
-    - [ ] 列表视图
+    - [x] 列表视图
     - [ ] 日历视图
-    - [ ] 修改图标
-    - [ ] 修改颜色
+    - [x] 修改图标
+    - [x] 修改颜色
     - [x] Markdown 预览
     - [x] Monaco 编辑器
     - [ ] 删除
