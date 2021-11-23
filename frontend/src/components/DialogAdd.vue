@@ -218,7 +218,6 @@ export default {
       this.isShowChooseGroup = false
     },
     handleUpdateColor(result) {
-      console.log(result)
       const {type, value} = result
       this.form[type] = value
     },

@@ -23,6 +23,7 @@
         :selected-group="selectedGroup"
         @onRename="i => handleRename(i, true)"
         @onChangeIcon="i => handleChangeIcon(i, true)"
+        @onChangeColor="i => handleChangeColor(i, true)"
       />
 
       <!--      <CalendarView-->
@@ -56,6 +57,13 @@
       @onChoose="updateIcon"
     />
 
+    <DialogChooseColor
+      ref="colorChooser"
+      :item="curItem"
+      :visible.sync="isShowChooseColor"
+      @onChoose="updateColor"
+    />
+
     <DialogChooseGroup
       ref="groupChooser"
       :visible.sync="isShowChooseGroup"
@@ -78,6 +86,7 @@ import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
 import {removeGroup, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
 import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
 import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
+import DialogChooseColor from '@/components/DialogChooseColor.vue'
 
 export default {
   name: 'HomeView',
@@ -89,6 +98,7 @@ export default {
     DialogEntryPreview,
     DialogChooseIcon,
     DialogChooseGroup,
+    DialogChooseColor,
   },
   data() {
     return {
@@ -99,7 +109,8 @@ export default {
       isShowChooseIcon: false,
       isShowChooseGroup: false,
       curIcon: null,
-      curItem: null
+      curItem: null,
+      isShowChooseColor: false,
     }
   },
   computed: {
@@ -257,6 +268,26 @@ export default {
       this.isShowChooseIcon = true
       this.curIcon = isEntry ? item.icon : item.data.icon
       this.curItem = item
+    },
+    handleChangeColor(item) {
+      this.curItem = item
+      this.isShowChooseColor = true
+    },
+    async updateColor(result) {
+      console.log(result)
+      const {type, value} = result
+
+      const item = this.curItem
+
+      await updateEntry({
+        uuid: item.uuid,
+        updates: [
+          {path: type, value: value},
+        ]
+      })
+      this.curItem[type] = value
+      this.$store.commit('setIsChanged', true)
+      this.curItem = null
     },
     async changeGroup(group) {
       console.log(group)
