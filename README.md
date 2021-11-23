@@ -36,7 +36,7 @@ A note editor application that uses KeePass technology to encrypt storage.
     - [x] 修改颜色
     - [x] Markdown 预览
     - [x] Monaco 编辑器
-    - [ ] 删除
+    - [x] 删除
     - [ ] 移动
 
 ## 开发 · Development

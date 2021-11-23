@@ -22,13 +22,26 @@ body {
   }
 }
 
-button, input, textarea, a, {
+@mixin focusMixin() {
+  //outline: 1px solid $primary;
+  outline: none;
+  box-shadow: 0 0 0 1px $primary inset;
+}
+
+button, input, textarea, a {
   &:focus {
-    //outline: 1px solid $primary;
-    outline: none;
-    box-shadow: 0 0 0 1px $primary inset;
+    @include focusMixin;
   }
 }
+
+.tk-tree-item {
+  &:focus {
+    & > .tree-item-title > .title-inner {
+      @include focusMixin;
+    }
+  }
+}
+
 
 hr {
   border-top: none;

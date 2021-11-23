@@ -24,6 +24,7 @@
         @onRename="i => handleRename(i, true)"
         @onChangeIcon="i => handleChangeIcon(i, true)"
         @onChangeColor="i => handleChangeColor(i, true)"
+        @onDelete="i => handleDeleteEntry(i)"
       />
 
       <!--      <CalendarView-->
@@ -83,7 +84,7 @@ import EntryList from '@/components/EntryList/index.vue'
 import DialogAdd from '@/components/DialogAdd.vue'
 import DialogEntryPreview from '@/components/DialogEntryPreview.vue'
 import mainBus, {BUS_SHOW_PREVIEW} from '@/utils/bus'
-import {removeGroup, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
+import {removeGroup, removeEntry, updateGroup, updateEntry, moveGroup, getRecycleText} from '@/api'
 import DialogChooseIcon from '@/components/DialogChooseIcon.vue'
 import DialogChooseGroup from '@/components/DialogChooseGroup.vue'
 import DialogChooseColor from '@/components/DialogChooseColor.vue'
@@ -197,6 +198,23 @@ export default {
         })
         this.$store.commit('setIsChanged', true)
         this.refreshGroup()
+      })
+    },
+    handleDeleteEntry(item) {
+      const msgAction = getRecycleText(item.uuid)
+      this.$prompt.create({
+        propsData: {
+          title: this.$t('confirm'),
+          useHTML: true,
+          content: `${this.$t('menu.are-you-sure')} <b>${msgAction}</b>?<br><p>${item.title}</p>`,
+        },
+        parentEl: this.$el
+      }).onConfirm(async () => {
+        await removeEntry({
+          uuid: item.uuid
+        })
+        this.$store.commit('setIsChanged', true)
+        this.$refs.entryList.loadEntryList()
       })
     },
     handlePreviewItem(item) {

@@ -85,6 +85,10 @@ export function removeGroup(params) {
   return callAsync('removeGroup', params)
 }
 
+export function removeEntry(params) {
+  return callAsync('removeEntry', params)
+}
+
 export function moveGroup(params) {
   return callAsync('moveGroup', params)
 }

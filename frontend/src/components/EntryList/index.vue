@@ -48,6 +48,7 @@
         @onRename="i => $emit('onRename', i)"
         @onChangeIcon="i => $emit('onChangeIcon', i)"
         @onChangeColor="i => $emit('onChangeColor', i)"
+        @onDelete="i => $emit('onDelete', i)"
       />
 
     </div>
