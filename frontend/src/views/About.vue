@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center bg-wall">
+  <div class="about-page flex items-center justify-center bg-wall">
     <div class="text-center">
       <h1 class="text-primary">{{ $t('pages.about') }}</h1>
 
@@ -65,21 +65,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.about-card {
-  margin-bottom: 10px;
-}
+.about-page {
+  height: 100%;
+  overflow: auto;
 
-.content {
-  margin: 0 auto;
-  width: 300px;
+  .about-card {
+    margin-bottom: 10px;
+  }
 
-  .about-buttons {
-    a, button {
-      color: inherit;
-      display: block;
-      width: 100%;
-      margin-top: 10px;
+  .content {
+    margin: 0 auto;
+    width: 300px;
+
+    .about-buttons {
+      a, button {
+        color: inherit;
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+      }
     }
   }
 }
+
 </style>

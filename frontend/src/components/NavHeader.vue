@@ -65,7 +65,7 @@
         </div>
       </template>
       <template slot="right">
-        <template v-if="!isMacOS">
+        <template v-if="!isBordered && !isMacOS">
           <TkButton
             round
             flat
@@ -106,6 +106,8 @@ import {mapGetters} from 'vuex'
 import {handleCloseDatabase, handleSaveDatabase} from '@/api'
 import WindowFrameMixin from '@/mixins/window-frame-mixin'
 // import DialogSearch from './DialogSearch'
+const {electronAPI} = window
+const settingsEnum = electronAPI.settingsEnum
 
 export default {
   name: 'NavHeader',
@@ -121,6 +123,7 @@ export default {
   },
   data() {
     return {
+      isBordered: electronAPI.settingsGet(settingsEnum.keyBordered) || false,
       isDialogSearchVisible: false
     }
   },

@@ -6,7 +6,8 @@ const url = require('url')
 const {isDev} = require('./utils')
 const {kInstance} = require('./keepass/api')
 const wm = require('./utils/wm-instance')
-
+const settingsEnum = require('./electron-api/settings-helper/ipc')
+const settings = require('electron-settings')
 
 let mainWindow
 
@@ -20,16 +21,26 @@ function createMainWindow() {
   });
   // mainWindow.loadURL(startUrl);
 
+  const bordered = settings.getSync(settingsEnum.keyBordered)
+  const windowFrameConfig = bordered ? {} : {
+    titleBarStyle: 'hidden',
+    titleBarOverlay: false,
+    trafficLightPosition: { x: 15, y: 15.5 },
+  }
+  let transparent = false
+  if (!bordered) {
+    transparent = settings.getSync(settingsEnum.keyWindowTransparent) || false
+  }
+
   mainWindow = wm.createWindow({
       width: 1000,
       height: 700,
       minWidth: 375,
-      minHeight: 500,
+      minHeight: 375,
       icon: path.join(__dirname, '../build/256x256.png'),
       // frame: true,
-      titleBarStyle: 'hidden',
-      titleBarOverlay: false,
-      trafficLightPosition: { x: 15, y: 15.5 },
+      transparent: transparent,
+      ...windowFrameConfig,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -38,7 +49,7 @@ function createMainWindow() {
         spellcheck: false,
       },
       customConfig: {
-        isOpenDevTools: isDev,
+        isOpenDevTools: false, //isDev,
         saveWindowStateName: 'mainWindow',
         isCloseHide: false
       }

@@ -370,7 +370,7 @@ export default {
     flex-direction: column;
     .nav-tree {
       width: 100%;
-      height: 150px;
+      height: 25vh;
     }
     .home-right {
       height: 100%;

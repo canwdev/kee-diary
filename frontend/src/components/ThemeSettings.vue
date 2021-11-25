@@ -3,7 +3,7 @@
     <TkCard padding="none" class="text-center overflow-hidden">
       <div class="settings-form">
         <div class="settings-title">
-          Theme Settings
+          UI Settings
         </div>
         <div class="settings-content">
           <div class="settings-row">
@@ -52,6 +52,20 @@
               />
             </div>
           </div>
+
+          <TkButton :disabled="eSettings[settingsEnum.keyBordered]" size="no-style" class="settings-row" @click="toggleElectronSettings(settingsEnum.keyWindowTransparent)">
+            <div class="s-label">Window Transparent <span class="hover-tips" title="Need restart app">?</span></div>
+            <div class="s-actions">
+              <TkSwitch :value="eSettings[settingsEnum.keyWindowTransparent]"/>
+            </div>
+          </TkButton>
+
+          <TkButton size="no-style" class="settings-row" @click="toggleElectronSettings(settingsEnum.keyBordered)">
+            <div class="s-label">Window Bordered <span class="hover-tips" title="Need restart app">?</span></div>
+            <div class="s-actions">
+              <TkSwitch :value="eSettings[settingsEnum.keyBordered]"/>
+            </div>
+          </TkButton>
         </div>
 
       </div>
@@ -63,6 +77,8 @@
 import visibleMixin from '@/mixins/visible'
 import {mapGetters} from 'vuex'
 import {hexToRgb} from '@/utils/color'
+const {electronAPI} = window
+const settingsEnum = electronAPI.settingsEnum
 
 export default {
   name: 'ThemeSettings',
@@ -77,6 +93,11 @@ export default {
     return {
       form: {
         backgroundStyle: ''
+      },
+      settingsEnum,
+      eSettings: {
+        [settingsEnum.keyWindowTransparent]: false,
+        [settingsEnum.keyBordered]: false,
       }
     }
   },
@@ -119,6 +140,11 @@ export default {
         this.form.backgroundStyle = val
       },
       immediate: true
+    },
+    mVisible(val) {
+      if (val) {
+        this.loadElectronSettings()
+      }
     }
   },
   methods: {
@@ -139,6 +165,14 @@ export default {
         key: 'backgroundStyle',
         value: this.form.backgroundStyle
       })
+    },
+    loadElectronSettings() {
+      this.eSettings[settingsEnum.keyWindowTransparent] = electronAPI.settingsGet(settingsEnum.keyWindowTransparent) || false
+      this.eSettings[settingsEnum.keyBordered] = electronAPI.settingsGet(settingsEnum.keyBordered) || false
+    },
+    toggleElectronSettings(key) {
+      electronAPI.settingsSet(key, !this.eSettings[key])
+      this.loadElectronSettings()
     }
   }
 }

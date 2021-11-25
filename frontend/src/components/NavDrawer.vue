@@ -25,7 +25,7 @@
     <TkButton size="no-style" class="menu-item" @click="$emit('showThemeSettings')">
       <span class="material-icons">color_lens</span>
       <span class="menu-item-title">
-        Theme
+        UI
         <span class="material-icons">settings</span>
       </span>
     </TkButton>

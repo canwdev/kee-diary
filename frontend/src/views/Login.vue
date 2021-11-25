@@ -291,6 +291,8 @@ export default {
 
 <style lang="scss" scoped>
 .login-view {
+  height: 100%;
+  overflow: auto;
   .login-card-main {
     width: 400px;
 

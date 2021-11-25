@@ -36,5 +36,5 @@ module.exports = {
   checkConnectivity,
   alert,
   showErrorBox,
-  require
+  require,
 }

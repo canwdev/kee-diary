@@ -1,7 +1,7 @@
 {
   "name": "kee-note",
   "appName": "KeeNote",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A note editor application that uses KeePass.",
   "repository": "",
   "private": true,
@@ -31,6 +31,7 @@
     "@canwdev/electron-utils": "^0.1.0",
     "@canwdev/electron-window-manager": "^0.1.7",
     "@electron/remote": "^2.0.1",
+    "electron-settings": "^4.0.2",
     "fs-extra": "^10.0.0",
     "kdbxweb": "^2.1.1",
     "node-fetch": "2.6.2"
