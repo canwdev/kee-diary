@@ -6,10 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint-fix": "eslint --ext .js,.vue --fix src"
+    "lint-fix": "eslint --ext .js,.vue --fix src",
+    "ic": "yarn add @canwdev/tank-ui --registry=https://registry.npmjs.com"
   },
   "dependencies": {
-    "@canwdev/tank-ui": "^0.2.26",
+    "@canwdev/tank-ui": "^0.2.27",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
