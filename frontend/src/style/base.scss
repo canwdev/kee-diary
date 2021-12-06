@@ -14,7 +14,11 @@ body {
   //padding: 2px;
   //background: linear-gradient(to bottom, #ff7847, #00eaff);
   //background-color: $primary;
+
+  touch-action: manipulation; // disable ios double tap zoom
+  user-select: none;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: $primary-opacity;
 
   ::selection {
     color: #fff;
