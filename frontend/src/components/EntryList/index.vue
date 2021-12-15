@@ -168,6 +168,11 @@ export default {
     justify-content: space-between;
     padding: 0 20px;
     border-bottom: $layout-border;
+    font-weight: 500;
+
+    @media screen and (max-height: $mq_mobile_height_land) {
+      height: 30px;
+    }
   }
 
   .table-body {
@@ -190,6 +195,10 @@ export default {
       &:hover {
         background: $border-color;
       }
+
+      @media screen and (max-height: $mq_mobile_height_land) {
+        height: 35px;
+      }
     }
   }
 
@@ -197,6 +206,12 @@ export default {
     &._icon {
       width: 50px;
       text-align: center;
+
+      @media screen and (max-height: $mq_mobile_height_land) {
+        .item-icon {
+          transform: scale(.8);
+        }
+      }
     }
 
     &._title {

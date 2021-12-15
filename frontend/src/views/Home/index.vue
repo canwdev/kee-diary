@@ -389,6 +389,10 @@ export default {
     button {
       box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.3);
     }
+
+    @media screen and (max-height: $mq_mobile_height_land) {
+      display: none;
+    }
   }
 }
 

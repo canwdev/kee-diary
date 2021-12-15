@@ -15,12 +15,6 @@
           class="title-input"
           size="lg"
         />
-      </div>
-
-      <hr>
-
-      <div class="settings-row">
-        <span class="date-text">{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
 
         <TkButton
           round
@@ -29,6 +23,12 @@
           @click="showSettings"
         >settings
         </TkButton>
+      </div>
+
+      <div class="settings-row">
+        <span class="date-text">{{ $t('home.created') }}: {{ formatDate(editData.creationTime) }}</span>
+
+
         <!--        <TkButton-->
         <!--          dense-->
         <!--          icon="archive"-->
@@ -47,8 +47,6 @@
         <!--        </TkButton>-->
 
       </div>
-
-      <hr>
 
       <div class="editor-wrap">
         <TkInput
@@ -376,6 +374,7 @@ export default {
 <style lang="scss" scoped>
 .detail-view {
   height: 100%;
+  overflow: auto;
 
   .edit-card {
     width: 800px;
@@ -392,9 +391,12 @@ export default {
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
     .date-text {
       font-size: 12px;
+      opacity: .5;
     }
   }
 
@@ -404,15 +406,19 @@ export default {
 
     .title-input {
       margin-left: 10px;
+      margin-right: 10px;
       flex: 1;
+      font-size: inherit;
     }
   }
 
   .editor-wrap {
     //overflow: auto;
-    height: calc(100vh - 230px);
+    height: calc(100vh - 220px);
     @media screen and (max-width: $mq_mobile_width) {
-      height: calc(100vh - 164px);
+      height: calc(100vh - 140px);
+      min-height: 100px;
+      padding-bottom: 10px;
     }
 
     .simple-editor {

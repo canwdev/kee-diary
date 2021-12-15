@@ -36,7 +36,7 @@ function createMainWindow() {
       width: 1000,
       height: 700,
       minWidth: 375,
-      minHeight: 375,
+      minHeight: 100,
       icon: path.join(__dirname, '../build/256x256.png'),
       // frame: true,
       transparent: transparent,
