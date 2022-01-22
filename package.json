@@ -6,7 +6,7 @@
   "repository": "",
   "private": true,
   "author": "canwdev",
-  "license": "MIT",
+  "license": "GPLV3",
   "main": "src/main.js",
   "scripts": {
     "inst": "yarn install && yarn install --cwd frontend",
