@@ -2,10 +2,10 @@ productName: "KeeNote"
 appId: "com.canwdev.keenote"
 
 files:
-  - ./dist-frontend/**/*
-  - ./src/**/*
+  - ./frontend-dist/**/*
+  - ./src-dist/**/*
 extraMetadata:
-  main: ./src/main.js
+  main: ./src-dist/main.js
 
 # Mac OS configuration
 mac:

@@ -1,51 +1,30 @@
 <template>
-  <div id="app" class="tk-scroll" :class="[isDarkMode ? 'tk-dark-theme' : 'tk-light-theme', fxEnabled ? 'tk-aero': '']">
-    <router-view/>
-  </div>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
+  <router-view/>
 </template>
-
-<script>
-import {mapGetters} from 'vuex'
-import {hexToRgb} from '@/utils/color'
-
-export default {
-  computed: {
-    ...mapGetters([
-      'isDarkMode',
-      'fxEnabled',
-      'backgroundStyle',
-    ]),
-  },
-  watch: {
-    backgroundStyle: {
-      handler(val) {
-        this.updateBackgroundStyle(val)
-      },
-      immediate: true
-    }
-  },
-  created() {
-    const themeColor = this.$store.getters.themeColor
-    // console.log('themeColor', themeColor.value)
-    if (themeColor) {
-      const {r, g, b} = hexToRgb(themeColor)
-      const root = document.documentElement
-      root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`)
-    }
-  },
-  methods: {
-    updateBackgroundStyle(val) {
-      document.body.style.cssText = val
-    }
-  }
-}
-</script>
 
 <style lang="scss">
 #app {
-  height: 100%;
-  //border-radius: 8px;
-  overflow: hidden;
-  //user-select: none
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

@@ -1,23 +1,7 @@
-const isProd = process.env.NODE_ENV === 'production' // 'development'
-
-module.exports = {
+const {defineConfig} = require('@vue/cli-service')
+module.exports = defineConfig({
+  transpileDependencies: true,
   publicPath: './',
-  outputDir: '../dist-frontend',
+  outputDir: '../frontend-dist',
   productionSourceMap: false,
-  css: {
-    // extract: false,
-    sourceMap: false,
-    loaderOptions: {
-      sass: {
-        prependData: `@import "@/style/variables.scss";`
-      }
-    }
-  },
-  configureWebpack: {
-    externals: isProd ? [] : [
-      {
-        '@canwdev/tank-ui': 'tankUI',
-      }
-    ]
-  },
-}
+})
